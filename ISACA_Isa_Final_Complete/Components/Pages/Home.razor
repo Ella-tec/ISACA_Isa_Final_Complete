@@ -10,12 +10,54 @@
 
 <AuthorizeView>
     <Authorized>
-        <div class="landing landing--redirect">
-            <p>Opening workspace…</p>
-            <p><a class="landing__btn landing__btn--primary" href="/knowledge-base">Continue to knowledge base</a></p>
-            <p style="margin-top:1rem"><a href="/analytics">Analytics</a> · <a href="/events">Events</a> · <a href="/world-clock">World clock</a></p>
+        <div class="landing">
+            <header class="landing__topbar">
+                <div class="landing__brand">
+                    <span class="landing__brandMark">
+                        <img src="images/isa-mark.svg" alt="" width="40" height="40" />
+                    </span>
+                    <span class="landing__brandText">
+                        <span class="landing__brandName">Isa</span>
+                        <span class="landing__brandTag">ISACA Chapter Support Workspace</span>
+                    </span>
+                </div>
+                <div class="landing__topbarRight">
+                    <a class="landing__btn landing__btn--primary" href="/knowledge-base">Knowledge base</a>
+                </div>
+            </header>
+            <section class="landing__hero">
+                <div class="landing__heroInner">
+                    <div class="landing__heroText">
+                        <p class="landing__eyebrow">WELCOME TO YOUR WORKSPACE</p>
+                        <h1 class="landing__headline">How can Isa help your chapter today?</h1>
+                        <p class="landing__lede">Access chapter resources, review activity, manage events, and get support from one place.</p>
+                        <div class="landing__ctaRow">
+                            <a class="landing__btn landing__btn--primary" href="/knowledge-base">Browse knowledge base</a>
+                            <a class="landing__btn landing__btn--ghost" href="/analytics">View analytics</a>
+                            <a class="landing__btn landing__btn--ghost" href="/events">Open events calendar</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="workspace" class="landing__section">
+                <h2 class="landing__sectionTitle">Your workspace</h2>
+                <p class="landing__sectionLede">Choose a tool to get started.</p>
+                <div class="landing__featureGrid">
+                    <a class="landing__featureCard" href="/knowledge-base"><strong>Knowledge base</strong><span>Find chapter guidance and resources</span></a>
+                    <a class="landing__featureCard" href="/analytics"><strong>Analytics</strong><span>Review activity and service metrics</span></a>
+                    <a class="landing__featureCard" href="/events"><strong>Events &amp; calendar</strong><span>Plan chapter events and follow-ups</span></a>
+                    <a class="landing__featureCard" href="/escalations"><strong>Escalations &amp; tickets</strong><span>Track questions needing human support</span></a>
+                    <a class="landing__featureCard" href="/governance"><strong>Governance &amp; policies</strong><span>Review governance resources</span></a>
+                    <a class="landing__featureCard" href="/translator"><strong>Translator</strong><span>Translate chapter communications</span></a>
+                    <a class="landing__featureCard" href="/content-health"><strong>Content health</strong><span>Review content quality indicators</span></a>
+                    <a class="landing__featureCard" href="/pipeline-monitor"><strong>Pipeline monitor</strong><span>Inspect processing stages</span></a>
+                </div>
+            </section>
+            <footer class="landing__footer">
+                Isa is a prototype built for ISACA chapter support scenarios. This is a demonstration workspace, not an official ISACA website.
+            </footer>
         </div>
-    </Authorized>
+    </Authorized>zed>
     <NotAuthorized>
         <div class="landing">
 
@@ -138,22 +180,6 @@
 
 
 @code {
-    [CascadingParameter] private Task<AuthenticationState>? AuthState { get; set; }
-
-    private bool _redirecting;
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        // Do not depend on firstRender: the cascading authentication state can
-        // finish resolving after the initial interactive render.
-        if (_redirecting || AuthState is null)
-            return;
-
-        var state = await AuthState;
-        if (state.User.Identity?.IsAuthenticated == true)
-        {
-            _redirecting = true;
-            Nav.NavigateTo("/knowledge-base", forceLoad: true);
-        }
-    }
+    // The authenticated root route is the workspace home. Do not redirect
+    // users to the knowledge base after sign-in.
 }
