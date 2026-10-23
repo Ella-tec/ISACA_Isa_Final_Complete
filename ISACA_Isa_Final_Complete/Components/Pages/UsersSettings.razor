@@ -1,0 +1,264 @@
+@page "/users-settings"
+@rendermode InteractiveServer
+<PageTitle>Users & Settings | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">ADMINISTRATION</p>
+            <h1>Users & settings</h1>
+            <p class="isa-intro">User roles, permissions, preferences, and application configuration.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">Role and preference changes on this page are illustrative only and do not persist to Keycloak or production configuration.</div>
+
+    <div class="isa-tabs">
+        <button type="button" class="isa-tab @(Tab == "users" ? "is-active" : "")" @onclick='() => Tab = "users"'>Users & roles</button>
+        <button type="button" class="isa-tab @(Tab == "prefs" ? "is-active" : "")" @onclick='() => Tab = "prefs"'>Preferences</button>
+        <button type="button" class="isa-tab @(Tab == "app" ? "is-active" : "")" @onclick='() => Tab = "app"'>App configuration</button>
+    </div>
+
+    @if (Tab == "users")
+    {
+        <div class="isa-stat-grid isa-stat-grid--three">
+            <article class="isa-stat-card">
+                <span class="isa-stat-label">Users</span>
+                <strong>@Users.Count</strong>
+                <small>Sample directory</small>
+            </article>
+            <article class="isa-stat-card">
+                <span class="isa-stat-label">Admins</span>
+                <strong>@Users.Count(u => u.Role == "Administrator")</strong>
+                <small>Elevated access</small>
+            </article>
+            <article class="isa-stat-card">
+                <span class="isa-stat-label">Active</span>
+                <strong>@Users.Count(u => u.Status == "Active")</strong>
+                <small>Can sign in</small>
+            </article>
+        </div>
+
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>User directory</h2><p>Change role to demonstrate access model</p></div>
+                <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search users..." />
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Email</th>
+                            <th>Role</th>
+                            <th>Chapter</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var u in FilteredUsers)
+                        {
+                            <tr>
+                                <td><strong>@u.Name</strong></td>
+                                <td>@u.Email</td>
+                                <td>
+                                    <InputSelect class="form-select isa-status-select" @bind-Value="u.Role">
+                                        <option>Administrator</option>
+                                        <option>Chapter leader</option>
+                                        <option>Volunteer</option>
+                                        <option>Viewer</option>
+                                    </InputSelect>
+                                </td>
+                                <td>@u.Chapter</td>
+                                <td>
+                                    <span class="isa-badge @(u.Status == "Active" ? "isa-badge--green" : "isa-badge--gray")">@u.Status</span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    }
+    else if (Tab == "prefs")
+    {
+        <div class="isa-content-grid">
+            <article class="isa-panel">
+                <h2>Display preferences</h2>
+                <div style="display:flex;flex-direction:column;gap:.9rem;margin-top:1rem">
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.CompactTables" />
+                        <span>Compact table density</span>
+                    </label>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.ShowSampleNotices" />
+                        <span>Show sample-data notices</span>
+                    </label>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.EmailDigest" />
+                        <span>Weekly email digest (demo)</span>
+                    </label>
+                    <div>
+                        <label class="isa-muted" style="font-size:.8rem;display:block;margin-bottom:.3rem">Default landing page</label>
+                        <InputSelect class="form-select" @bind-Value="Prefs.LandingPage" style="max-width:240px">
+                            <option value="/">Home / Isa Assistant</option>
+                            <option value="/analytics">Analytics</option>
+                            <option value="/risk-management">Risk management</option>
+                            <option value="/reports-insights">Reports & insights</option>
+                        </InputSelect>
+                    </div>
+                </div>
+                <button type="button" class="isa-btn isa-btn--primary" style="margin-top:1.25rem" @onclick="() => PrefsSaved = true">Save preferences</button>
+                @if (PrefsSaved)
+                {
+                    <p class="isa-muted" style="margin-top:.6rem;font-size:.85rem">Preferences saved for this session only.</p>
+                }
+            </article>
+
+            <article class="isa-panel">
+                <h2>Notification channels</h2>
+                <div style="display:flex;flex-direction:column;gap:.9rem;margin-top:1rem">
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.NotifyEscalations" />
+                        <span>New escalations</span>
+                    </label>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.NotifyRisks" />
+                        <span>High residual risks</span>
+                    </label>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.NotifyAudits" />
+                        <span>Audit findings due</span>
+                    </label>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="Prefs.NotifyIncidents" />
+                        <span>Critical incidents</span>
+                    </label>
+                </div>
+            </article>
+        </div>
+    }
+    else
+    {
+        <div class="isa-content-grid">
+            <article class="isa-panel">
+                <h2>Application settings</h2>
+                <div style="display:flex;flex-direction:column;gap:1rem;margin-top:1rem">
+                    <div>
+                        <label class="isa-muted" style="font-size:.8rem;display:block;margin-bottom:.3rem">Chapter display name</label>
+                        <InputText class="form-control" @bind-Value="AppConfig.ChapterName" />
+                    </div>
+                    <div>
+                        <label class="isa-muted" style="font-size:.8rem;display:block;margin-bottom:.3rem">Support email</label>
+                        <InputText class="form-control" @bind-Value="AppConfig.SupportEmail" />
+                    </div>
+                    <div>
+                        <label class="isa-muted" style="font-size:.8rem;display:block;margin-bottom:.3rem">Session timeout (minutes)</label>
+                        <InputNumber class="form-control" @bind-Value="AppConfig.SessionTimeout" style="max-width:120px" />
+                    </div>
+                    <label class="isa-check-row">
+                        <InputCheckbox @bind-Value="AppConfig.MaintenanceMode" />
+                        <span>Maintenance mode (demo flag)</span>
+                    </label>
+                </div>
+                <button type="button" class="isa-btn isa-btn--primary" style="margin-top:1.25rem" @onclick="() => ConfigSaved = true">Save configuration</button>
+                @if (ConfigSaved)
+                {
+                    <p class="isa-muted" style="margin-top:.6rem;font-size:.85rem">Configuration saved for this session only.</p>
+                }
+            </article>
+
+            <article class="isa-panel">
+                <h2>Permission matrix (sample)</h2>
+                <p class="isa-muted" style="font-size:.85rem;margin:.5rem 0 1rem">Which roles can access each workspace area</p>
+                <div class="table-responsive">
+                    <table class="table align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th>Area</th>
+                                <th>Admin</th>
+                                <th>Leader</th>
+                                <th>Volunteer</th>
+                                <th>Viewer</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var row in Matrix)
+                            {
+                                <tr>
+                                    <td><strong>@row.Area</strong></td>
+                                    <td>@(row.Admin ? "✓" : "—")</td>
+                                    <td>@(row.Leader ? "✓" : "—")</td>
+                                    <td>@(row.Volunteer ? "✓" : "—")</td>
+                                    <td>@(row.Viewer ? "✓" : "—")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </article>
+        </div>
+    }
+</section>
+
+@code {
+    private string Tab = "users";
+    private string Filter = "";
+    private bool PrefsSaved;
+    private bool ConfigSaved;
+
+    private List<UserItem> Users = new()
+    {
+        new() { Name = "Alex Rivera", Email = "alex.rivera@chapter.example", Role = "Administrator", Chapter = "Metro", Status = "Active" },
+        new() { Name = "Jordan Lee", Email = "jordan.lee@chapter.example", Role = "Chapter leader", Chapter = "Metro", Status = "Active" },
+        new() { Name = "Sam Okonkwo", Email = "sam.okonkwo@chapter.example", Role = "Volunteer", Chapter = "Metro", Status = "Active" },
+        new() { Name = "Taylor Chen", Email = "taylor.chen@chapter.example", Role = "Viewer", Chapter = "North", Status = "Active" },
+        new() { Name = "Morgan Blake", Email = "morgan.blake@chapter.example", Role = "Chapter leader", Chapter = "South", Status = "Inactive" }
+    };
+
+    private PrefModel Prefs = new();
+    private AppModel AppConfig = new() { ChapterName = "ISACA Sample Chapter", SupportEmail = "support@chapter.example", SessionTimeout = 60 };
+
+    private readonly (string Area, bool Admin, bool Leader, bool Volunteer, bool Viewer)[] Matrix =
+    {
+        ("Home / Isa Assistant", true, true, true, true),
+        ("Analytics & reports", true, true, false, true),
+        ("Risk & compliance", true, true, false, false),
+        ("Incident management", true, true, true, false),
+        ("Users & settings", true, false, false, false),
+        ("Developer dashboard", true, false, false, false)
+    };
+
+    private IEnumerable<UserItem> FilteredUsers => Users.Where(u =>
+        string.IsNullOrWhiteSpace(Filter) || (u.Name + u.Email + u.Role + u.Chapter).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private sealed class UserItem
+    {
+        public string Name { get; set; } = "";
+        public string Email { get; set; } = "";
+        public string Role { get; set; } = "";
+        public string Chapter { get; set; } = "";
+        public string Status { get; set; } = "Active";
+    }
+
+    private sealed class PrefModel
+    {
+        public bool CompactTables { get; set; }
+        public bool ShowSampleNotices { get; set; } = true;
+        public bool EmailDigest { get; set; }
+        public string LandingPage { get; set; } = "/";
+        public bool NotifyEscalations { get; set; } = true;
+        public bool NotifyRisks { get; set; } = true;
+        public bool NotifyAudits { get; set; }
+        public bool NotifyIncidents { get; set; } = true;
+    }
+
+    private sealed class AppModel
+    {
+        public string ChapterName { get; set; } = "";
+        public string SupportEmail { get; set; } = "";
+        public int SessionTimeout { get; set; }
+        public bool MaintenanceMode { get; set; }
+    }
+}

@@ -1,0 +1,183 @@
+@page "/escalations"
+@rendermode InteractiveServer
+<PageTitle>Escalations | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">SUPPORT OPERATIONS</p>
+            <h1>Escalations & tickets</h1>
+            <p class="isa-intro">Track questions that need follow-up from a chapter team member.</p>
+        </div>
+        <button class="isa-btn isa-btn--primary" @onclick="() => ShowForm = !ShowForm">
+            @(ShowForm ? "Close form" : "+ New ticket")
+        </button>
+    </div>
+
+    <div class="isa-notice">Demo tickets are stored in memory only. This page is not connected to Jira or another ticketing system yet.</div>
+
+    @if (ShowForm)
+    {
+        <article class="isa-panel isa-ticket-form">
+            <h2>Create a support ticket</h2>
+            <div class="isa-form-grid" style="margin-top:.75rem">
+                <label class="isa-field">Subject <InputText class="form-control" @bind-Value="Draft.Title" /></label>
+                <label class="isa-field">Priority
+                    <InputSelect class="form-select" @bind-Value="Draft.Priority">
+                        <option>Low</option>
+                        <option>Medium</option>
+                        <option>High</option>
+                        <option>Urgent</option>
+                    </InputSelect>
+                </label>
+                <label class="isa-field">Category
+                    <InputSelect class="form-select" @bind-Value="Draft.Category">
+                        <option>Membership</option>
+                        <option>Event</option>
+                        <option>Technical</option>
+                        <option>Certification</option>
+                        <option>Other</option>
+                    </InputSelect>
+                </label>
+                <label class="isa-field">Assigned team <InputText class="form-control" @bind-Value="Draft.Assignee" /></label>
+                <label class="isa-field isa-field--wide">Details <InputTextArea class="form-control" rows="3" @bind-Value="Draft.Description" /></label>
+            </div>
+            <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem">
+                <button class="isa-btn isa-btn--primary" @onclick="CreateTicket">Create ticket</button>
+                @if (Message is not null) { <span class="isa-success">@Message</span> }
+            </div>
+        </article>
+    }
+
+    <div class="isa-hero-strip">
+        <div><span>Open tickets</span><strong>@Tickets.Count(t => t.Status != "Resolved")</strong><small>Need action</small></div>
+        <div><span>High / urgent</span><strong>@Tickets.Count(t => t.Priority is "High" or "Urgent" && t.Status != "Resolved")</strong><small>Prioritize</small></div>
+        <div><span>In progress</span><strong>@Tickets.Count(t => t.Status == "In progress")</strong><small>Active work</small></div>
+        <div><span>Resolved</span><strong>@Tickets.Count(t => t.Status == "Resolved")</strong><small>Sample period</small></div>
+    </div>
+
+    <div class="isa-toolbar">
+        <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Filter tickets..." />
+        <InputSelect class="form-select isa-status-select" @bind-Value="StatusFilter" style="min-width:140px">
+            <option value="">All statuses</option>
+            <option>Open</option>
+            <option>In progress</option>
+            <option>Waiting</option>
+            <option>Resolved</option>
+        </InputSelect>
+        <InputSelect class="form-select isa-status-select" @bind-Value="PriorityFilter" style="min-width:130px">
+            <option value="">All priorities</option>
+            <option>Urgent</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+        </InputSelect>
+    </div>
+
+    <article class="isa-panel">
+        <div class="isa-panel-heading">
+            <div><h2>Ticket queue</h2><p>Change status using the dropdown in each row</p></div>
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Ticket</th>
+                        <th>Subject</th>
+                        <th>Category</th>
+                        <th>Priority</th>
+                        <th>Assigned</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in FilteredTickets)
+                    {
+                        <tr>
+                            <td><strong>@ticket.Id</strong></td>
+                            <td>
+                                <strong>@ticket.Title</strong>
+                                <div class="isa-table-sub">@ticket.Description</div>
+                            </td>
+                            <td>@ticket.Category</td>
+                            <td>
+                                <span class="isa-priority isa-priority--@ticket.Priority.ToLowerInvariant()">@ticket.Priority</span>
+                            </td>
+                            <td>@ticket.Assignee</td>
+                            <td>
+                                <InputSelect class="form-select isa-status-select" @bind-Value="ticket.Status">
+                                    <option>Open</option>
+                                    <option>In progress</option>
+                                    <option>Waiting</option>
+                                    <option>Resolved</option>
+                                </InputSelect>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        @if (!FilteredTickets.Any())
+        {
+            <div class="isa-empty">No tickets match your filters.</div>
+        }
+    </article>
+</section>
+
+@code {
+    private bool ShowForm;
+    private string Filter = "";
+    private string StatusFilter = "";
+    private string PriorityFilter = "";
+    private string? Message;
+    private int _nextId = 1025;
+
+    private Ticket Draft = new() { Priority = "Medium", Category = "Membership", Assignee = "Chapter team" };
+
+    private List<Ticket> Tickets = new()
+    {
+        new() { Id = "ISA-1024", Title = "Membership renewal question", Category = "Membership", Priority = "Medium", Assignee = "Chapter team", Status = "Open", Description = "Member needs help finding renewal guidance." },
+        new() { Id = "ISA-1023", Title = "Event registration issue", Category = "Event", Priority = "High", Assignee = "Events team", Status = "In progress", Description = "Registration confirmation not received." },
+        new() { Id = "ISA-1022", Title = "Certification resource request", Category = "Certification", Priority = "Low", Assignee = "Learning team", Status = "Resolved", Description = "Asked for the correct official resource." },
+        new() { Id = "ISA-1021", Title = "Portal login failure", Category = "Technical", Priority = "Urgent", Assignee = "IT support", Status = "Open", Description = "Member cannot sign in after password reset." },
+        new() { Id = "ISA-1020", Title = "Board minutes template", Category = "Other", Priority = "Low", Assignee = "Secretary", Status = "Waiting", Description = "Requested sample minutes format for new officers." }
+    };
+
+    private IEnumerable<Ticket> FilteredTickets => Tickets.Where(t =>
+        (string.IsNullOrWhiteSpace(Filter) || (t.Id + t.Title + t.Category + t.Assignee + t.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase)) &&
+        (string.IsNullOrWhiteSpace(StatusFilter) || t.Status == StatusFilter) &&
+        (string.IsNullOrWhiteSpace(PriorityFilter) || t.Priority == PriorityFilter));
+
+    private void CreateTicket()
+    {
+        if (string.IsNullOrWhiteSpace(Draft.Title))
+        {
+            Message = "Enter a subject first.";
+            return;
+        }
+        Tickets.Insert(0, new Ticket
+        {
+            Id = $"ISA-{_nextId++}",
+            Title = Draft.Title.Trim(),
+            Category = Draft.Category,
+            Priority = Draft.Priority,
+            Assignee = string.IsNullOrWhiteSpace(Draft.Assignee) ? "Unassigned" : Draft.Assignee.Trim(),
+            Status = "Open",
+            Description = string.IsNullOrWhiteSpace(Draft.Description) ? "No details provided." : Draft.Description.Trim()
+        });
+        Message = $"Ticket created.";
+        Draft = new Ticket { Priority = "Medium", Category = "Membership", Assignee = "Chapter team" };
+        ShowForm = false;
+    }
+
+    private sealed class Ticket
+    {
+        public string Id { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Priority { get; set; } = "Medium";
+        public string Assignee { get; set; } = "";
+        public string Status { get; set; } = "Open";
+        public string Description { get; set; } = "";
+    }
+}

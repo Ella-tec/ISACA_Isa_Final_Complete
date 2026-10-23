@@ -1,0 +1,185 @@
+@page "/vendor-risk"
+@rendermode InteractiveServer
+<PageTitle>Vendor & Third-Party Risk | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">THIRD-PARTY RISK</p>
+            <h1>Vendor & third-party risk</h1>
+            <p class="isa-intro">Vendor assessments, risk ratings, reviews, and remediation tracking.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">Sample vendor register for demonstration. Perform real due diligence before relying on any vendor relationship.</div>
+
+    <div class="isa-stat-grid">
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon blue">◎</span>
+            <span class="isa-stat-label">Active vendors</span>
+            <strong>@Vendors.Count(v => v.Status != "Offboarded")</strong>
+            <small>In register</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon red">↑</span>
+            <span class="isa-stat-label">High risk</span>
+            <strong>@Vendors.Count(v => v.RiskRating == "High")</strong>
+            <small>Elevated residual risk</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon orange">!</span>
+            <span class="isa-stat-label">Review overdue</span>
+            <strong>@Vendors.Count(v => v.ReviewStatus == "Overdue")</strong>
+            <small>Assessment expired</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon green">✓</span>
+            <span class="isa-stat-label">Remediation closed</span>
+            <strong>@Remediations.Count(r => r.Status == "Closed")</strong>
+            <small>Sample actions</small>
+        </article>
+    </div>
+
+    <div class="isa-tabs">
+        <button type="button" class="isa-tab @(Tab == "vendors" ? "is-active" : "")" @onclick='() => Tab = "vendors"'>Vendor register</button>
+        <button type="button" class="isa-tab @(Tab == "remediation" ? "is-active" : "")" @onclick='() => Tab = "remediation"'>Remediation tracking</button>
+    </div>
+
+    @if (Tab == "vendors")
+    {
+        <div class="isa-toolbar">
+            <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search vendors..." />
+        </div>
+        <article class="isa-panel">
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Service</th>
+                            <th>Risk rating</th>
+                            <th>Last review</th>
+                            <th>Review status</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var v in FilteredVendors)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@v.Name</strong>
+                                    <div class="isa-table-sub">Contact: @v.Contact</div>
+                                </td>
+                                <td>@v.Service</td>
+                                <td>
+                                    <span class="isa-badge @(v.RiskRating == "High" ? "isa-badge--red" : v.RiskRating == "Medium" ? "isa-badge--orange" : "isa-badge--green")">
+                                        @v.RiskRating
+                                    </span>
+                                </td>
+                                <td>@v.LastReview</td>
+                                <td>
+                                    <span class="isa-badge @(v.ReviewStatus == "Current" ? "isa-badge--green" : v.ReviewStatus == "Due soon" ? "isa-badge--orange" : "isa-badge--red")">
+                                        @v.ReviewStatus
+                                    </span>
+                                </td>
+                                <td>
+                                    <InputSelect class="form-select isa-status-select" @bind-Value="v.Status">
+                                        <option>Active</option>
+                                        <option>Under review</option>
+                                        <option>Offboarded</option>
+                                    </InputSelect>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    }
+    else
+    {
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Open remediation items</h2><p>Track vendor-related findings to closure</p></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Vendor</th>
+                            <th>Finding</th>
+                            <th>Owner</th>
+                            <th>Target</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Remediations)
+                        {
+                            <tr>
+                                <td><strong>@r.Vendor</strong></td>
+                                <td>@r.Finding</td>
+                                <td>@r.Owner</td>
+                                <td>@r.Target</td>
+                                <td>
+                                    <InputSelect class="form-select isa-status-select" @bind-Value="r.Status">
+                                        <option>Open</option>
+                                        <option>In progress</option>
+                                        <option>Closed</option>
+                                    </InputSelect>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    }
+</section>
+
+@code {
+    private string Tab = "vendors";
+    private string Filter = "";
+
+    private List<VendorItem> Vendors = new()
+    {
+        new() { Name = "EventPlatform Co", Service = "Event registration & ticketing", Contact = "support@eventplatform.example", RiskRating = "Medium", LastReview = "Jul 2026", ReviewStatus = "Current", Status = "Active" },
+        new() { Name = "PayGate Services", Service = "Payment processing", Contact = "risk@paygate.example", RiskRating = "High", LastReview = "Mar 2026", ReviewStatus = "Overdue", Status = "Under review" },
+        new() { Name = "CloudDocs Host", Service = "Document storage", Contact = "admin@clouddocs.example", RiskRating = "Low", LastReview = "Sep 2026", ReviewStatus = "Current", Status = "Active" },
+        new() { Name = "MailRelay Inc", Service = "Chapter email distribution", Contact = "ops@mailrelay.example", RiskRating = "Medium", LastReview = "May 2026", ReviewStatus = "Due soon", Status = "Active" },
+        new() { Name = "OldVenue Partners", Service = "Legacy venue booking", Contact = "—", RiskRating = "Low", LastReview = "Jan 2025", ReviewStatus = "Overdue", Status = "Offboarded" }
+    };
+
+    private List<RemediationItem> Remediations = new()
+    {
+        new() { Vendor = "PayGate Services", Finding = "SOC 2 report older than 12 months", Owner = "Treasurer", Target = "Nov 2026", Status = "In progress" },
+        new() { Vendor = "PayGate Services", Finding = "No contractual right-to-audit clause", Owner = "President", Target = "Dec 2026", Status = "Open" },
+        new() { Vendor = "MailRelay Inc", Finding = "Missing DPA for EU member data", Owner = "Secretary", Target = "Oct 2026", Status = "Open" },
+        new() { Vendor = "EventPlatform Co", Finding = "MFA not enforced for admin accounts", Owner = "IT lead", Target = "Sep 2026", Status = "Closed" }
+    };
+
+    private IEnumerable<VendorItem> FilteredVendors => Vendors.Where(v =>
+        string.IsNullOrWhiteSpace(Filter) || (v.Name + v.Service + v.Contact + v.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private sealed class VendorItem
+    {
+        public string Name { get; set; } = "";
+        public string Service { get; set; } = "";
+        public string Contact { get; set; } = "";
+        public string RiskRating { get; set; } = "";
+        public string LastReview { get; set; } = "";
+        public string ReviewStatus { get; set; } = "";
+        public string Status { get; set; } = "Active";
+    }
+
+    private sealed class RemediationItem
+    {
+        public string Vendor { get; set; } = "";
+        public string Finding { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public string Target { get; set; } = "";
+        public string Status { get; set; } = "Open";
+    }
+}

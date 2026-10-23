@@ -1,0 +1,164 @@
+@page "/risk-management"
+@rendermode InteractiveServer
+<PageTitle>Risk Management | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">GOVERNANCE</p>
+            <h1>Risk management</h1>
+            <p class="isa-intro">Track risk register items, scores, mitigation plans, and residual risk heatmaps.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">Illustrative sample data only. Connect approved risk registers before using for formal reporting.</div>
+
+    <div class="isa-stat-grid">
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon orange">⚠</span>
+            <span class="isa-stat-label">Open risks</span>
+            <strong>@Risks.Count(r => r.Status != "Closed")</strong>
+            <small>Active register items</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon red">↑</span>
+            <span class="isa-stat-label">High / Critical</span>
+            <strong>@Risks.Count(r => r.Score >= 15)</strong>
+            <small>Score ≥ 15</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon green">✓</span>
+            <span class="isa-stat-label">Mitigations on track</span>
+            <strong>@Risks.Count(r => r.MitigationStatus == "On track")</strong>
+            <small>Within target dates</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon blue">◉</span>
+            <span class="isa-stat-label">Avg residual score</span>
+            <strong>@AvgResidual.ToString("0.0")</strong>
+            <small>After controls</small>
+        </article>
+    </div>
+
+    <div class="isa-content-grid">
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Risk heatmap</h2><p>Likelihood × Impact (sample matrix)</p></div>
+            </div>
+            <div class="isa-heatmap">
+                <div class="isa-heatmap__label"></div>
+                @foreach (var i in new[] { 1, 2, 3, 4, 5 })
+                {
+                    <div class="isa-heatmap__label">I@i</div>
+                }
+                @for (int l = 5; l >= 1; l--)
+                {
+                    <div class="isa-heatmap__label">L@l</div>
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        var score = l * i;
+                        var color = score >= 20 ? "#c0392b" : score >= 12 ? "#e57524" : score >= 6 ? "#d4a017" : "#6cb33f";
+                        var count = Risks.Count(r => r.Likelihood == l && r.Impact == i && r.Status != "Closed");
+                        <div class="isa-heatmap__cell" style="background:@color; opacity:@(count > 0 ? 1 : .35)">
+                            @(count > 0 ? count.ToString() : "")
+                        </div>
+                    }
+                }
+            </div>
+            <p class="isa-muted small mt-2" style="margin-top:.75rem">L = Likelihood, I = Impact. Cell shows count of open risks.</p>
+        </article>
+
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Top residual risks</h2><p>Highest residual scores</p></div>
+            </div>
+            @foreach (var risk in Risks.Where(r => r.Status != "Closed").OrderByDescending(r => r.ResidualScore).Take(5))
+            {
+                <div class="isa-category-row">
+                    <div>
+                        <span>@risk.Title</span>
+                        <strong>@risk.ResidualScore</strong>
+                    </div>
+                    <div class="isa-progress"><span style="width:@($"{Math.Min(100, risk.ResidualScore * 4)}%")"></span></div>
+                </div>
+            }
+        </article>
+    </div>
+
+    <article class="isa-panel mt-4" style="margin-top:1.25rem">
+        <div class="isa-panel-heading">
+            <div><h2>Risk register</h2><p>Filter and update status for demonstration.</p></div>
+            <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search risks..." />
+        </div>
+        <div class="table-responsive">
+            <table class="table align-middle mb-0">
+                <thead>
+                    <tr>
+                        <th>Risk</th>
+                        <th>Owner</th>
+                        <th>Score</th>
+                        <th>Residual</th>
+                        <th>Mitigation</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var risk in FilteredRisks)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@risk.Title</strong>
+                                <div class="isa-table-sub">@risk.Category · L@risk.Likelihood × I@risk.Impact</div>
+                            </td>
+                            <td>@risk.Owner</td>
+                            <td><span class="isa-badge @(risk.Score >= 15 ? "isa-badge--red" : risk.Score >= 8 ? "isa-badge--orange" : "isa-badge--green")">@risk.Score</span></td>
+                            <td>@risk.ResidualScore</td>
+                            <td>@risk.MitigationStatus</td>
+                            <td>
+                                <InputSelect class="form-select isa-status-select" @bind-Value="risk.Status">
+                                    <option>Open</option>
+                                    <option>Mitigating</option>
+                                    <option>Accepted</option>
+                                    <option>Closed</option>
+                                </InputSelect>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </article>
+</section>
+
+@code {
+    private string Filter = "";
+    private List<RiskItem> Risks = new()
+    {
+        new() { Title = "Unauthorized access to chapter systems", Category = "Security", Owner = "IT lead", Likelihood = 3, Impact = 5, ResidualScore = 9, MitigationStatus = "On track", Status = "Mitigating" },
+        new() { Title = "Key volunteer dependency", Category = "Operations", Owner = "President", Likelihood = 4, Impact = 4, ResidualScore = 10, MitigationStatus = "Behind", Status = "Open" },
+        new() { Title = "Event venue cancellation", Category = "Events", Owner = "Events chair", Likelihood = 2, Impact = 4, ResidualScore = 5, MitigationStatus = "On track", Status = "Mitigating" },
+        new() { Title = "Membership data breach", Category = "Privacy", Owner = "Secretary", Likelihood = 2, Impact = 5, ResidualScore = 6, MitigationStatus = "On track", Status = "Open" },
+        new() { Title = "Budget overrun on certification events", Category = "Finance", Owner = "Treasurer", Likelihood = 3, Impact = 3, ResidualScore = 6, MitigationStatus = "On track", Status = "Accepted" },
+        new() { Title = "Outdated governance documents", Category = "Compliance", Owner = "Governance lead", Likelihood = 4, Impact = 2, ResidualScore = 5, MitigationStatus = "Behind", Status = "Open" },
+        new() { Title = "Third-party payment processor outage", Category = "Vendor", Owner = "Treasurer", Likelihood = 2, Impact = 3, ResidualScore = 4, MitigationStatus = "On track", Status = "Mitigating" }
+    };
+
+    private double AvgResidual => Risks.Where(r => r.Status != "Closed").DefaultIfEmpty().Average(r => r?.ResidualScore ?? 0);
+    private IEnumerable<RiskItem> FilteredRisks => Risks.Where(r =>
+        string.IsNullOrWhiteSpace(Filter) ||
+        (r.Title + r.Category + r.Owner + r.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private sealed class RiskItem
+    {
+        public string Title { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public int Likelihood { get; set; }
+        public int Impact { get; set; }
+        public int Score => Likelihood * Impact;
+        public int ResidualScore { get; set; }
+        public string MitigationStatus { get; set; } = "";
+        public string Status { get; set; } = "Open";
+    }
+}

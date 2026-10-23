@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Isa | Chapter Support Assistant</title>
+<style>
+:root{
+  --bg:#f7f8fa;--bg2:#ffffff;--panel:#ffffff;--soft:#eef1f6;
+  --line:#e2e6ee;--text:#1a2332;--muted:#6b7280;--faint:#9aa3b2;
+  --accent:#5a9e36;--accent2:#0284c7;--navy:#1d2d5c;
+  --radius:16px;
+  --font:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{min-height:100%;background:var(--bg);color:var(--text);font-family:var(--font);line-height:1.55}
+a{color:var(--accent2);text-decoration:none}
+button{font-family:inherit;cursor:pointer}
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:220px;background:var(--bg2);border-right:1px solid var(--line);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;overflow:auto;flex-shrink:0;
+}
+.brand{display:flex;align-items:center;gap:.65rem;padding:1.25rem 1.1rem;border-bottom:1px solid var(--line)}
+.brand-c{
+  width:36px;height:36px;border-radius:50%;
+  border:3px solid var(--accent);border-right-color:transparent;
+  display:grid;place-items:center;font-size:.65rem;font-weight:800;color:var(--accent);
+}
+.brand strong{display:block;font-size:.95rem;color:var(--navy)}
+.brand small{color:var(--muted);font-size:.7rem}
+.nav-label{padding:1.1rem 1.1rem .35rem;font-size:.65rem;letter-spacing:.12em;color:var(--faint);font-weight:700}
+.nav a{
+  display:flex;align-items:center;gap:.5rem;padding:.48rem 1rem;margin:0 .45rem .15rem;
+  color:var(--muted);font-size:.88rem;border-radius:10px;
+}
+.nav a:hover{background:var(--soft);color:var(--text)}
+.nav a.active{background:#e8f5e0;color:var(--navy);font-weight:600}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:.85rem 1.75rem;background:var(--bg2);border-bottom:1px solid var(--line);
+  position:sticky;top:0;z-index:20;
+}
+.top .eyebrow{font-size:.62rem;letter-spacing:.12em;color:var(--faint);font-weight:700}
+.top .title{font-weight:600;font-size:.95rem;color:var(--navy)}
+.top nav a{margin-left:1.1rem;color:var(--muted);font-size:.88rem}
+.top nav a:hover{color:var(--navy)}
+.content{padding:1.75rem 2rem 5rem;max-width:1100px}
+.page{display:none}
+.page.active{display:block;animation:fade .3s ease}
+@keyframes fade{from{opacity:0}to{opacity:1}}
+.eyebrow{font-size:.65rem;letter-spacing:.12em;color:var(--faint);font-weight:700;text-transform:uppercase;margin-bottom:.35rem}
+h1{font-size:1.55rem;color:var(--navy);font-weight:650;margin-bottom:.4rem;letter-spacing:-.02em}
+.intro{color:var(--muted);font-size:.95rem;max-width:48ch;margin-bottom:1.25rem}
+.page-head{margin-bottom:.5rem}
+.pill{
+  display:inline-flex;padding:.2rem .65rem;border-radius:999px;
+  background:#e8f5e0;color:var(--accent);font-size:.7rem;font-weight:700;
+}
+.notice{
+  background:#fffbeb;border:1px solid #fde68a;border-radius:12px;
+  padding:.75rem 1rem;font-size:.88rem;color:#92400e;margin-bottom:1.25rem;
+}
+.hero{
+  background:linear-gradient(135deg,#1d2d5c 0%,#07649d 55%,#00a4e4 100%);
+  color:#fff;border-radius:20px;padding:2rem 2rem 2.1rem;margin-bottom:1.75rem;
+}
+.hero .eyebrow{color:rgba(255,255,255,.7)}
+.hero h1{color:#fff;font-size:clamp(1.5rem,3vw,2rem);margin:.4rem 0 .6rem}
+.hero p{opacity:.92;max-width:46ch;font-size:.98rem}
+.btns{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.15rem}
+.btn{
+  display:inline-flex;align-items:center;padding:.55rem 1.15rem;border-radius:999px;
+  font-weight:600;font-size:.9rem;border:1px solid transparent;
+  background:var(--accent);color:#fff;
+}
+.btn.ghost{background:transparent;border-color:rgba(255,255,255,.45);color:#fff}
+.btn.light{background:#fff;color:var(--navy);border-color:var(--line)}
+.btn.soft{background:var(--soft);color:var(--navy);border-color:var(--line)}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:1.5rem 0}
+.step{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.25rem 1.15rem}
+.step .n{
+  width:1.75rem;height:1.75rem;border-radius:50%;background:#e8f5e0;color:var(--accent);
+  display:grid;place-items:center;font-weight:700;font-size:.85rem;margin-bottom:.65rem;
+}
+.step h3{font-size:.72rem;letter-spacing:.08em;color:var(--navy);margin-bottom:.35rem}
+.step p{font-size:.88rem;color:var(--muted)}
+.q{
+  padding:.85rem 1.1rem;background:var(--panel);border:1px solid var(--line);
+  border-left:3px solid var(--accent);border-radius:0 12px 12px 0;
+  margin-bottom:.55rem;font-size:.92rem;cursor:pointer;
+}
+.q:hover{background:var(--soft)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:1rem;margin:1.25rem 0 1.5rem}
+.stat{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.15rem 1.2rem}
+.stat label{display:block;font-size:.72rem;color:var(--muted);font-weight:600;margin-bottom:.3rem}
+.stat strong{font-size:1.5rem;color:var(--navy);letter-spacing:-.02em}
+.stat small{display:block;font-size:.75rem;color:var(--faint);margin-top:.25rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1rem;margin-top:.5rem}
+.card{
+  background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.25rem 1.2rem;
+  transition:box-shadow .15s,border-color .15s;
+}
+.card:hover{border-color:#c5d0e0;box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.card h3{font-size:.98rem;color:var(--navy);margin-bottom:.35rem}
+.card p{font-size:.88rem;color:var(--muted)}
+.card .tag{
+  display:inline-block;margin-top:.65rem;font-size:.7rem;padding:.15rem .5rem;
+  border-radius:8px;background:#e0f2fe;color:var(--accent2);font-weight:600;
+}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.25rem;margin-bottom:1rem}
+.panel h2{font-size:1.05rem;color:var(--navy);margin-bottom:.65rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+th,td{text-align:left;padding:.7rem .5rem;border-bottom:1px solid var(--line)}
+th{color:var(--faint);font-size:.72rem;text-transform:uppercase;letter-spacing:.04em}
+.badge{display:inline-block;padding:.15rem .5rem;border-radius:999px;font-size:.72rem;font-weight:700}
+.badge.green{background:#e8f5e0;color:#3d7a1e}
+.badge.red{background:#fee2e2;color:#b91c1c}
+.badge.amber{background:#fef3c7;color:#b45309}
+.badge.blue{background:#e0f2fe;color:#0369a1}
+.bar{height:8px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:.4rem}
+.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--accent2),var(--accent));border-radius:99px}
+.clock-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:1rem;margin-top:.75rem}
+.clock{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:1.15rem;text-align:center}
+.clock .city{font-weight:600;color:var(--navy);font-size:.88rem}
+.clock .time{font-size:1.55rem;font-weight:700;color:var(--navy);margin:.3rem 0}
+.clock .zone{font-size:.75rem;color:var(--muted)}
+.heatmap{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;max-width:360px}
+.heatmap span{aspect-ratio:1;border-radius:6px;display:grid;place-items:center;font-size:.65rem;font-weight:700;color:#fff}
+.section-gap{margin-top:1.75rem}
+h2.sec{font-size:1.1rem;color:var(--navy);margin-bottom:.85rem;font-weight:650}
+/* Chat */
+.fab{
+  position:fixed;right:24px;bottom:24px;width:56px;height:56px;border-radius:50%;
+  background:#fff;border:3px solid var(--accent);box-shadow:0 8px 28px rgba(29,45,92,.15);
+  cursor:pointer;z-index:50;display:grid;place-items:center;
+}
+.fab .ring{width:32px;height:32px;border-radius:50%;border:3px solid var(--accent);border-right-color:transparent}
+.fab:hover .ring{animation:spin 1s linear infinite}
+.fab span{position:absolute;font-size:.58rem;font-weight:800;color:var(--navy)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.chat{
+  position:fixed;right:24px;bottom:96px;width:min(360px,calc(100vw - 32px));
+  height:min(480px,calc(100vh - 130px));background:#fff;border-radius:18px;
+  border:1px solid var(--line);box-shadow:0 16px 48px rgba(29,45,92,.14);
+  display:none;flex-direction:column;z-index:51;overflow:hidden;
+}
+.chat.open{display:flex}
+.chat-h{padding:.9rem 1rem;display:flex;align-items:center;gap:.55rem;border-bottom:1px solid var(--line);background:#fafbfc}
+.chat-h .c{
+  width:28px;height:28px;border-radius:50%;border:2.5px solid var(--accent);border-right-color:transparent;
+  display:grid;place-items:center;font-size:.5rem;font-weight:800;color:var(--accent);
+}
+.chat-h strong{flex:1;color:var(--navy)}
+.chat-h button{background:0;border:0;color:var(--muted);font-size:1.2rem;cursor:pointer}
+.chat-msgs{flex:1;overflow:auto;padding:1.1rem;display:flex;flex-direction:column;gap:.7rem;background:#f7f8fa}
+.msg{max-width:88%;padding:.7rem .9rem;border-radius:14px;font-size:.88rem}
+.msg.bot{align-self:flex-start;background:#fff;border:1px solid var(--line)}
+.msg.user{align-self:flex-end;background:#e8f5e0;color:var(--navy)}
+.msg .meta{font-size:.7rem;color:var(--faint);margin-bottom:.2rem}
+.msg .src{margin-top:.4rem;padding:.4rem .55rem;background:#e0f2fe;border-radius:8px;font-size:.75rem;color:var(--accent2)}
+.chat-in{display:flex;gap:.45rem;padding:.75rem;border-top:1px solid var(--line);background:#fff}
+.chat-in input{
+  flex:1;border:1px solid var(--line);border-radius:999px;padding:.55rem 1rem;font-size:.9rem;outline:0;background:#f7f8fa;
+}
+.chat-in input:focus{border-color:var(--accent2);background:#fff}
+.chat-in button{width:40px;height:40px;border-radius:50%;border:0;background:var(--accent);color:#fff;font-weight:700}
+@media(max-width:900px){
+  .sidebar{width:64px}.brand strong,.brand small,.nav-label,.nav .txt{display:none}
+  .steps,.two{grid-template-columns:1fr}
+  .content{padding:1.25rem 1rem 5rem}
+}
+</style>
+</head>
+<body>
+<div class="app">
+<aside class="sidebar">
+  <div class="brand">
+    <div class="brand-c">C</div>
+    <div><strong>Isa</strong><small>Chapter Support</small></div>
+  </div>
+  <div class="nav-label">WORKSPACE</div>
+  <nav class="nav" id="nav">
+    <a href="#home" data-page="home" class="active"><span class="ico">⌂</span><span class="txt">Home</span></a>
+    <a href="#knowledge" data-page="knowledge"><span class="ico">▤</span><span class="txt">Knowledge base</span></a>
+    <a href="#analytics" data-page="analytics"><span class="ico">▦</span><span class="txt">Analytics</span></a>
+    <a href="#events" data-page="events"><span class="ico">📅</span><span class="txt">Events</span></a>
+    <a href="#escalations" data-page="escalations"><span class="ico">↗</span><span class="txt">Escalations</span></a>
+    <a href="#governance" data-page="governance"><span class="ico">✓</span><span class="txt">Governance</span></a>
+    <a href="#risk" data-page="risk"><span class="ico">⚠</span><span class="txt">Risk</span></a>
+    <a href="#compliance" data-page="compliance"><span class="ico">✔</span><span class="txt">Compliance</span></a>
+    <a href="#audit" data-page="audit"><span class="ico">▣</span><span class="txt">Audit</span></a>
+    <a href="#incidents" data-page="incidents"><span class="ico">⚡</span><span class="txt">Incidents</span></a>
+    <a href="#reports" data-page="reports"><span class="ico">📊</span><span class="txt">Reports</span></a>
+    <a href="#translator" data-page="translator"><span class="ico">文</span><span class="txt">Translator</span></a>
+    <a href="#clock" data-page="clock"><span class="ico">🌐</span><span class="txt">World clock</span></a>
+    <a href="#signin" data-page="signin"><span class="ico">→</span><span class="txt">Sign in</span></a>
+  </nav>
+</aside>
+
+<div class="main">
+<header class="top">
+  <div><div class="eyebrow">ISACA CHAPTER SUPPORT</div><div class="title">Isa workspace</div></div>
+  <nav><a href="#home">Home</a><a href="#signin">Account</a></nav>
+</header>
+<div class="content">
+
+<section class="page active" id="page-home">
+  <div class="hero">
+    <div class="eyebrow">FOR CHAPTER LEADERS</div>
+    <h1>Meet Isa, your chapter support assistant</h1>
+    <p>Ask about running your chapter. Isa searches approved guidance, shows sources, and hands off when a person is needed.</p>
+    <div class="btns">
+      <button class="btn" onclick="go('knowledge')">Open workspace</button>
+      <button class="btn ghost" onclick="go('analytics')">View analytics</button>
+      <button class="btn ghost" onclick="document.getElementById('fab').click()">Ask Isa</button>
+    </div>
+  </div>
+  <h2 class="sec">How Isa answers</h2>
+  <div class="steps">
+    <div class="step"><div class="n">1</div><h3>SEARCHES APPROVED CONTENT</h3><p>Only approved chapter leader documents—not the open internet.</p></div>
+    <div class="step"><div class="n">2</div><h3>SHOWS ITS SOURCES</h3><p>Each answer lists document and section so you can verify.</p></div>
+    <div class="step"><div class="n">3</div><h3>HANDS OFF WHEN NEEDED</h3><p>Sensitive topics get a reference number for follow-up.</p></div>
+  </div>
+  <h2 class="sec section-gap">Questions to try</h2>
+  <div class="q" onclick="ask('How many board meetings must a chapter hold each year?')">How many board meetings must a chapter hold each year?</div>
+  <div class="q" onclick="ask('How many educational events must a chapter hold?')">How many educational events must a chapter hold?</div>
+  <div class="q" onclick="ask('Who writes down what the board decided?')">Who writes down what the board decided?</div>
+</section>
+
+<section class="page" id="page-knowledge">
+  <div class="page-head">
+    <p class="eyebrow">RESOURCES</p>
+    <h1>Knowledge base</h1>
+    <p class="intro">Approved chapter guidance and sample articles.</p>
+  </div>
+  <div class="notice">Sample catalog for demonstration. Connect approved content for production use.</div>
+  <div class="grid" id="kb-grid"></div>
+</section>
+
+<section class="page" id="page-analytics">
+  <div class="page-head">
+    <p class="eyebrow">INTELLIGENCE</p>
+    <h1>Analytics</h1>
+    <p class="intro">Simple overview of usage and resolution.</p>
+  </div>
+  <div class="notice">Illustrative figures only.</div>
+  <div class="stats">
+    <div class="stat"><label>Questions</label><strong>1,248</strong><small>+12% vs prior</small></div>
+    <div class="stat"><label>Self-service</label><strong>76%</strong><small>Target 80%</small></div>
+    <div class="stat"><label>Open escalations</label><strong>3</strong><small>Need attention</small></div>
+  </div>
+  <div class="panel">
+    <h2>Self-service rate</h2>
+    <div style="font-size:1.75rem;font-weight:700;color:var(--navy);margin:.4rem 0">76%</div>
+    <div class="bar"><i style="width:76%"></i></div>
+    <small style="color:var(--muted)">Goal 80%</small>
+  </div>
+</section>
+
+<section class="page" id="page-events">
+  <div class="page-head">
+    <p class="eyebrow">PROGRAMS</p>
+    <h1>Events</h1>
+    <p class="intro">Upcoming chapter events.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Board meeting</h3><p>Monthly governance · Hybrid</p><span class="tag">Nov 5 · Confirmed</span></div>
+    <div class="card"><h3>CPE webinar</h3><p>AI governance · Virtual</p><span class="tag">Nov 18 · Planning</span></div>
+    <div class="card"><h3>Membership social</h3><p>Networking · In person</p><span class="tag">Dec 3 · Draft</span></div>
+  </div>
+</section>
+
+<section class="page" id="page-escalations">
+  <div class="page-head">
+    <p class="eyebrow">SUPPORT</p>
+    <h1>Escalations</h1>
+    <p class="intro">Hand-offs that need a person.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><label>Open</label><strong>5</strong></div>
+    <div class="stat"><label>In progress</label><strong>3</strong></div>
+    <div class="stat"><label>Resolved</label><strong>12</strong></div>
+  </div>
+  <div class="panel">
+    <table>
+      <thead><tr><th>Ref</th><th>Topic</th><th>Priority</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>ESC-1042</td><td>Phishing guidance</td><td><span class="badge red">High</span></td><td>Open</td></tr>
+        <tr><td>ESC-1038</td><td>Budget submission</td><td><span class="badge amber">Medium</span></td><td>In progress</td></tr>
+        <tr><td>ESC-1031</td><td>Board quorum</td><td><span class="badge blue">Low</span></td><td>Resolved</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="page" id="page-governance">
+  <div class="page-head">
+    <p class="eyebrow">GOVERNANCE</p>
+    <h1>Governance</h1>
+    <p class="intro">Policy register and review status.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Chapter bylaws</h3><p>Last review Aug 2026</p><span class="tag">Current</span></div>
+    <div class="card"><h3>Conflict of interest</h3><p>Review due Q1</p><span class="tag">Due soon</span></div>
+    <div class="card"><h3>Financial controls</h3><p>Compliance aligned</p><span class="tag">Current</span></div>
+  </div>
+</section>
+
+<section class="page" id="page-risk">
+  <div class="page-head">
+    <p class="eyebrow">RISK</p>
+    <h1>Risk management</h1>
+    <p class="intro">Residual risk overview.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><label>High residual</label><strong>2</strong></div>
+    <div class="stat"><label>Control effectiveness</label><strong>71%</strong></div>
+    <div class="stat"><label>Open findings</label><strong>4</strong></div>
+  </div>
+  <div class="panel">
+    <h2>Sample heatmap</h2>
+    <div class="heatmap" id="heat"></div>
+  </div>
+</section>
+
+<section class="page" id="page-compliance">
+  <div class="page-head">
+    <p class="eyebrow">TRUST</p>
+    <h1>Compliance</h1>
+    <p class="intro">Obligations and evidence status.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><label>Compliant</label><strong>72%</strong></div>
+    <div class="stat"><label>Partial</label><strong>18%</strong></div>
+    <div class="stat"><label>Gaps</label><strong>10%</strong></div>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Annual compliance framework</h3><p>On-track sample mapping</p><span class="tag">On track</span></div>
+    <div class="card"><h3>Evidence locker</h3><p>Sample evidence links</p><span class="tag">Demo</span></div>
+  </div>
+</section>
+
+<section class="page" id="page-audit">
+  <div class="page-head">
+    <p class="eyebrow">ASSURANCE</p>
+    <h1>Audit</h1>
+    <p class="intro">Findings and follow-ups.</p>
+  </div>
+  <div class="notice">Sample records for demonstration only.</div>
+  <div class="stats">
+    <div class="stat"><label>Active audits</label><strong>4</strong></div>
+    <div class="stat"><label>Open findings</label><strong>11</strong></div>
+  </div>
+  <div class="panel">
+    <table>
+      <thead><tr><th>Finding</th><th>Severity</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>Access review incomplete</td><td><span class="badge red">High</span></td><td>Open</td></tr>
+        <tr><td>Training evidence lag</td><td><span class="badge amber">Medium</span></td><td>In progress</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="page" id="page-incidents">
+  <div class="page-head">
+    <p class="eyebrow">OPERATIONS</p>
+    <h1>Incidents</h1>
+    <p class="intro">Recent incident log.</p>
+  </div>
+  <div class="stats">
+    <div class="stat"><label>This period</label><strong>4</strong></div>
+    <div class="stat"><label>High severity</label><strong>1</strong></div>
+    <div class="stat"><label>Mean contain</label><strong>4.2h</strong></div>
+  </div>
+  <div class="panel">
+    <table>
+      <thead><tr><th>ID</th><th>Title</th><th>Severity</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td>INC-19</td><td>Phishing campaign</td><td><span class="badge red">High</span></td><td>Contained</td></tr>
+        <tr><td>INC-18</td><td>Form spam</td><td><span class="badge blue">Low</span></td><td>Closed</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<section class="page" id="page-reports">
+  <div class="page-head">
+    <p class="eyebrow">INTELLIGENCE</p>
+    <h1>Reports</h1>
+    <p class="intro">Management report catalogue.</p>
+  </div>
+  <div class="grid">
+    <div class="card"><h3>Content health</h3><p>Coverage and freshness</p><span class="tag">Oct 2026</span></div>
+    <div class="card"><h3>Risk & control</h3><p>Residual risks summary</p><span class="tag">Governance</span></div>
+    <div class="card"><h3>Incident trends</h3><p>Volume and contain time</p><span class="tag">Operations</span></div>
+  </div>
+</section>
+
+<section class="page" id="page-translator">
+  <div class="page-head">
+    <p class="eyebrow">LANGUAGE</p>
+    <h1>Translator</h1>
+    <p class="intro">Simple demo translation.</p>
+  </div>
+  <div class="two">
+    <div class="panel">
+      <h2>English</h2>
+      <textarea id="tr-src" style="width:100%;min-height:100px;border:1px solid var(--line);border-radius:12px;padding:.75rem;font:inherit;background:#fafbfc">Chapters should hold at least four board meetings each year.</textarea>
+      <div class="btns" style="margin-top:.75rem"><button class="btn soft" onclick="translateDemo()">Translate</button></div>
+    </div>
+    <div class="panel">
+      <h2>Result</h2>
+      <div id="tr-out" style="min-height:100px;padding:.75rem;background:#f7f8fa;border-radius:12px;color:var(--muted)">Run translate for a sample.</div>
+    </div>
+  </div>
+</section>
+
+<section class="page" id="page-clock">
+  <div class="page-head">
+    <p class="eyebrow">GLOBAL</p>
+    <h1>World clock</h1>
+    <p class="intro">Chapter time zones — clocks only.</p>
+  </div>
+  <div class="clock-grid" id="clocks"></div>
+</section>
+
+<section class="page" id="page-signin">
+  <div style="max-width:380px;margin:2.5rem auto;background:#fff;border:1px solid var(--line);border-radius:20px;padding:2rem">
+    <div style="text-align:center;margin-bottom:1.5rem">
+      <div class="brand-c" style="margin:0 auto .6rem">C</div>
+      <h1>Sign in</h1>
+      <p style="color:var(--muted);font-size:.9rem">Isa Chapter Support</p>
+    </div>
+    <label style="font-size:.85rem;font-weight:600;color:var(--muted)">Email</label>
+    <input style="width:100%;margin:.4rem 0 1rem;padding:.65rem .85rem;border-radius:12px;border:1px solid var(--line);background:#fafbfc" value="dev@example.com"/>
+    <label style="font-size:.85rem;font-weight:600;color:var(--muted)">Password</label>
+    <input type="password" style="width:100%;margin:.4rem 0 1.25rem;padding:.65rem .85rem;border-radius:12px;border:1px solid var(--line);background:#fafbfc" value="demo"/>
+    <button class="btn" style="width:100%;justify-content:center" onclick="go('knowledge')">Sign in (demo)</button>
+    <p style="margin-top:1rem;font-size:.8rem;color:var(--faint);text-align:center">Demo only — no real login.</p>
+  </div>
+</section>
+
+</div>
+</div>
+</div>
+
+<button class="fab" id="fab" title="Ask Isa"><div class="ring"></div><span>Isa</span></button>
+<div class="chat" id="chat">
+  <div class="chat-h"><div class="c">C</div><strong>Isa</strong><button type="button" id="chat-x">×</button></div>
+  <div class="chat-msgs" id="msgs">
+    <div class="msg bot"><div class="meta">Isa</div>Hi — ask about chapter guidance. This is a light demo with sample answers.</div>
+  </div>
+  <div class="chat-in">
+    <input id="qin" placeholder="Ask Isa…"/>
+    <button type="button" id="send">→</button>
+  </div>
+</div>
+
+<script>
+const pages=['home','knowledge','analytics','events','escalations','governance','risk','compliance','audit','incidents','reports','translator','clock','signin'];
+function go(id){
+  pages.forEach(p=>document.getElementById('page-'+p)?.classList.toggle('active',p===id));
+  document.querySelectorAll('#nav a').forEach(a=>a.classList.toggle('active',a.dataset.page===id));
+  history.replaceState(null,'','#'+id);
+  window.scrollTo(0,0);
+}
+document.querySelectorAll('#nav a').forEach(a=>a.addEventListener('click',e=>{e.preventDefault();go(a.dataset.page)}));
+window.addEventListener('hashchange',()=>{const id=(location.hash||'#home').slice(1);if(pages.includes(id))go(id)});
+if(location.hash) go(location.hash.slice(1));
+
+document.getElementById('kb-grid').innerHTML=[
+  ['Chapter Leader Guidebook','President guidance · Aug 2026','Guide'],
+  ['Annual Compliance Framework','Obligations and reporting','Framework'],
+  ['Common Tasks Guide','Navigation for leaders','Guide'],
+  ['Core Leader Roles','Responsibilities by office','Roles'],
+  ['Chapter Systems Overview','Tools and platforms','Systems'],
+  ['Event Planning Toolkit','Templates and checklists','Template']
+].map(([t,d,tag])=>`<div class="card"><h3>${t}</h3><p>${d}</p><span class="tag">${tag}</span></div>`).join('');
+
+const colors=['#6cb33f','#a3d977','#e5c76b','#e57524','#e57373'];
+const heat=document.getElementById('heat');
+if(heat){for(let i=0;i<25;i++){const s=document.createElement('span');s.style.background=colors[i%5];s.textContent=['VL','L','M','H','VH'][i%5];heat.appendChild(s)}}
+
+const cities=[['New York','America/New_York'],['London','Europe/London'],['Dubai','Asia/Dubai'],['Singapore','Asia/Singapore'],['Tokyo','Asia/Tokyo'],['Sydney','Australia/Sydney'],['Chicago','America/Chicago'],['Berlin','Europe/Berlin']];
+function tickClocks(){
+  const el=document.getElementById('clocks'); if(!el) return;
+  el.innerHTML=cities.map(([city,tz])=>{
+    const now=new Date();
+    const time=now.toLocaleTimeString('en-US',{timeZone:tz,hour:'numeric',minute:'2-digit'});
+    const date=now.toLocaleDateString('en-US',{timeZone:tz,weekday:'short',month:'short',day:'numeric'});
+    return `<div class="clock"><div class="city">${city}</div><div class="time">${time}</div><div class="zone">${date}</div></div>`;
+  }).join('');
+}
+tickClocks(); setInterval(tickClocks,1000);
+
+function translateDemo(){
+  document.getElementById('tr-out').innerHTML='<span style="color:var(--navy)">Los capítulos deben celebrar al menos cuatro reuniones de la junta cada año.</span>';
+}
+
+const fab=document.getElementById('fab'), chat=document.getElementById('chat'), msgs=document.getElementById('msgs');
+fab.onclick=()=>chat.classList.toggle('open');
+document.getElementById('chat-x').onclick=()=>chat.classList.remove('open');
+const answers={
+  board:'Chapters should hold a <strong>minimum of four board meetings</strong> each year.<div class="src">📄 Chapter Leader Guidebook</div>',
+  educational:'Plan multiple <strong>educational events</strong> annually for CPE and member value.<div class="src">📄 Common Tasks Guide</div>',
+  decided:'The <strong>secretary</strong> records board decisions in the minutes.<div class="src">📄 Core Leader Roles</div>',
+  paperwork:'Follow the <strong>Annual Chapter Compliance Framework</strong> deadlines.<div class="src">📄 Compliance Framework</div>'
+};
+function botReply(q){
+  const low=q.toLowerCase();
+  for(const[k,v] of Object.entries(answers)) if(low.includes(k)) return v;
+  return 'Sample demo answer. Use the full .NET app for live pipeline / Ollama replies.';
+}
+function addMsg(html,who){
+  const d=document.createElement('div'); d.className='msg '+who;
+  d.innerHTML=who==='bot'?'<div class="meta">Isa</div>'+html:html;
+  msgs.appendChild(d); msgs.scrollTop=msgs.scrollHeight;
+}
+function send(){
+  const inp=document.getElementById('qin'); const t=inp.value.trim(); if(!t) return;
+  addMsg(t,'user'); inp.value='';
+  setTimeout(()=>addMsg(botReply(t),'bot'),350);
+}
+function ask(q){ chat.classList.add('open'); document.getElementById('qin').value=q; send(); }
+document.getElementById('send').onclick=send;
+document.getElementById('qin').addEventListener('keydown',e=>{if(e.key==='Enter')send()});
+</script>
+</body>
+</html>
