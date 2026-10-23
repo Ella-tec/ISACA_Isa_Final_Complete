@@ -140,13 +140,20 @@
 @code {
     [CascadingParameter] private Task<AuthenticationState>? AuthState { get; set; }
 
+    private bool _redirecting;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender || AuthState is null) return;
+        // Do not depend on firstRender: the cascading authentication state can
+        // finish resolving after the initial interactive render.
+        if (_redirecting || AuthState is null)
+            return;
+
         var state = await AuthState;
         if (state.User.Identity?.IsAuthenticated == true)
         {
-            Nav.NavigateTo("/knowledge-base");
+            _redirecting = true;
+            Nav.NavigateTo("/knowledge-base", forceLoad: true);
         }
     }
 }
