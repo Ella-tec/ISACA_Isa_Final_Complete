@@ -1,0 +1,180 @@
+@page "/audit-management"
+@rendermode InteractiveServer
+<PageTitle>Audit Management | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">ASSURANCE</p>
+            <h1>Audit management</h1>
+            <p class="isa-intro">Audit plans, findings, testing, recommendations, and follow-ups.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">Sample audit records for demonstration only. Not linked to formal internal or external audits.</div>
+
+    <div class="isa-stat-grid">
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon blue">▤</span>
+            <span class="isa-stat-label">Active audits</span>
+            <strong>@Audits.Count(a => a.Status != "Closed")</strong>
+            <small>In progress or planned</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon orange">!</span>
+            <span class="isa-stat-label">Open findings</span>
+            <strong>@Findings.Count(f => f.Status != "Closed")</strong>
+            <small>Awaiting remediation</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon red">↑</span>
+            <span class="isa-stat-label">Overdue actions</span>
+            <strong>@Findings.Count(f => f.Status == "Overdue")</strong>
+            <small>Past target date</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon green">✓</span>
+            <span class="isa-stat-label">Closed this year</span>
+            <strong>@Findings.Count(f => f.Status == "Closed")</strong>
+            <small>Sample period</small>
+        </article>
+    </div>
+
+    <div class="isa-tabs">
+        <button type="button" class="isa-tab @(Tab == "plans" ? "is-active" : "")" @onclick='() => Tab = "plans"'>Audit plans</button>
+        <button type="button" class="isa-tab @(Tab == "findings" ? "is-active" : "")" @onclick='() => Tab = "findings"'>Findings & follow-ups</button>
+    </div>
+
+    @if (Tab == "plans")
+    {
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Audit plan register</h2><p>Planned and in-flight engagements</p></div>
+                <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search audits..." />
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Engagement</th>
+                            <th>Scope</th>
+                            <th>Lead</th>
+                            <th>Period</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var a in FilteredAudits)
+                        {
+                            <tr>
+                                <td><strong>@a.Title</strong></td>
+                                <td><div class="isa-table-sub">@a.Scope</div></td>
+                                <td>@a.Lead</td>
+                                <td>@a.Period</td>
+                                <td>
+                                    <span class="isa-badge @(a.Status == "In progress" ? "isa-badge--blue" : a.Status == "Planned" ? "isa-badge--gray" : "isa-badge--green")">
+                                        @a.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    }
+    else
+    {
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Findings & recommendations</h2><p>Update status to simulate follow-up workflow</p></div>
+                <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search findings..." />
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Finding</th>
+                            <th>Severity</th>
+                            <th>Owner</th>
+                            <th>Target</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var f in FilteredFindings)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@f.Title</strong>
+                                    <div class="isa-table-sub">@f.Recommendation</div>
+                                </td>
+                                <td>
+                                    <span class="isa-badge @(f.Severity == "High" ? "isa-badge--red" : f.Severity == "Medium" ? "isa-badge--orange" : "isa-badge--blue")">
+                                        @f.Severity
+                                    </span>
+                                </td>
+                                <td>@f.Owner</td>
+                                <td>@f.Target</td>
+                                <td>
+                                    <InputSelect class="form-select isa-status-select" @bind-Value="f.Status">
+                                        <option>Open</option>
+                                        <option>In progress</option>
+                                        <option>Overdue</option>
+                                        <option>Closed</option>
+                                    </InputSelect>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+    }
+</section>
+
+@code {
+    private string Tab = "plans";
+    private string Filter = "";
+
+    private List<AuditItem> Audits = new()
+    {
+        new() { Title = "Chapter financial controls review", Scope = "Payments, dual authorization, bank reconciliations", Lead = "External reviewer", Period = "Q4 2026", Status = "Planned" },
+        new() { Title = "Membership data handling", Scope = "Access, retention, export controls", Lead = "Governance lead", Period = "Q3 2026", Status = "In progress" },
+        new() { Title = "Event CPE process audit", Scope = "Reporting accuracy and timeliness", Lead = "Internal volunteer", Period = "Q2 2026", Status = "Closed" }
+    };
+
+    private List<FindingItem> Findings = new()
+    {
+        new() { Title = "Missing secondary approval on one payment", Recommendation = "Enforce dual sign-off threshold in banking portal.", Severity = "Medium", Owner = "Treasurer", Target = "Nov 2026", Status = "In progress" },
+        new() { Title = "Access review not performed in 12 months", Recommendation = "Complete role attestation and revoke unused accounts.", Severity = "High", Owner = "IT lead", Target = "Oct 2026", Status = "Overdue" },
+        new() { Title = "CPE hours misreported for one event", Recommendation = "Reconcile attendance vs. submitted hours; retrain coordinator.", Severity = "Low", Owner = "Events chair", Target = "Sep 2026", Status = "Closed" },
+        new() { Title = "Backup restore not tested this year", Recommendation = "Schedule and document a full restore test.", Severity = "Medium", Owner = "IT lead", Target = "Dec 2026", Status = "Open" }
+    };
+
+    private IEnumerable<AuditItem> FilteredAudits => Audits.Where(a =>
+        string.IsNullOrWhiteSpace(Filter) || (a.Title + a.Scope + a.Lead + a.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private IEnumerable<FindingItem> FilteredFindings => Findings.Where(f =>
+        string.IsNullOrWhiteSpace(Filter) || (f.Title + f.Recommendation + f.Owner + f.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private sealed class AuditItem
+    {
+        public string Title { get; set; } = "";
+        public string Scope { get; set; } = "";
+        public string Lead { get; set; } = "";
+        public string Period { get; set; } = "";
+        public string Status { get; set; } = "";
+    }
+
+    private sealed class FindingItem
+    {
+        public string Title { get; set; } = "";
+        public string Recommendation { get; set; } = "";
+        public string Severity { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public string Target { get; set; } = "";
+        public string Status { get; set; } = "Open";
+    }
+}

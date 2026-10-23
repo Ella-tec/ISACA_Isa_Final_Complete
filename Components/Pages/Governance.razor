@@ -1,0 +1,145 @@
+@page "/governance"
+@rendermode InteractiveServer
+<PageTitle>Governance & Policies | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">TRUST & COMPLIANCE</p>
+            <h1>Governance & policies</h1>
+            <p class="isa-intro">Review policy records, ownership, approval status, and the review calendar.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">The policies below are sample workflow records, not official ISACA policy statements. Confirm the approved source before relying on policy content.</div>
+
+    <div class="isa-hero-strip">
+        <div><span>Policy records</span><strong>@Policies.Count</strong><small>In register</small></div>
+        <div><span>Approved</span><strong>@Policies.Count(p => p.Status == "Approved")</strong><small>Current</small></div>
+        <div><span>Needs review</span><strong>@Policies.Count(p => p.Status != "Approved")</strong><small>Action required</small></div>
+        <div><span>Next review due</span><strong>Nov 2026</strong><small>Earliest date</small></div>
+    </div>
+
+    <div class="isa-content-grid">
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Policy register</h2><p>Filter and update status</p></div>
+                <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search policies..." />
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Policy / record</th>
+                            <th>Owner</th>
+                            <th>Last reviewed</th>
+                            <th>Next review</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var policy in FilteredPolicies)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@policy.Title</strong>
+                                    <div class="isa-table-sub">@policy.Description</div>
+                                </td>
+                                <td>@policy.Owner</td>
+                                <td>@policy.LastReviewed</td>
+                                <td>@policy.NextReview</td>
+                                <td>
+                                    <InputSelect class="form-select isa-status-select" @bind-Value="policy.Status">
+                                        <option>Draft</option>
+                                        <option>In review</option>
+                                        <option>Approved</option>
+                                        <option>Expired</option>
+                                    </InputSelect>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <div style="display:flex;flex-direction:column;gap:1.25rem">
+            <article class="isa-panel">
+                <h2>Suggested review checklist</h2>
+                <div class="isa-checklist" style="margin-top:.75rem">
+                    @foreach (var item in Checklist)
+                    {
+                        <label class="isa-check-row">
+                            <InputCheckbox @bind-Value="item.Done" />
+                            <span>@item.Text</span>
+                        </label>
+                    }
+                </div>
+                <p class="isa-muted small" style="margin-top:.6rem">Checklist selections are temporary and reset when the app restarts.</p>
+            </article>
+
+            <article class="isa-panel">
+                <h2>Review calendar</h2>
+                <div class="isa-timeline" style="margin-top:.75rem">
+                    @foreach (var c in Calendar)
+                    {
+                        <div class="isa-timeline-item">
+                            <strong>@c.Title</strong>
+                            <span>@c.Date · @c.Owner</span>
+                        </div>
+                    }
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
+
+@code {
+    private string Filter = "";
+    private List<Policy> Policies = new()
+    {
+        new() { Title = "Knowledge content approval", Description = "Review process for articles and AI-retrieved content.", Owner = "Content team", LastReviewed = "Oct 2026", NextReview = "Jan 2027", Status = "In review" },
+        new() { Title = "Support escalation procedure", Description = "When and how unanswered questions are escalated.", Owner = "Chapter operations", LastReviewed = "Sep 2026", NextReview = "Dec 2026", Status = "Approved" },
+        new() { Title = "AI answer quality review", Description = "Sample checks for accuracy, sources, and safe responses.", Owner = "AI project team", LastReviewed = "Oct 2026", NextReview = "Dec 2026", Status = "Draft" },
+        new() { Title = "Access and role management", Description = "Access review and least-privilege role assignment.", Owner = "Administrator", LastReviewed = "Aug 2026", NextReview = "Nov 2026", Status = "Approved" },
+        new() { Title = "Chapter communications standard", Description = "Tone, branding, and approval for member emails.", Owner = "Secretary", LastReviewed = "Jul 2026", NextReview = "Jan 2027", Status = "Approved" }
+    };
+
+    private IEnumerable<Policy> FilteredPolicies => Policies.Where(p =>
+        string.IsNullOrWhiteSpace(Filter) ||
+        (p.Title + p.Description + p.Owner + p.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
+
+    private List<CheckItem> Checklist = new()
+    {
+        new() { Text = "Confirm the source is authoritative" },
+        new() { Text = "Assign a policy owner" },
+        new() { Text = "Record approval and review dates" },
+        new() { Text = "Check links and references" },
+        new() { Text = "Schedule the next review" }
+    };
+
+    private readonly (string Title, string Date, string Owner)[] Calendar =
+    {
+        ("Access and role management", "Nov 2026", "Administrator"),
+        ("Support escalation procedure", "Dec 2026", "Chapter operations"),
+        ("AI answer quality review", "Dec 2026", "AI project team"),
+        ("Knowledge content approval", "Jan 2027", "Content team")
+    };
+
+    private sealed class Policy
+    {
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public string LastReviewed { get; set; } = "";
+        public string NextReview { get; set; } = "";
+        public string Status { get; set; } = "Draft";
+    }
+
+    private sealed class CheckItem
+    {
+        public string Text { get; set; } = "";
+        public bool Done { get; set; }
+    }
+}

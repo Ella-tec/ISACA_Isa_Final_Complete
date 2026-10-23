@@ -1,0 +1,139 @@
+@page "/analytics"
+@rendermode InteractiveServer
+<PageTitle>Analytics | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">INTELLIGENCE</p>
+            <h1>Analytics overview</h1>
+            <p class="isa-intro">Understand how your chapter support workspace is being used — trends, resolution rates, and escalation health.</p>
+        </div>
+        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
+            <span class="isa-pill">Sample dashboard</span>
+            <InputSelect class="form-select isa-status-select" @bind-Value="Period" style="min-width:130px">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+            </InputSelect>
+        </div>
+    </div>
+
+    <div class="isa-notice">These are illustrative sample figures. Connect approved analytics data before using them for reporting or decisions.</div>
+
+    <div class="isa-hero-strip">
+        <div><span>Questions received</span><strong>@QuestionsTotal.ToString("N0")</strong><small>@Period</small></div>
+        <div><span>Self-service rate</span><strong>@SelfService%</strong><small>Target 80%</small></div>
+        <div><span>Avg response time</span><strong>@AvgResponse</strong><small>Illustrative</small></div>
+        <div><span>Open escalations</span><strong>@OpenTickets</strong><small>Need attention</small></div>
+    </div>
+
+    <div class="isa-content-grid">
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Self-service resolution</h2><p>Resolved without chapter team assistance</p></div>
+                <div class="isa-ring" style="--pct:@SelfService" data-label="@SelfService%"></div>
+            </div>
+            <div class="isa-progress"><span style="width:@($"{SelfService}%")"></span></div>
+            <div class="isa-panel-foot"><span>Current: @SelfService%</span><span>Goal: 80%</span></div>
+            <h3 class="isa-subheading">Recommended actions</h3>
+            <ul class="isa-action-list">
+                <li>Review unanswered questions weekly</li>
+                <li>Add missing approved documentation</li>
+                <li>Improve search terms and article titles</li>
+            </ul>
+        </article>
+
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Question volume trend</h2><p>Daily volume (sample)</p></div>
+            </div>
+            <div class="isa-spark">
+                @foreach (var h in SparkHeights)
+                {
+                    <span style="height:@($"{h}%")" title="@h%"></span>
+                }
+            </div>
+            <div class="isa-panel-foot"><span>Mon</span><span>→</span><span>Sun</span></div>
+            <h3 class="isa-subheading">Question categories</h3>
+            @foreach (var item in Categories)
+            {
+                <div class="isa-category-row">
+                    <div><span>@item.Name</span><strong>@item.Percent%</strong></div>
+                    <div class="isa-progress"><span style="width:@($"{item.Percent}%")"></span></div>
+                </div>
+            }
+        </article>
+    </div>
+
+    <div class="isa-content-grid" style="margin-top:1.25rem">
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Top search topics</h2><p>Most frequent member questions</p></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead><tr><th>Topic</th><th>Count</th><th>Trend</th></tr></thead>
+                    <tbody>
+                        @foreach (var t in TopTopics)
+                        {
+                            <tr>
+                                <td><strong>@t.Topic</strong></td>
+                                <td>@t.Count</td>
+                                <td><span class="isa-badge @(t.Trend.StartsWith("+") ? "isa-badge--green" : "isa-badge--orange")">@t.Trend</span></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Activity timeline</h2><p>Recent workspace activity</p></div>
+            </div>
+            <div class="isa-timeline">
+                @foreach (var a in Activity)
+                {
+                    <div class="isa-timeline-item">
+                        <strong>@a.Title</strong>
+                        <span>@a.When · @a.Detail</span>
+                    </div>
+                }
+            </div>
+        </article>
+    </div>
+</section>
+
+@code {
+    private string Period = "Last 30 days";
+    private int OpenTickets = 3;
+    private int SelfService => Period switch { "Last 7 days" => 79, "Last 90 days" => 74, _ => 76 };
+    private int QuestionsTotal => Period switch { "Last 7 days" => 312, "Last 90 days" => 3480, _ => 1248 };
+    private string AvgResponse => Period switch { "Last 7 days" => "2.1s", "Last 90 days" => "2.6s", _ => "2.4s" };
+
+    private readonly int[] SparkHeights = { 40, 55, 48, 72, 65, 80, 58 };
+
+    private readonly (string Name, int Percent)[] Categories =
+    {
+        ("Membership", 34), ("Events", 26), ("Certifications", 22), ("Technology", 18)
+    };
+
+    private readonly (string Topic, int Count, string Trend)[] TopTopics =
+    {
+        ("Membership renewal", 186, "+12%"),
+        ("Event registration", 142, "+8%"),
+        ("CPE credit questions", 98, "-3%"),
+        ("Board role duties", 71, "+5%"),
+        ("Portal access issues", 54, "+15%")
+    };
+
+    private readonly (string Title, string When, string Detail)[] Activity =
+    {
+        ("Spike in membership questions", "2h ago", "Renewal season pattern"),
+        ("New knowledge article published", "Yesterday", "Event planning checklist"),
+        ("Escalation ISA-1023 updated", "Yesterday", "Status → In progress"),
+        ("Content health score improved", "3 days ago", "84 → 87"),
+        ("Weekly analytics digest sent", "5 days ago", "Board distribution list")
+    };
+}

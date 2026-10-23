@@ -1,0 +1,150 @@
+@page "/world-clock"
+@rendermode InteractiveServer
+@implements IDisposable
+
+<PageTitle>World clock & news | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">GLOBAL</p>
+            <h1>World clock & news</h1>
+            <p class="isa-intro">Chapter leaders work across time zones. Clocks update every second. News headlines are sample international items for demo context.</p>
+        </div>
+        <span class="isa-pill">Live clocks</span>
+    </div>
+
+    <div class="isa-notice">News items are illustrative samples, not a live feed. Connect a news API for production use.</div>
+
+    <div class="wc-grid">
+        @foreach (var c in Clocks)
+        {
+            <article class="wc-card">
+                <span class="wc-city">@c.City</span>
+                <strong class="wc-time">@c.Time</strong>
+                <span class="wc-date">@c.Date</span>
+                <span class="wc-zone">@c.ZoneLabel</span>
+            </article>
+        }
+    </div>
+
+    <article class="isa-panel" style="margin-top:1.5rem">
+        <div class="isa-panel-heading">
+            <div>
+                <h2>International headlines</h2>
+                <p>Sample digest for chapter leaders</p>
+            </div>
+        </div>
+        <ul class="wc-news">
+            @foreach (var n in News)
+            {
+                <li>
+                    <span class="wc-news-region">@n.Region</span>
+                    <strong>@n.Title</strong>
+                    <small>@n.Summary</small>
+                </li>
+            }
+        </ul>
+    </article>
+</section>
+
+@code {
+    private readonly List<ClockItem> Clocks = new();
+    private System.Threading.Timer? _timer;
+
+    private readonly (string Region, string Title, string Summary)[] News =
+    {
+        ("Americas", "Chapter leaders prepare Q4 compliance packets", "Boards review annual filings and officer transition checklists."),
+        ("Europe", "CPE reporting windows open for autumn events", "Event chairs confirm attendance logs before year-end close."),
+        ("Asia-Pacific", "New chapter systems overview circulated", "Leaders are asked to update local access and role assignments."),
+        ("Middle East & Africa", "Governance workshops scheduled online", "Virtual sessions cover policy registers and audit follow-ups."),
+        ("Global", "ISACA guidance emphasizes source-backed answers", "Assistants and portals are expected to show document references.")
+    };
+
+    protected override void OnInitialized()
+    {
+        Tick(null);
+        _timer = new System.Threading.Timer(Tick, null, 1000, 1000);
+    }
+
+    private void Tick(object? _)
+    {
+        var specs = new (string City, string Tz, string Label)[]
+        {
+            ("UTC", "UTC", "Coordinated Universal Time"),
+            ("New York", "America/New_York", "Eastern Time"),
+            ("Chicago", "America/Chicago", "Central Time"),
+            ("London", "Europe/London", "UK"),
+            ("Berlin", "Europe/Berlin", "Central Europe"),
+            ("Dubai", "Asia/Dubai", "Gulf"),
+            ("Mumbai", "Asia/Kolkata", "India"),
+            ("Singapore", "Asia/Singapore", "Singapore"),
+            ("Tokyo", "Asia/Tokyo", "Japan"),
+            ("Sydney", "Australia/Sydney", "Australia East"),
+        };
+
+        Clocks.Clear();
+        var now = DateTimeOffset.UtcNow;
+        foreach (var s in specs)
+        {
+            try
+            {
+                var tz = ResolveTz(s.Tz);
+                var local = TimeZoneInfo.ConvertTime(now, tz);
+                Clocks.Add(new ClockItem
+                {
+                    City = s.City,
+                    Time = local.ToString("HH:mm:ss"),
+                    Date = local.ToString("ddd, dd MMM yyyy"),
+                    ZoneLabel = s.Label
+                });
+            }
+            catch
+            {
+                Clocks.Add(new ClockItem
+                {
+                    City = s.City,
+                    Time = now.ToString("HH:mm:ss") + " UTC",
+                    Date = now.ToString("ddd, dd MMM yyyy"),
+                    ZoneLabel = s.Label + " (fallback)"
+                });
+            }
+        }
+
+        _ = InvokeAsync(StateHasChanged);
+    }
+
+    private static TimeZoneInfo ResolveTz(string iana)
+    {
+        var windows = iana switch
+        {
+            "UTC" => "UTC",
+            "America/New_York" => "Eastern Standard Time",
+            "America/Chicago" => "Central Standard Time",
+            "Europe/London" => "GMT Standard Time",
+            "Europe/Berlin" => "W. Europe Standard Time",
+            "Asia/Dubai" => "Arabian Standard Time",
+            "Asia/Kolkata" => "India Standard Time",
+            "Asia/Singapore" => "Singapore Standard Time",
+            "Asia/Tokyo" => "Tokyo Standard Time",
+            "Australia/Sydney" => "AUS Eastern Standard Time",
+            _ => "UTC"
+        };
+        foreach (var id in new[] { iana, windows, "UTC" })
+        {
+            try { return TimeZoneInfo.FindSystemTimeZoneById(id); }
+            catch { /* try next */ }
+        }
+        return TimeZoneInfo.Utc;
+    }
+
+    public void Dispose() => _timer?.Dispose();
+
+    private sealed class ClockItem
+    {
+        public string City { get; set; } = "";
+        public string Time { get; set; } = "";
+        public string Date { get; set; } = "";
+        public string ZoneLabel { get; set; } = "";
+    }
+}
