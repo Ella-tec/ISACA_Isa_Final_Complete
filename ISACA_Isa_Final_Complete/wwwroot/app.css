@@ -697,3 +697,52 @@ img, svg { max-width: 100%; }
 @media (prefers-reduced-motion: reduce) {
     *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
 }
+
+/* Workspace home and navigation finishing pass: keep links looking like controls. */
+.landing__btn,
+.landing__featureCard {
+    text-decoration: none !important;
+}
+.landing__btn {
+    min-height: 42px;
+    gap: .4rem;
+    transition: transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.landing__btn:hover,
+.landing__featureCard:hover {
+    transform: translateY(-1px);
+}
+.landing__featureCard {
+    min-height: 112px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: .25rem;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(19,31,66,.04);
+}
+.landing__featureCard:focus-visible,
+.landing__btn:focus-visible,
+.isa-nav__link:focus-visible {
+    outline: 3px solid #00a4e4;
+    outline-offset: 3px;
+}
+.isa-sidebar .isa-nav__link,
+.isa-sidebar .isa-nav__link:visited {
+    color: #dce6f4;
+    text-decoration: none;
+}
+.isa-sidebar .isa-nav__link:hover,
+.isa-sidebar .isa-nav__link.active {
+    color: #fff;
+    text-decoration: none;
+}
+@media (max-width: 700px) {
+    .landing__topbar { padding: .75rem 1rem; }
+    .landing__hero { padding: 2rem 1rem; }
+    .landing__section { padding: 1.75rem 1rem; }
+    .landing__ctaRow { align-items: stretch; }
+    .landing__ctaRow .landing__btn { width: 100%; }
+    .landing__featureGrid { grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); }
+}
+
