@@ -1,0 +1,165 @@
+@page "/compliance-center"
+@rendermode InteractiveServer
+<PageTitle>Compliance Center | Isa</PageTitle>
+
+<section class="isa-page">
+    <div class="isa-page-heading">
+        <div>
+            <p class="isa-eyebrow">TRUST & COMPLIANCE</p>
+            <h1>Compliance center</h1>
+            <p class="isa-intro">Framework mapping, compliance status, evidence, and gap analysis.</p>
+        </div>
+        <span class="isa-pill">Sample workspace</span>
+    </div>
+
+    <div class="isa-notice">Illustrative framework mapping. Confirm against official ISACA chapter compliance requirements before reporting.</div>
+
+    <div class="isa-stat-grid">
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon green">✓</span>
+            <span class="isa-stat-label">Compliant</span>
+            <strong>@Requirements.Count(r => r.Status == "Compliant")</strong>
+            <small>Requirements met</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon orange">!</span>
+            <span class="isa-stat-label">Partial</span>
+            <strong>@Requirements.Count(r => r.Status == "Partial")</strong>
+            <small>Gaps in progress</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon red">×</span>
+            <span class="isa-stat-label">Non-compliant</span>
+            <strong>@Requirements.Count(r => r.Status == "Non-compliant")</strong>
+            <small>Action required</small>
+        </article>
+        <article class="isa-stat-card">
+            <span class="isa-stat-icon blue">%</span>
+            <span class="isa-stat-label">Overall score</span>
+            <strong>@OverallPct%</strong>
+            <small>Weighted sample</small>
+        </article>
+    </div>
+
+    <div class="isa-tabs">
+        @foreach (var fw in Frameworks)
+        {
+            <button type="button" class="isa-tab @(ActiveFramework == fw ? "is-active" : "")" @onclick="() => ActiveFramework = fw">@fw</button>
+        }
+    </div>
+
+    <div class="isa-content-grid">
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>@ActiveFramework — requirements</h2><p>Status and owners</p></div>
+            </div>
+            <div class="table-responsive">
+                <table class="table align-middle mb-0">
+                    <thead>
+                        <tr>
+                            <th>Requirement</th>
+                            <th>Owner</th>
+                            <th>Due</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var r in Requirements.Where(x => x.Framework == ActiveFramework))
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@r.Title</strong>
+                                    <div class="isa-table-sub">@r.Description</div>
+                                </td>
+                                <td>@r.Owner</td>
+                                <td>@r.DueDate</td>
+                                <td>
+                                    <span class="isa-badge @(r.Status == "Compliant" ? "isa-badge--green" : r.Status == "Partial" ? "isa-badge--orange" : "isa-badge--red")">
+                                        @r.Status
+                                    </span>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </article>
+
+        <article class="isa-panel">
+            <div class="isa-panel-heading">
+                <div><h2>Gap analysis</h2><p>Open gaps for @ActiveFramework</p></div>
+            </div>
+            @foreach (var g in Gaps.Where(x => x.Framework == ActiveFramework))
+            {
+                <div style="margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid var(--isa-line)">
+                    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem">
+                        <strong style="font-size:.9rem">@g.Title</strong>
+                        <span class="isa-badge isa-badge--orange">@g.Priority</span>
+                    </div>
+                    <p class="isa-muted" style="margin:.35rem 0;font-size:.85rem">@g.Action</p>
+                    <small class="isa-muted">Owner: @g.Owner · Target: @g.Target</small>
+                </div>
+            }
+            @if (!Gaps.Any(x => x.Framework == ActiveFramework))
+            {
+                <p class="isa-muted">No open gaps for this framework in the sample set.</p>
+            }
+        </article>
+    </div>
+</section>
+
+@code {
+    private string ActiveFramework = "Chapter compliance";
+    private readonly string[] Frameworks = { "Chapter compliance", "Privacy", "Financial controls" };
+
+    private List<ReqItem> Requirements = new()
+    {
+        new() { Framework = "Chapter compliance", Title = "Annual compliance filing", Description = "Submit required chapter compliance package.", Owner = "President", DueDate = "Dec 2026", Status = "Partial" },
+        new() { Framework = "Chapter compliance", Title = "Officer roster update", Description = "Keep leadership roster current in portal.", Owner = "Secretary", DueDate = "Ongoing", Status = "Compliant" },
+        new() { Framework = "Chapter compliance", Title = "Bylaws alignment", Description = "Chapter bylaws consistent with model bylaws.", Owner = "Governance lead", DueDate = "Nov 2026", Status = "Compliant" },
+        new() { Framework = "Chapter compliance", Title = "Event reporting", Description = "Report CPE events within required window.", Owner = "Events chair", DueDate = "Ongoing", Status = "Partial" },
+        new() { Framework = "Privacy", Title = "Privacy notice published", Description = "Member-facing privacy notice available.", Owner = "Secretary", DueDate = "Oct 2026", Status = "Compliant" },
+        new() { Framework = "Privacy", Title = "Data subject request process", Description = "Documented process for access/deletion requests.", Owner = "Secretary", DueDate = "Nov 2026", Status = "Non-compliant" },
+        new() { Framework = "Financial controls", Title = "Dual authorization", Description = "Two-person approval for payments above threshold.", Owner = "Treasurer", DueDate = "Ongoing", Status = "Compliant" },
+        new() { Framework = "Financial controls", Title = "Annual financial review", Description = "Independent or internal review of accounts.", Owner = "Treasurer", DueDate = "Jan 2027", Status = "Partial" }
+    };
+
+    private List<GapItem> Gaps = new()
+    {
+        new() { Framework = "Chapter compliance", Title = "Compliance package incomplete", Action = "Collect remaining board minutes and financial summary.", Owner = "President", Target = "Nov 2026", Priority = "High" },
+        new() { Framework = "Chapter compliance", Title = "Event CPE lag", Action = "Backfill three unreported education sessions.", Owner = "Events chair", Target = "Oct 2026", Priority = "Medium" },
+        new() { Framework = "Privacy", Title = "No DSR workflow", Action = "Draft request intake form and SLA; train board.", Owner = "Secretary", Target = "Dec 2026", Priority = "High" },
+        new() { Framework = "Financial controls", Title = "Review not scheduled", Action = "Engage reviewer and set calendar date.", Owner = "Treasurer", Target = "Dec 2026", Priority = "Medium" }
+    };
+
+    private int OverallPct
+    {
+        get
+        {
+            var list = Requirements.Where(r => r.Framework == ActiveFramework).ToList();
+            if (list.Count == 0) return 0;
+            double score = list.Sum(r => r.Status == "Compliant" ? 1.0 : r.Status == "Partial" ? 0.5 : 0);
+            return (int)Math.Round(100 * score / list.Count);
+        }
+    }
+
+    private sealed class ReqItem
+    {
+        public string Framework { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Description { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public string DueDate { get; set; } = "";
+        public string Status { get; set; } = "";
+    }
+
+    private sealed class GapItem
+    {
+        public string Framework { get; set; } = "";
+        public string Title { get; set; } = "";
+        public string Action { get; set; } = "";
+        public string Owner { get; set; } = "";
+        public string Target { get; set; } = "";
+        public string Priority { get; set; } = "";
+    }
+}

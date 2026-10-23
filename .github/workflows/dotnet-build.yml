@@ -1,0 +1,28 @@
+name: Build IsaChatApp
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Install .NET 10 SDK
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: 10.0.x
+
+      - name: Restore dependencies
+        run: dotnet restore IsaChatApp.csproj
+        working-directory: ISACA_Isa_Final_Complete
+
+      - name: Build
+        run: dotnet build IsaChatApp.csproj --configuration Release --no-restore
+        working-directory: ISACA_Isa_Final_Complete
