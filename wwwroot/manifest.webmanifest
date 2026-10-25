@@ -1,25 +1,24 @@
-```json
 {
   "id": "/",
   "name": "Isa - ISACA Chapter Support Assistant",
   "short_name": "Isa",
-  "description": "ISACA Chapter Support Assistant",
+  "description": "ISACA Chapter Support Assistant — answers from approved chapter guidance, with the sources to prove it.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#6cb33f",
+  "background_color": "#1d2d5c",
+  "theme_color": "#1d2d5c",
   "icons": [
-    {
-      "src": "/favicon.png",
-      "sizes": "any",
-      "type": "image/png",
-      "purpose": "any"
-    },
     {
       "src": "/favicon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
+      "purpose": "any"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "64x64",
+      "type": "image/png",
       "purpose": "any"
     }
   ]

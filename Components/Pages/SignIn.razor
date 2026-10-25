@@ -7,48 +7,27 @@
 @inject KeycloakSignInService SignInService
 @inject NavigationManager Navigation
 
-@* ============================================================
-   SignIn.razor -- the Isa sign-in screen.
-
-   Works with the team's Keycloak server (see
-   Services/KeycloakSignInService.cs and docs/sign-in-setup.md).
-
-   Built for chapter leaders in every country:
-     - People sign in with their EMAIL ADDRESS, never their name.
-     - The email box is a plain text box (not type="email") so
-       international email addresses are not rejected by the browser.
-     - Passwords may contain any characters, in any script.
-     - dir="auto" lets right-to-left text (Arabic, Hebrew) type
-       correctly in both boxes.
-     - After sign-in, Isa greets people by their preferred form of
-       address, in their own script (see the landing page top bar).
-
-   This page is a plain (static) server-rendered form, not an
-   interactive one: the browser posts the form, the server checks it
-   with Keycloak, then sets the sign-in cookie and sends the person
-   back to the page they came from.
-
-   All the text people see is in one place (the Text section in the
-   @code block) so it can be translated later.
-
-   Styles: SignIn.razor.css.
-   ============================================================ *@
+@* Sign-in: top-left brand text + animated crossing Cs (user HTML) *@
 
 <PageTitle>Sign in | Isa</PageTitle>
 
 <div class="signin">
 
     <aside class="signin__brand">
-        <svg class="signin__brandC" viewBox="-25 -25 250 250" aria-hidden="true">
-            <path d="M153.26 74.88L193.32 74.88A3.33 3.33 0 0 0 196.5 70.58A100.89 100.89 0 1 0 196.5 129.42A3.33 3.33 0 0 0 193.32 125.12L153.26 125.12A3.33 3.33 0 0 0 150.32 126.88A57.05 57.05 0 1 1 150.32 73.12A3.33 3.33 0 0 0 153.26 74.88Z" fill="currentColor" />
-        </svg>
+        @* Text stays top-left, separate from the Cs *@
         <div class="signin__brandInner">
-            <div class="signin__badge" aria-hidden="true">
-                <Throbber Spinning="false" />
-            </div>
             <p class="signin__brandName">Isa</p>
             <p class="signin__brandTag">Chapter Support Assistant</p>
             <p class="signin__brandLine">@Text.BrandLine</p>
+        </div>
+
+        @* Exact crossing-C animation from provided HTML *@
+        <div class="signin__logoStage" aria-hidden="true">
+            <div class="signin__logo">
+                <div class="signin__c signin__c--blue"></div>
+                <div class="signin__c signin__c--green"></div>
+                <div class="signin__cGlow"></div>
+            </div>
         </div>
     </aside>
 
@@ -62,7 +41,6 @@
                 <div class="signin__error" role="alert">@ErrorMessage</div>
             }
 
-            @* Input is always set by OnInitialized; the check lets the compiler know. *@
             @if (Input is not null)
             {
                 <EditForm Model="Input" method="post" OnValidSubmit="HandleSignInAsync" FormName="isa-sign-in" class="signin__form">
@@ -98,12 +76,6 @@
             }
 
             <p class="signin__note">@Text.PrototypeNote</p>
-
-            @* data-enhance-nav="false" makes this a normal, full page load.
-               The landing page uses a different layout with the live chat
-               widget, and Blazor's quick "enhanced" page swap doesn't load
-               it from this static sign-in page, so the click seemed to do
-               nothing. (Signing in also uses a full page load, forceLoad.) *@
             <a class="signin__back" href="/" data-enhance-nav="false">&larr; @Text.BackLink</a>
         </div>
     </main>
@@ -111,7 +83,6 @@
 </div>
 
 @code {
-    // ---- Text people see (English for now; translate here later) --------
     private static class Text
     {
         public const string BrandLine = "Answers from ISACA's approved chapter guidance, with the sources to prove it.";
@@ -122,7 +93,6 @@
         public const string SubmitButton = "Sign in";
         public const string PrototypeNote = "Isa is a prototype. Test accounts are set up by the project team.";
         public const string BackLink = "Back to Isa home";
-
         public const string EmailRequired = "Enter your email address.";
         public const string PasswordRequired = "Enter your password.";
         public const string WrongCredentials = "That email address and password don't match an Isa account. Check them and try again.";
@@ -132,11 +102,6 @@
 
     [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
 
-    // What the person typed into the sign-in form. Blazor fills this in
-    // when the form is sent, so it has no starting value of its own (a
-    // starting value could be overwritten with nothing on a form post:
-    // build warning BL0008). OnInitialized creates an empty form only if
-    // Blazor hasn't already filled it.
     [SupplyParameterFromForm(FormName = "isa-sign-in")]
     private SignInInput? Input { get; set; }
 
@@ -148,7 +113,7 @@
 
     private async Task HandleSignInAsync()
     {
-        if (Input is null) return;   // can't happen after OnInitialized; keeps the compiler sure
+        if (Input is null) return;
         var result = await SignInService.SignInAsync(Input.Email, Input.Password);
 
         if (result.Outcome == SignInOutcome.Success && result.Principal is not null)
@@ -165,12 +130,9 @@
             _ => Text.ServiceUnavailable
         };
 
-        // Never send the password back to the browser in the re-shown form.
         Input.Password = string.Empty;
     }
 
-    // Only send people back to a page on this site (never to another
-    // website someone slipped into the link).
     private string SafeReturnUrl =>
         !string.IsNullOrEmpty(ReturnUrl)
         && ReturnUrl.StartsWith('/')

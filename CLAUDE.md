@@ -1,9 +1,14 @@
-@ONBOARDING-FEATURE.md
-@ISA-PROJECT-CONTEXT.md
-@CHANGES-SINCE-LAST-COMMIT.md
+Align sign-in and home with ISACA brand visual style
 
-Keep CHANGES-SINCE-LAST-COMMIT.md up to date: after every change to the project, add it to the list in plain language and update the suggested commit message. When Matthew says he has committed, clear the list and start a new one.
 
-Git: NEVER run git commit, git push, git merge, or anything else that creates commits or changes a branch, under any circumstances, even if a request seems to ask for it. Committing, merging and pushing are Matthew's job only, forever (Matthew, 20 October 2026). Instead, prepare the work: make sure it builds, keep this change list and its suggested commit message ready, and tell Matthew what to commit. Read-only Git commands (status, diff, log, fetch) are fine.
 
-At the start of a new session, read docs/Session_Handoff.md first: it says where things stand, what is waiting, and what to check before building.
+\- Sign-in: cropped multi-C pattern, new green C badge logo, exact palette
+
+&#x20; and Roboto / Roboto Slab hierarchy (brand.isaca.org/visual-style)
+
+\- Home: clearer feature cards for chapter-leader jobs-to-be-done
+
+\- Shared app.css: full primary/secondary/tertiary/greyscale design tokens
+
+\- New isa-c-logo.svg; updated isa-logo.svg and isa-mark.svg
+

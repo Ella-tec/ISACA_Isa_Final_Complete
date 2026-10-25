@@ -1,47 +1,222 @@
-.isa-sidebar {
-    width: 264px;
-    min-width: 264px;
-    min-height: 100vh;
-    height: 100vh;
-    position: sticky;
-    top: 0;
+/* ============================================================
+   NavMenu — modern ISACA sidebar
+   Dark navy shell, green accent C, lime CTA (Get started)
+   ============================================================ */
+
+.nav {
+    --nav-bg: #1d2d5c;
+    --nav-bg-deep: #131f42;
+    --nav-text: #dce6f2;
+    --nav-muted: #9aacc4;
+    --nav-active: #ffffff;
+    --nav-green: #6cb33f;
+    --nav-lime: #b8f06e;
+    --nav-cyan: #00a4e4;
+    --nav-hover: rgba(255, 255, 255, 0.08);
+    --nav-active-bg: rgba(0, 164, 228, 0.18);
+
     display: flex;
     flex-direction: column;
-    color: #fff;
-    background: linear-gradient(165deg, #14264f 0%, #1d2d5c 58%, #123d64 100%);
-    border-right: 1px solid rgba(255,255,255,.08);
+    height: 100%;
+    min-height: 100vh;
+    background: linear-gradient(180deg, var(--nav-bg) 0%, var(--nav-bg-deep) 100%);
+    color: var(--nav-text);
+    font-family: 'Roboto', Arial, sans-serif;
+    font-weight: 400;
+}
+
+/* ---- Brand header ---- */
+
+.nav__brand {
+    padding: 1.35rem 1.15rem 1rem;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.nav__logo {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav__mark {
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(255, 255, 255, 0.96);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.22);
+}
+
+.nav__mark svg {
+    display: block;
+}
+
+.nav__titles {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.nav__name {
+    font-family: 'Roboto Slab', Georgia, serif;
+    font-weight: 300;
+    font-size: 1.35rem;
+    line-height: 1.15;
+    color: #ffffff;
+    letter-spacing: -0.01em;
+}
+
+.nav__sub {
+    font-size: 0.68rem;
+    font-weight: 500;
+    color: var(--nav-muted);
+    letter-spacing: 0.02em;
+    white-space: nowrap;
     overflow: hidden;
+    text-overflow: ellipsis;
 }
-.isa-sidebar__brand { display:flex; align-items:center; gap:.8rem; min-height:86px; padding:1.25rem 1.15rem; color:#fff; text-decoration:none; border-bottom:1px solid rgba(255,255,255,.12); }
-.isa-sidebar__brand:hover { color:#fff; }
-.isa-sidebar__mark { display:grid; place-items:center; width:42px; height:42px; flex:0 0 42px; border-radius:13px; overflow:hidden; background:#0b1220; box-shadow:0 6px 18px rgba(0,164,228,.22); }
-.isa-sidebar__mark img { display:block; width:42px; height:42px; object-fit:cover; }
-.isa-sidebar__brandCopy { display:flex; flex-direction:column; line-height:1.25; min-width:0; }
-.isa-sidebar__brandCopy strong { font:600 1.25rem 'Roboto Slab',Georgia,serif; }
-.isa-sidebar__brandCopy small { margin-top:.22rem; color:#c5d3e7; font-size:.68rem; }
-.isa-sidebar__content { display:flex; flex-direction:column; flex:1; min-height:0; padding:1.1rem .85rem 1rem; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:rgba(255,255,255,.22) transparent; }
-.isa-sidebar__content::-webkit-scrollbar { width:6px; }
-.isa-sidebar__content::-webkit-scrollbar-thumb { background:rgba(255,255,255,.22); border-radius:8px; }
-.isa-nav-label { padding:0 .7rem .7rem; color:#91a8c8; font-size:.68rem; font-weight:700; letter-spacing:.14em; }
-.isa-nav { display:flex; flex-direction:column; gap:.25rem; }
-.isa-nav__link { display:flex; align-items:center; gap:.75rem; min-height:42px; padding:.58rem .7rem; border:1px solid transparent; border-radius:11px; color:#dce6f4; text-decoration:none; font-size:.9rem; font-weight:500; transition:background .18s ease,color .18s ease; }
-.isa-nav__link:hover { color:#fff; background:rgba(255,255,255,.08); }
-.isa-nav__link.active { color:#fff; background:rgba(0,164,228,.18); border-color:rgba(0,164,228,.28); box-shadow:inset 3px 0 0 #36ac91; }
-.isa-nav__icon { display:grid; place-items:center; width:27px; height:27px; flex:0 0 27px; border-radius:8px; color:#7bd7ed; background:rgba(255,255,255,.08); font-size:1.15rem; line-height:1; }
-.isa-sidebar__footer { margin-top:auto; padding:.9rem .65rem .25rem; border-top:1px solid rgba(255,255,255,.12); }
-.isa-sidebar__status { display:flex; align-items:center; gap:.55rem; color:#d1deee; font-size:.78rem; }
-.isa-status-dot { width:8px; height:8px; border-radius:50%; background:#6cb33f; box-shadow:0 0 0 4px rgba(108,179,63,.13); }
-.isa-sidebar__home { display:flex; justify-content:space-between; gap:.5rem; margin-top:.6rem; padding:.6rem .7rem; border-radius:8px; color:#a9c3de; font-size:.78rem; text-decoration:none; }
-.isa-sidebar__home:hover { color:#fff; background:rgba(255,255,255,.07); }
-.isa-nav-toggle,.isa-nav-toggle-label { display:none; }
-@media(max-width:800px) {
-  .isa-sidebar { width:100%; min-width:0; height:auto; min-height:0; position:relative; z-index:20; }
-  .isa-sidebar__brand { min-height:72px; padding:.9rem 1rem; }
-  .isa-nav-toggle-label { display:flex; position:absolute; top:1.05rem; right:1rem; width:42px; height:40px; flex-direction:column; align-items:center; justify-content:center; gap:5px; border:1px solid rgba(255,255,255,.2); border-radius:10px; cursor:pointer; }
-  .isa-nav-toggle-label span { width:18px; height:2px; background:#fff; border-radius:2px; }
-  .isa-sidebar__content { display:none; padding:.8rem 1rem 1rem; }
-  .isa-nav-toggle:checked ~ .isa-sidebar__content { display:flex; }
-  .isa-nav { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); }
-  .isa-sidebar__footer { margin-top:1rem; }
+
+/* ---- Scrollable menu ---- */
+
+.nav__scroll {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1rem 0.75rem 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
 }
-@media(max-width:420px) { .isa-nav { grid-template-columns:1fr; } }
+
+.nav__section {
+    margin: 0.35rem 0.6rem 0.55rem;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--nav-muted);
+}
+
+.nav__section--sub {
+    margin-top: 1.25rem;
+}
+
+.nav__list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+}
+
+.nav__item {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    padding: 0.65rem 0.75rem;
+    border-radius: 10px;
+    color: var(--nav-text);
+    text-decoration: none;
+    font-size: 0.9rem;
+    font-weight: 400;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.nav__item:hover {
+    background: var(--nav-hover);
+    color: #ffffff;
+}
+
+.nav__item.active {
+    background: var(--nav-active-bg);
+    color: var(--nav-active);
+    font-weight: 500;
+    box-shadow: inset 3px 0 0 var(--nav-cyan);
+}
+
+.nav__icon {
+    flex-shrink: 0;
+    width: 22px;
+    height: 22px;
+    display: grid;
+    place-items: center;
+    color: var(--nav-muted);
+}
+
+.nav__item:hover .nav__icon,
+.nav__item.active .nav__icon {
+    color: var(--nav-cyan);
+}
+
+/* ---- Footer: CTA + settings ---- */
+
+.nav__footer {
+    padding: 0.9rem 0.85rem 1.15rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+}
+
+/* Get started — black + lime chip (from reference) */
+.nav__cta {
+    display: flex;
+    align-items: stretch;
+    border-radius: 12px;
+    overflow: hidden;
+    text-decoration: none;
+    background: #0a0a0a;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.nav__cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+}
+
+.nav__cta-icon {
+    display: grid;
+    place-items: center;
+    width: 44px;
+    background: var(--nav-lime);
+    color: #0a0a0a;
+}
+
+.nav__cta-label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0.7rem 0.85rem;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 0.92rem;
+    letter-spacing: 0.01em;
+}
+
+.nav__settings {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0.45rem 0.65rem;
+    border-radius: 8px;
+    color: var(--nav-muted);
+    text-decoration: none;
+    font-size: 0.82rem;
+    font-weight: 500;
+    transition: color 0.15s, background 0.15s;
+}
+
+.nav__settings:hover {
+    color: #ffffff;
+    background: var(--nav-hover);
+}
+
+/* ---- Collapsed / mobile helpers (MainLayout controls width) ---- */
+
+@media (max-width: 768px) {
+    .nav {
+        min-height: auto;
+    }
+}

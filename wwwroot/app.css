@@ -4,19 +4,30 @@
    ============================================================ */
 
 :root {
-    --isa-navy: #1d2d5c;
+    /* Primary palette (ISACA Brand Guidelines) */
+    --isa-navy: #1d2d5c;          /* Dark Blue 281C */
     --isa-navy-dark: #131f42;
-    --isa-blue: #07649d;
-    --isa-cyan: #00a4e4;
-    --isa-green: #6cb33f;
-    --isa-orange: #e57524;
-    --isa-purple: #6658b1;
-    --isa-red: #c0392b;
+    --isa-cyan: #00a4e4;          /* Blue 299C */
+    --isa-green: #6cb33f;         /* Green 369C */
+    /* Secondary */
+    --isa-blue: #07649d;          /* Medium Blue 647C */
+    --isa-teal: #36ac91;          /* Teal 7723C */
+    --isa-light-blue: #e7f0f5;    /* Light Blue 544C */
+    /* Tertiary */
+    --isa-red: #e31837;           /* Red 186C */
+    --isa-orange: #e57524;        /* Orange 158C */
+    --isa-yellow: #fbb034;        /* Yellow 137C */
+    --isa-purple: #6558b1;        /* Purple 2102C */
+    /* Greyscale */
+    --isa-grey-1: #f6f7f8;
+    --isa-grey-2: #e5e7eb;
+    --isa-grey-5: #7b8794;
+    --isa-grey-9: #323e48;
     --isa-muted: #68758b;
     --isa-line: #dce4ed;
-    --isa-canvas: #f4f7fb;
+    --isa-canvas: #f6f7f8;
     --isa-panel: #ffffff;
-    --isa-text: #1a2332;
+    --isa-text: #323e48;          /* Grey 9 for body */
 }
 
 * { box-sizing: border-box; }
@@ -24,16 +35,22 @@
 html, body {
     margin: 0;
     padding: 0;
-    font-family: "Roboto", system-ui, -apple-system, sans-serif;
+    font-family: "Roboto", Arial, system-ui, -apple-system, sans-serif;
+    font-weight: 300;
     color: var(--isa-text);
     background: var(--isa-canvas);
-    line-height: 1.5;
+    line-height: 1.6;
 }
 
-h1, h2, h3, h4 { color: var(--isa-navy); font-weight: 600; margin: 0 0 .5rem; }
-h1 { font-size: 1.55rem; }
-h2 { font-size: 1.15rem; }
-h3 { font-size: 1rem; }
+h1, h2, h3, h4 {
+    color: var(--isa-navy);
+    font-family: "Roboto Slab", Georgia, serif;
+    font-weight: 300;
+    margin: 0 0 .5rem;
+}
+h1 { font-size: 1.7rem; }
+h2 { font-size: 1.25rem; }
+h3 { font-size: 1.05rem; font-family: "Roboto", Arial, sans-serif; font-weight: 700; }
 
 a { color: var(--isa-blue); }
 
