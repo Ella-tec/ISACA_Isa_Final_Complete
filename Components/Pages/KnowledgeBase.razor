@@ -1,19 +1,46 @@
 @page "/knowledge-base"
 @rendermode InteractiveServer
+
 <PageTitle>Knowledge Base | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">RESOURCES</p>
-            <h1>Knowledge base</h1>
-            <p class="isa-intro">Find approved guidance, chapter resources, and support articles — search and filter by topic.</p>
-        </div>
-</div>
-<div class="isa-searchbar">
-        <span aria-hidden="true">⌕</span>
-        <InputText class="form-control" @bind-Value="SearchTerm" placeholder="Search articles, topics, or keywords..." />
-        <InputSelect class="form-select" @bind-Value="SelectedCategory">
+<style>
+.kb{--accent:#0b3d91;--accent2:#1a5bb8;--soft:#e8f0fe;--navy:#1d2d5c;--muted:#5f6b85;--line:#e2e8f0;max-width:1100px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.kb-hero{background:linear-gradient(125deg,#0b3d91 0%,#1a5bb8 55%,#00a4e4 100%);color:#fff;border-radius:20px;padding:1.5rem 1.6rem;margin-bottom:1.25rem;box-shadow:0 12px 32px rgba(11,61,145,.25)}
+.kb-hero h1{margin:.2rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.75rem}
+.kb-hero p{margin:.4rem 0 0;opacity:.92;max-width:52ch}
+.kb-search{display:flex;flex-wrap:wrap;gap:.6rem;margin:1.15rem 0;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.7rem .9rem;box-shadow:0 4px 14px rgba(11,61,145,.06)}
+.kb-search input,.kb-search select{border:1.5px solid var(--line);border-radius:10px;padding:.55rem .8rem;font:inherit;flex:1;min-width:160px}
+.kb-search input:focus,.kb-search select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(11,61,145,.12)}
+.kb-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-bottom:1.25rem}
+.kb-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 6px 16px rgba(11,61,145,.07)}
+.kb-stat span{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.kb-stat strong{display:block;font-size:1.5rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif;color:var(--accent);margin:.2rem 0}
+.kb-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+.kb-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.15rem;box-shadow:0 6px 18px rgba(11,61,145,.06);display:flex;flex-direction:column;gap:.5rem;transition:transform .15s,box-shadow .15s}
+.kb-card:hover{transform:translateY(-3px);box-shadow:0 12px 28px rgba(11,61,145,.12)}
+.kb-card .tag{display:inline-block;font-size:.72rem;font-weight:700;padding:.2rem .55rem;border-radius:999px;background:var(--soft);color:var(--accent)}
+.kb-card h3{margin:0;font-size:1.02rem}
+.kb-card p{margin:0;font-size:.86rem;color:var(--muted);flex:1}
+.kb-card button{align-self:flex-start;border:none;background:var(--accent);color:#fff;font-weight:600;font-size:.84rem;padding:.45rem .9rem;border-radius:9px;cursor:pointer;font-family:inherit}
+.kb-card button:hover{filter:brightness(1.08)}
+.kb-empty{text-align:center;padding:2rem;color:var(--muted)}
+.kb-modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;z-index:80;padding:1rem}
+.kb-modal{background:#fff;border-radius:18px;max-width:520px;width:100%;padding:1.5rem;box-shadow:0 24px 60px rgba(0,0,0,.2);position:relative}
+.kb-modal h2{margin:.4rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
+.kb-modal .close{position:absolute;top:.75rem;right:.9rem;border:none;background:transparent;font-size:1.4rem;cursor:pointer;color:var(--muted)}
+@@media(max-width:700px){.kb-stats{grid-template-columns:1fr}}
+</style>
+
+<section class="kb">
+    <header class="kb-hero">
+        <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.9">RESOURCES</p>
+        <h1>Knowledge base</h1>
+        <p>Approved guidance, chapter articles and support content. Search and filter by topic.</p>
+    </header>
+
+    <div class="kb-search">
+        <input type="search" placeholder="Search articles, topics or keywords..." @bind="SearchTerm" @bind:event="oninput" />
+        <select @bind="SelectedCategory">
             <option value="All">All categories</option>
             <option>Membership</option>
             <option>Events</option>
@@ -21,76 +48,46 @@
             <option>Policies</option>
             <option>Technology</option>
             <option>Governance</option>
-        </InputSelect>
+        </select>
     </div>
 
-    <div class="isa-stat-grid isa-stat-grid--three">
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon blue">▤</span>
-            <span class="isa-stat-label">Articles</span>
-            <strong>@Articles.Count</strong>
-            <small>Demo catalog</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon green">◉</span>
-            <span class="isa-stat-label">Categories</span>
-            <strong>@Articles.Select(a => a.Category).Distinct().Count()</strong>
-            <small>Organized by topic</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon purple">✓</span>
-            <span class="isa-stat-label">Matching</span>
-            <strong>@FilteredArticles.Count</strong>
-            <small>Current filters</small>
-        </article>
+    <div class="kb-stats">
+        <div class="kb-stat"><span>Articles</span><strong>@Articles.Count</strong></div>
+        <div class="kb-stat"><span>Categories</span><strong>@Articles.Select(a => a.Category).Distinct().Count()</strong></div>
+        <div class="kb-stat"><span>Matching</span><strong>@Filtered.Count</strong></div>
     </div>
 
-    <div class="isa-article-grid">
-        @foreach (var article in FilteredArticles)
+    <div class="kb-grid">
+        @foreach (var a in Filtered)
         {
-            <article class="isa-article-card">
-                <div class="isa-article-top">
-                    <span class="isa-article-icon">@article.Icon</span>
-                    <span class="isa-pill">@article.Category</span>
-                </div>
-                <h2>@article.Title</h2>
-                <p>@article.Description</p>
-                <div class="isa-article-bottom">
-                    <span>Updated @article.Updated</span>
-                    <button class="isa-text-button" @onclick="() => SelectedArticle = article">View details ↗</button>
-                </div>
+            <article class="kb-card">
+                <span class="tag">@a.Category</span>
+                <h3>@a.Title</h3>
+                <p>@a.Description</p>
+                <button type="button" @onclick="() => Selected = a">View details</button>
             </article>
         }
     </div>
 
-    @if (FilteredArticles.Count == 0)
+    @if (Filtered.Count == 0)
     {
-        <div class="isa-empty">No sample articles match your search. Try a different keyword or category.</div>
+        <div class="kb-empty">No articles match your search. Try a different keyword or category.</div>
     }
 
-    @if (SelectedArticle is not null)
+    @if (Selected is not null)
     {
-        <div class="isa-modal-backdrop" role="presentation" @onclick="() => SelectedArticle = null">
-            <section class="isa-modal" role="dialog" aria-modal="true" aria-label="Article details" @onclick:stopPropagation="true">
-                <button class="isa-modal-close" @onclick="() => SelectedArticle = null" aria-label="Close">×</button>
-                <span class="isa-pill">@SelectedArticle.Category</span>
-                <h2 style="margin-top:.6rem">@SelectedArticle.Title</h2>
-                <p>@SelectedArticle.Description</p>
-                <div style="margin:1rem 0;padding:1rem;background:#f4f7fb;border-radius:10px;font-size:.88rem">
-                    <strong>Sample preview content</strong>
-                    <p style="margin:.4rem 0 0;color:var(--isa-muted)">
-                        This is placeholder body text. In production, Isa would surface approved excerpts
-                        from your chapter guidance library with source citations and last-reviewed dates.
-                    </p>
+        <div class="kb-modal-bg" @onclick="() => Selected = null">
+            <div class="kb-modal" @onclick:stopPropagation="true">
+                <button class="close" type="button" @onclick="() => Selected = null">×</button>
+                <span class="tag">@Selected.Category</span>
+                <h2>@Selected.Title</h2>
+                <p>@Selected.Description</p>
+                <div style="margin:1rem 0;padding:1rem;background:var(--soft);border-radius:12px;font-size:.88rem">
+                    <strong>Sample preview</strong>
+                    <p style="margin:.4rem 0 0;color:var(--muted)">This is placeholder body text. In production Isa would show approved excerpts with citations and last-reviewed dates.</p>
                 </div>
-                <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-                    <span class="isa-badge isa-badge--blue">Updated @SelectedArticle.Updated</span>
-                    <span class="isa-badge isa-badge--gray">Sample only</span>
-                </div>
-                <p class="isa-muted" style="margin-top:1rem;font-size:.82rem">
-                    Replace with approved article content and citations before production use.
-                </p>
-            </section>
+                <p style="font-size:.82rem;color:var(--muted)">Updated @Selected.Updated · Sample content only</p>
+            </div>
         </div>
     }
 </section>
@@ -98,21 +95,21 @@
 @code {
     private string SearchTerm = "";
     private string SelectedCategory = "All";
-    private Article? SelectedArticle;
+    private Article? Selected;
 
     private List<Article> Articles = new()
     {
-        new() { Title = "Membership support basics", Category = "Membership", Description = "Common membership questions, renewal steps, and where to request help.", Updated = "Oct 2026", Icon = "👤" },
-        new() { Title = "Planning a chapter event", Category = "Events", Description = "A starter checklist for event planning, registration, and follow-up.", Updated = "Oct 2026", Icon = "▦" },
-        new() { Title = "Certification pathways", Category = "Certification", Description = "A high-level guide to exploring ISACA certification resources.", Updated = "Sep 2026", Icon = "🎓" },
-        new() { Title = "Content review policy", Category = "Policies", Description = "Sample review workflow for validating content before publication.", Updated = "Sep 2026", Icon = "✓" },
-        new() { Title = "Troubleshooting access", Category = "Technology", Description = "Basic steps for documenting an access issue and requesting support.", Updated = "Aug 2026", Icon = "⚙" },
-        new() { Title = "Chapter communications", Category = "Membership", Description = "Guidance for clear, consistent member communications.", Updated = "Aug 2026", Icon = "✉" },
-        new() { Title = "Board officer handbook overview", Category = "Governance", Description = "Roles, responsibilities, and key deadlines for chapter leaders.", Updated = "Oct 2026", Icon = "📋" },
-        new() { Title = "CPE reporting guide", Category = "Certification", Description = "How to report continuing professional education hours for events.", Updated = "Sep 2026", Icon = "📊" }
+        new() { Title = "Membership support basics", Category = "Membership", Description = "Common membership questions, renewal steps, and where to request help.", Updated = "Oct 2026" },
+        new() { Title = "Planning a chapter event", Category = "Events", Description = "Starter checklist for event planning, registration, and follow-up.", Updated = "Oct 2026" },
+        new() { Title = "Certification pathways", Category = "Certification", Description = "High-level guide to exploring ISACA certification resources.", Updated = "Sep 2026" },
+        new() { Title = "Content review policy", Category = "Policies", Description = "Sample review workflow for validating content before publication.", Updated = "Sep 2026" },
+        new() { Title = "Troubleshooting access", Category = "Technology", Description = "Basic steps for documenting an access issue and requesting support.", Updated = "Aug 2026" },
+        new() { Title = "Chapter communications", Category = "Membership", Description = "Guidance for clear, consistent member communications.", Updated = "Aug 2026" },
+        new() { Title = "Board officer handbook overview", Category = "Governance", Description = "Roles, responsibilities, and key deadlines for chapter leaders.", Updated = "Oct 2026" },
+        new() { Title = "CPE reporting guide", Category = "Certification", Description = "How to report continuing professional education hours for events.", Updated = "Sep 2026" }
     };
 
-    private List<Article> FilteredArticles => Articles
+    private List<Article> Filtered => Articles
         .Where(a => (SelectedCategory == "All" || a.Category == SelectedCategory) &&
                     (string.IsNullOrWhiteSpace(SearchTerm) ||
                      (a.Title + " " + a.Description + " " + a.Category).Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)))
@@ -124,6 +121,5 @@
         public string Category { get; set; } = "";
         public string Description { get; set; } = "";
         public string Updated { get; set; } = "";
-        public string Icon { get; set; } = "▤";
     }
 }
