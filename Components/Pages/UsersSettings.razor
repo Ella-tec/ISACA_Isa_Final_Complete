@@ -11,10 +11,7 @@
         </div>
         <span class="isa-pill">Sample workspace</span>
     </div>
-
-    <div class="isa-notice">Role and preference changes on this page are illustrative only and do not persist to Keycloak or production configuration.</div>
-
-    <div class="isa-tabs">
+<div class="isa-tabs">
         <button type="button" class="isa-tab @(Tab == "users" ? "is-active" : "")" @onclick='() => Tab = "users"'>Users & roles</button>
         <button type="button" class="isa-tab @(Tab == "prefs" ? "is-active" : "")" @onclick='() => Tab = "prefs"'>Preferences</button>
         <button type="button" class="isa-tab @(Tab == "app" ? "is-active" : "")" @onclick='() => Tab = "app"'>App configuration</button>

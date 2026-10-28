@@ -1,0 +1,47 @@
+@* REPLACE the top links "Online Library" / "Open Library" with this Menu control *@
+@* Put inside your Home.razor or MainLayout top header *@
+
+<div class="top-menu-wrap">
+    <button type="button" class="top-menu-btn @(topMenuOpen ? "is-open" : null)" @onclick="() => topMenuOpen = !topMenuOpen">
+        Menu ▾
+    </button>
+    @if (topMenuOpen)
+    {
+        <div class="top-menu-drop">
+            <a href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>
+            <a href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
+            <a href="resource-library">Resource Library</a>
+            <a href="knowledge-base">Knowledge base</a>
+        </div>
+    }
+    <a class="top-link" href="">Home</a>
+    <a class="top-btn" href="settings">Account</a>
+</div>
+
+@code {
+    private bool topMenuOpen;
+}
+
+@* CSS to add to Home.razor.css or site.css:
+.top-menu-wrap { display: flex; align-items: center; gap: 0.65rem; position: relative; }
+.top-menu-btn {
+  border: none; background: transparent; color: #1d2d5c; font-weight: 600;
+  font-size: 0.9rem; cursor: pointer; padding: 0.4rem 0.6rem; border-radius: 8px;
+}
+.top-menu-btn:hover, .top-menu-btn.is-open { background: #e7f0f5; }
+.top-menu-drop {
+  position: absolute; top: 100%; right: 0; margin-top: 0.35rem;
+  background: #fff; border: 1px solid #dce4ed; border-radius: 12px;
+  box-shadow: 0 12px 32px rgba(29,45,92,0.12); padding: 0.4rem; min-width: 180px; z-index: 40;
+}
+.top-menu-drop a {
+  display: block; padding: 0.5rem 0.75rem; border-radius: 8px;
+  color: #1d2d5c; text-decoration: none; font-weight: 500; font-size: 0.88rem;
+}
+.top-menu-drop a:hover { background: #e7f0f5; }
+.top-link { color: #1d2d5c; font-weight: 600; text-decoration: none; padding: 0.4rem 0.5rem; }
+.top-btn {
+  background: #00a4e4; color: #fff !important; text-decoration: none;
+  padding: 0.45rem 0.9rem; border-radius: 10px; font-weight: 600; font-size: 0.88rem;
+}
+*@

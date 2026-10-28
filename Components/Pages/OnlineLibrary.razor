@@ -1,0 +1,11 @@
+@page "/online-library"
+@page "/online-library/"
+@inject NavigationManager Nav
+
+@code {
+    protected override void OnInitialized()
+    {
+        // Online Library removed — send users to Resource Library
+        Nav.NavigateTo("resource-library", replace: true);
+    }
+}

@@ -11,10 +11,7 @@
         </div>
         <span class="isa-pill">Sample workspace</span>
     </div>
-
-    <div class="isa-notice">The policies below are sample workflow records, not official ISACA policy statements. Confirm the approved source before relying on policy content.</div>
-
-    <div class="isa-hero-strip">
+<div class="isa-hero-strip">
         <div><span>Policy records</span><strong>@Policies.Count</strong><small>In register</small></div>
         <div><span>Approved</span><strong>@Policies.Count(p => p.Status == "Approved")</strong><small>Current</small></div>
         <div><span>Needs review</span><strong>@Policies.Count(p => p.Status != "Approved")</strong><small>Action required</small></div>

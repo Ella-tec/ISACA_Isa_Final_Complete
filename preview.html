@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Isa Sign-in — Preview</title>
+<style>
+/* Same styles as SignIn.razor.css — standalone preview */
+:root {
+  --dark-blue: #1d2d5c;
+  --blue: #00a4e4;
+  --green: #31c48d;
+  --medium-blue: #07649d;
+  --grey-1: #f7f8fa;
+  --grey-5: #7b8794;
+  --grey-9: #323e48;
+  --white: #ffffff;
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+.signin {
+  display: flex; min-height: 100vh; background: var(--grey-1); color: var(--dark-blue);
+}
+.signin__brand {
+  position: relative; overflow: hidden; flex: 0 0 52%;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  padding: 3rem 2rem 2.5rem;
+  background: linear-gradient(145deg, #f8faff 0%, #eef5fb 45%, #e0effa 100%);
+}
+.signin__logoStage {
+  position: relative; z-index: 1; display: flex; align-items: center; justify-content: center;
+  width: 100%; max-width: 520px; margin: 0 auto 1.5rem; pointer-events: none;
+}
+.signin__logo { position: relative; width: 480px; height: 300px; }
+.signin__c {
+  position: absolute; width: 220px; height: 220px; border: 38px solid;
+  border-radius: 50%; border-right-color: transparent !important;
+  transform: rotate(-25deg); top: 30px; will-change: transform, opacity;
+}
+.signin__c--blue {
+  border-color: #00a4e4; left: 0;
+  filter: drop-shadow(0 12px 24px rgba(0,164,228,.28));
+  animation: blueMove 2.6s cubic-bezier(.22,1,.36,1) forwards;
+}
+.signin__c--green {
+  border-color: #31c48d; right: 0;
+  filter: drop-shadow(0 12px 24px rgba(49,196,141,.28));
+  animation: greenMove 2.6s cubic-bezier(.22,1,.36,1) forwards;
+}
+.signin__cGlow {
+  position: absolute; left: 50%; top: 50%; width: 0; height: 0; border-radius: 50%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(29,45,92,.75), rgba(29,45,92,0));
+  animation: glow 1.8s ease forwards; animation-delay: 1.6s;
+}
+.signin__brandCopy {
+  position: relative; z-index: 2; text-align: center; max-width: 420px; margin: 0 auto;
+  opacity: 0; animation: fadeInUp .9s ease forwards; animation-delay: 2.2s;
+}
+.signin__journey {
+  margin: 0 0 .55rem; font-size: 1.85rem; font-weight: 700; line-height: 1.25;
+  color: var(--dark-blue); letter-spacing: -.02em;
+}
+.signin__pillars {
+  margin: 0 0 1.1rem; font-size: 1rem; font-weight: 500; color: #5f6b85; letter-spacing: .04em;
+}
+.signin__brandLine {
+  margin: 0 auto; font-size: .95rem; color: #4a5a78; max-width: 36ch;
+}
+@keyframes blueMove {
+  0% { transform: translateX(-180px) rotate(-45deg); opacity: 0; }
+  70% { transform: translateX(28px) rotate(-18deg); opacity: 1; }
+  100% { transform: translateX(18px) rotate(-25deg); opacity: 1; }
+}
+@keyframes greenMove {
+  0% { transform: translateX(180px) rotate(-5deg); opacity: 0; }
+  70% { transform: translateX(-28px) rotate(-32deg); opacity: 1; }
+  100% { transform: translateX(-18px) rotate(-25deg); opacity: 1; }
+}
+@keyframes glow {
+  0% { width: 0; height: 0; opacity: 0; }
+  45% { width: 140px; height: 140px; opacity: .7; }
+  100% { width: 100px; height: 100px; opacity: .32; }
+}
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.signin__panel {
+  flex: 1; display: flex; align-items: center; justify-content: center;
+  padding: 2.5rem 2rem; background: var(--white);
+}
+.signin__card { width: 100%; max-width: 400px; }
+.signin__cardKicker {
+  margin: 0 0 .35rem; font-size: .8rem; font-weight: 700;
+  letter-spacing: .14em; text-transform: uppercase; color: var(--blue);
+}
+.signin__title {
+  margin: 0 0 .45rem; font-size: 1.75rem; font-weight: 700;
+  color: var(--dark-blue); letter-spacing: -.02em;
+}
+.signin__lede { margin: 0 0 1.75rem; color: var(--grey-9); font-size: .98rem; }
+.signin__field { margin-bottom: 1.25rem; }
+.signin__label {
+  display: block; margin-bottom: .4rem; font-weight: 700; font-size: .72rem;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--dark-blue);
+}
+.signin__input {
+  display: block; width: 100%; padding: .85rem 1rem;
+  border: 1.5px solid #c9d3e0; border-radius: 10px; background: #fff;
+  color: var(--dark-blue); font: inherit; font-size: 1rem;
+  transition: border-color .18s, box-shadow .18s;
+}
+.signin__input:focus {
+  outline: none; border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0,164,228,.22);
+}
+.signin__submit {
+  width: 100%; margin-top: .35rem; padding: .95rem 1rem; border: none;
+  border-radius: 10px; background: var(--dark-blue); color: #fff;
+  font: inherit; font-weight: 600; font-size: 1rem; cursor: pointer;
+  transition: background .18s, box-shadow .18s;
+}
+.signin__submit:hover {
+  background: var(--medium-blue);
+  box-shadow: 0 6px 18px rgba(29,45,92,.22);
+}
+.signin__note { margin: 1.5rem 0 0; font-size: .84rem; color: var(--grey-5); }
+.signin__back {
+  display: inline-block; margin-top: 1rem; color: var(--medium-blue);
+  font-weight: 600; font-size: .9rem; text-decoration: none;
+}
+.signin__back:hover { color: var(--dark-blue); text-decoration: underline; }
+@media (max-width: 960px) {
+  .signin { flex-direction: column; }
+  .signin__brand { min-height: 380px; }
+  .signin__logo { width: 340px; height: 220px; }
+  .signin__c { width: 160px; height: 160px; border-width: 28px; }
+  .signin__journey { font-size: 1.45rem; }
+}
+</style>
+</head>
+<body>
+<div class="signin">
+  <aside class="signin__brand">
+    <div class="signin__logoStage">
+      <div class="signin__logo">
+        <div class="signin__c signin__c--blue"></div>
+        <div class="signin__c signin__c--green"></div>
+        <div class="signin__cGlow"></div>
+      </div>
+    </div>
+    <div class="signin__brandCopy">
+      <h2 class="signin__journey">Your ISACA Journey Starts Here</h2>
+      <p class="signin__pillars">Certifications · Mentorship · Careers</p>
+      <p class="signin__brandLine">Private, practical support for chapter leaders — built for real chapter work.</p>
+    </div>
+  </aside>
+  <main class="signin__panel">
+    <div class="signin__card">
+      <p class="signin__cardKicker">Isa</p>
+      <h1 class="signin__title">Sign in to Isa</h1>
+      <p class="signin__lede">Use the account provided by your chapter or the project team.</p>
+      <form class="signin__form" onsubmit="return false;">
+        <div class="signin__field">
+          <label class="signin__label" for="email">Email address</label>
+          <input class="signin__input" id="email" type="email" autocomplete="username">
+        </div>
+        <div class="signin__field">
+          <label class="signin__label" for="password">Password</label>
+          <input class="signin__input" id="password" type="password" autocomplete="current-password">
+        </div>
+        <button type="submit" class="signin__submit">Sign in</button>
+      </form>
+      <p class="signin__note">Isa is a prototype. Test accounts are set up by the project team.</p>
+      <a class="signin__back" href="#">Back to Isa home</a>
+    </div>
+  </main>
+</div>
+</body>
+</html>

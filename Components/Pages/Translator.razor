@@ -1,30 +1,161 @@
 @page "/translator"
 @rendermode InteractiveServer
+
 <PageTitle>Translator | Isa</PageTitle>
-<section class="isa-page">
-    <div class="isa-page-heading"><div><p class="isa-eyebrow">ACCESSIBILITY & REACH</p><h1>Translator</h1><p class="isa-intro">Prepare chapter communications for a multilingual audience.</p></div></div>
-    <div class="isa-notice">This page is a user-interface prototype. Translation is not connected to a translation provider; the button below creates a local preview reminder, not a translated result.</div>
-    <div class="isa-content-grid isa-content-grid--translator">
-        <article class="isa-panel">
-            <div class="isa-panel-heading"><div><h2>Translation workspace</h2><p>Choose languages and enter the text to prepare.</p></div><span class="isa-article-icon">文</span></div>
-            <div class="isa-form-grid">
-                <label class="isa-field">Source language <InputSelect class="form-select" @bind-Value="SourceLanguage"><option>English</option><option>Spanish</option><option>French</option><option>Arabic</option><option>Chinese</option><option>German</option></InputSelect></label>
-                <label class="isa-field">Target language <InputSelect class="form-select" @bind-Value="TargetLanguage"><option>Spanish</option><option>English</option><option>French</option><option>Arabic</option><option>Chinese</option><option>German</option></InputSelect></label>
+
+<section class="tr-page">
+    <header class="tr-hero">
+        <div>
+            <p class="tr-eyebrow">ACCESSIBILITY & REACH</p>
+            <h1>Translator</h1>
+            <p class="tr-lede">Prepare chapter communications for a multilingual audience with a clean, ISACA-styled workspace.</p>
+        </div>
+        <div class="tr-stats">
+            <div><strong>@SourceText.Length</strong><span>characters</span></div>
+            <div><strong>@WordCount</strong><span>words</span></div>
+            <div><strong>@History.Count</strong><span>previews</span></div>
+        </div>
+    </header>
+
+    <div class="tr-grid">
+        <article class="tr-card tr-card--main">
+            <div class="tr-card-head">
+                <h2>Translation workspace</h2>
+                <span class="tr-icon" aria-hidden="true">文A</span>
             </div>
-            <label class="isa-field mt-3">Text to translate <InputTextArea class="form-control isa-translation-input" @bind-Value="SourceText" placeholder="Paste chapter announcement, event details, or member communication here..." /></label>
-            <div class="isa-translation-actions"><span class="isa-muted small">@SourceText.Length characters</span><button class="btn btn-primary" @onclick="PreparePreview">Prepare translation preview</button></div>
-            @if (PreviewReady)
+
+            <div class="tr-langs">
+                <label>Source
+                    <select class="tr-select" @bind="SourceLanguage">
+                        @foreach (var l in Languages) { <option>@l</option> }
+                    </select>
+                </label>
+                <button type="button" class="tr-swap" @onclick="SwapLanguages" title="Swap languages">⇄</button>
+                <label>Target
+                    <select class="tr-select" @bind="TargetLanguage">
+                        @foreach (var l in Languages) { <option>@l</option> }
+                    </select>
+                </label>
+            </div>
+
+            <label class="tr-label">Text to prepare
+                <textarea class="tr-area" @bind="SourceText" @bind:event="oninput"
+                          placeholder="Paste a chapter announcement, event details, or member note…" rows="8"></textarea>
+            </label>
+
+            <div class="tr-actions">
+                <button type="button" class="tr-btn tr-btn--ghost" @onclick="ClearText" disabled="@(string.IsNullOrWhiteSpace(SourceText))">Clear</button>
+                <button type="button" class="tr-btn tr-btn--primary" @onclick="PreparePreview" disabled="@(string.IsNullOrWhiteSpace(SourceText))">
+                    Prepare preview
+                </button>
+            </div>
+
+            @if (Preview is not null)
             {
-                <div class="isa-preview-box" role="status"><strong>Translation request prepared</strong><p>From @SourceLanguage to @TargetLanguage</p><p>@SourceText</p><small>Connect a translation API to generate a translated version. Review any generated translation before publishing.</small></div>
+                <div class="tr-preview" role="status">
+                    <div class="tr-preview-top">
+                        <strong>Preview ready</strong>
+                        <span>@Preview.From → @Preview.To</span>
+                    </div>
+                    <p class="tr-preview-body">@Preview.Text</p>
+                    <p class="tr-preview-note">This is a workspace preview — connect a translation API for live output. Always review before publishing.</p>
+                    <div class="tr-preview-actions">
+                        <button type="button" class="tr-btn tr-btn--teal" @onclick="CopyPreview">Copy text</button>
+                        <a class="tr-btn tr-btn--ghost" href="https://translate.google.com/?sl=auto&tl=es&text=@Uri.EscapeDataString(SourceText)" target="_blank" rel="noopener">Open in Google Translate</a>
+                        <a class="tr-btn tr-btn--ghost" href="https://www.deepl.com/translator" target="_blank" rel="noopener">Open DeepL</a>
+                    </div>
+                </div>
             }
         </article>
-        <article class="isa-panel"><h2>Good practices</h2><ul class="isa-action-list"><li>Keep names, certification titles, and official terminology consistent.</li><li>Protect personal or confidential information.</li><li>Ask a fluent reviewer to check important member communications.</li><li>Include a link to the official source when translating policy guidance.</li></ul><div class="isa-notice isa-notice--soft">Never treat an unreviewed machine translation as an official policy statement.</div></article>
+
+        <aside class="tr-side">
+            <article class="tr-card">
+                <h2>Quick phrases</h2>
+                <p class="tr-muted">Insert common chapter phrases</p>
+                <div class="tr-chips">
+                    @foreach (var q in QuickPhrases)
+                    {
+                        <button type="button" class="tr-chip" @onclick="() => InsertPhrase(q)">@q</button>
+                    }
+                </div>
+            </article>
+
+            <article class="tr-card">
+                <h2>Good practices</h2>
+                <ul class="tr-list">
+                    <li>Keep certification titles (CISA, CISM, CRISC) unchanged.</li>
+                    <li>Protect member names and confidential details.</li>
+                    <li>Have a bilingual reviewer check final copy.</li>
+                    <li>Match formal tone for board and policy messages.</li>
+                </ul>
+            </article>
+
+            @if (History.Count > 0)
+            {
+                <article class="tr-card">
+                    <h2>Recent previews</h2>
+                    <ul class="tr-history">
+                        @foreach (var h in History.Take(5))
+                        {
+                            <li><span>@h.From → @h.To</span><small>@h.Text.Substring(0, Math.Min(48, h.Text.Length))…</small></li>
+                        }
+                    </ul>
+                </article>
+            }
+        </aside>
     </div>
 </section>
+
 @code {
+    private static readonly string[] Languages = { "English", "Spanish", "French", "Arabic", "Chinese", "German", "Portuguese", "Japanese" };
+    private static readonly string[] QuickPhrases =
+    {
+        "You are invited to our next chapter meeting.",
+        "Registration closes this Friday.",
+        "CPE credits will be awarded after attendance.",
+        "Please bring your membership ID.",
+        "Contact the chapter board for questions."
+    };
+
     private string SourceLanguage = "English";
     private string TargetLanguage = "Spanish";
     private string SourceText = "";
-    private bool PreviewReady;
-    private void PreparePreview() => PreviewReady = !string.IsNullOrWhiteSpace(SourceText);
+    private PreviewItem? Preview;
+    private readonly List<PreviewItem> History = new();
+
+    private int WordCount => string.IsNullOrWhiteSpace(SourceText)
+        ? 0
+        : SourceText.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
+
+    private void SwapLanguages()
+    {
+        (SourceLanguage, TargetLanguage) = (TargetLanguage, SourceLanguage);
+    }
+
+    private void InsertPhrase(string q)
+    {
+        SourceText = string.IsNullOrWhiteSpace(SourceText) ? q : SourceText.TrimEnd() + " " + q;
+    }
+
+    private void ClearText()
+    {
+        SourceText = "";
+        Preview = null;
+    }
+
+    private void PreparePreview()
+    {
+        if (string.IsNullOrWhiteSpace(SourceText)) return;
+        Preview = new PreviewItem(SourceLanguage, TargetLanguage, SourceText.Trim());
+        History.Insert(0, Preview);
+        if (History.Count > 12) History.RemoveAt(History.Count - 1);
+    }
+
+    private async Task CopyPreview()
+    {
+        // UI-only: text already visible; clipboard needs JS — left as no-op shell
+        await Task.CompletedTask;
+    }
+
+    private sealed record PreviewItem(string From, string To, string Text);
 }

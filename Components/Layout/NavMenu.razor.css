@@ -1,6 +1,8 @@
 /* ============================================================
    NavMenu — modern ISACA sidebar
-   Dark navy shell, green accent C, lime CTA (Get started)
+   Matches Escalations reference: navy shell, pill nav items,
+   active cyan highlight, no blue underlines.
+   ::deep is required so styles reach Blazor <NavLink> anchors.
    ============================================================ */
 
 .nav {
@@ -13,16 +15,24 @@
     --nav-lime: #b8f06e;
     --nav-cyan: #00a4e4;
     --nav-hover: rgba(255, 255, 255, 0.08);
-    --nav-active-bg: rgba(0, 164, 228, 0.18);
+    --nav-active-bg: rgba(0, 164, 228, 0.22);
 
     display: flex;
     flex-direction: column;
     height: 100%;
     min-height: 100vh;
+    width: 100%;
     background: linear-gradient(180deg, var(--nav-bg) 0%, var(--nav-bg-deep) 100%);
     color: var(--nav-text);
     font-family: 'Roboto', Arial, sans-serif;
     font-weight: 400;
+    box-sizing: border-box;
+}
+
+.nav *,
+.nav *::before,
+.nav *::after {
+    box-sizing: border-box;
 }
 
 /* ---- Brand header ---- */
@@ -30,14 +40,26 @@
 .nav__brand {
     padding: 1.35rem 1.15rem 1rem;
     border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    flex-shrink: 0;
 }
 
-.nav__logo {
+.nav__logo,
+.nav ::deep a.nav__logo {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    text-decoration: none;
-    color: inherit;
+    text-decoration: none !important;
+    color: inherit !important;
+}
+
+.nav__logo:hover,
+.nav__logo:focus,
+.nav__logo:visited,
+.nav ::deep a.nav__logo:hover,
+.nav ::deep a.nav__logo:focus,
+.nav ::deep a.nav__logo:visited {
+    text-decoration: none !important;
+    color: inherit !important;
 }
 
 .nav__mark {
@@ -85,6 +107,7 @@
 .nav__scroll {
     flex: 1 1 auto;
     overflow-y: auto;
+    overflow-x: hidden;
     padding: 1rem 0.75rem 0.5rem;
     scrollbar-width: thin;
     scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
@@ -106,35 +129,54 @@
 .nav__list {
     display: flex;
     flex-direction: column;
-    gap: 0.2rem;
+    gap: 0.25rem;
 }
 
-.nav__item {
-    display: flex;
+/*
+  NavLink renders an <a> from a child component.
+  Scoped CSS does not apply to it without ::deep.
+*/
+.nav ::deep a.nav__item,
+.nav ::deep .nav__item {
+    display: flex !important;
     align-items: center;
     gap: 0.7rem;
-    padding: 0.65rem 0.75rem;
+    width: 100%;
+    padding: 0.65rem 0.85rem;
     border-radius: 10px;
-    color: var(--nav-text);
-    text-decoration: none;
+    color: var(--nav-text) !important;
+    background: transparent;
+    text-decoration: none !important;
     font-size: 0.9rem;
     font-weight: 400;
+    line-height: 1.25;
     transition: background 0.15s ease, color 0.15s ease;
+    border: none;
+    box-shadow: none;
 }
 
-.nav__item:hover {
+.nav ::deep a.nav__item:hover,
+.nav ::deep a.nav__item:focus,
+.nav ::deep a.nav__item:visited,
+.nav ::deep .nav__item:hover,
+.nav ::deep .nav__item:focus,
+.nav ::deep .nav__item:visited {
+    text-decoration: none !important;
+    color: #ffffff !important;
     background: var(--nav-hover);
-    color: #ffffff;
 }
 
-.nav__item.active {
-    background: var(--nav-active-bg);
-    color: var(--nav-active);
+/* Active pill — matches Escalations reference (light cyan fill) */
+.nav ::deep a.nav__item.active,
+.nav ::deep .nav__item.active {
+    background: var(--nav-active-bg) !important;
+    color: #ffffff !important;
     font-weight: 500;
     box-shadow: inset 3px 0 0 var(--nav-cyan);
+    text-decoration: none !important;
 }
 
-.nav__icon {
+.nav ::deep .nav__icon {
     flex-shrink: 0;
     width: 22px;
     height: 22px;
@@ -143,8 +185,10 @@
     color: var(--nav-muted);
 }
 
-.nav__item:hover .nav__icon,
-.nav__item.active .nav__icon {
+.nav ::deep a.nav__item:hover .nav__icon,
+.nav ::deep a.nav__item.active .nav__icon,
+.nav ::deep .nav__item:hover .nav__icon,
+.nav ::deep .nav__item.active .nav__icon {
     color: var(--nav-cyan);
 }
 
@@ -156,23 +200,31 @@
     display: flex;
     flex-direction: column;
     gap: 0.65rem;
+    flex-shrink: 0;
 }
 
-/* Get started — black + lime chip (from reference) */
-.nav__cta {
+.nav__cta,
+.nav ::deep a.nav__cta {
     display: flex;
     align-items: stretch;
     border-radius: 12px;
     overflow: hidden;
-    text-decoration: none;
+    text-decoration: none !important;
     background: #0a0a0a;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.28);
     transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.nav__cta:hover {
+.nav__cta:hover,
+.nav__cta:focus,
+.nav__cta:visited,
+.nav ::deep a.nav__cta:hover,
+.nav ::deep a.nav__cta:focus,
+.nav ::deep a.nav__cta:visited {
+    text-decoration: none !important;
     transform: translateY(-1px);
     box-shadow: 0 12px 28px rgba(0, 0, 0, 0.35);
+    color: inherit;
 }
 
 .nav__cta-icon {
@@ -195,25 +247,30 @@
     letter-spacing: 0.01em;
 }
 
-.nav__settings {
+.nav__settings,
+.nav ::deep a.nav__settings {
     display: flex;
     align-items: center;
     gap: 0.55rem;
     padding: 0.45rem 0.65rem;
     border-radius: 8px;
-    color: var(--nav-muted);
-    text-decoration: none;
+    color: var(--nav-muted) !important;
+    text-decoration: none !important;
     font-size: 0.82rem;
     font-weight: 500;
     transition: color 0.15s, background 0.15s;
 }
 
-.nav__settings:hover {
-    color: #ffffff;
+.nav__settings:hover,
+.nav__settings:focus,
+.nav__settings:visited,
+.nav ::deep a.nav__settings:hover,
+.nav ::deep a.nav__settings:focus,
+.nav ::deep a.nav__settings:visited {
+    text-decoration: none !important;
+    color: #ffffff !important;
     background: var(--nav-hover);
 }
-
-/* ---- Collapsed / mobile helpers (MainLayout controls width) ---- */
 
 @media (max-width: 768px) {
     .nav {

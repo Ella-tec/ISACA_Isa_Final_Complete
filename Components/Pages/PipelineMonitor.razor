@@ -13,12 +13,7 @@
             <p class="isa-intro">Inspect the backend stage trail for one request using its trace ID.</p>
         </div>
     </div>
-
-    <div class="isa-notice">
-        Developer view: event data includes stage names and technical reasons. Do not share traces that contain sensitive operational details.
-    </div>
-
-    <article class="isa-panel pipeline-search">
+<article class="isa-panel pipeline-search">
         <label class="isa-field" for="trace-id">Trace ID</label>
         <div class="pipeline-search-row">
             <input id="trace-id" class="form-control" @bind="TraceId" placeholder="Paste the traceId returned by /api/ask" />
