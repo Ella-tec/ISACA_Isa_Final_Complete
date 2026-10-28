@@ -41,34 +41,34 @@
         <h1>Events & calendar</h1>
         <p>Keep chapter activities, webinars and learning opportunities organized in one place.</p>
         <div class="actions">
-            <button type="button" class="ev-btn ev-btn--solid" @onclick="() => ShowForm = !ShowForm">@(ShowForm ? "Hide form" : "+ Add event")</button>
+            <button type="button" class="ev-btn ev-btn--solid" @onclick="() => showForm = !showForm">@(showForm ? "Hide form" : "+ Add event")</button>
         </div>
     </header>
 
     <div class="ev-stats">
-        <div class="ev-stat"><span>Upcoming</span><strong>@EventsList.Count(e => e.Date >= DateTime.Today)</strong></div>
-        <div class="ev-stat"><span>This month</span><strong>@EventsList.Count(e => e.Date.Month == DateTime.Today.Month)</strong></div>
-        <div class="ev-stat"><span>Online</span><strong>@EventsList.Count(e => e.Location.Contains("Online", StringComparison.OrdinalIgnoreCase))</strong></div>
+        <div class="ev-stat"><span>Upcoming</span><strong>@chapterEvents.Count(e => e.Date >= DateTime.Today)</strong></div>
+        <div class="ev-stat"><span>This month</span><strong>@chapterEvents.Count(e => e.Date.Month == DateTime.Today.Month)</strong></div>
+        <div class="ev-stat"><span>Online</span><strong>@chapterEvents.Count(e => e.Location.Contains("Online", StringComparison.OrdinalIgnoreCase))</strong></div>
     </div>
 
-    @if (ShowForm)
+    @if (showForm)
     {
         <article class="ev-card" style="margin-bottom:1.15rem">
             <h2>Add an event</h2>
             <div class="ev-form">
-                <label>Event name <input @bind="NewEvent.Title" placeholder="e.g. Chapter Meetup" /></label>
-                <label>Date <input type="date" @bind="NewEvent.Date" /></label>
+                <label>Event name <input @bind="newItem.Title" placeholder="e.g. Chapter Meetup" /></label>
+                <label>Date <input type="date" @bind="newItem.Date" /></label>
                 <label>Type
-                    <select @bind="NewEvent.Type">
+                    <select @bind="newItem.Type">
                         <option>Webinar</option><option>Networking</option><option>Workshop</option><option>Meeting</option><option>Conference</option>
                     </select>
                 </label>
-                <label>Location / link <input @bind="NewEvent.Location" placeholder="Online or venue" /></label>
+                <label>Location / link <input @bind="newItem.Location" placeholder="Online or venue" /></label>
             </div>
             <div style="margin-top:1rem">
-                <button type="button" class="ev-btn" style="background:var(--accent);color:#fff" @onclick="AddEvent">Add event</button>
+                <button type="button" class="ev-btn" style="background:var(--accent);color:#fff" @onclick="AddItem">Add event</button>
             </div>
-            @if (!string.IsNullOrEmpty(Message)) { <div class="ev-toast">@Message</div> }
+            @if (!string.IsNullOrEmpty(message)) { <div class="ev-toast">@message</div> }
         </article>
     }
 
@@ -76,27 +76,27 @@
         <article class="ev-card">
             <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
                 <h2 style="margin:0">Upcoming events</h2>
-                <select @bind="TypeFilter" style="border:1.5px solid var(--line);border-radius:8px;padding:.35rem .6rem;font:inherit">
+                <select @bind="typeFilter" style="border:1.5px solid var(--line);border-radius:8px;padding:.35rem .6rem;font:inherit">
                     <option value="">All types</option>
                     <option>Webinar</option><option>Networking</option><option>Workshop</option><option>Meeting</option><option>Conference</option>
                 </select>
             </div>
-            @foreach (var ev in Filtered)
+            @foreach (var item in filteredItems)
             {
                 <div class="ev-row">
-                    <div class="ev-date"><strong>@ev.Date.ToString("dd")</strong><span>@ev.Date.ToString("MMM")</span></div>
-                    <div class="ev-copy"><strong>@ev.Title</strong><span>@ev.Type · @ev.Location</span></div>
-                    <button type="button" style="border:none;background:var(--soft);color:var(--accent);border-radius:8px;padding:.3rem .55rem;cursor:pointer;font-weight:700" @onclick="() => Remove(ev)">✕</button>
+                    <div class="ev-date"><strong>@item.Date.ToString("dd")</strong><span>@item.Date.ToString("MMM")</span></div>
+                    <div class="ev-copy"><strong>@item.Title</strong><span>@item.Type · @item.Location</span></div>
+                    <button type="button" style="border:none;background:var(--soft);color:var(--accent);border-radius:8px;padding:.3rem .55rem;cursor:pointer;font-weight:700" @onclick="() => RemoveItem(item)">✕</button>
                 </div>
             }
-            @if (!Filtered.Any()) { <p style="color:var(--muted);font-size:.9rem">No events match the filter.</p> }
+            @if (!filteredItems.Any()) { <p style="color:var(--muted);font-size:.9rem">No events match the filter.</p> }
         </article>
 
         <article class="ev-card">
             <h2>By type</h2>
-            @foreach (var g in EventsList.GroupBy(e => e.Type).OrderByDescending(g => g.Count()))
+            @foreach (var g in chapterEvents.GroupBy(e => e.Type).OrderByDescending(g => g.Count()))
             {
-                var pct = EventsList.Count == 0 ? 0 : (int)Math.Round(100.0 * g.Count() / EventsList.Count);
+                var pct = chapterEvents.Count == 0 ? 0 : (int)Math.Round(100.0 * g.Count() / chapterEvents.Count);
                 <div style="margin:.6rem 0">
                     <div style="display:flex;justify-content:space-between;font-size:.88rem"><span>@g.Key</span><strong>@g.Count()</strong></div>
                     <div style="height:7px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:.25rem"><div style="height:100%;width:@(pct)%;background:var(--accent);border-radius:99px"></div></div>
@@ -114,11 +114,11 @@
 </section>
 
 @code {
-    private bool ShowForm;
-    private string TypeFilter = "";
-    private string? Message;
+    private bool showForm;
+    private string typeFilter = "";
+    private string? message;
 
-    private List<ChapterEvent> EventsList = new()
+    private List<ChapterEventItem> chapterEvents = new()
     {
         new() { Title = "ISACA Chapter Meetup", Date = DateTime.Today.AddDays(5), Type = "Networking", Location = "Kansas City" },
         new() { Title = "Security Awareness Webinar", Date = DateTime.Today.AddDays(12), Type = "Webinar", Location = "Online" },
@@ -127,23 +127,37 @@
         new() { Title = "CPE Lunch & Learn", Date = DateTime.Today.AddDays(26), Type = "Webinar", Location = "Online" }
     };
 
-    private ChapterEvent NewEvent = new() { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
+    private ChapterEventItem newItem = new() { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
 
-    private IEnumerable<ChapterEvent> Filtered => EventsList
-        .Where(e => string.IsNullOrWhiteSpace(TypeFilter) || e.Type == TypeFilter)
+    private IEnumerable<ChapterEventItem> filteredItems => chapterEvents
+        .Where(e => string.IsNullOrWhiteSpace(typeFilter) || e.Type == typeFilter)
         .OrderBy(e => e.Date);
 
-    private void AddEvent()
+    private void AddItem()
     {
-        if (string.IsNullOrWhiteSpace(NewEvent.Title)) { Message = "Please enter an event name."; return; }
-        EventsList.Add(new ChapterEvent { Title = NewEvent.Title.Trim(), Date = NewEvent.Date, Type = NewEvent.Type, Location = string.IsNullOrWhiteSpace(NewEvent.Location) ? "TBC" : NewEvent.Location.Trim() });
-        Message = $"Added “{NewEvent.Title}”.";
-        NewEvent = new ChapterEvent { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
+        if (string.IsNullOrWhiteSpace(newItem.Title))
+        {
+            message = "Please enter an event name.";
+            return;
+        }
+        chapterEvents.Add(new ChapterEventItem
+        {
+            Title = newItem.Title.Trim(),
+            Date = newItem.Date,
+            Type = newItem.Type,
+            Location = string.IsNullOrWhiteSpace(newItem.Location) ? "TBC" : newItem.Location.Trim()
+        });
+        message = $"Added “{newItem.Title}”.";
+        newItem = new ChapterEventItem { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
     }
 
-    private void Remove(ChapterEvent ev) { EventsList.Remove(ev); Message = $"Removed “{ev.Title}”."; }
+    private void RemoveItem(ChapterEventItem item)
+    {
+        chapterEvents.Remove(item);
+        message = $"Removed “{item.Title}”.";
+    }
 
-    private sealed class ChapterEvent
+    private sealed class ChapterEventItem
     {
         public string Title { get; set; } = "";
         public DateTime Date { get; set; } = DateTime.Today;
