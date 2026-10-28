@@ -5,188 +5,67 @@
 <PageTitle>Isa | Chapter Support Assistant</PageTitle>
 
 <style>
-    .eh {
-        --navy: #1d2d5c; --blue: #00a4e4; --green: #6cb33f; --mid: #07649d;
-        --teal: #36ac91; --light: #e7f0f5; --red: #e31837; --orange: #e57524;
-        --yellow: #fbb034; --purple: #6558b1; --muted: #5f6b85; --line: #e2e8f0;
-        font-family: "Roboto", system-ui, sans-serif; color: var(--navy);
-        max-width: 1180px; margin: 0 auto; padding-bottom: 2.5rem;
-    }
-    .eh a { text-decoration: none !important; }
-
-    /* Top bar */
-    .eh-top {
-        display: flex; align-items: center; justify-content: space-between;
-        gap: 1rem; flex-wrap: wrap; margin-bottom: 1.25rem;
-    }
-    .eh-brand { display: flex; align-items: center; gap: 0.65rem; }
-    .eh-logo {
-        width: 42px; height: 42px; border-radius: 12px;
-        background: linear-gradient(135deg, #fff 40%, var(--light));
-        border: 2px solid var(--green); color: var(--green);
-        display: grid; place-items: center; font-weight: 800; font-size: 1.25rem;
-    }
-    .eh-brand strong { display: block; font-size: 1.15rem; line-height: 1.1; }
-    .eh-brand small { color: var(--muted); font-size: 0.7rem; }
-
-    .eh-actions { display: flex; align-items: center; gap: 0.5rem; position: relative; flex-wrap: wrap; }
-    .eh-link {
-        color: var(--mid); font-weight: 600; font-size: 0.9rem;
-        padding: 0.5rem 0.85rem; border-radius: 10px;
-    }
-    .eh-link:hover { background: var(--light); color: var(--navy); }
-    .eh-account-btn {
-        border: none; cursor: pointer; font-family: inherit;
-        background: linear-gradient(135deg, var(--navy), var(--mid));
-        color: #fff !important; font-weight: 600; font-size: 0.9rem;
-        padding: 0.5rem 1rem; border-radius: 10px;
-        box-shadow: 0 4px 14px rgba(29,45,92,0.2);
-    }
-    .eh-account-btn:hover { filter: brightness(1.08); }
-    .eh-account-panel {
-        position: absolute; top: calc(100% + 0.4rem); right: 0;
-        width: 240px; background: #fff; border: 1px solid var(--line);
-        border-radius: 14px; box-shadow: 0 16px 40px rgba(29,45,92,0.16);
-        padding: 0.45rem; z-index: 50;
-    }
-    .eh-account-panel a {
-        display: block; padding: 0.55rem 0.75rem; border-radius: 9px;
-        color: var(--navy) !important; font-weight: 500; font-size: 0.88rem;
-    }
-    .eh-account-panel a:hover { background: var(--light); }
-    .eh-account-panel .sep { height: 1px; background: var(--line); margin: 0.3rem 0; }
-
-    /* Weather + clock strip */
-    .eh-strip {
-        display: grid; grid-template-columns: 1.1fr 1fr 1.2fr; gap: 0.85rem;
-        margin-bottom: 1.15rem;
-    }
-    .eh-widget {
-        border-radius: 16px; padding: 1rem 1.15rem; color: #fff;
-        box-shadow: 0 10px 28px rgba(29,45,92,0.12);
-        display: flex; flex-direction: column; gap: 0.25rem;
-        min-height: 110px;
-    }
-    .eh-widget--clock {
-        background: linear-gradient(135deg, #1d2d5c 0%, #07649d 55%, #00a4e4 100%);
-    }
-    .eh-widget--weather {
-        background: linear-gradient(135deg, #36ac91 0%, #00a4e4 50%, #6cb33f 100%);
-    }
-    .eh-widget--certs {
-        background: linear-gradient(135deg, #6558b1 0%, #1d2d5c 50%, #07649d 100%);
-    }
-    .eh-widget__label {
-        font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
-        text-transform: uppercase; opacity: 0.85;
-    }
-    .eh-widget__value { font-size: 1.75rem; font-weight: 300; font-family: "Roboto Slab", Georgia, serif; }
-    .eh-widget__meta { font-size: 0.82rem; opacity: 0.9; }
-    .eh-certs-row {
-        display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.35rem;
-    }
-    .eh-cert {
-        font-size: 0.65rem; font-weight: 700; letter-spacing: 0.02em;
-        padding: 0.22rem 0.45rem; border-radius: 999px;
-        background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.25);
-    }
-
-    /* Video */
-    .eh-video {
-        border-radius: 18px; overflow: hidden; background: #0b1220;
-        aspect-ratio: 16 / 9; max-height: 480px;
-        box-shadow: 0 18px 50px rgba(29,45,92,0.2);
-        margin-bottom: 1.5rem;
-    }
-    .eh-video iframe { width: 100%; height: 100%; border: 0; display: block; }
-
-    /* Enterprise banner */
-    .eh-enterprise {
-        display: grid; grid-template-columns: 1.25fr 1fr; gap: 0;
-        border-radius: 20px; overflow: hidden;
-        box-shadow: 0 16px 44px rgba(29,45,92,0.14);
-        margin-bottom: 1.5rem; min-height: 280px;
-    }
-    .eh-enterprise__copy {
-        background: linear-gradient(145deg, #152447 0%, #1d2d5c 40%, #07649d 100%);
-        color: #fff; padding: 2rem 2rem 1.75rem;
-        display: flex; flex-direction: column; justify-content: center;
-    }
-    .eh-enterprise__copy h2 {
-        margin: 0 0 0.65rem; font-family: "Roboto Slab", Georgia, serif;
-        font-weight: 300; font-size: 1.65rem; line-height: 1.25;
-    }
-    .eh-enterprise__copy p { margin: 0 0 1.15rem; opacity: 0.92; max-width: 36ch; line-height: 1.5; }
-    .eh-enterprise__btns { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-    .eh-btn {
-        display: inline-flex; align-items: center; padding: 0.55rem 1.1rem;
-        border-radius: 10px; font-weight: 600; font-size: 0.88rem;
-    }
-    .eh-btn--solid { background: #fff; color: var(--navy) !important; }
-    .eh-btn--solid:hover { background: var(--light); }
-    .eh-btn--ghost {
-        background: transparent; color: #fff !important;
-        box-shadow: inset 0 0 0 1.5px rgba(255,255,255,0.55);
-    }
-    .eh-btn--ghost:hover { background: rgba(255,255,255,0.1); }
-    .eh-enterprise__art {
-        background:
-            linear-gradient(160deg, rgba(0,164,228,0.35), rgba(108,179,63,0.25)),
-            linear-gradient(135deg, #36ac91, #6558b1);
-        display: grid; place-items: center; padding: 1.5rem;
-    }
-    .eh-enterprise__art-inner {
-        background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.22);
-        border-radius: 16px; padding: 1.5rem; text-align: center; color: #fff;
-        backdrop-filter: blur(6px); max-width: 260px;
-    }
-    .eh-enterprise__art-inner strong {
-        display: block; font-size: 1.1rem; margin-bottom: 0.35rem;
-        font-family: "Roboto Slab", Georgia, serif; font-weight: 300;
-    }
-    .eh-enterprise__art-inner span { font-size: 0.85rem; opacity: 0.9; }
-
-    /* Cert ribbon */
-    .eh-ribbon {
-        display: flex; flex-wrap: wrap; justify-content: center; gap: 0.55rem;
-        padding: 1rem 0.5rem; margin-bottom: 0.5rem;
-    }
-    .eh-ribbon span {
-        width: 52px; height: 52px; border-radius: 50%;
-        display: grid; place-items: center;
-        font-size: 0.58rem; font-weight: 800; letter-spacing: -0.02em;
-        color: #fff; box-shadow: 0 4px 12px rgba(29,45,92,0.15);
-    }
-    .eh-ribbon .cisa { background: conic-gradient(from 180deg, #e31837, #1d2d5c, #e31837); }
-    .eh-ribbon .aaia { background: conic-gradient(from 180deg, #e31837, #fff 40%, #e31837); color: #1d2d5c; }
-    .eh-ribbon .cism { background: conic-gradient(from 180deg, #6cb33f, #1d2d5c, #6cb33f); }
-    .eh-ribbon .aism { background: conic-gradient(from 180deg, #6cb33f, #fff 40%, #6cb33f); color: #1d2d5c; }
-    .eh-ribbon .crisc { background: conic-gradient(from 180deg, #fbb034, #1d2d5c, #fbb034); }
-    .eh-ribbon .aair { background: conic-gradient(from 180deg, #e57524, #fff 40%, #e57524); color: #1d2d5c; }
-    .eh-ribbon .cgeit { background: conic-gradient(from 180deg, #00a4e4, #1d2d5c, #00a4e4); }
-    .eh-ribbon .cdpse { background: conic-gradient(from 180deg, #07649d, #1d2d5c, #07649d); }
-    .eh-ribbon .ccoa { background: conic-gradient(from 180deg, #36ac91, #1d2d5c, #36ac91); }
-
-    @@media (max-width: 900px) {
-        .eh-strip { grid-template-columns: 1fr; }
-        .eh-enterprise { grid-template-columns: 1fr; }
-    }
+.eh{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--muted:#5f6b85;--line:#e2e8f0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto;padding-bottom:2rem}
+.eh a{text-decoration:none!important}
+.eh-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.eh-brand{display:flex;align-items:center;gap:.65rem}
+.eh-logo{width:42px;height:42px;border-radius:12px;background:#fff;border:2px solid var(--green);color:var(--green);display:grid;place-items:center;font-weight:800;font-size:1.25rem}
+.eh-brand strong{display:block;font-size:1.15rem;line-height:1.1}
+.eh-brand small{color:var(--muted);font-size:.7rem}
+.eh-actions{display:flex;align-items:center;gap:.5rem;position:relative;flex-wrap:wrap}
+.eh-link{color:var(--mid);font-weight:600;font-size:.9rem;padding:.5rem .85rem;border-radius:10px}
+.eh-link:hover{background:var(--light);color:var(--navy)}
+.eh-account-btn{border:none;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important;font-weight:600;font-size:.9rem;padding:.5rem 1rem;border-radius:10px;box-shadow:0 4px 14px rgba(29,45,92,.2)}
+.eh-account-panel{position:absolute;top:calc(100% + .4rem);right:0;width:240px;background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:0 16px 40px rgba(29,45,92,.16);padding:.45rem;z-index:50}
+.eh-account-panel a{display:block;padding:.55rem .75rem;border-radius:9px;color:var(--navy)!important;font-weight:500;font-size:.88rem}
+.eh-account-panel a:hover{background:var(--light)}
+.eh-account-panel .sep{height:1px;background:var(--line);margin:.3rem 0}
+.eh-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:1.15rem}
+.eh-widget{border-radius:16px;padding:1rem 1.15rem;color:#fff;box-shadow:0 10px 28px rgba(29,45,92,.12);min-height:100px;display:flex;flex-direction:column;gap:.2rem}
+.eh-widget--clock{background:linear-gradient(135deg,#1d2d5c 0%,#07649d 55%,#00a4e4 100%)}
+.eh-widget--weather{background:linear-gradient(135deg,#36ac91 0%,#00a4e4 50%,#6cb33f 100%)}
+.eh-widget--certs{background:linear-gradient(135deg,#6558b1 0%,#1d2d5c 50%,#07649d 100%)}
+.eh-widget__label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+.eh-widget__value{font-size:1.7rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif}
+.eh-widget__meta{font-size:.82rem;opacity:.9}
+.eh-certs-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
+.eh-cert{font-size:.65rem;font-weight:700;padding:.2rem .45rem;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25)}
+.eh-slide{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:21/9;max-height:340px;background:#152447;box-shadow:0 14px 40px rgba(29,45,92,.16);margin-bottom:1.25rem}
+.eh-slide img{width:100%;height:100%;object-fit:cover;display:block}
+.eh-slide__cap{position:absolute;left:0;right:0;bottom:0;padding:1.1rem 1.35rem;background:linear-gradient(transparent,rgba(21,36,71,.88));color:#fff}
+.eh-slide__cap strong{display:block;font-size:1.15rem;font-weight:600;margin-bottom:.2rem}
+.eh-slide__cap span{font-size:.88rem;opacity:.9}
+.eh-slide__nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.9);color:var(--navy);font-size:1.2rem;cursor:pointer;z-index:2}
+.eh-slide__nav--prev{left:.75rem}
+.eh-slide__nav--next{right:.75rem}
+.eh-slide__dots{position:absolute;bottom:.55rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem;z-index:2}
+.eh-slide__dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0}
+.eh-slide__dots button.on{background:#fff;width:18px;border-radius:4px}
+.eh-ribbon{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:.75rem 0 1.25rem}
+.eh-ribbon span{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-size:.55rem;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(29,45,92,.15)}
+.eh-ribbon .cisa{background:linear-gradient(135deg,#e31837,#1d2d5c)}
+.eh-ribbon .aaia{background:linear-gradient(135deg,#e31837,#c0392b)}
+.eh-ribbon .cism{background:linear-gradient(135deg,#6cb33f,#1d2d5c)}
+.eh-ribbon .aism{background:linear-gradient(135deg,#6cb33f,#36ac91)}
+.eh-ribbon .crisc{background:linear-gradient(135deg,#fbb034,#e57524)}
+.eh-ribbon .aair{background:linear-gradient(135deg,#e57524,#c0392b)}
+.eh-ribbon .cgeit{background:linear-gradient(135deg,#00a4e4,#07649d)}
+.eh-ribbon .cdpse{background:linear-gradient(135deg,#07649d,#1d2d5c)}
+.eh-ribbon .ccoa{background:linear-gradient(135deg,#36ac91,#1d2d5c)}
+.eh-video{border-radius:18px;overflow:hidden;background:#0b1220;aspect-ratio:16/9;max-height:460px;box-shadow:0 18px 50px rgba(29,45,92,.2)}
+.eh-video iframe{width:100%;height:100%;border:0;display:block}
+@@media(max-width:900px){.eh-strip{grid-template-columns:1fr}.eh-slide{aspect-ratio:16/9}}
 </style>
 
 <div class="eh" @onclick="CloseAccount">
     <header class="eh-top">
         <div class="eh-brand">
             <div class="eh-logo" aria-hidden="true">C</div>
-            <div>
-                <strong>Isa</strong>
-                <small>ISACA Chapter Support</small>
-            </div>
+            <div><strong>Isa</strong><small>ISACA Chapter Support</small></div>
         </div>
         <div class="eh-actions">
             <a class="eh-link" href="https://openlibrary.org" target="_blank" rel="noopener">Online Library</a>
-            <button type="button" class="eh-account-btn" @onclick="ToggleAccount" @onclick:stopPropagation="true">
-                Account ▾
-            </button>
+            <button type="button" class="eh-account-btn" @onclick="ToggleAccount" @onclick:stopPropagation="true">Account ▾</button>
             @if (accountOpen)
             {
                 <div class="eh-account-panel" @onclick:stopPropagation="true">
@@ -214,73 +93,67 @@
         </div>
         <div class="eh-widget eh-widget--certs">
             <span class="eh-widget__label">ISACA credentials</span>
-            <span class="eh-widget__meta" style="margin-top:0.25rem">Credentialing paths for chapter leaders</span>
+            <span class="eh-widget__meta" style="margin-top:.25rem">Chapter credential pathways</span>
             <div class="eh-certs-row">
-                <span class="eh-cert">CISA</span>
-                <span class="eh-cert">CISM</span>
-                <span class="eh-cert">CRISC</span>
-                <span class="eh-cert">CGEIT</span>
-                <span class="eh-cert">CDPSE</span>
+                <span class="eh-cert">CISA</span><span class="eh-cert">CISM</span>
+                <span class="eh-cert">CRISC</span><span class="eh-cert">CGEIT</span><span class="eh-cert">CDPSE</span>
             </div>
         </div>
     </div>
 
-    <div class="eh-video">
-        <iframe
-            src="https://www.youtube.com/embed/@CurrentVideoId?autoplay=1&mute=1&rel=0&modestbranding=1&playlist=@Playlist"
-            title="ISACA video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen></iframe>
+    <div class="eh-slide">
+        <button type="button" class="eh-slide__nav eh-slide__nav--prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
+        <button type="button" class="eh-slide__nav eh-slide__nav--next" @onclick="NextSlide" aria-label="Next">›</button>
+        <img src="@Slides[slideIndex].Url" alt="@Slides[slideIndex].Title" />
+        <div class="eh-slide__cap">
+            <strong>@Slides[slideIndex].Title</strong>
+            <span>@Slides[slideIndex].Caption</span>
+        </div>
+        <div class="eh-slide__dots">
+            @for (var i = 0; i < Slides.Length; i++)
+            {
+                var idx = i;
+                <button type="button" class="@(idx == slideIndex ? "on" : null)" @onclick="() => GoSlide(idx)" aria-label="Slide @(idx+1)"></button>
+            }
+        </div>
     </div>
 
     <div class="eh-ribbon" aria-label="ISACA certifications">
-        <span class="cisa">CISA</span>
-        <span class="aaia">AAIA</span>
-        <span class="cism">CISM</span>
-        <span class="aism">AISM</span>
-        <span class="crisc">CRISC</span>
-        <span class="aair">AAIR</span>
-        <span class="cgeit">CGEIT</span>
-        <span class="cdpse">CDPSE</span>
-        <span class="ccoa">CCOA</span>
+        <span class="cisa">CISA</span><span class="aaia">AAIA</span><span class="cism">CISM</span>
+        <span class="aism">AISM</span><span class="crisc">CRISC</span><span class="aair">AAIR</span>
+        <span class="cgeit">CGEIT</span><span class="cdpse">CDPSE</span><span class="ccoa">CCOA</span>
     </div>
 
-    <section class="eh-enterprise">
-        <div class="eh-enterprise__copy">
-            <h2>Your future success starts by empowering your team today</h2>
-            <p>
-                Advance your chapter and enterprise with ISACA credentialing, customized team training,
-                and industry-leading resources — from foundational skills to AI learning pathways.
-            </p>
-            <div class="eh-enterprise__btns">
-                <a class="eh-btn eh-btn--solid" href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Explore credentialing</a>
-                <a class="eh-btn eh-btn--ghost" href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise solutions</a>
-                <a class="eh-btn eh-btn--ghost" href="knowledge-base">Knowledge base</a>
-            </div>
-        </div>
-        <div class="eh-enterprise__art">
-            <div class="eh-enterprise__art-inner">
-                <strong>ISACA is your AI learning partner</strong>
-                <span>Foundational to advanced training for career growth and chapter excellence.</span>
-            </div>
-        </div>
-    </section>
+    <div class="eh-video">
+        <iframe src="https://www.youtube.com/embed/@CurrentVideoId?autoplay=1&mute=1&rel=0&modestbranding=1&playlist=@Playlist"
+            title="ISACA video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
 </div>
 
 @code {
     private bool accountOpen;
     private string timeText = "--:--";
     private string dateText = "";
-    private string weatherTemp = "—";
-    private string weatherDesc = "Open weather when online";
+    private string weatherTemp = "72°F";
+    private string weatherDesc = "Partly cloudy · Chapter local";
+    private int slideIndex;
     private System.Threading.Timer? timer;
+    private System.Threading.Timer? slideTimer;
+
+    private static readonly (string Url, string Title, string Caption)[] Slides =
+    {
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/enterprise2/landing/enterprise-550x550.png", "Enterprise solutions", "Empower your team with ISACA training and credentials"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/credentials/misc/credentialing-landing-search-tile.png", "Credentialing", "Build digital trust with industry-leading certifications"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/credentials/misc/badges-tile.png", "Certification badges", "CISA, CISM, CRISC, CGEIT, CDPSE and more"),
+        ("https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80", "Chapter leadership", "Connect leaders and grow local impact"),
+        ("https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80", "Team learning", "Foundational to advanced AI and IT pathways"),
+        ("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80", "Governance & risk", "Practical resources for chapter operations"),
+    };
 
     private static readonly string[] VideoIds =
     {
-        "nqxTZWaFhnM", "JRAUhgIy8LY", "cIxtlh_LuR4",
-        "LdRVeCLJO9I", "sLZyoqCzKdA", "arRQbN68ceE"
+        "nqxTZWaFhnM","JRAUhgIy8LY","cIxtlh_LuR4","LdRVeCLJO9I","sLZyoqCzKdA","arRQbN68ceE"
     };
-
     private string CurrentVideoId = "nqxTZWaFhnM";
     private string Playlist = "";
 
@@ -291,10 +164,7 @@
         Playlist = string.Join(",", VideoIds);
         Tick(null);
         timer = new System.Threading.Timer(Tick, null, 1000, 1000);
-
-        // Simple display weather (no API key required for demo label)
-        weatherTemp = "72°F";
-        weatherDesc = "Partly cloudy · Chapter local";
+        slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % Slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 6000, 6000);
     }
 
     private void Tick(object? _)
@@ -305,8 +175,10 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
+    private void PrevSlide() => slideIndex = (slideIndex - 1 + Slides.Length) % Slides.Length;
+    private void NextSlide() => slideIndex = (slideIndex + 1) % Slides.Length;
+    private void GoSlide(int i) => slideIndex = i;
     private void ToggleAccount() => accountOpen = !accountOpen;
     private void CloseAccount() => accountOpen = false;
-
-    public void Dispose() => timer?.Dispose();
+    public void Dispose() { timer?.Dispose(); slideTimer?.Dispose(); }
 }
