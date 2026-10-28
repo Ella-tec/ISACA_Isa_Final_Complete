@@ -5,9 +5,9 @@
 <PageTitle>Isa | Chapter Support Assistant</PageTitle>
 
 <style>
-.eh{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--muted:#5f6b85;--line:#e2e8f0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto;padding-bottom:2.5rem}
+.eh{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto;padding-bottom:2.5rem}
 .eh a{text-decoration:none!important}
-.eh-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
+.eh-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1rem}
 .eh-brand{display:flex;align-items:center;gap:.65rem}
 .eh-logo{width:42px;height:42px;border-radius:12px;background:#fff;border:2px solid var(--green);color:var(--green);display:grid;place-items:center;font-weight:800;font-size:1.25rem}
 .eh-brand strong{display:block;font-size:1.15rem;line-height:1.1}
@@ -20,34 +20,26 @@
 .eh-account-panel a{display:block;padding:.55rem .75rem;border-radius:9px;color:var(--navy)!important;font-weight:500;font-size:.88rem}
 .eh-account-panel a:hover{background:var(--light)}
 .eh-account-panel .sep{height:1px;background:var(--line);margin:.3rem 0}
-.eh-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.85rem;margin-bottom:1.15rem}
-.eh-widget{border-radius:16px;padding:1rem 1.15rem;color:#fff;box-shadow:0 10px 28px rgba(29,45,92,.12);min-height:100px;display:flex;flex-direction:column;gap:.2rem}
+.eh-strip{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1.15rem}
+.eh-widget{border-radius:16px;padding:1rem 1.15rem;color:#fff;box-shadow:0 10px 28px rgba(29,45,92,.12);min-height:96px;display:flex;flex-direction:column;gap:.2rem}
 .eh-widget--clock{background:linear-gradient(135deg,#1d2d5c 0%,#07649d 55%,#00a4e4 100%)}
 .eh-widget--weather{background:linear-gradient(135deg,#36ac91 0%,#00a4e4 50%,#6cb33f 100%)}
-.eh-widget--certs{background:linear-gradient(135deg,#6558b1 0%,#1d2d5c 50%,#07649d 100%)}
 .eh-widget__label{font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
 .eh-widget__value{font-size:1.7rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif}
 .eh-widget__meta{font-size:.82rem;opacity:.9}
-.eh-certs-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
-.eh-cert{font-size:.65rem;font-weight:700;padding:.2rem .45rem;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25)}
-.eh-library{background:linear-gradient(135deg,#f0f7fc 0%,#e8f5ee 100%);border:1px solid #cfe3f2;border-radius:16px;padding:1.1rem 1.35rem;margin-bottom:1.25rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between}
-.eh-library h3{margin:0 0 .2rem;font-size:1.05rem;font-weight:600}
-.eh-library p{margin:0;font-size:.86rem;color:var(--muted)}
-.eh-library .eh-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.15rem;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important;font-weight:600;font-size:.88rem;box-shadow:0 4px 14px rgba(29,45,92,.2)}
-.eh-library .eh-btn:hover{filter:brightness(1.08)}
-.eh-slide{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:21/9;max-height:340px;background:#152447;box-shadow:0 14px 40px rgba(29,45,92,.16);margin-bottom:1.25rem}
+.eh-slide{position:relative;border-radius:20px;overflow:hidden;aspect-ratio:16/7;max-height:420px;background:#152447;box-shadow:0 16px 44px rgba(29,45,92,.18);margin-bottom:1.35rem}
 .eh-slide img{width:100%;height:100%;object-fit:cover;display:block}
-.eh-slide__cap{position:absolute;left:0;right:0;bottom:0;padding:1.1rem 1.35rem;background:linear-gradient(transparent,rgba(21,36,71,.88));color:#fff}
-.eh-slide__cap strong{display:block;font-size:1.15rem;font-weight:600;margin-bottom:.2rem}
-.eh-slide__cap span{font-size:.88rem;opacity:.9}
-.eh-slide__nav{position:absolute;top:50%;transform:translateY(-50%);width:40px;height:40px;border-radius:50%;border:none;background:rgba(255,255,255,.9);color:var(--navy);font-size:1.2rem;cursor:pointer;z-index:2}
-.eh-slide__nav--prev{left:.75rem}
-.eh-slide__nav--next{right:.75rem}
-.eh-slide__dots{position:absolute;bottom:.55rem;left:50%;transform:translateX(-50%);display:flex;gap:.35rem;z-index:2}
-.eh-slide__dots button{width:8px;height:8px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0}
-.eh-slide__dots button.on{background:#fff;width:18px;border-radius:4px}
-.eh-ribbon{display:flex;flex-wrap:wrap;justify-content:center;gap:.5rem;padding:.75rem 0 1.25rem}
-.eh-ribbon span{width:50px;height:50px;border-radius:50%;display:grid;place-items:center;font-size:.55rem;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(29,45,92,.15)}
+.eh-slide__cap{position:absolute;left:0;right:0;bottom:0;padding:1.25rem 1.5rem;background:linear-gradient(transparent,rgba(21,36,71,.9));color:#fff}
+.eh-slide__cap strong{display:block;font-size:1.25rem;font-weight:600;margin-bottom:.25rem}
+.eh-slide__cap span{font-size:.9rem;opacity:.92}
+.eh-slide__nav{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:none;background:rgba(255,255,255,.92);color:var(--navy);font-size:1.3rem;cursor:pointer;z-index:2;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+.eh-slide__nav--prev{left:1rem}
+.eh-slide__nav--next{right:1rem}
+.eh-slide__dots{position:absolute;bottom:.7rem;left:50%;transform:translateX(-50%);display:flex;gap:.4rem;z-index:2}
+.eh-slide__dots button{width:9px;height:9px;border-radius:50%;border:none;background:rgba(255,255,255,.45);cursor:pointer;padding:0}
+.eh-slide__dots button.on{background:#fff;width:22px;border-radius:5px}
+.eh-ribbon{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;padding:.6rem 0 1.35rem}
+.eh-ribbon span{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:.56rem;font-weight:800;color:#fff;box-shadow:0 4px 12px rgba(29,45,92,.15)}
 .eh-ribbon .cisa{background:linear-gradient(135deg,#e31837,#1d2d5c)}
 .eh-ribbon .aaia{background:linear-gradient(135deg,#e31837,#c0392b)}
 .eh-ribbon .cism{background:linear-gradient(135deg,#6cb33f,#1d2d5c)}
@@ -57,11 +49,10 @@
 .eh-ribbon .cgeit{background:linear-gradient(135deg,#00a4e4,#07649d)}
 .eh-ribbon .cdpse{background:linear-gradient(135deg,#07649d,#1d2d5c)}
 .eh-ribbon .ccoa{background:linear-gradient(135deg,#36ac91,#1d2d5c)}
-.eh-video-section{margin-top:.25rem}
-.eh-video-section h2{font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem;margin:0 0 .75rem;color:var(--navy)}
-.eh-video{border-radius:18px;overflow:hidden;background:#0b1220;aspect-ratio:16/9;max-height:460px;box-shadow:0 18px 50px rgba(29,45,92,.2)}
+.eh-video-section h2{font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.35rem;margin:0 0 .85rem;color:var(--navy)}
+.eh-video{border-radius:18px;overflow:hidden;background:#0b1220;aspect-ratio:16/9;max-height:520px;box-shadow:0 18px 50px rgba(29,45,92,.22)}
 .eh-video iframe{width:100%;height:100%;border:0;display:block}
-@@media(max-width:900px){.eh-strip{grid-template-columns:1fr}.eh-slide{aspect-ratio:16/9}}
+@@media(max-width:900px){.eh-strip{grid-template-columns:1fr}.eh-slide{aspect-ratio:16/9;max-height:320px}}
 </style>
 
 <div class="eh" @onclick="CloseAccount">
@@ -73,6 +64,7 @@
         <div class="eh-actions">
             <a class="eh-link" href="/resource-library">Online Library</a>
             <a class="eh-link" href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
+            <a class="eh-link" href="/contact">Contact</a>
             <button type="button" class="eh-account-btn" @onclick="ToggleAccount" @onclick:stopPropagation="true">Account ▾</button>
             @if (accountOpen)
             {
@@ -88,7 +80,7 @@
         </div>
     </header>
 
-    <!-- Clock + Weather (kept) -->
+    <!-- Clock + Weather only -->
     <div class="eh-strip">
         <div class="eh-widget eh-widget--clock">
             <span class="eh-widget__label">Local time</span>
@@ -100,26 +92,9 @@
             <span class="eh-widget__value">@weatherTemp</span>
             <span class="eh-widget__meta">@weatherDesc</span>
         </div>
-        <div class="eh-widget eh-widget--certs">
-            <span class="eh-widget__label">ISACA credentials</span>
-            <span class="eh-widget__meta" style="margin-top:.25rem">Chapter credential pathways</span>
-            <div class="eh-certs-row">
-                <span class="eh-cert">CISA</span><span class="eh-cert">CISM</span>
-                <span class="eh-cert">CRISC</span><span class="eh-cert">CGEIT</span><span class="eh-cert">CDPSE</span>
-            </div>
-        </div>
     </div>
 
-    <!-- Online Library highlight -->
-    <div class="eh-library">
-        <div>
-            <h3>Online Library & Resources</h3>
-            <p>Chapter guides, policies, white papers and ISACA digital resources.</p>
-        </div>
-        <a class="eh-btn" href="/resource-library">Open Resource Library →</a>
-    </div>
-
-    <!-- 6-image slideshow from ISACA / related -->
+    <!-- Larger slideshow -->
     <div class="eh-slide">
         <button type="button" class="eh-slide__nav eh-slide__nav--prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
         <button type="button" class="eh-slide__nav eh-slide__nav--next" @onclick="NextSlide" aria-label="Next">›</button>
@@ -132,7 +107,7 @@
             @for (var i = 0; i < Slides.Length; i++)
             {
                 var idx = i;
-                <button type="button" class="@(idx == slideIndex ? "on" : null)" @onclick="() => GoSlide(idx)" aria-label="Slide @(idx+1)"></button>
+                <button type="button" class="@(idx == slideIndex ? "on" : null)" @onclick="() => GoSlide(idx)" aria-label="Slide @(idx + 1)"></button>
             }
         </div>
     </div>
@@ -143,7 +118,7 @@
         <span class="cgeit">CGEIT</span><span class="cdpse">CDPSE</span><span class="ccoa">CCOA</span>
     </div>
 
-    <!-- VIDEO AT THE BOTTOM -->
+    <!-- Larger video at bottom -->
     <div class="eh-video-section">
         <h2>Featured ISACA video</h2>
         <div class="eh-video">
@@ -163,7 +138,7 @@
     private System.Threading.Timer? timer;
     private System.Threading.Timer? slideTimer;
 
-    private static readonly (string Url, string Title, string Caption)[] Slides =
+    private static readonly (string Url, string Title, string Caption)[] NSlides =
     {
         ("https://www.isaca.org/-/media/images/isacadp/project/isaca/resources/whitepapers/security-debt-the-unseen-risk-undermining-cyber-resilience/security-debt-the-unseen_550.png?mw=550", "Security Debt", "The unseen risk undermining cyber resilience"),
         ("https://www.isaca.org/-/media/images/isacadp/project/isaca/journal/2026/volume-5/j26v5.png?mw=550", "ISACA Journal 2026", "The Fundamentals of Trust — Volume 5"),
@@ -172,6 +147,8 @@
         ("https://www.isaca.org/-/media/images/isacadp/project/isaca/digital-trust/businesses-250.png?la=en&h=250&w=250", "For Business", "In-depth training and enterprise solutions"),
         ("https://www.isaca.org/-/media/images/isacadp/project/isaca/career-journey/careers/career-page_tile_550x550.png?mw=550", "Career Journeys", "Map your path with ISACA credentials"),
     };
+
+    private (string Url, string Title, string Caption)[] Slides => NSlides;
 
     private static readonly string[] VideoIds =
     {
@@ -198,8 +175,8 @@
         _ = InvokeAsync(StateHasChanged);
     }
 
-    private void PrevSlide() => slideIndex = (slideIndex - 1 + Slides.Length) % Slides.Length;
-    private void NextSlide() => slideIndex = (slideIndex + 1) % Slides.Length;
+    private void PrevSlide() => slideIndex = (slideIndex - 1 + NSlides.Length) % NSlides.Length;
+    private void NextSlide() => slideIndex = (slideIndex + 1) % NSlides.Length;
     private void GoSlide(int i) => slideIndex = i;
     private void ToggleAccount() => accountOpen = !accountOpen;
     private void CloseAccount() => accountOpen = false;
