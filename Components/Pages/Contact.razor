@@ -1,0 +1,72 @@
+@page "/contact"
+@rendermode InteractiveServer
+
+<PageTitle>Contact | Isa</PageTitle>
+
+<style>
+.ct{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:900px;margin:0 auto}
+.ct-hero{border-radius:20px;padding:1.5rem 1.75rem;color:#fff;margin-bottom:1.15rem;
+background:linear-gradient(120deg,#1d2d5c,#07649d,#00a4e4);box-shadow:0 14px 40px rgba(29,45,92,.16)}
+.ct-hero h1{margin:.2rem 0 .4rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.75rem}
+.ct-hero p{margin:0;opacity:.92}
+.ct-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.ct-card{background:#fff;border-radius:16px;padding:1.25rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.ct-card h2{margin:0 0 .75rem;font-size:1.05rem}
+.ct label{display:block;font-size:.8rem;font-weight:600;margin:0 0 .3rem;color:var(--muted)}
+.ct input,.ct textarea,.ct select{width:100%;box-sizing:border-box;padding:.65rem .75rem;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-size:.92rem;margin-bottom:.75rem}
+.ct-btn{border:none;cursor:pointer;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;font-weight:600;padding:.65rem 1.2rem;border-radius:10px;font-family:inherit}
+.ct-ok{margin-top:.75rem;padding:.75rem 1rem;border-radius:10px;background:#e8f6e8;color:#2d6a2d;font-weight:600}
+.ct-list{list-style:none;padding:0;margin:0}
+.ct-list li{padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.92rem}
+@@media(max-width:700px){.ct-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="ct">
+    <header class="ct-hero">
+        <h1>Contact</h1>
+        <p>Reach chapter experience support or send a message to the Isa team.</p>
+    </header>
+    <div class="ct-grid">
+        <article class="ct-card">
+            <h2>Send a message</h2>
+            <label>Your name</label>
+            <input @bind="name" placeholder="Full name" />
+            <label>Email</label>
+            <input @bind="email" placeholder="you@chapter.org" />
+            <label>Topic</label>
+            <select @bind="topic">
+                <option>General question</option>
+                <option>Membership</option>
+                <option>Events</option>
+                <option>Technical issue</option>
+                <option>Escalation follow-up</option>
+            </select>
+            <label>Message</label>
+            <textarea rows="5" @bind="message" placeholder="How can we help?"></textarea>
+            <button type="button" class="ct-btn" @onclick="Send">Send message</button>
+            @if (sent)
+            {
+                <div class="ct-ok">Message recorded. Reference @refId</div>
+            }
+        </article>
+        <article class="ct-card">
+            <h2>Chapter channels</h2>
+            <ul class="ct-list">
+                <li><strong>Escalations</strong> Use Escalations &amp; Tickets in the sidebar</li>
+                <li><strong>ISACA global</strong> <a href="https://www.isaca.org/contact-us" target="_blank" rel="noopener">isaca.org/contact-us</a></li>
+            </ul>
+        </article>
+    </div>
+</section>
+
+@code {
+    private string name = "", email = "", topic = "General question", message = "", refId = "";
+    private bool sent;
+    private void Send()
+    {
+        if (string.IsNullOrWhiteSpace(message)) return;
+        refId = $"ISA-C{DateTime.Now:yyMMdd}-{Random.Shared.Next(100,999)}";
+        sent = true;
+    }
+}
