@@ -1,121 +1,111 @@
 @page "/events"
 @rendermode InteractiveServer
+
 <PageTitle>Events & Calendar | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">CHAPTER EXPERIENCE</p>
-            <h1>Events & calendar</h1>
-            <p class="isa-intro">Keep chapter activities, webinars, and learning opportunities organized in one place.</p>
+<style>
+.ev{--accent:#2e7d32;--accent2:#43a047;--soft:#e8f5e9;--navy:#1d2d5c;--muted:#5f6b85;--line:#e2e8f0;max-width:1100px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.ev-hero{background:linear-gradient(125deg,#1b5e20 0%,#2e7d32 45%,#66bb6a 100%);color:#fff;border-radius:20px;padding:1.5rem 1.6rem;margin-bottom:1.25rem;box-shadow:0 12px 32px rgba(46,125,50,.25)}
+.ev-hero h1{margin:.2rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.75rem}
+.ev-hero p{margin:.4rem 0 0;opacity:.92;max-width:52ch}
+.ev-hero .actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}
+.ev-btn{border:none;border-radius:10px;padding:.55rem 1.1rem;font-weight:600;font-size:.9rem;cursor:pointer;font-family:inherit}
+.ev-btn--solid{background:#fff;color:var(--accent)}
+.ev-btn--ghost{background:rgba(255,255,255,.18);color:#fff;border:1px solid rgba(255,255,255,.4)}
+.ev-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem;margin-bottom:1.25rem}
+.ev-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 6px 16px rgba(46,125,50,.08)}
+.ev-stat span{font-size:.72rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.ev-stat strong{display:block;font-size:1.5rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif;color:var(--accent);margin:.2rem 0}
+.ev-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:1.1rem}
+.ev-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.2rem 1.25rem;box-shadow:0 8px 22px rgba(46,125,50,.07)}
+.ev-card h2{margin:0 0 .35rem;font-size:1.1rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
+.ev-row{display:flex;align-items:center;gap:.85rem;padding:.75rem 0;border-bottom:1px solid #f1f5f9}
+.ev-row:last-child{border-bottom:none}
+.ev-date{width:48px;text-align:center;background:var(--soft);border-radius:10px;padding:.35rem;color:var(--accent)}
+.ev-date strong{display:block;font-size:1.15rem;line-height:1.1}
+.ev-date span{font-size:.7rem;font-weight:700}
+.ev-copy{flex:1}
+.ev-copy strong{display:block;font-size:.95rem}
+.ev-copy span{font-size:.82rem;color:var(--muted)}
+.ev-form{display:grid;grid-template-columns:1fr 1fr;gap:.75rem;margin-top:.75rem}
+.ev-form label{display:grid;gap:.25rem;font-size:.8rem;font-weight:600;color:var(--muted)}
+.ev-form input,.ev-form select{border:1.5px solid var(--line);border-radius:10px;padding:.5rem .7rem;font:inherit}
+.ev-form input:focus,.ev-form select:focus{outline:none;border-color:var(--accent)}
+.ev-toast{margin-top:.75rem;padding:.55rem .85rem;background:var(--soft);border-radius:10px;font-size:.88rem;color:var(--accent);font-weight:600}
+@@media(max-width:900px){.ev-stats{grid-template-columns:1fr}.ev-grid{grid-template-columns:1fr}.ev-form{grid-template-columns:1fr}}
+</style>
+
+<section class="ev">
+    <header class="ev-hero">
+        <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.9">CHAPTER EXPERIENCE</p>
+        <h1>Events & calendar</h1>
+        <p>Keep chapter activities, webinars and learning opportunities organized in one place.</p>
+        <div class="actions">
+            <button type="button" class="ev-btn ev-btn--solid" @onclick="() => ShowForm = !ShowForm">@(ShowForm ? "Hide form" : "+ Add event")</button>
         </div>
-        <button class="isa-btn isa-btn--primary" @onclick="() => ShowForm = !ShowForm">
-            @(ShowForm ? "Hide form" : "+ Add event")
-        </button>
-    </div>
-<div class="isa-stat-grid isa-stat-grid--three">
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon blue">▦</span>
-            <span class="isa-stat-label">Upcoming</span>
-            <strong>@EventsList.Count(e => e.Date >= DateTime.Today)</strong>
-            <small>Scheduled events</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon green">◉</span>
-            <span class="isa-stat-label">This month</span>
-            <strong>@EventsList.Count(e => e.Date.Month == DateTime.Today.Month && e.Date.Year == DateTime.Today.Year)</strong>
-            <small>@DateTime.Today.ToString("MMMM")</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon purple">文</span>
-            <span class="isa-stat-label">Online</span>
-            <strong>@EventsList.Count(e => e.Location.Contains("Online", StringComparison.OrdinalIgnoreCase))</strong>
-            <small>Virtual sessions</small>
-        </article>
+    </header>
+
+    <div class="ev-stats">
+        <div class="ev-stat"><span>Upcoming</span><strong>@EventsList.Count(e => e.Date >= DateTime.Today)</strong></div>
+        <div class="ev-stat"><span>This month</span><strong>@EventsList.Count(e => e.Date.Month == DateTime.Today.Month)</strong></div>
+        <div class="ev-stat"><span>Online</span><strong>@EventsList.Count(e => e.Location.Contains("Online", StringComparison.OrdinalIgnoreCase))</strong></div>
     </div>
 
     @if (ShowForm)
     {
-        <article class="isa-panel" style="margin-bottom:1.25rem">
-            <div class="isa-panel-heading">
-                <div><h2>Add an event</h2><p>Create a local sample event for this session</p></div>
+        <article class="ev-card" style="margin-bottom:1.15rem">
+            <h2>Add an event</h2>
+            <div class="ev-form">
+                <label>Event name <input @bind="NewEvent.Title" placeholder="e.g. Chapter Meetup" /></label>
+                <label>Date <input type="date" @bind="NewEvent.Date" /></label>
+                <label>Type
+                    <select @bind="NewEvent.Type">
+                        <option>Webinar</option><option>Networking</option><option>Workshop</option><option>Meeting</option><option>Conference</option>
+                    </select>
+                </label>
+                <label>Location / link <input @bind="NewEvent.Location" placeholder="Online or venue" /></label>
             </div>
-            <EditForm Model="NewEvent" OnValidSubmit="AddEvent">
-                <div class="isa-form-grid">
-                    <label class="isa-field">Event name <InputText class="form-control" @bind-Value="NewEvent.Title" /></label>
-                    <label class="isa-field">Date <InputDate class="form-control" @bind-Value="NewEvent.Date" /></label>
-                    <label class="isa-field">Event type
-                        <InputSelect class="form-select" @bind-Value="NewEvent.Type">
-                            <option>Webinar</option>
-                            <option>Networking</option>
-                            <option>Workshop</option>
-                            <option>Meeting</option>
-                            <option>Conference</option>
-                        </InputSelect>
-                    </label>
-                    <label class="isa-field">Location / link <InputText class="form-control" @bind-Value="NewEvent.Location" /></label>
-                </div>
-                <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem">
-                    <button class="isa-btn isa-btn--primary" type="submit">Add event</button>
-                    @if (!string.IsNullOrWhiteSpace(Message))
-                    {
-                        <span class="isa-success" role="status">@Message</span>
-                    }
-                </div>
-            </EditForm>
+            <div style="margin-top:1rem">
+                <button type="button" class="ev-btn" style="background:var(--accent);color:#fff" @onclick="AddEvent">Add event</button>
+            </div>
+            @if (!string.IsNullOrEmpty(Message)) { <div class="ev-toast">@Message</div> }
         </article>
     }
 
-    <div class="isa-content-grid">
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Upcoming events</h2><p>@EventsList.Count event(s) in this sample list</p></div>
-                <InputSelect class="form-select isa-status-select" @bind-Value="TypeFilter" style="min-width:130px">
+    <div class="ev-grid">
+        <article class="ev-card">
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem">
+                <h2 style="margin:0">Upcoming events</h2>
+                <select @bind="TypeFilter" style="border:1.5px solid var(--line);border-radius:8px;padding:.35rem .6rem;font:inherit">
                     <option value="">All types</option>
-                    <option>Webinar</option>
-                    <option>Networking</option>
-                    <option>Workshop</option>
-                    <option>Meeting</option>
-                    <option>Conference</option>
-                </InputSelect>
+                    <option>Webinar</option><option>Networking</option><option>Workshop</option><option>Meeting</option><option>Conference</option>
+                </select>
             </div>
-            @foreach (var ev in FilteredEvents)
+            @foreach (var ev in Filtered)
             {
-                <div class="isa-event-row">
-                    <div class="isa-event-date">
-                        <strong>@ev.Date.ToString("dd")</strong>
-                        <span>@ev.Date.ToString("MMM")</span>
-                    </div>
-                    <div class="isa-event-copy">
-                        <strong>@ev.Title</strong>
-                        <span>@ev.Type · @ev.Location</span>
-                    </div>
-                    <span class="isa-pill">@ev.Date.ToString("ddd")</span>
-                    <button type="button" class="isa-btn isa-btn--ghost" style="padding:.25rem .5rem;font-size:.75rem" @onclick="() => RemoveEvent(ev)" title="Remove">✕</button>
+                <div class="ev-row">
+                    <div class="ev-date"><strong>@ev.Date.ToString("dd")</strong><span>@ev.Date.ToString("MMM")</span></div>
+                    <div class="ev-copy"><strong>@ev.Title</strong><span>@ev.Type · @ev.Location</span></div>
+                    <button type="button" style="border:none;background:var(--soft);color:var(--accent);border-radius:8px;padding:.3rem .55rem;cursor:pointer;font-weight:700" @onclick="() => Remove(ev)">✕</button>
                 </div>
             }
-            @if (!FilteredEvents.Any())
-            {
-                <div class="isa-empty">No events match the selected filter.</div>
-            }
+            @if (!Filtered.Any()) { <p style="color:var(--muted);font-size:.9rem">No events match the filter.</p> }
         </article>
 
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>By type</h2><p>Distribution of sample events</p></div>
-            </div>
+        <article class="ev-card">
+            <h2>By type</h2>
             @foreach (var g in EventsList.GroupBy(e => e.Type).OrderByDescending(g => g.Count()))
             {
                 var pct = EventsList.Count == 0 ? 0 : (int)Math.Round(100.0 * g.Count() / EventsList.Count);
-                <div class="isa-category-row">
-                    <div><span>@g.Key</span><strong>@g.Count()</strong></div>
-                    <div class="isa-progress"><span style="width:@($"{pct}%")"></span></div>
+                <div style="margin:.6rem 0">
+                    <div style="display:flex;justify-content:space-between;font-size:.88rem"><span>@g.Key</span><strong>@g.Count()</strong></div>
+                    <div style="height:7px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:.25rem"><div style="height:100%;width:@(pct)%;background:var(--accent);border-radius:99px"></div></div>
                 </div>
             }
-            <h3 class="isa-subheading">Planning tips</h3>
-            <ul class="isa-action-list">
-                <li>Publish registration links at least 3 weeks ahead</li>
-                <li>Collect CPE eligibility details before the event</li>
+            <h3 style="margin:1.1rem 0 .5rem;font-size:.95rem">Planning tips</h3>
+            <ul style="margin:0;padding-left:1.1rem;font-size:.88rem;color:var(--muted);line-height:1.55">
+                <li>Publish registration at least 3 weeks ahead</li>
+                <li>Collect CPE details before the event</li>
                 <li>Send a reminder 48 hours prior</li>
                 <li>Log attendance for chapter reporting</li>
             </ul>
@@ -139,33 +129,19 @@
 
     private ChapterEvent NewEvent = new() { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
 
-    private IEnumerable<ChapterEvent> FilteredEvents => EventsList
+    private IEnumerable<ChapterEvent> Filtered => EventsList
         .Where(e => string.IsNullOrWhiteSpace(TypeFilter) || e.Type == TypeFilter)
         .OrderBy(e => e.Date);
 
     private void AddEvent()
     {
-        if (string.IsNullOrWhiteSpace(NewEvent.Title))
-        {
-            Message = "Please enter an event name.";
-            return;
-        }
-        EventsList.Add(new ChapterEvent
-        {
-            Title = NewEvent.Title.Trim(),
-            Date = NewEvent.Date,
-            Type = NewEvent.Type,
-            Location = string.IsNullOrWhiteSpace(NewEvent.Location) ? "To be confirmed" : NewEvent.Location.Trim()
-        });
-        Message = $"Added “{NewEvent.Title}” to this session's sample list.";
+        if (string.IsNullOrWhiteSpace(NewEvent.Title)) { Message = "Please enter an event name."; return; }
+        EventsList.Add(new ChapterEvent { Title = NewEvent.Title.Trim(), Date = NewEvent.Date, Type = NewEvent.Type, Location = string.IsNullOrWhiteSpace(NewEvent.Location) ? "TBC" : NewEvent.Location.Trim() });
+        Message = $"Added “{NewEvent.Title}”.";
         NewEvent = new ChapterEvent { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
     }
 
-    private void RemoveEvent(ChapterEvent ev)
-    {
-        EventsList.Remove(ev);
-        Message = $"Removed “{ev.Title}”.";
-    }
+    private void Remove(ChapterEvent ev) { EventsList.Remove(ev); Message = $"Removed “{ev.Title}”."; }
 
     private sealed class ChapterEvent
     {
