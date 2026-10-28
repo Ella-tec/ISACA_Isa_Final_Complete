@@ -5,7 +5,7 @@
 <PageTitle>Isa | Chapter Support Assistant</PageTitle>
 
 <style>
-.eh{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--muted:#5f6b85;--line:#e2e8f0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto;padding-bottom:2rem}
+.eh{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--muted:#5f6b85;--line:#e2e8f0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto;padding-bottom:2.5rem}
 .eh a{text-decoration:none!important}
 .eh-top{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.1rem}
 .eh-brand{display:flex;align-items:center;gap:.65rem}
@@ -30,6 +30,11 @@
 .eh-widget__meta{font-size:.82rem;opacity:.9}
 .eh-certs-row{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.35rem}
 .eh-cert{font-size:.65rem;font-weight:700;padding:.2rem .45rem;border-radius:999px;background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.25)}
+.eh-library{background:linear-gradient(135deg,#f0f7fc 0%,#e8f5ee 100%);border:1px solid #cfe3f2;border-radius:16px;padding:1.1rem 1.35rem;margin-bottom:1.25rem;display:flex;flex-wrap:wrap;align-items:center;gap:1rem;justify-content:space-between}
+.eh-library h3{margin:0 0 .2rem;font-size:1.05rem;font-weight:600}
+.eh-library p{margin:0;font-size:.86rem;color:var(--muted)}
+.eh-library .eh-btn{display:inline-flex;align-items:center;gap:.4rem;padding:.55rem 1.15rem;border-radius:10px;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important;font-weight:600;font-size:.88rem;box-shadow:0 4px 14px rgba(29,45,92,.2)}
+.eh-library .eh-btn:hover{filter:brightness(1.08)}
 .eh-slide{position:relative;border-radius:18px;overflow:hidden;aspect-ratio:21/9;max-height:340px;background:#152447;box-shadow:0 14px 40px rgba(29,45,92,.16);margin-bottom:1.25rem}
 .eh-slide img{width:100%;height:100%;object-fit:cover;display:block}
 .eh-slide__cap{position:absolute;left:0;right:0;bottom:0;padding:1.1rem 1.35rem;background:linear-gradient(transparent,rgba(21,36,71,.88));color:#fff}
@@ -52,6 +57,8 @@
 .eh-ribbon .cgeit{background:linear-gradient(135deg,#00a4e4,#07649d)}
 .eh-ribbon .cdpse{background:linear-gradient(135deg,#07649d,#1d2d5c)}
 .eh-ribbon .ccoa{background:linear-gradient(135deg,#36ac91,#1d2d5c)}
+.eh-video-section{margin-top:.25rem}
+.eh-video-section h2{font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem;margin:0 0 .75rem;color:var(--navy)}
 .eh-video{border-radius:18px;overflow:hidden;background:#0b1220;aspect-ratio:16/9;max-height:460px;box-shadow:0 18px 50px rgba(29,45,92,.2)}
 .eh-video iframe{width:100%;height:100%;border:0;display:block}
 @@media(max-width:900px){.eh-strip{grid-template-columns:1fr}.eh-slide{aspect-ratio:16/9}}
@@ -64,14 +71,15 @@
             <div><strong>Isa</strong><small>ISACA Chapter Support</small></div>
         </div>
         <div class="eh-actions">
-            <a class="eh-link" href="https://openlibrary.org" target="_blank" rel="noopener">Online Library</a>
+            <a class="eh-link" href="/resource-library">Online Library</a>
+            <a class="eh-link" href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
             <button type="button" class="eh-account-btn" @onclick="ToggleAccount" @onclick:stopPropagation="true">Account ▾</button>
             @if (accountOpen)
             {
                 <div class="eh-account-panel" @onclick:stopPropagation="true">
-                    <a href="settings">Profile &amp; preferences</a>
+                    <a href="settings">Profile & preferences</a>
                     <a href="settings">Notifications</a>
-                    <a href="users-settings">Users &amp; roles</a>
+                    <a href="users-settings">Users & roles</a>
                     <a href="isa-config">Isa configuration</a>
                     <div class="sep"></div>
                     <a href="sign-in">Sign out</a>
@@ -80,6 +88,7 @@
         </div>
     </header>
 
+    <!-- Clock + Weather (kept) -->
     <div class="eh-strip">
         <div class="eh-widget eh-widget--clock">
             <span class="eh-widget__label">Local time</span>
@@ -101,6 +110,16 @@
         </div>
     </div>
 
+    <!-- Online Library highlight -->
+    <div class="eh-library">
+        <div>
+            <h3>Online Library & Resources</h3>
+            <p>Chapter guides, policies, white papers and ISACA digital resources.</p>
+        </div>
+        <a class="eh-btn" href="/resource-library">Open Resource Library →</a>
+    </div>
+
+    <!-- 6-image slideshow from ISACA / related -->
     <div class="eh-slide">
         <button type="button" class="eh-slide__nav eh-slide__nav--prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
         <button type="button" class="eh-slide__nav eh-slide__nav--next" @onclick="NextSlide" aria-label="Next">›</button>
@@ -124,9 +143,13 @@
         <span class="cgeit">CGEIT</span><span class="cdpse">CDPSE</span><span class="ccoa">CCOA</span>
     </div>
 
-    <div class="eh-video">
-        <iframe src="https://www.youtube.com/embed/@CurrentVideoId?autoplay=1&mute=1&rel=0&modestbranding=1&playlist=@Playlist"
-            title="ISACA video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <!-- VIDEO AT THE BOTTOM -->
+    <div class="eh-video-section">
+        <h2>Featured ISACA video</h2>
+        <div class="eh-video">
+            <iframe src="https://www.youtube.com/embed/@CurrentVideoId?rel=0&modestbranding=1&playlist=@Playlist"
+                title="ISACA video" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
     </div>
 </div>
 
@@ -142,12 +165,12 @@
 
     private static readonly (string Url, string Title, string Caption)[] Slides =
     {
-        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/enterprise2/landing/enterprise-550x550.png", "Enterprise solutions", "Empower your team with ISACA training and credentials"),
-        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/credentials/misc/credentialing-landing-search-tile.png", "Credentialing", "Build digital trust with industry-leading certifications"),
-        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/credentials/misc/badges-tile.png", "Certification badges", "CISA, CISM, CRISC, CGEIT, CDPSE and more"),
-        ("https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200&q=80", "Chapter leadership", "Connect leaders and grow local impact"),
-        ("https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200&q=80", "Team learning", "Foundational to advanced AI and IT pathways"),
-        ("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200&q=80", "Governance & risk", "Practical resources for chapter operations"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/resources/whitepapers/security-debt-the-unseen-risk-undermining-cyber-resilience/security-debt-the-unseen_550.png?mw=550", "Security Debt", "The unseen risk undermining cyber resilience"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/journal/2026/volume-5/j26v5.png?mw=550", "ISACA Journal 2026", "The Fundamentals of Trust — Volume 5"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/external/products/tools/md-wpaiat.png?mw=550", "AI Impact Assessment", "Evaluate ethical consequences of AI projects"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/digital-trust/individuals-250.png?la=en&h=250&w=250", "For Individuals", "Advance your IT skills and career pathways"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/digital-trust/businesses-250.png?la=en&h=250&w=250", "For Business", "In-depth training and enterprise solutions"),
+        ("https://www.isaca.org/-/media/images/isacadp/project/isaca/career-journey/careers/career-page_tile_550x550.png?mw=550", "Career Journeys", "Map your path with ISACA credentials"),
     };
 
     private static readonly string[] VideoIds =
