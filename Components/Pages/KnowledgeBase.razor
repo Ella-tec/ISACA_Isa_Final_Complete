@@ -1,129 +1,106 @@
 @page "/knowledge-base"
 @rendermode InteractiveServer
-<PageTitle>Knowledge Base | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">RESOURCES</p>
-            <h1>Knowledge base</h1>
-            <p class="isa-intro">Find approved guidance, chapter resources, and support articles — search and filter by topic.</p>
-        </div>
-</div>
-<div class="isa-searchbar">
-        <span aria-hidden="true">⌕</span>
-        <InputText class="form-control" @bind-Value="SearchTerm" placeholder="Search articles, topics, or keywords..." />
-        <InputSelect class="form-select" @bind-Value="SelectedCategory">
-            <option value="All">All categories</option>
-            <option>Membership</option>
-            <option>Events</option>
-            <option>Certification</option>
-            <option>Policies</option>
-            <option>Technology</option>
-            <option>Governance</option>
-        </InputSelect>
+<PageTitle>Knowledge base | Isa</PageTitle>
+
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#00a4e4);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#00a4e4}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#00a4e4);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#1d2d5c,#00a4e4);border-radius:999px}
+
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">KNOWLEDGE</p>
+      <h1>Knowledge base</h1>
+      <p>Approved guidance and chapter articles — every card is actionable.</p>
     </div>
+  </header>
 
-    <div class="isa-stat-grid isa-stat-grid--three">
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon blue">▤</span>
-            <span class="isa-stat-label">Articles</span>
-            <strong>@Articles.Count</strong>
-            <small>Demo catalog</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon green">◉</span>
-            <span class="isa-stat-label">Categories</span>
-            <strong>@Articles.Select(a => a.Category).Distinct().Count()</strong>
-            <small>Organized by topic</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon purple">✓</span>
-            <span class="isa-stat-label">Matching</span>
-            <strong>@FilteredArticles.Count</strong>
-            <small>Current filters</small>
-        </article>
-    </div>
-
-    <div class="isa-article-grid">
-        @foreach (var article in FilteredArticles)
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick='() => Go("knowledge-base")'><span>Articles</span><strong>8</strong><em>Open catalog →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => SetCat("All")'><span>Categories</span><strong>6</strong><em>Filter topics →</em></button>
+    <button type="button" class="pg-stat" @onclick="Refresh"><span>Matching</span><strong>@matchCount</strong><em>Current filters →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Go("content-health")'><span>Health</span><strong>86</strong><em>Quality score →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card">
+      <h2>Articles</h2>
+      <ul class="pg-list">
+        @foreach (var a in Articles.Where(x => cat=="All" || x.Cat==cat))
         {
-            <article class="isa-article-card">
-                <div class="isa-article-top">
-                    <span class="isa-article-icon">@article.Icon</span>
-                    <span class="isa-pill">@article.Category</span>
-                </div>
-                <h2>@article.Title</h2>
-                <p>@article.Description</p>
-                <div class="isa-article-bottom">
-                    <span>Updated @article.Updated</span>
-                    <button class="isa-text-button" @onclick="() => SelectedArticle = article">View details ↗</button>
-                </div>
-            </article>
+          <li>
+            <div><strong>@a.Title</strong><span>@a.Cat · @a.Updated</span></div>
+            <button type="button" class="pg-btn" @onclick="() => OpenArticle(a.Title)">View</button>
+          </li>
         }
-    </div>
+      </ul>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Membership")'>Membership</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Events")'>Events</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Certification")'>Certification</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("All")'>All</button>
+      </div>
+    </article>
+    <article class="pg-card">
+      <h2>Quick actions</h2>
+      <div class="pg-actions" style="flex-direction:column;align-items:stretch">
+        <button type="button" class="pg-btn" @onclick='() => Go("translator")'>Open Translator</button>
+        <button type="button" class="pg-btn" @onclick='() => Go("content-health")'>Content health</button>
+        <button type="button" class="pg-btn" @onclick='() => Go("escalations")'>Escalate a question</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("market")'>Market trends</button>
+      </div>
+      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:1rem;color:var(--mid)">@toast</p> }
+    </article>
+  </div>
 
-    @if (FilteredArticles.Count == 0)
-    {
-        <div class="isa-empty">No sample articles match your search. Try a different keyword or category.</div>
-    }
-
-    @if (SelectedArticle is not null)
-    {
-        <div class="isa-modal-backdrop" role="presentation" @onclick="() => SelectedArticle = null">
-            <section class="isa-modal" role="dialog" aria-modal="true" aria-label="Article details" @onclick:stopPropagation="true">
-                <button class="isa-modal-close" @onclick="() => SelectedArticle = null" aria-label="Close">×</button>
-                <span class="isa-pill">@SelectedArticle.Category</span>
-                <h2 style="margin-top:.6rem">@SelectedArticle.Title</h2>
-                <p>@SelectedArticle.Description</p>
-                <div style="margin:1rem 0;padding:1rem;background:#f4f7fb;border-radius:10px;font-size:.88rem">
-                    <strong>Sample preview content</strong>
-                    <p style="margin:.4rem 0 0;color:var(--isa-muted)">
-                        This is placeholder body text. In production, Isa would surface approved excerpts
-                        from your chapter guidance library with source citations and last-reviewed dates.
-                    </p>
-                </div>
-                <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-                    <span class="isa-badge isa-badge--blue">Updated @SelectedArticle.Updated</span>
-                    <span class="isa-badge isa-badge--gray">Sample only</span>
-                </div>
-                <p class="isa-muted" style="margin-top:1rem;font-size:.82rem">
-                    Replace with approved article content and citations before production use.
-                </p>
-            </section>
-        </div>
-    }
 </section>
 
 @code {
-    private string SearchTerm = "";
-    private string SelectedCategory = "All";
-    private Article? SelectedArticle;
 
-    private List<Article> Articles = new()
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string cat = "All";
+    private int matchCount = 8;
+    private string? toast;
+    private readonly List<(string Title,string Cat,string Updated)> Articles = new()
     {
-        new() { Title = "Membership support basics", Category = "Membership", Description = "Common membership questions, renewal steps, and where to request help.", Updated = "Oct 2026", Icon = "👤" },
-        new() { Title = "Planning a chapter event", Category = "Events", Description = "A starter checklist for event planning, registration, and follow-up.", Updated = "Oct 2026", Icon = "▦" },
-        new() { Title = "Certification pathways", Category = "Certification", Description = "A high-level guide to exploring ISACA certification resources.", Updated = "Sep 2026", Icon = "🎓" },
-        new() { Title = "Content review policy", Category = "Policies", Description = "Sample review workflow for validating content before publication.", Updated = "Sep 2026", Icon = "✓" },
-        new() { Title = "Troubleshooting access", Category = "Technology", Description = "Basic steps for documenting an access issue and requesting support.", Updated = "Aug 2026", Icon = "⚙" },
-        new() { Title = "Chapter communications", Category = "Membership", Description = "Guidance for clear, consistent member communications.", Updated = "Aug 2026", Icon = "✉" },
-        new() { Title = "Board officer handbook overview", Category = "Governance", Description = "Roles, responsibilities, and key deadlines for chapter leaders.", Updated = "Oct 2026", Icon = "📋" },
-        new() { Title = "CPE reporting guide", Category = "Certification", Description = "How to report continuing professional education hours for events.", Updated = "Sep 2026", Icon = "📊" }
+        ("Membership support basics","Membership","Oct 2026"),
+        ("Planning a chapter event","Events","Oct 2026"),
+        ("Certification pathways","Certification","Sep 2026"),
+        ("Content review policy","Policies","Sep 2026"),
+        ("Troubleshooting access","Technology","Aug 2026"),
+        ("Chapter communications","Membership","Aug 2026"),
+        ("Board officer handbook","Governance","Oct 2026"),
+        ("CPE reporting guide","Certification","Sep 2026"),
     };
+    private void Go(string path) => Nav.NavigateTo(path);
+    private void SetCat(string c) { cat = c; matchCount = c=="All" ? 8 : Articles.Count(a => a.Cat==c); toast = "Filter: " + c; }
+    private void Refresh() { matchCount = Articles.Count; toast = "Catalog refreshed"; }
+    private void OpenArticle(string t) => toast = "Opened: " + t;
 
-    private List<Article> FilteredArticles => Articles
-        .Where(a => (SelectedCategory == "All" || a.Category == SelectedCategory) &&
-                    (string.IsNullOrWhiteSpace(SearchTerm) ||
-                     (a.Title + " " + a.Description + " " + a.Category).Contains(SearchTerm, StringComparison.OrdinalIgnoreCase)))
-        .ToList();
-
-    private sealed class Article
-    {
-        public string Title { get; set; } = "";
-        public string Category { get; set; } = "";
-        public string Description { get; set; } = "";
-        public string Updated { get; set; } = "";
-        public string Icon { get; set; } = "▤";
-    }
 }

@@ -1,0 +1,107 @@
+@page "/market"
+@rendermode InteractiveServer
+@implements IDisposable
+<PageTitle>Market trends | Isa</PageTitle>
+<style>
+.mk{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1100px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.mk-hero{padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#07649d,#6cb33f);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.mk-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
+.mk-hero p{margin:.25rem 0 0;opacity:.9}
+.mk-live{font-size:.85rem;background:rgba(255,255,255,.15);padding:.4rem .75rem;border-radius:999px}
+.mk-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:1rem}
+.mk-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem;box-shadow:0 6px 16px rgba(29,45,92,.05)}
+.mk-stat span{font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.mk-stat strong{display:block;font-size:1.2rem;margin:.2rem 0}
+.mk-up{color:var(--green)}.mk-down{color:var(--red)}
+.mk-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem}
+.mk-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.mk-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.mk-row{display:flex;justify-content:space-between;align-items:center;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.9rem}
+.mk-bars{display:grid;gap:.55rem}
+.mk-bar-row{display:grid;grid-template-columns:90px 1fr 70px;gap:.4rem;align-items:center;font-size:.85rem}
+.mk-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden}
+.mk-bar i{display:block;height:100%;border-radius:999px}
+.mk-note{font-size:.8rem;color:var(--muted);margin-top:.75rem}
+@@media(max-width:900px){.mk-stats{grid-template-columns:1fr 1fr}.mk-grid{grid-template-columns:1fr}}
+</style>
+<section class="mk">
+  <header class="mk-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">CHAPTER CONTEXT</p>
+      <h1>Market trends</h1>
+      <p>Sample indices for awareness — not investment advice.</p>
+    </div>
+    <div class="mk-live">Updated @stamp</div>
+  </header>
+  <div class="mk-stats">
+    @foreach (var s in Indices)
+    {
+      <article class="mk-stat">
+        <span>@s.Name</span>
+        <strong>@s.Value</strong>
+        <span class="@(s.Change>=0?"mk-up":"mk-down")">@(s.Change>=0?"+":"")@s.Change.ToString("0.00")%</span>
+      </article>
+    }
+  </div>
+  <div class="mk-grid">
+    <article class="mk-card">
+      <h2>Today’s movers (sample)</h2>
+      @foreach (var m in Movers)
+      {
+        <div class="mk-row">
+          <div><strong>@m.Ticker</strong> · @m.Name</div>
+          <div class="@(m.Change>=0?"mk-up":"mk-down")">@(m.Change>=0?"+":"")@m.Change.ToString("0.00")%</div>
+        </div>
+      }
+      <p class="mk-note">Illustrative data for chapter discussion of cyber / tech sector context.</p>
+    </article>
+    <article class="mk-card">
+      <h2>Sector heat</h2>
+      <div class="mk-bars">
+        @foreach (var s in Sectors)
+        {
+          <div class="mk-bar-row">
+            <span>@s.Name</span>
+            <div class="mk-bar"><i style="width:@s.Pct%;background:@s.Color"></i></div>
+            <strong class="@(s.Change>=0?"mk-up":"mk-down")">@(s.Change>=0?"+":"")@s.Change.ToString("0.0")%</strong>
+          </div>
+        }
+      </div>
+    </article>
+  </div>
+</section>
+@code {
+    private string stamp = DateTime.Now.ToString("t");
+    private System.Threading.Timer? timer;
+    private List<(string Name,string Value,double Change)> Indices = new()
+    {
+        ("S&P 500","5,842.10",0.42),("NASDAQ","18,210.5",0.71),("DOW","42,180",-0.18),("VIX","14.2",-2.1),
+    };
+    private List<(string Ticker,string Name,double Change)> Movers = new()
+    {
+        ("MSFT","Microsoft",0.85),("AAPL","Apple",0.32),("NVDA","NVIDIA",1.45),
+        ("CRM","Salesforce",-0.55),("ORCL","Oracle",0.22),("PANW","Palo Alto",0.91),
+    };
+    private List<(string Name,int Pct,double Change,string Color)> Sectors = new()
+    {
+        ("Technology",78,0.9,"#00a4e4"),("Cybersecurity",72,1.1,"#6cb33f"),
+        ("Financials",55,-0.3,"#6558b1"),("Healthcare",48,0.2,"#36ac91"),("Energy",40,-0.6,"#e57524"),
+    };
+    protected override void OnInitialized()
+    {
+        timer = new System.Threading.Timer(_ =>
+        {
+            // gentle demo jitter
+            for (var i = 0; i < Indices.Count; i++)
+            {
+                var x = Indices[i];
+                var d = (Random.Shared.NextDouble() - 0.48) * 0.15;
+                Indices[i] = (x.Name, x.Value, Math.Round(x.Change + d, 2));
+            }
+            stamp = DateTime.Now.ToString("t");
+            _ = InvokeAsync(StateHasChanged);
+        }, null, 8000, 8000);
+    }
+    public void Dispose() => timer?.Dispose();
+}

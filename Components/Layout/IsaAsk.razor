@@ -1,0 +1,144 @@
+@rendermode InteractiveServer
+
+<style>
+.isa-fab{position:fixed;right:1.25rem;bottom:1.25rem;z-index:90;width:66px;height:66px;border-radius:50%;border:none;cursor:pointer;
+background:linear-gradient(145deg,#6cb33f,#36ac91,#00a4e4);color:#fff;
+box-shadow:0 12px 30px rgba(0,164,228,.42),0 0 0 5px rgba(108,179,63,.18);
+display:grid;place-items:center;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem;letter-spacing:.02em}
+.isa-fab:hover{transform:scale(1.05)}
+.isa-panel{position:fixed;right:1.25rem;bottom:5.5rem;z-index:91;width:min(400px,calc(100vw - 1.5rem));height:min(560px,72vh);
+background:#fff;border-radius:20px;overflow:hidden;box-shadow:0 24px 60px rgba(29,45,92,.28);display:flex;flex-direction:column;border:1px solid #e2e8f0;font-family:"Roboto",system-ui,sans-serif}
+.isa-head{background:linear-gradient(125deg,#1d2d5c,#07649d,#36ac91);color:#fff;padding:.95rem 1.1rem;display:flex;justify-content:space-between;align-items:center}
+.isa-head h2{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.25rem}
+.isa-head p{margin:.15rem 0 0;font-size:.75rem;opacity:.9}
+.isa-x{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;cursor:pointer;font-size:1.1rem}
+.isa-body{flex:1;overflow-y:auto;padding:1rem;background:#f7fafc;display:flex;flex-direction:column;gap:.55rem}
+.isa-msg{max-width:90%;padding:.6rem .8rem;border-radius:14px;font-size:.88rem;line-height:1.4}
+.isa-msg.bot{align-self:flex-start;background:#fff;border:1px solid #e2e8f0;color:#1d2d5c}
+.isa-msg.me{align-self:flex-end;background:linear-gradient(135deg,#07649d,#00a4e4);color:#fff}
+.isa-attach{display:flex;flex-wrap:wrap;gap:.35rem;padding:.55rem .85rem 0;background:#fff;border-top:1px solid #eef2f6}
+.isa-chip{border:1px dashed #c5d0e0;background:#f7fafc;border-radius:999px;padding:.28rem .65rem;font-size:.72rem;font-weight:600;color:#07649d;cursor:pointer;font-family:inherit}
+.isa-chip:hover{background:#e7f0f5}
+.isa-files{padding:0 .85rem;font-size:.75rem;color:#5f6b85}
+.isa-foot{padding:.65rem .75rem .85rem;display:flex;gap:.4rem;background:#fff}
+.isa-foot input[type=text]{flex:1;border:1.5px solid #e2e8f0;border-radius:12px;padding:.55rem .75rem;font:inherit}
+.isa-foot input:focus{outline:none;border-color:#00a4e4}
+.isa-foot button.send{border:none;border-radius:12px;padding:.55rem 1rem;font-weight:700;cursor:pointer;background:linear-gradient(135deg,#6cb33f,#00a4e4);color:#fff;font-family:inherit}
+.isa-file-input{display:none}
+</style>
+
+@if (open)
+{
+    <div class="isa-panel" role="dialog" aria-label="Isa assistant">
+        <div class="isa-head">
+            <div>
+                <h2>Isa</h2>
+                <p>Chapter support · ask anything</p>
+            </div>
+            <button type="button" class="isa-x" @onclick="Close">×</button>
+        </div>
+        <div class="isa-body">
+            @foreach (var m in messages)
+            {
+                <div class="isa-msg @(m.Me ? "me" : "bot")">@m.Text</div>
+            }
+        </div>
+        <div class="isa-attach">
+            <label class="isa-chip" for="isa-file-pick">📎 File</label>
+            <button type="button" class="isa-chip" @onclick="AttachDocument">📄 Document</button>
+            <button type="button" class="isa-chip" @onclick="AttachZip">🗜 ZIP</button>
+            <button type="button" class="isa-chip" @onclick="AttachVideo">🎬 Video</button>
+            <button type="button" class="isa-chip" @onclick="AttachImage">🖼 Image</button>
+        </div>
+        @if (attachments.Count > 0)
+        {
+            <div class="isa-files">Attached: @string.Join(", ", attachments)</div>
+        }
+        <div class="isa-foot">
+            <InputFile id="isa-file-pick" class="isa-file-input" OnChange="OnFile" multiple />
+            <input type="text" @bind="draft" @bind:event="oninput" @onkeydown="OnKey" placeholder="Message Isa…" />
+            <button type="button" class="send" @onclick="Send">Send</button>
+        </div>
+    </div>
+}
+
+<button type="button" class="isa-fab" @onclick="Toggle" aria-label="Open Isa">Isa</button>
+
+@code {
+    private bool open;
+    private string draft = "";
+    private readonly List<string> attachments = new();
+    private readonly List<Msg> messages = new()
+    {
+        new(false, "Hello — I’m Isa. Ask about chapter ops, policies, CPE, or attach a file for context.")
+    };
+
+    private void Toggle() => open = !open;
+    private void Close() => open = false;
+
+    private void OnKey(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter")
+        {
+            Send();
+        }
+    }
+
+    private void AttachDocument() => AddNote("Document ready to share");
+    private void AttachZip() => AddNote("ZIP package attached");
+    private void AttachVideo() => AddNote("Short video clip noted");
+    private void AttachImage() => AddNote("Image attachment");
+
+    private void AddNote(string n)
+    {
+        attachments.Add(n);
+        messages.Add(new(true, "[Attachment] " + n));
+        messages.Add(new(false, "Attachment recorded. You can also paste a message about it."));
+    }
+
+    private async Task OnFile(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles(5))
+        {
+            attachments.Add(file.Name);
+            messages.Add(new(true, "[File] " + file.Name));
+        }
+        messages.Add(new(false, "File(s) noted. In production these stream to your secure upload endpoint."));
+        await Task.CompletedTask;
+    }
+
+    private void Send()
+    {
+        var t = (draft ?? string.Empty).Trim();
+        if (t.Length == 0 && attachments.Count == 0)
+        {
+            return;
+        }
+
+        if (t.Length > 0)
+        {
+            messages.Add(new(true, t));
+        }
+
+        draft = "";
+
+        string reply;
+        if (t.Contains("market", StringComparison.OrdinalIgnoreCase))
+        {
+            reply = "Open Market trends from the sidebar for today’s sample indices and movers.";
+        }
+        else if (t.Contains("contact", StringComparison.OrdinalIgnoreCase))
+        {
+            reply = "Use Contact in the sidebar to reach chapter support or client channels.";
+        }
+        else
+        {
+            reply = "Thanks — use the workspace menu for Analytics, Knowledge base, Governance, Translator, and more.";
+        }
+
+        messages.Add(new(false, reply));
+        attachments.Clear();
+    }
+
+    private sealed record Msg(bool Me, string Text);
+}

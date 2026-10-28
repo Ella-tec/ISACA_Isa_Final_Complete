@@ -1,136 +1,104 @@
 @page "/analytics"
 @rendermode InteractiveServer
+
 <PageTitle>Analytics | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">INTELLIGENCE</p>
-            <h1>Analytics overview</h1>
-            <p class="isa-intro">Understand how your chapter support workspace is being used — trends, resolution rates, and escalation health.</p>
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#07649d);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#07649d}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#1d2d5c,#07649d);border-radius:999px}
+
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">INTELLIGENCE</p>
+      <h1>Analytics overview</h1>
+      <p>Trends, resolution rates, and escalation health — click any metric.</p>
+    </div>
+  </header>
+
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick="FocusQuestions"><span>Questions</span><strong>1,248</strong><em>Last 30 days →</em></button>
+    <button type="button" class="pg-stat" @onclick="FocusSelfServe"><span>Self-service</span><strong>76%</strong><em>Target 80% →</em></button>
+    <button type="button" class="pg-stat" @onclick="FocusResponse"><span>Avg response</span><strong>2.4s</strong><em>Pipeline →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Go("escalations")'><span>Open escalations</span><strong>3</strong><em>Need attention →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card">
+      <h2>Self-service resolution</h2>
+      <div class="pg-bar"><i style="width:76%"></i></div>
+      <p style="font-size:.88rem;color:var(--muted)">Current 76% · Goal 80%</p>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick='() => Go("knowledge-base")'>Improve KB articles</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("content-health")'>Fix content gaps</button>
+      </div>
+      <h2 style="margin-top:1.2rem">Categories</h2>
+      @foreach (var c in Cats)
+      {
+        <div style="display:grid;grid-template-columns:100px 1fr 40px;gap:.4rem;align-items:center;font-size:.85rem;margin:.35rem 0">
+          <span>@c.Name</span><div class="pg-bar"><i style="width:@c.Pct%"></i></div><strong>@c.Pct%</strong>
         </div>
-        <div style="display:flex;gap:.5rem;flex-wrap:wrap">
-            <span class="isa-pill">Sample dashboard</span>
-            <InputSelect class="form-select isa-status-select" @bind-Value="Period" style="min-width:130px">
-                <option>Last 7 days</option>
-                <option>Last 30 days</option>
-                <option>Last 90 days</option>
-            </InputSelect>
-        </div>
-    </div>
-<div class="isa-hero-strip">
-        <div><span>Questions received</span><strong>@QuestionsTotal.ToString("N0")</strong><small>@Period</small></div>
-        <div><span>Self-service rate</span><strong>@SelfService%</strong><small>Target 80%</small></div>
-        <div><span>Avg response time</span><strong>@AvgResponse</strong><small>Illustrative</small></div>
-        <div><span>Open escalations</span><strong>@OpenTickets</strong><small>Need attention</small></div>
-    </div>
+      }
+    </article>
+    <article class="pg-card">
+      <h2>Activity timeline</h2>
+      <ul class="pg-list">
+        @foreach (var a in Timeline)
+        {
+          <li><div><strong>@a.Title</strong><span>@a.When</span></div>
+            <button type="button" class="pg-btn pg-btn--ghost" @onclick="() => Toast(a.Title)">Open</button></li>
+        }
+      </ul>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick='() => Go("developer-dashboard")'>Developer metrics</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("market")'>Market context</button>
+      </div>
+      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
+    </article>
+  </div>
 
-    <div class="isa-content-grid">
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Self-service resolution</h2><p>Resolved without chapter team assistance</p></div>
-                <div class="isa-ring" style="--pct:@SelfService" data-label="@SelfService%"></div>
-            </div>
-            <div class="isa-progress"><span style="width:@($"{SelfService}%")"></span></div>
-            <div class="isa-panel-foot"><span>Current: @SelfService%</span><span>Goal: 80%</span></div>
-            <h3 class="isa-subheading">Recommended actions</h3>
-            <ul class="isa-action-list">
-                <li>Review unanswered questions weekly</li>
-                <li>Add missing approved documentation</li>
-                <li>Improve search terms and article titles</li>
-            </ul>
-        </article>
-
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Question volume trend</h2><p>Daily volume (sample)</p></div>
-            </div>
-            <div class="isa-spark">
-                @foreach (var h in SparkHeights)
-                {
-                    <span style="height:@($"{h}%")" title="@h%"></span>
-                }
-            </div>
-            <div class="isa-panel-foot"><span>Mon</span><span>→</span><span>Sun</span></div>
-            <h3 class="isa-subheading">Question categories</h3>
-            @foreach (var item in Categories)
-            {
-                <div class="isa-category-row">
-                    <div><span>@item.Name</span><strong>@item.Percent%</strong></div>
-                    <div class="isa-progress"><span style="width:@($"{item.Percent}%")"></span></div>
-                </div>
-            }
-        </article>
-    </div>
-
-    <div class="isa-content-grid" style="margin-top:1.25rem">
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Top search topics</h2><p>Most frequent member questions</p></div>
-            </div>
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead><tr><th>Topic</th><th>Count</th><th>Trend</th></tr></thead>
-                    <tbody>
-                        @foreach (var t in TopTopics)
-                        {
-                            <tr>
-                                <td><strong>@t.Topic</strong></td>
-                                <td>@t.Count</td>
-                                <td><span class="isa-badge @(t.Trend.StartsWith("+") ? "isa-badge--green" : "isa-badge--orange")">@t.Trend</span></td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </article>
-
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Activity timeline</h2><p>Recent workspace activity</p></div>
-            </div>
-            <div class="isa-timeline">
-                @foreach (var a in Activity)
-                {
-                    <div class="isa-timeline-item">
-                        <strong>@a.Title</strong>
-                        <span>@a.When · @a.Detail</span>
-                    </div>
-                }
-            </div>
-        </article>
-    </div>
 </section>
 
 @code {
-    private string Period = "Last 30 days";
-    private int OpenTickets = 3;
-    private int SelfService => Period switch { "Last 7 days" => 79, "Last 90 days" => 74, _ => 76 };
-    private int QuestionsTotal => Period switch { "Last 7 days" => 312, "Last 90 days" => 3480, _ => 1248 };
-    private string AvgResponse => Period switch { "Last 7 days" => "2.1s", "Last 90 days" => "2.6s", _ => "2.4s" };
 
-    private readonly int[] SparkHeights = { 40, 55, 48, 72, 65, 80, 58 };
-
-    private readonly (string Name, int Percent)[] Categories =
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string? toast;
+    private readonly List<(string Name,int Pct)> Cats = new(){("Membership",34),("Events",26),("Certifications",22),("Technology",18)};
+    private readonly List<(string Title,string When)> Timeline = new()
     {
-        ("Membership", 34), ("Events", 26), ("Certifications", 22), ("Technology", 18)
+        ("Spike in membership questions","2h ago"),("New knowledge article published","Yesterday"),
+        ("Escalation ISA-1023 updated","Yesterday"),("Content health score improved","3 days ago"),
+        ("Weekly analytics digest sent","5 days ago"),
     };
+    private void Go(string p) => Nav.NavigateTo(p);
+    private void FocusQuestions() => toast = "Question volume focus";
+    private void FocusSelfServe() => toast = "Self-service detail";
+    private void FocusResponse() => toast = "Response time detail";
+    private void Toast(string t) => toast = t;
 
-    private readonly (string Topic, int Count, string Trend)[] TopTopics =
-    {
-        ("Membership renewal", 186, "+12%"),
-        ("Event registration", 142, "+8%"),
-        ("CPE credit questions", 98, "-3%"),
-        ("Board role duties", 71, "+5%"),
-        ("Portal access issues", 54, "+15%")
-    };
-
-    private readonly (string Title, string When, string Detail)[] Activity =
-    {
-        ("Spike in membership questions", "2h ago", "Renewal season pattern"),
-        ("New knowledge article published", "Yesterday", "Event planning checklist"),
-        ("Escalation ISA-1023 updated", "Yesterday", "Status → In progress"),
-        ("Content health score improved", "3 days ago", "84 → 87"),
-        ("Weekly analytics digest sent", "5 days ago", "Board distribution list")
-    };
 }

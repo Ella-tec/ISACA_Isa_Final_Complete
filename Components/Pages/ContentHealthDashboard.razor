@@ -1,345 +1,182 @@
+@page "/content-health"
 @page "/content-health-dashboard"
-
-@* ============================================================
-   ContentHealthDashboard.razor
-
-   Fleshed-out example page (still not wired to a real backend) --
-   linked from the chat widget's header (the log icon). Built from
-   the "Isa Wireframes 3" mock, but repointed at data this app
-   actually HAS: the wireframe's SUPPORT/DATA/TRAINING columns assume
-   real chapter escalation history and a content library this demo
-   doesn't have, so rather than fill those with fake numbers, this
-   keeps the wireframe's three-column, small-caps-header layout and
-   its privacy-note banner, and puts real telemetry underneath --
-   every completed AI reply ChatWidget has logged via UsageLogService
-   (model, host, prompt/completion tokens, response time). See
-   Services/UsageLogService.cs for what gets recorded and where.
-
-   USAGE   -- calls/tokens this week, and the per-model usage log
-              (calls, tokens, avg response time per model).
-   PERFORMANCE -- average response time by model, and tokens per day
-              over the last 7 days -- both real charts over real
-              logged calls, not mockups.
-   LOG     -- the most recent individual calls, newest first.
-
-   Everything here reads UsageLogService.Entries live -- open a couple
-   of chats in the widget, send a few messages to different models,
-   then reload this page. Like the rest of this demo, the log is
-   in-memory only and resets on app restart.
-   ============================================================ *@
-
-@using IsaChatApp.Services
-@inject WidgetSettings Settings
-@inject UsageLogService UsageLog
 @rendermode InteractiveServer
 
-<PageTitle>Content Health Dashboard</PageTitle>
+<PageTitle>Content Health | Isa</PageTitle>
 
-@if (!Settings.CanAccessContentHealthDashboard)
-{
-    <h1>Access restricted</h1>
-    <p class="text-muted">
-        The Content Health Dashboard isn't available to the
-        <strong>@Settings.CurrentRole</strong> role. Only Executive and
-        Manager have access &mdash; switch roles on
-        <a href="/isa-config">/isa-config</a> if this should be visible.
-    </p>
-}
-else
-{
-    <div class="chd">
-        <div class="chd__topbar">
-            <div class="chd__titleBlock">
-                <h1 class="chd__pageTitle">Content Health</h1>
-                <span class="chd__badge">CONTENT HEALTH DASHBOARD</span>
-            </div>
-            <select class="chd__rangeSelect" @bind="RangeKey">
-                <option value="today">Today</option>
-                <option value="week">This week</option>
-                <option value="30d">Last 30 days</option>
-                <option value="all">All time</option>
-            </select>
+<style>
+.ch{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#dce4ed;max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);padding-bottom:2rem}
+.ch-hero{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#07649d,#36ac91);color:#fff}
+.ch-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
+.ch-hero p{margin:.3rem 0 0;opacity:.92;max-width:48ch}
+.ch-score{display:flex;align-items:center;gap:.75rem}
+.ch-score-ring{width:68px;height:68px;border-radius:50%;background:conic-gradient(#6cb33f var(--pct),rgba(255,255,255,.2) 0);display:grid;place-items:center}
+.ch-score-ring span{width:50px;height:50px;border-radius:50%;background:#1d2d5c;display:grid;place-items:center;font-weight:700}
+.ch-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem;margin-bottom:1rem}
+.ch-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem;box-shadow:0 6px 16px rgba(29,45,92,.05)}
+.ch-stat span{display:block;font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.ch-stat strong{display:block;font-size:1.25rem;margin:.15rem 0}
+.ch-stat small.ok{color:var(--green)}.ch-stat small.warn{color:#c47b0a}.ch-stat small.bad{color:#c0392b}
+.ch-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem}
+.ch-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.ch-card--wide{grid-column:1/-1}
+.ch-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
+.ch-card h2{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.ch-list,.ch-alerts,.ch-recs{list-style:none;margin:0;padding:0}
+.ch-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
+.ch-list strong{display:block}.ch-list span{font-size:.8rem;color:var(--muted)}
+.ch-badge{display:inline-flex;padding:.18rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700}
+.ch-badge.ok{background:#e8f6df;color:#3d6e1f}.ch-badge.warn{background:#fff3d6;color:#8a5a00}.ch-badge.bad{background:#fde8e6;color:#922b21}
+.ch-alerts li{border-radius:12px;padding:.7rem .8rem;margin-bottom:.45rem}
+.ch-alerts li.warn{background:#fff8e8;border:1px solid #f0d9a0}
+.ch-alerts li.bad{background:#fdf0ef;border:1px solid #f0c4bf}
+.ch-alerts li.ok{background:#f3faec;border:1px solid #cfe6b8}
+.ch-alerts strong{display:block;margin-bottom:.15rem}.ch-alerts p{margin:0;font-size:.88rem;color:var(--muted)}
+.ch-table{width:100%;border-collapse:collapse;font-size:.9rem}
+.ch-table th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.45rem .55rem;border-bottom:1px solid var(--line)}
+.ch-table td{padding:.6rem .55rem;border-bottom:1px solid var(--line)}
+.ch-recs li{padding:.55rem 0;border-bottom:1px solid var(--line)}
+.ch-rec-tag{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);background:var(--light);padding:.12rem .4rem;border-radius:6px;margin-bottom:.25rem}
+.ch-bars{display:grid;gap:.55rem}
+.ch-bar-row{display:grid;grid-template-columns:110px 1fr 40px;gap:.45rem;align-items:center;font-size:.85rem}
+.ch-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden}
+.ch-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:999px}
+.ch-btn{border:none;border-radius:10px;padding:.4rem .8rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:var(--navy);color:#fff}
+.ch-btn--ghost{background:var(--light);color:var(--navy)}.ch-btn--sm{padding:.28rem .55rem;font-size:.75rem;background:var(--light);color:var(--navy)}
+.ch-toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:12px;z-index:50}
+@@media(max-width:1000px){.ch-stats{grid-template-columns:repeat(3,1fr)}.ch-grid{grid-template-columns:1fr}}
+@@media(max-width:600px){.ch-stats{grid-template-columns:repeat(2,1fr)}}
+</style>
+
+<section class="ch">
+    <header class="ch-hero">
+        <div>
+            <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">KNOWLEDGE QUALITY</p>
+            <h1>Content Health</h1>
+            <p>Monitor freshness, metadata, links, and approval status across the chapter knowledge base.</p>
         </div>
-
-        <div class="chd__notice">
-            Real telemetry, not mock data. The SUPPORT, DATA and TRAINING
-            sections come from the saved question summary (data/usage.db):
-            totals and rates only, no question text, people counted
-            anonymously, and they survive an app restart. The model usage log
-            further down comes from ChatWidget's own request log and resets
-            when the app restarts.
+        <div class="ch-score">
+            <div class="ch-score-ring" style="--pct:@OverallScore%"><span>@OverallScore</span></div>
+            <div><strong>Overall quality</strong><br /><small style="opacity:.85">Weighted score</small></div>
         </div>
+    </header>
 
-        <div class="chd__statsRow">
-            <div class="chd__statCard">
-                <span class="chd__tag chd__tag--green">USAGE</span>
-                <div class="chd__statValue">@TotalCallsThisWeek</div>
-                <div class="chd__statLabel">Calls this week</div>
-            </div>
-            <div class="chd__statCard">
-                <span class="chd__tag chd__tag--green">USAGE</span>
-                <div class="chd__statValue">@TotalTokensThisWeek.ToString("N0")</div>
-                <div class="chd__statLabel">Tokens this week</div>
-            </div>
-        </div>
-
-        @if (UsageLog.Entries.Count == 0)
+    <div class="ch-stats">
+        @foreach (var s in Stats)
         {
-            <div class="chd__empty">
-                No requests logged yet &mdash; open the chat widget and send a
-                message to a model. This page reads that log live; reload
-                after sending one to see it here.
-            </div>
+            <article class="ch-stat"><span>@s.Label</span><strong>@s.Value</strong><small class="@s.Tone">@s.Hint</small></article>
         }
-
-        @* Saved usage numbers (data/usage.db): SUPPORT / DATA / TRAINING, added 2026-10-21.
-           Everything below this component is the original in-memory model log. *@
-        <ContentHealthSections CutoffUtc="RangeCutoffUtc" RangeLabel="@RangeLabel" />
-
-        <div class="chd__sectionLabel">MODEL USAGE LOG (resets when the app restarts)</div>
-        <div class="chd__grid">
-            <div class="chd__card chd__card--wide">
-                <div class="chd__cardHeader">
-                    <h3>Model usage</h3>
-                    <span class="chd__tag chd__tag--green">USAGE</span>
-                </div>
-                <p class="chd__cardHint">
-                    Filtered by the date range above (@RangeLabel).
-                </p>
-                @if (ModelStats.Count == 0)
-                {
-                    <p class="chd__emptyInline">No calls in this range.</p>
-                }
-                else
-                {
-                    <table class="chd__table">
-                        <thead>
-                            <tr>
-                                <th>Model</th>
-                                <th>Calls</th>
-                                <th>Prompt tokens</th>
-                                <th>Completion tokens</th>
-                                <th>Total tokens</th>
-                                <th>Avg response time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var stat in ModelStats)
-                            {
-                                <tr>
-                                    <td>@stat.Model</td>
-                                    <td>@stat.Calls</td>
-                                    <td>@stat.PromptTokens.ToString("N0")</td>
-                                    <td>@stat.CompletionTokens.ToString("N0")</td>
-                                    <td><strong>@((stat.PromptTokens + stat.CompletionTokens).ToString("N0"))</strong></td>
-                                    <td>@FormatElapsed(stat.AvgElapsedMs)</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </div>
-
-        <div class="chd__sectionLabel">PERFORMANCE</div>
-        <div class="chd__grid">
-            <div class="chd__card">
-                <div class="chd__cardHeader">
-                    <h3>Average response time by model</h3>
-                    <span class="chd__tag chd__tag--orange">PERFORMANCE</span>
-                </div>
-                <p class="chd__cardHint">Filtered by the date range above (@RangeLabel).</p>
-                @if (ModelStats.Count == 0)
-                {
-                    <p class="chd__emptyInline">No calls in this range.</p>
-                }
-                else
-                {
-                    <div class="chd__hbars">
-                        @{ var maxElapsed = ModelStats.Max(s => s.AvgElapsedMs); }
-                        @foreach (var stat in ModelStats)
-                        {
-                            <div class="chd__hbarRow">
-                                <span class="chd__hbarLabel">@stat.Model</span>
-                                <div class="chd__hbarTrack">
-                                    <div class="chd__hbarFill" style="width:@(BarPercent(stat.AvgElapsedMs, maxElapsed))%;"></div>
-                                </div>
-                                <span class="chd__hbarValue">@FormatElapsed(stat.AvgElapsedMs)</span>
-                            </div>
-                        }
-                    </div>
-                }
-            </div>
-
-            <div class="chd__card">
-                <div class="chd__cardHeader">
-                    <h3>Tokens per day</h3>
-                    <span class="chd__tag chd__tag--orange">PERFORMANCE</span>
-                </div>
-                <p class="chd__cardHint">Last 7 days, regardless of the filter above.</p>
-                @{ var maxDayTokens = TokensByDay.Count == 0 ? 0 : TokensByDay.Max(d => d.Tokens); }
-                <div class="chd__vbars">
-                    @foreach (var day in TokensByDay)
-                    {
-                        <div class="chd__vbarCol">
-                            <div class="chd__vbarTrack">
-                                <div class="chd__vbarFill" style="height:@(BarPercent(day.Tokens, maxDayTokens))%;"
-                                     title='@(day.Tokens.ToString("N0")) tokens'></div>
-                            </div>
-                            <span class="chd__vbarLabel">@day.Label</span>
-                        </div>
-                    }
-                </div>
-            </div>
-        </div>
-
-        <div class="chd__sectionLabel">LOG</div>
-        <div class="chd__grid">
-            <div class="chd__card chd__card--wide">
-                <div class="chd__cardHeader">
-                    <h3>Recent activity</h3>
-                    <div class="chd__cardHeaderActions">
-                        <span class="chd__tag chd__tag--purple">LOG</span>
-                        @if (_confirmingClear)
-                        {
-                            <button type="button" class="chd__btn chd__btn--danger" @onclick="ClearLogConfirm">Confirm clear</button>
-                            <button type="button" class="chd__btn chd__btn--ghost" @onclick="ClearLogCancel">Cancel</button>
-                        }
-                        else
-                        {
-                            <button type="button" class="chd__btn chd__btn--ghost" @onclick="ClearLogPrompt" disabled="@(UsageLog.Entries.Count == 0)">
-                                Clear log
-                            </button>
-                        }
-                    </div>
-                </div>
-                <p class="chd__cardHint">
-                    Newest first, filtered by the date range above (@RangeLabel) &mdash; showing up to 25.
-                </p>
-                @if (RecentLog.Count == 0)
-                {
-                    <p class="chd__emptyInline">No calls in this range.</p>
-                }
-                else
-                {
-                    <table class="chd__table">
-                        <thead>
-                            <tr>
-                                <th>Time (UTC)</th>
-                                <th>Model</th>
-                                <th>Host</th>
-                                <th>Prompt tokens</th>
-                                <th>Completion tokens</th>
-                                <th>Total tokens</th>
-                                <th>Response time</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var row in RecentLog)
-                            {
-                                <tr>
-                                    <td>@row.TimestampUtc.ToString("MMM d, HH:mm:ss")</td>
-                                    <td>@row.Model</td>
-                                    <td>@row.Host</td>
-                                    <td>@(row.PromptTokens?.ToString("N0") ?? "—")</td>
-                                    <td>@(row.CompletionTokens?.ToString("N0") ?? "—")</td>
-                                    <td>@row.TotalTokens.ToString("N0")</td>
-                                    <td>@FormatElapsed(row.ElapsedMs)</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-            </div>
-        </div>
     </div>
-}
 
-<a href="/" class="chd__back">&larr; Back home</a>
+    <div class="ch-grid">
+        <article class="ch-card">
+            <div class="ch-card-head"><h2>Freshness &amp; gaps</h2>
+                <button type="button" class="ch-btn ch-btn--ghost" @onclick="Refresh">Refresh</button></div>
+            <ul class="ch-list">
+                @foreach (var item in Freshness)
+                {
+                    <li><div><strong>@item.Title</strong><span>@item.Owner · @item.Updated</span></div>
+                        <span class="ch-badge @item.BadgeClass">@item.Status</span></li>
+                }
+            </ul>
+        </article>
+        <article class="ch-card">
+            <div class="ch-card-head"><h2>Alerts</h2></div>
+            <ul class="ch-alerts">
+                @foreach (var a in Alerts)
+                {
+                    <li class="@a.Level"><strong>@a.Title</strong><p>@a.Detail</p></li>
+                }
+            </ul>
+        </article>
+        <article class="ch-card ch-card--wide">
+            <div class="ch-card-head"><h2>Approval workflow</h2><span style="color:var(--muted);font-size:.85rem">@PendingCount pending</span></div>
+            <table class="ch-table">
+                <thead><tr><th>Document</th><th>Stage</th><th>Owner</th><th>Due</th><th></th></tr></thead>
+                <tbody>
+                @foreach (var r in Workflow)
+                {
+                    <tr>
+                        <td>@r.Doc</td>
+                        <td><span class="ch-badge @r.Badge">@r.Stage</span></td>
+                        <td>@r.Owner</td>
+                        <td>@r.Due</td>
+                        <td><button type="button" class="ch-btn ch-btn--sm" @onclick="() => ToastMsg(r.Doc)">Open</button></td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </article>
+        <article class="ch-card">
+            <div class="ch-card-head"><h2>AI recommendations</h2></div>
+            <ul class="ch-recs">
+                @foreach (var r in Recs)
+                {
+                    <li><span class="ch-rec-tag">@r.Tag</span><p style="margin:.2rem 0 0">@r.Text</p></li>
+                }
+            </ul>
+        </article>
+        <article class="ch-card">
+            <div class="ch-card-head"><h2>Usage (30 days)</h2></div>
+            <div class="ch-bars">
+                @foreach (var u in Usage)
+                {
+                    <div class="ch-bar-row"><span>@u.Name</span><div class="ch-bar"><i style="width:@u.Pct%"></i></div><strong>@u.Views</strong></div>
+                }
+            </div>
+        </article>
+    </div>
+    @if (toast is not null) { <div class="ch-toast">@toast</div> }
+</section>
 
 @code {
-    private string RangeKey = "week";
+    // NO role checks — open to all workspace users
+    private int OverallScore = 86;
+    private int PendingCount => Workflow.Count(w => w.Stage != "Published");
+    private string? toast;
 
-    private string RangeLabel => RangeKey switch
+    private readonly List<(string Label,string Value,string Hint,string Tone)> Stats = new()
     {
-        "today" => "today",
-        "week" => "last 7 days",
-        "30d" => "last 30 days",
-        _ => "all time",
+        ("Articles","248","+12 this month","ok"),("Stale (>12 mo)","17","Needs review","warn"),
+        ("Broken links","4","Fix priority","bad"),("Missing metadata","9","Title/tags","warn"),
+        ("Avg. freshness","7.4 mo","Healthy band","ok"),("Approval SLA","92%","On track","ok"),
+    };
+    private List<(string Title,string Owner,string Updated,string Status,string BadgeClass)> Freshness = new()
+    {
+        ("Chapter meeting checklist","Board","3 days ago","Fresh","ok"),
+        ("CPE reporting guide","Education","11 months ago","Aging","warn"),
+        ("Vendor risk template","Risk","14 months ago","Stale","bad"),
+        ("New member onboarding","Membership","2 weeks ago","Fresh","ok"),
+        ("Incident response playbook","Security","8 months ago","Watch","warn"),
+    };
+    private List<(string Level,string Title,string Detail)> Alerts = new()
+    {
+        ("warn","Missing tags","9 articles lack topic tags — search quality may drop."),
+        ("bad","Broken external links","4 policy PDFs reference outdated ISACA URLs."),
+        ("ok","Approval throughput","Average review cycle under 5 business days."),
+        ("warn","Knowledge gap","No content for “AI governance for chapters” searches."),
+    };
+    private List<(string Doc,string Stage,string Badge,string Owner,string Due)> Workflow = new()
+    {
+        ("Q4 education calendar","In review","warn","Maya R.","Oct 30"),
+        ("Board election FAQ","Draft","warn","James K.","Nov 5"),
+        ("Sponsorship guidelines","Approved","ok","Priya S.","—"),
+        ("Lab safety addendum","Published","ok","Board","—"),
+        ("Mentorship program brief","In review","warn","Alex T.","Nov 2"),
+    };
+    private List<(string Tag,string Text)> Recs = new()
+    {
+        ("Gap","Create a short AI & chapter events primer — 23 related searches last month."),
+        ("Freshness","Schedule refresh for CPE reporting guide before year-end."),
+        ("Metadata","Add audience tags (Board / Members / Volunteers) to 9 articles."),
+        ("Links","Replace 4 dead isaca.org deep links with current resource pages."),
+    };
+    private List<(string Name,int Pct,string Views)> Usage = new()
+    {
+        ("Meeting checklist",92,"1.2k"),("CPE guide",71,"890"),("Onboarding",64,"760"),
+        ("Risk template",48,"410"),("IR playbook",35,"290"),
     };
 
-    private DateTime RangeCutoffUtc => RangeKey switch
-    {
-        "today" => DateTime.UtcNow.Date,
-        "week" => DateTime.UtcNow.AddDays(-7),
-        "30d" => DateTime.UtcNow.AddDays(-30),
-        _ => DateTime.MinValue,
-    };
-
-    private IReadOnlyList<UsageLogService.UsageEntry> FilteredEntries =>
-        UsageLog.Entries.Where(e => e.TimestampUtc >= RangeCutoffUtc).ToList();
-
-    // "This week" in the top stat tiles is always a rolling 7 days,
-    // independent of the RangeKey dropdown above -- that dropdown
-    // controls the model-usage table, the response-time chart, and
-    // the recent-activity log, but the headline weekly figures always
-    // mean the same thing regardless of what's selected there.
-    private IEnumerable<UsageLogService.UsageEntry> WeekEntries =>
-        UsageLog.Entries.Where(e => e.TimestampUtc >= DateTime.UtcNow.AddDays(-7));
-
-    private int TotalCallsThisWeek => WeekEntries.Count();
-    private long TotalTokensThisWeek => WeekEntries.Sum(e => e.TotalTokens);
-
-    private sealed record ModelStat(string Model, int Calls, long PromptTokens, long CompletionTokens, double AvgElapsedMs);
-
-    private List<ModelStat> ModelStats =>
-        FilteredEntries
-            .GroupBy(e => e.Model)
-            .Select(g => new ModelStat(
-                g.Key,
-                g.Count(),
-                g.Sum(e => (long)(e.PromptTokens ?? 0)),
-                g.Sum(e => (long)(e.CompletionTokens ?? 0)),
-                g.Average(e => e.ElapsedMs)))
-            .OrderByDescending(s => s.Calls)
-            .ToList();
-
-    private List<UsageLogService.UsageEntry> RecentLog =>
-        FilteredEntries.OrderByDescending(e => e.TimestampUtc).Take(25).ToList();
-
-    private List<(string Label, long Tokens)> TokensByDay
-    {
-        get
-        {
-            var today = DateTime.UtcNow.Date;
-            var days = Enumerable.Range(0, 7).Select(i => today.AddDays(-6 + i)).ToList();
-            var byDay = UsageLog.Entries
-                .Where(e => e.TimestampUtc.Date >= days[0])
-                .GroupBy(e => e.TimestampUtc.Date)
-                .ToDictionary(g => g.Key, g => g.Sum(e => e.TotalTokens));
-            return days
-                .Select(d => (d.ToString("ddd"), byDay.TryGetValue(d, out var t) ? t : 0L))
-                .ToList();
-        }
-    }
-
-    private static int BarPercent(double value, double max)
-    {
-        if (max <= 0) return 0;
-        var pct = Math.Round(value / max * 100.0);
-        var min = value > 0 ? 4.0 : 0.0;
-        return (int)Math.Clamp(pct, min, 100.0);
-    }
-
-    private static string FormatElapsed(double ms) =>
-        ms < 1000 ? $"{ms:0}ms" : $"{ms / 1000:0.0}s";
-
-    private bool _confirmingClear;
-    private void ClearLogPrompt() => _confirmingClear = true;
-    private void ClearLogCancel() => _confirmingClear = false;
-    private void ClearLogConfirm()
-    {
-        UsageLog.Clear();
-        _confirmingClear = false;
-    }
+    private void Refresh() { OverallScore = 84 + Random.Shared.Next(0, 10); toast = "Content health refreshed · " + DateTime.Now.ToString("t"); }
+    private void ToastMsg(string n) => toast = $"Opened “{n}”";
 }

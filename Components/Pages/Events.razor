@@ -1,177 +1,102 @@
 @page "/events"
 @rendermode InteractiveServer
-<PageTitle>Events & Calendar | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">CHAPTER EXPERIENCE</p>
-            <h1>Events & calendar</h1>
-            <p class="isa-intro">Keep chapter activities, webinars, and learning opportunities organized in one place.</p>
+<PageTitle>Events | Isa</PageTitle>
+
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#6cb33f,#36ac91);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#36ac91}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#6cb33f,#36ac91);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#6cb33f,#36ac91);border-radius:999px}
+
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">CHAPTER EXPERIENCE</p>
+      <h1>Events & calendar</h1>
+      <p>Chapter activities and learning opportunities — every tile opens an action.</p>
+    </div>
+  </header>
+
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick="ShowUpcoming"><span>Upcoming</span><strong>5</strong><em>Scheduled →</em></button>
+    <button type="button" class="pg-stat" @onclick="ShowMonth"><span>This month</span><strong>0</strong><em>October →</em></button>
+    <button type="button" class="pg-stat" @onclick="ShowOnline"><span>Online</span><strong>3</strong><em>Virtual →</em></button>
+    <button type="button" class="pg-stat" @onclick="AddEvent"><span>Add event</span><strong>+</strong><em>Create →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card">
+      <h2>Upcoming events</h2>
+      <ul class="pg-list">
+        @foreach (var e in Events)
+        {
+          <li>
+            <div><strong>@e.Title</strong><span>@e.When · @e.Type</span></div>
+            <button type="button" class="pg-btn" @onclick="() => OpenEvent(e.Title)">Details</button>
+          </li>
+        }
+      </ul>
+    </article>
+    <article class="pg-card">
+      <h2>By type</h2>
+      @foreach (var t in Types)
+      {
+        <div style="display:grid;grid-template-columns:90px 1fr 24px;gap:.4rem;align-items:center;margin:.4rem 0;font-size:.85rem">
+          <span>@t.Name</span><div class="pg-bar"><i style="width:@(t.Count*40)%"></i></div><strong>@t.Count</strong>
         </div>
-        <button class="isa-btn isa-btn--primary" @onclick="() => ShowForm = !ShowForm">
-            @(ShowForm ? "Hide form" : "+ Add event")
-        </button>
-    </div>
-<div class="isa-stat-grid isa-stat-grid--three">
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon blue">▦</span>
-            <span class="isa-stat-label">Upcoming</span>
-            <strong>@EventsList.Count(e => e.Date >= DateTime.Today)</strong>
-            <small>Scheduled events</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon green">◉</span>
-            <span class="isa-stat-label">This month</span>
-            <strong>@EventsList.Count(e => e.Date.Month == DateTime.Today.Month && e.Date.Year == DateTime.Today.Year)</strong>
-            <small>@DateTime.Today.ToString("MMMM")</small>
-        </article>
-        <article class="isa-stat-card">
-            <span class="isa-stat-icon purple">文</span>
-            <span class="isa-stat-label">Online</span>
-            <strong>@EventsList.Count(e => e.Location.Contains("Online", StringComparison.OrdinalIgnoreCase))</strong>
-            <small>Virtual sessions</small>
-        </article>
-    </div>
+      }
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick="AddEvent">+ Add event</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("knowledge-base")'>Event planning guide</button>
+      </div>
+      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
+    </article>
+  </div>
 
-    @if (ShowForm)
-    {
-        <article class="isa-panel" style="margin-bottom:1.25rem">
-            <div class="isa-panel-heading">
-                <div><h2>Add an event</h2><p>Create a local sample event for this session</p></div>
-            </div>
-            <EditForm Model="NewEvent" OnValidSubmit="AddEvent">
-                <div class="isa-form-grid">
-                    <label class="isa-field">Event name <InputText class="form-control" @bind-Value="NewEvent.Title" /></label>
-                    <label class="isa-field">Date <InputDate class="form-control" @bind-Value="NewEvent.Date" /></label>
-                    <label class="isa-field">Event type
-                        <InputSelect class="form-select" @bind-Value="NewEvent.Type">
-                            <option>Webinar</option>
-                            <option>Networking</option>
-                            <option>Workshop</option>
-                            <option>Meeting</option>
-                            <option>Conference</option>
-                        </InputSelect>
-                    </label>
-                    <label class="isa-field">Location / link <InputText class="form-control" @bind-Value="NewEvent.Location" /></label>
-                </div>
-                <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem">
-                    <button class="isa-btn isa-btn--primary" type="submit">Add event</button>
-                    @if (!string.IsNullOrWhiteSpace(Message))
-                    {
-                        <span class="isa-success" role="status">@Message</span>
-                    }
-                </div>
-            </EditForm>
-        </article>
-    }
-
-    <div class="isa-content-grid">
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Upcoming events</h2><p>@EventsList.Count event(s) in this sample list</p></div>
-                <InputSelect class="form-select isa-status-select" @bind-Value="TypeFilter" style="min-width:130px">
-                    <option value="">All types</option>
-                    <option>Webinar</option>
-                    <option>Networking</option>
-                    <option>Workshop</option>
-                    <option>Meeting</option>
-                    <option>Conference</option>
-                </InputSelect>
-            </div>
-            @foreach (var ev in FilteredEvents)
-            {
-                <div class="isa-event-row">
-                    <div class="isa-event-date">
-                        <strong>@ev.Date.ToString("dd")</strong>
-                        <span>@ev.Date.ToString("MMM")</span>
-                    </div>
-                    <div class="isa-event-copy">
-                        <strong>@ev.Title</strong>
-                        <span>@ev.Type · @ev.Location</span>
-                    </div>
-                    <span class="isa-pill">@ev.Date.ToString("ddd")</span>
-                    <button type="button" class="isa-btn isa-btn--ghost" style="padding:.25rem .5rem;font-size:.75rem" @onclick="() => RemoveEvent(ev)" title="Remove">✕</button>
-                </div>
-            }
-            @if (!FilteredEvents.Any())
-            {
-                <div class="isa-empty">No events match the selected filter.</div>
-            }
-        </article>
-
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>By type</h2><p>Distribution of sample events</p></div>
-            </div>
-            @foreach (var g in EventsList.GroupBy(e => e.Type).OrderByDescending(g => g.Count()))
-            {
-                var pct = EventsList.Count == 0 ? 0 : (int)Math.Round(100.0 * g.Count() / EventsList.Count);
-                <div class="isa-category-row">
-                    <div><span>@g.Key</span><strong>@g.Count()</strong></div>
-                    <div class="isa-progress"><span style="width:@($"{pct}%")"></span></div>
-                </div>
-            }
-            <h3 class="isa-subheading">Planning tips</h3>
-            <ul class="isa-action-list">
-                <li>Publish registration links at least 3 weeks ahead</li>
-                <li>Collect CPE eligibility details before the event</li>
-                <li>Send a reminder 48 hours prior</li>
-                <li>Log attendance for chapter reporting</li>
-            </ul>
-        </article>
-    </div>
 </section>
 
 @code {
-    private bool ShowForm;
-    private string TypeFilter = "";
-    private string? Message;
 
-    private List<ChapterEvent> EventsList = new()
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string? toast;
+    private List<(string Title,string When,string Type)> Events = new()
     {
-        new() { Title = "ISACA Chapter Meetup", Date = DateTime.Today.AddDays(5), Type = "Networking", Location = "Kansas City" },
-        new() { Title = "Security Awareness Webinar", Date = DateTime.Today.AddDays(12), Type = "Webinar", Location = "Online" },
-        new() { Title = "Career Development Workshop", Date = DateTime.Today.AddDays(19), Type = "Workshop", Location = "Online" },
-        new() { Title = "Board planning meeting", Date = DateTime.Today.AddDays(8), Type = "Meeting", Location = "Hybrid" },
-        new() { Title = "CPE Lunch & Learn", Date = DateTime.Today.AddDays(26), Type = "Webinar", Location = "Online" }
+        ("ISACA Chapter Meetup","02 Nov · Networking","Networking"),
+        ("Board planning meeting","05 Nov · Hybrid","Meeting"),
+        ("Security Awareness Webinar","09 Nov · Online","Webinar"),
+        ("CPE workshop","12 Nov · Online","Workshop"),
+        ("Member orientation","18 Nov · Online","Webinar"),
     };
+    private readonly List<(string Name,int Count)> Types = new(){("Webinar",2),("Networking",1),("Workshop",1),("Meeting",1)};
+    private void Go(string p) => Nav.NavigateTo(p);
+    private void ShowUpcoming() => toast = "Showing upcoming events";
+    private void ShowMonth() => toast = "October has 0 events in sample";
+    private void ShowOnline() => toast = "3 online sessions";
+    private void AddEvent() => toast = "New event form (sample) — connect to calendar API next";
+    private void OpenEvent(string t) => toast = "Opened: " + t;
 
-    private ChapterEvent NewEvent = new() { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
-
-    private IEnumerable<ChapterEvent> FilteredEvents => EventsList
-        .Where(e => string.IsNullOrWhiteSpace(TypeFilter) || e.Type == TypeFilter)
-        .OrderBy(e => e.Date);
-
-    private void AddEvent()
-    {
-        if (string.IsNullOrWhiteSpace(NewEvent.Title))
-        {
-            Message = "Please enter an event name.";
-            return;
-        }
-        EventsList.Add(new ChapterEvent
-        {
-            Title = NewEvent.Title.Trim(),
-            Date = NewEvent.Date,
-            Type = NewEvent.Type,
-            Location = string.IsNullOrWhiteSpace(NewEvent.Location) ? "To be confirmed" : NewEvent.Location.Trim()
-        });
-        Message = $"Added “{NewEvent.Title}” to this session's sample list.";
-        NewEvent = new ChapterEvent { Date = DateTime.Today.AddDays(7), Type = "Webinar" };
-    }
-
-    private void RemoveEvent(ChapterEvent ev)
-    {
-        EventsList.Remove(ev);
-        Message = $"Removed “{ev.Title}”.";
-    }
-
-    private sealed class ChapterEvent
-    {
-        public string Title { get; set; } = "";
-        public DateTime Date { get; set; } = DateTime.Today;
-        public string Type { get; set; } = "Webinar";
-        public string Location { get; set; } = "";
-    }
 }

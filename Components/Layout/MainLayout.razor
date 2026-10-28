@@ -1,25 +1,22 @@
 @inherits LayoutComponentBase
-
+<style>
+.page{display:flex;min-height:100vh;background:#f4f7fb}
+.sidebar{flex:0 0 270px;width:270px;position:sticky;top:0;height:100vh;z-index:40;overflow:hidden}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.top-row{padding:.75rem 1.25rem;background:#fff;border-bottom:1px solid #e5e7eb;position:sticky;top:0;z-index:30}
+.top-row__eyebrow{font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#7b8794}
+.top-row__title{font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem;color:#1d2d5c}
+.content{flex:1;padding:1rem 1.2rem 2rem}
+#blazor-error-ui{display:none}
+@@media(max-width:900px){.page{flex-direction:column}.sidebar{width:100%;height:auto;position:relative}}
+</style>
+<IsaAsk />
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
-    <main class="main">
-        <div class="top-row">
-            <div class="top-row__context">
-                <span class="top-row__eyebrow">ISACA CHAPTER SUPPORT</span>
-                <span class="top-row__title">Isa workspace</span>
-            </div>
-            @* No Home / Account here — Home page owns Online Library + Account *@
-        </div>
-        <article class="content">
-            @Body
-        </article>
-    </main>
-</div>
-
-<div id="blazor-error-ui">
-    An error has occurred.
-    <a href="" class="reload">Reload</a>
-    <span class="dismiss">🗙</span>
+  <div class="sidebar"><NavMenu /></div>
+  <main class="main">
+    <header class="top-row">
+      <div><span class="top-row__eyebrow">ISACA CHAPTER SUPPORT</span><div class="top-row__title">Isa workspace</div></div>
+    </header>
+    <article class="content">@Body</article>
+  </main>
 </div>

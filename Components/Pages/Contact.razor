@@ -1,0 +1,83 @@
+@page "/contact"
+@rendermode InteractiveServer
+
+<PageTitle>Contact | Isa</PageTitle>
+
+<style>
+.ct{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:980px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.ct-hero{padding:1.3rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#6558b1,#07649d,#36ac91);color:#fff}
+.ct-hero h1{margin:.2rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
+.ct-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:1rem}
+.ct-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.ct-card h2{margin:0 0 .85rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.ct-field{display:grid;gap:.3rem;margin-bottom:.75rem}
+.ct-field label{font-size:.78rem;font-weight:600;color:var(--mid)}
+.ct-field input,.ct-field select,.ct-field textarea{border:1.5px solid var(--line);border-radius:10px;padding:.55rem .75rem;font:inherit}
+.ct-field textarea{min-height:110px;resize:vertical}
+.ct-btn{border:none;border-radius:10px;padding:.55rem 1.15rem;font-weight:700;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
+.ct-channels{display:grid;gap:.55rem}
+.ct-ch{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem;border-radius:12px;background:var(--light)}
+.ct-ch strong{display:block}.ct-ch span{font-size:.85rem;color:var(--muted)}
+.ct-toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:12px;z-index:50}
+@@media(max-width:800px){.ct-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="ct">
+    <header class="ct-hero">
+        <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.9">CLIENT COMMUNICATION</p>
+        <h1>Contact</h1>
+        <p style="margin:.35rem 0 0;opacity:.92">Reach chapter support, partners, or escalate a client request.</p>
+    </header>
+    <div class="ct-grid">
+        <article class="ct-card">
+            <h2>Send a message</h2>
+            <div class="ct-field"><label>Your name</label><input @bind="name" /></div>
+            <div class="ct-field"><label>Email</label><input type="email" @bind="email" /></div>
+            <div class="ct-field"><label>Topic</label>
+                <select @bind="topic">
+                    <option>General inquiry</option>
+                    <option>Membership</option>
+                    <option>Events</option>
+                    <option>Escalation follow-up</option>
+                    <option>Partnership</option>
+                    <option>Technical support</option>
+                </select>
+            </div>
+            <div class="ct-field"><label>Message</label><textarea @bind="body" placeholder="How can we help?"></textarea></div>
+            <button type="button" class="ct-btn" @onclick="Submit">Send message</button>
+        </article>
+        <article class="ct-card">
+            <h2>Channels</h2>
+            <div class="ct-channels">
+                <div class="ct-ch"><div>📧</div><div><strong>Email</strong><span>support@chapter.example</span></div></div>
+                <div class="ct-ch"><div>💬</div><div><strong>Isa chat</strong><span>Use the Isa button (bottom right) anytime</span></div></div>
+                <div class="ct-ch"><div>🎫</div><div><strong>Escalations</strong><span>Open a ticket in Escalations &amp; Tickets</span></div></div>
+                <div class="ct-ch"><div>📅</div><div><strong>Office hours</strong><span>Mon–Fri · 9:00–17:00 local</span></div></div>
+            </div>
+        </article>
+    </div>
+    @if (!string.IsNullOrEmpty(toast))
+    {
+        <div class="ct-toast">@toast</div>
+    }
+</section>
+
+@code {
+    private string name = "";
+    private string email = "";
+    private string topic = "General inquiry";
+    private string body = "";
+    private string? toast;
+
+    private void Submit()
+    {
+        if (string.IsNullOrWhiteSpace(body))
+        {
+            toast = "Please enter a message";
+            return;
+        }
+        toast = "Message queued — chapter team will respond shortly.";
+        body = "";
+    }
+}

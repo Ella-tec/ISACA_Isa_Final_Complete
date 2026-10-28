@@ -1,180 +1,91 @@
 @page "/escalations"
 @rendermode InteractiveServer
+
 <PageTitle>Escalations | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">SUPPORT OPERATIONS</p>
-            <h1>Escalations & tickets</h1>
-            <p class="isa-intro">Track questions that need follow-up from a chapter team member.</p>
-        </div>
-        <button class="isa-btn isa-btn--primary" @onclick="() => ShowForm = !ShowForm">
-            @(ShowForm ? "Close form" : "+ New ticket")
-        </button>
-    </div>
-@if (ShowForm)
-    {
-        <article class="isa-panel isa-ticket-form">
-            <h2>Create a support ticket</h2>
-            <div class="isa-form-grid" style="margin-top:.75rem">
-                <label class="isa-field">Subject <InputText class="form-control" @bind-Value="Draft.Title" /></label>
-                <label class="isa-field">Priority
-                    <InputSelect class="form-select" @bind-Value="Draft.Priority">
-                        <option>Low</option>
-                        <option>Medium</option>
-                        <option>High</option>
-                        <option>Urgent</option>
-                    </InputSelect>
-                </label>
-                <label class="isa-field">Category
-                    <InputSelect class="form-select" @bind-Value="Draft.Category">
-                        <option>Membership</option>
-                        <option>Event</option>
-                        <option>Technical</option>
-                        <option>Certification</option>
-                        <option>Other</option>
-                    </InputSelect>
-                </label>
-                <label class="isa-field">Assigned team <InputText class="form-control" @bind-Value="Draft.Assignee" /></label>
-                <label class="isa-field isa-field--wide">Details <InputTextArea class="form-control" rows="3" @bind-Value="Draft.Description" /></label>
-            </div>
-            <div style="display:flex;align-items:center;gap:1rem;margin-top:1rem">
-                <button class="isa-btn isa-btn--primary" @onclick="CreateTicket">Create ticket</button>
-                @if (Message is not null) { <span class="isa-success">@Message</span> }
-            </div>
-        </article>
-    }
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#e57524,#e31837);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#e31837}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#e57524,#e31837);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#e57524,#e31837);border-radius:999px}
 
-    <div class="isa-hero-strip">
-        <div><span>Open tickets</span><strong>@Tickets.Count(t => t.Status != "Resolved")</strong><small>Need action</small></div>
-        <div><span>High / urgent</span><strong>@Tickets.Count(t => t.Priority is "High" or "Urgent" && t.Status != "Resolved")</strong><small>Prioritize</small></div>
-        <div><span>In progress</span><strong>@Tickets.Count(t => t.Status == "In progress")</strong><small>Active work</small></div>
-        <div><span>Resolved</span><strong>@Tickets.Count(t => t.Status == "Resolved")</strong><small>Sample period</small></div>
-    </div>
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
 
-    <div class="isa-toolbar">
-        <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Filter tickets..." />
-        <InputSelect class="form-select isa-status-select" @bind-Value="StatusFilter" style="min-width:140px">
-            <option value="">All statuses</option>
-            <option>Open</option>
-            <option>In progress</option>
-            <option>Waiting</option>
-            <option>Resolved</option>
-        </InputSelect>
-        <InputSelect class="form-select isa-status-select" @bind-Value="PriorityFilter" style="min-width:130px">
-            <option value="">All priorities</option>
-            <option>Urgent</option>
-            <option>High</option>
-            <option>Medium</option>
-            <option>Low</option>
-        </InputSelect>
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">SUPPORT OPERATIONS</p>
+      <h1>Escalations & tickets</h1>
+      <p>Track follow-ups — metrics and rows are clickable.</p>
     </div>
+  </header>
 
-    <article class="isa-panel">
-        <div class="isa-panel-heading">
-            <div><h2>Ticket queue</h2><p>Change status using the dropdown in each row</p></div>
-        </div>
-        <div class="table-responsive">
-            <table class="table align-middle mb-0">
-                <thead>
-                    <tr>
-                        <th>Ticket</th>
-                        <th>Subject</th>
-                        <th>Category</th>
-                        <th>Priority</th>
-                        <th>Assigned</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach (var ticket in FilteredTickets)
-                    {
-                        <tr>
-                            <td><strong>@ticket.Id</strong></td>
-                            <td>
-                                <strong>@ticket.Title</strong>
-                                <div class="isa-table-sub">@ticket.Description</div>
-                            </td>
-                            <td>@ticket.Category</td>
-                            <td>
-                                <span class="isa-priority isa-priority--@ticket.Priority.ToLowerInvariant()">@ticket.Priority</span>
-                            </td>
-                            <td>@ticket.Assignee</td>
-                            <td>
-                                <InputSelect class="form-select isa-status-select" @bind-Value="ticket.Status">
-                                    <option>Open</option>
-                                    <option>In progress</option>
-                                    <option>Waiting</option>
-                                    <option>Resolved</option>
-                                </InputSelect>
-                            </td>
-                        </tr>
-                    }
-                </tbody>
-            </table>
-        </div>
-        @if (!FilteredTickets.Any())
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick='() => Filter("Open")'><span>Open</span><strong>4</strong><em>Need action →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Filter("High")'><span>High / urgent</span><strong>2</strong><em>Prioritize →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Filter("Progress")'><span>In progress</span><strong>1</strong><em>Active →</em></button>
+    <button type="button" class="pg-stat" @onclick="NewTicket"><span>New ticket</span><strong>+</strong><em>Create →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card pg-card--wide">
+      <h2>Ticket queue</h2>
+      <ul class="pg-list">
+        @foreach (var t in Tickets.Where(x => filter=="All" || x.Status.Contains(filter) || (filter=="High" && x.Priority=="High")))
         {
-            <div class="isa-empty">No tickets match your filters.</div>
+          <li>
+            <div><strong>@t.Id · @t.Subject</strong><span>@t.Category · @t.Priority · @t.Status</span></div>
+            <button type="button" class="pg-btn" @onclick="() => OpenTicket(t.Id)">Open</button>
+          </li>
         }
+      </ul>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick="NewTicket">+ New ticket</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Filter("All")'>Show all</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("contact")'>Contact client</button>
+      </div>
+      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
     </article>
+  </div>
+
 </section>
 
 @code {
-    private bool ShowForm;
-    private string Filter = "";
-    private string StatusFilter = "";
-    private string PriorityFilter = "";
-    private string? Message;
-    private int _nextId = 1025;
 
-    private Ticket Draft = new() { Priority = "Medium", Category = "Membership", Assignee = "Chapter team" };
-
-    private List<Ticket> Tickets = new()
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string filter = "All";
+    private string? toast;
+    private readonly List<(string Id,string Subject,string Category,string Priority,string Status)> Tickets = new()
     {
-        new() { Id = "ISA-1024", Title = "Membership renewal question", Category = "Membership", Priority = "Medium", Assignee = "Chapter team", Status = "Open", Description = "Member needs help finding renewal guidance." },
-        new() { Id = "ISA-1023", Title = "Event registration issue", Category = "Event", Priority = "High", Assignee = "Events team", Status = "In progress", Description = "Registration confirmation not received." },
-        new() { Id = "ISA-1022", Title = "Certification resource request", Category = "Certification", Priority = "Low", Assignee = "Learning team", Status = "Resolved", Description = "Asked for the correct official resource." },
-        new() { Id = "ISA-1021", Title = "Portal login failure", Category = "Technical", Priority = "Urgent", Assignee = "IT support", Status = "Open", Description = "Member cannot sign in after password reset." },
-        new() { Id = "ISA-1020", Title = "Board minutes template", Category = "Other", Priority = "Low", Assignee = "Secretary", Status = "Waiting", Description = "Requested sample minutes format for new officers." }
+        ("ISA-1024","Membership renewal question","Membership","Medium","Open"),
+        ("ISA-1023","Event registration issue","Event","High","In progress"),
+        ("ISA-1022","Certification resource access","Certification","High","Open"),
+        ("ISA-1021","Policy clarification","Governance","Low","Open"),
     };
+    private void Go(string p) => Nav.NavigateTo(p);
+    private void Filter(string f) { filter = f; toast = "Filter: " + f; }
+    private void NewTicket() => toast = "New ticket form ready (sample)";
+    private void OpenTicket(string id) => toast = "Opened ticket " + id;
 
-    private IEnumerable<Ticket> FilteredTickets => Tickets.Where(t =>
-        (string.IsNullOrWhiteSpace(Filter) || (t.Id + t.Title + t.Category + t.Assignee + t.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase)) &&
-        (string.IsNullOrWhiteSpace(StatusFilter) || t.Status == StatusFilter) &&
-        (string.IsNullOrWhiteSpace(PriorityFilter) || t.Priority == PriorityFilter));
-
-    private void CreateTicket()
-    {
-        if (string.IsNullOrWhiteSpace(Draft.Title))
-        {
-            Message = "Enter a subject first.";
-            return;
-        }
-        Tickets.Insert(0, new Ticket
-        {
-            Id = $"ISA-{_nextId++}",
-            Title = Draft.Title.Trim(),
-            Category = Draft.Category,
-            Priority = Draft.Priority,
-            Assignee = string.IsNullOrWhiteSpace(Draft.Assignee) ? "Unassigned" : Draft.Assignee.Trim(),
-            Status = "Open",
-            Description = string.IsNullOrWhiteSpace(Draft.Description) ? "No details provided." : Draft.Description.Trim()
-        });
-        Message = $"Ticket created.";
-        Draft = new Ticket { Priority = "Medium", Category = "Membership", Assignee = "Chapter team" };
-        ShowForm = false;
-    }
-
-    private sealed class Ticket
-    {
-        public string Id { get; set; } = "";
-        public string Title { get; set; } = "";
-        public string Category { get; set; } = "";
-        public string Priority { get; set; } = "Medium";
-        public string Assignee { get; set; } = "";
-        public string Status { get; set; } = "Open";
-        public string Description { get; set; } = "";
-    }
 }

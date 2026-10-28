@@ -1,142 +1,111 @@
 @page "/governance"
 @rendermode InteractiveServer
-<PageTitle>Governance & Policies | Isa</PageTitle>
 
-<section class="isa-page">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">TRUST & COMPLIANCE</p>
-            <h1>Governance & policies</h1>
-            <p class="isa-intro">Review policy records, ownership, approval status, and the review calendar.</p>
-        </div>
-        <span class="isa-pill">Sample workspace</span>
+<PageTitle>Governance | Isa</PageTitle>
+
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#6558b1,#07649d);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#07649d}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#6558b1,#07649d);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#6558b1,#07649d);border-radius:999px}
+
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">TRUST & COMPLIANCE</p>
+      <h1>Governance & policies</h1>
+      <p>Policy register and review calendar — every metric is a button.</p>
     </div>
-<div class="isa-hero-strip">
-        <div><span>Policy records</span><strong>@Policies.Count</strong><small>In register</small></div>
-        <div><span>Approved</span><strong>@Policies.Count(p => p.Status == "Approved")</strong><small>Current</small></div>
-        <div><span>Needs review</span><strong>@Policies.Count(p => p.Status != "Approved")</strong><small>Action required</small></div>
-        <div><span>Next review due</span><strong>Nov 2026</strong><small>Earliest date</small></div>
-    </div>
+  </header>
 
-    <div class="isa-content-grid">
-        <article class="isa-panel">
-            <div class="isa-panel-heading">
-                <div><h2>Policy register</h2><p>Filter and update status</p></div>
-                <InputText class="form-control isa-filter" @bind-Value="Filter" placeholder="Search policies..." />
-            </div>
-            <div class="table-responsive">
-                <table class="table align-middle mb-0">
-                    <thead>
-                        <tr>
-                            <th>Policy / record</th>
-                            <th>Owner</th>
-                            <th>Last reviewed</th>
-                            <th>Next review</th>
-                            <th>Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach (var policy in FilteredPolicies)
-                        {
-                            <tr>
-                                <td>
-                                    <strong>@policy.Title</strong>
-                                    <div class="isa-table-sub">@policy.Description</div>
-                                </td>
-                                <td>@policy.Owner</td>
-                                <td>@policy.LastReviewed</td>
-                                <td>@policy.NextReview</td>
-                                <td>
-                                    <InputSelect class="form-select isa-status-select" @bind-Value="policy.Status">
-                                        <option>Draft</option>
-                                        <option>In review</option>
-                                        <option>Approved</option>
-                                        <option>Expired</option>
-                                    </InputSelect>
-                                </td>
-                            </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
-        </article>
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick="ShowAll"><span>Policy records</span><strong>5</strong><em>In register →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Filter("Approved")'><span>Approved</span><strong>3</strong><em>Current →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Filter("Review")'><span>Needs review</span><strong>2</strong><em>Action →</em></button>
+    <button type="button" class="pg-stat" @onclick="ShowCalendar"><span>Next review</span><strong>Nov</strong><em>2026 →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card">
+      <h2>Policy register</h2>
+      <ul class="pg-list">
+        @foreach (var p in Policies.Where(x => status=="All" || x.Status.Contains(status)))
+        {
+          <li>
+            <div><strong>@p.Name</strong><span>@p.Owner · @p.Status</span></div>
+            <button type="button" class="pg-btn" @onclick="() => OpenPolicy(p.Name)">Open</button>
+          </li>
+        }
+      </ul>
+    </article>
+    <article class="pg-card">
+      <h2>Review calendar</h2>
+      <ul class="pg-list">
+        @foreach (var r in Calendar)
+        {
+          <li>
+            <div><strong>@r.Title</strong><span>@r.When · @r.Owner</span></div>
+            <button type="button" class="pg-btn pg-btn--ghost" @onclick="() => OpenPolicy(r.Title)">Plan</button>
+          </li>
+        }
+      </ul>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick='() => Go("content-health")'>Content health</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("knowledge-base")'>Related articles</button>
+      </div>
+      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
+    </article>
+  </div>
 
-        <div style="display:flex;flex-direction:column;gap:1.25rem">
-            <article class="isa-panel">
-                <h2>Suggested review checklist</h2>
-                <div class="isa-checklist" style="margin-top:.75rem">
-                    @foreach (var item in Checklist)
-                    {
-                        <label class="isa-check-row">
-                            <InputCheckbox @bind-Value="item.Done" />
-                            <span>@item.Text</span>
-                        </label>
-                    }
-                </div>
-                <p class="isa-muted small" style="margin-top:.6rem">Checklist selections are temporary and reset when the app restarts.</p>
-            </article>
-
-            <article class="isa-panel">
-                <h2>Review calendar</h2>
-                <div class="isa-timeline" style="margin-top:.75rem">
-                    @foreach (var c in Calendar)
-                    {
-                        <div class="isa-timeline-item">
-                            <strong>@c.Title</strong>
-                            <span>@c.Date · @c.Owner</span>
-                        </div>
-                    }
-                </div>
-            </article>
-        </div>
-    </div>
 </section>
 
 @code {
-    private string Filter = "";
-    private List<Policy> Policies = new()
+
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string status = "All";
+    private string? toast;
+    private readonly List<(string Name,string Owner,string Status)> Policies = new()
     {
-        new() { Title = "Knowledge content approval", Description = "Review process for articles and AI-retrieved content.", Owner = "Content team", LastReviewed = "Oct 2026", NextReview = "Jan 2027", Status = "In review" },
-        new() { Title = "Support escalation procedure", Description = "When and how unanswered questions are escalated.", Owner = "Chapter operations", LastReviewed = "Sep 2026", NextReview = "Dec 2026", Status = "Approved" },
-        new() { Title = "AI answer quality review", Description = "Sample checks for accuracy, sources, and safe responses.", Owner = "AI project team", LastReviewed = "Oct 2026", NextReview = "Dec 2026", Status = "Draft" },
-        new() { Title = "Access and role management", Description = "Access review and least-privilege role assignment.", Owner = "Administrator", LastReviewed = "Aug 2026", NextReview = "Nov 2026", Status = "Approved" },
-        new() { Title = "Chapter communications standard", Description = "Tone, branding, and approval for member emails.", Owner = "Secretary", LastReviewed = "Jul 2026", NextReview = "Jan 2027", Status = "Approved" }
+        ("Knowledge content approval","Content team","In review"),
+        ("Support escalation procedure","Chapter operations","Approved"),
+        ("Access and role management","Administrator","Approved"),
+        ("AI answer quality review","AI project team","Needs review"),
+        ("Board officer handbook","Board","Approved"),
     };
-
-    private IEnumerable<Policy> FilteredPolicies => Policies.Where(p =>
-        string.IsNullOrWhiteSpace(Filter) ||
-        (p.Title + p.Description + p.Owner + p.Status).Contains(Filter, StringComparison.OrdinalIgnoreCase));
-
-    private List<CheckItem> Checklist = new()
+    private readonly List<(string Title,string When,string Owner)> Calendar = new()
     {
-        new() { Text = "Confirm the source is authoritative" },
-        new() { Text = "Assign a policy owner" },
-        new() { Text = "Record approval and review dates" },
-        new() { Text = "Check links and references" },
-        new() { Text = "Schedule the next review" }
+        ("Access and role management","Nov 2026","Administrator"),
+        ("Support escalation procedure","Dec 2026","Chapter operations"),
+        ("AI answer quality review","Dec 2026","AI project team"),
+        ("Knowledge content approval","Jan 2027","Content team"),
     };
+    private void Go(string p) => Nav.NavigateTo(p);
+    private void ShowAll() { status = "All"; toast = "All policies"; }
+    private void Filter(string s) { status = s; toast = "Filter: " + s; }
+    private void ShowCalendar() => toast = "Next reviews start Nov 2026";
+    private void OpenPolicy(string n) => toast = "Opened: " + n;
 
-    private readonly (string Title, string Date, string Owner)[] Calendar =
-    {
-        ("Access and role management", "Nov 2026", "Administrator"),
-        ("Support escalation procedure", "Dec 2026", "Chapter operations"),
-        ("AI answer quality review", "Dec 2026", "AI project team"),
-        ("Knowledge content approval", "Jan 2027", "Content team")
-    };
-
-    private sealed class Policy
-    {
-        public string Title { get; set; } = "";
-        public string Description { get; set; } = "";
-        public string Owner { get; set; } = "";
-        public string LastReviewed { get; set; } = "";
-        public string NextReview { get; set; } = "";
-        public string Status { get; set; } = "Draft";
-    }
-
-    private sealed class CheckItem
-    {
-        public string Text { get; set; } = "";
-        public bool Done { get; set; }
-    }
 }

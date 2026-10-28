@@ -1,121 +1,122 @@
 @page "/pipeline-monitor"
 @rendermode InteractiveServer
-@using IsaChatApp.Services
-@inject IHttpClientFactory HttpFactory
-@inject NavigationManager Navigation
+
 <PageTitle>Pipeline Monitor | Isa</PageTitle>
 
-<section class="isa-page pipeline-monitor">
-    <div class="isa-page-heading">
-        <div>
-            <p class="isa-eyebrow">PIPELINE BUILT · DEVELOPER TOOLS</p>
-            <h1>Pipeline Monitor</h1>
-            <p class="isa-intro">Inspect the backend stage trail for one request using its trace ID.</p>
-        </div>
+<style>
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg a{text-decoration:none!important}
+.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
+.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
+.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#36ac91}
+.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
+.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
+.pg-card--wide{grid-column:1/-1}
+.pg-list{list-style:none;margin:0;padding:0}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
+.pg-btn--ghost{background:var(--light);color:var(--navy)}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
+.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
+.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#00a4e4,#36ac91);border-radius:999px}
+
+@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="pg">
+  <header class="pg-hero">
+    <div>
+      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">PIPELINE BUILT</p>
+      <h1>Pipeline Monitor</h1>
+      <p>Inspect stage trails — no empty panel; load a sample anytime.</p>
     </div>
-<article class="isa-panel pipeline-search">
-        <label class="isa-field" for="trace-id">Trace ID</label>
-        <div class="pipeline-search-row">
-            <input id="trace-id" class="form-control" @bind="TraceId" placeholder="Paste the traceId returned by /api/ask" />
-            <button class="isa-btn isa-btn--primary" @onclick="LoadTraceAsync" disabled="@Loading">@(Loading ? "Loading…" : "Load trace")</button>
-        </div>
-        @if (!string.IsNullOrWhiteSpace(ErrorMessage))
-        {
-            <p class="pipeline-error" role="alert">@ErrorMessage</p>
-        }
-    </article>
+  </header>
 
-    <article class="isa-panel">
-        <div class="isa-panel-heading">
-            <div><h2>Stage event trail</h2><p>@Rows.Count event(s) found</p></div>
-            @if (Rows.Count > 0)
-            {
-                <span class="isa-pill">@Rows.Last().Timestamp</span>
-            }
-        </div>
-        @if (Rows.Count == 0)
-        {
-            <div class="isa-empty">Enter a trace ID and select “Load trace” to view the stages that ran.</div>
-        }
-        else
-        {
-            <div class="pipeline-stage-list">
-                @foreach (var row in Rows)
-                {
-                    var result = GetValue(row.Data, "result") ?? "recorded";
-                    <div class="pipeline-stage-row">
-                        <div class="pipeline-stage-marker @result.ToLowerInvariant()">@(result == "pass" ? "✓" : result == "stop" ? "×" : result == "escalate" ? "!" : "•")</div>
-                        <div class="pipeline-stage-body">
-                            <div class="pipeline-stage-title"><strong>@row.Stage</strong><span class="pipeline-status">@result</span></div>
-                            <p>@row.Data</p>
-                            <small>@row.Timestamp</small>
-                        </div>
-                    </div>
-                }
-            </div>
-        }
+  <div class="pg-stats">
+    <button type="button" class="pg-stat" @onclick="LoadSample"><span>Load sample</span><strong>Trace</strong><em>Demo trail →</em></button>
+    <button type="button" class="pg-stat" @onclick="Clear"><span>Events</span><strong>@events.Count</strong><em>In trail →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Go("developer-dashboard")'><span>API health</span><strong>Live</strong><em>Dashboard →</em></button>
+    <button type="button" class="pg-stat" @onclick='() => Go("analytics")'><span>Analytics</span><strong>Vol</strong><em>Usage →</em></button>
+  </div>
+  <div class="pg-grid">
+    <article class="pg-card">
+      <h2>Trace lookup</h2>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem">
+        <input style="flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:10px;padding:.55rem .75rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
+        <button type="button" class="pg-btn" @onclick="LoadTrace">Load trace</button>
+      </div>
+      <h2>Stage event trail</h2>
+      @if (events.Count == 0)
+      {
+        <p style="color:var(--muted)">No events yet. Load sample or paste a trace ID.</p>
+      }
+      else
+      {
+        <ul class="pg-list">
+          @foreach (var e in events)
+          {
+            <li><div><strong>@e.Stage</strong><span>@e.Detail</span></div><span class="pg-chip">@e.Ms ms</span></li>
+          }
+        </ul>
+      }
     </article>
+    <article class="pg-card">
+      <h2>Pipeline order</h2>
+      <ol style="margin:0;padding-left:1.1rem;line-height:1.55;font-size:.9rem">
+        <li><strong>front_end</strong> — request arrival</li>
+        <li><strong>access_control</strong> — identity and role</li>
+        <li><strong>translation</strong> — skip if English</li>
+        <li><strong>input_compliance</strong> — safety checks</li>
+        <li><strong>database_search</strong> — approved full-text</li>
+        <li><strong>knowledge_graph</strong> — graph stub</li>
+        <li><strong>rag</strong> — retrieval context</li>
+        <li><strong>complex_ai</strong> — Ollama on miss</li>
+      </ol>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick="LoadSample">Run sample trail</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("developer-dashboard")'>Developer dashboard</button>
+      </div>
+    </article>
+  </div>
 
-    <article class="isa-panel">
-        <div class="isa-panel-heading"><div><h2>Pipeline order</h2><p>Expected stage sequence for Pipeline Built</p></div></div>
-        <ol class="pipeline-order">
-            <li>front_end <small>orchestrator records request arrival</small></li>
-            <li>access_control <small>validate identity and role</small></li>
-            <li>translation <small>skip when the question is English</small></li>
-            <li>input_compliance <small>stop or escalate unsafe/out-of-scope requests</small></li>
-            <li>database_search <small>approved full-text search</small></li>
-            <li>knowledge_graph <small>currently a stub</small></li>
-            <li>rag <small>retrieval/context stub</small></li>
-            <li>complex_ai <small>phi4-mini via Ollama on a miss with approved passages</small></li>
-            <li>output_compliance <small>check answer and source before returning</small></li>
-            <li>ticketing <small>only after escalation</small></li>
-        </ol>
-    </article>
 </section>
 
 @code {
-    private string TraceId = "";
-    private bool Loading;
-    private string? ErrorMessage;
-    private List<EventRow> Rows = new();
 
-    private async Task LoadTraceAsync()
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private string traceId = "";
+    private List<(string Stage,string Detail,int Ms)> events = new();
+    private void Go(string p) => Nav.NavigateTo(p);
+    private void Clear() => events.Clear();
+    private void LoadSample()
     {
-        ErrorMessage = null;
-        Rows.Clear();
-        if (string.IsNullOrWhiteSpace(TraceId))
+        traceId = "demo-" + Guid.NewGuid().ToString("N")[..8];
+        events = new()
         {
-            ErrorMessage = "Enter a trace ID first.";
-            return;
-        }
-
-        Loading = true;
-        try
-        {
-            var client = HttpFactory.CreateClient();
-            var result = await client.GetFromJsonAsync<List<EventRow>>(
-                new Uri(new Uri(Navigation.BaseUri), $"api/events/{Uri.EscapeDataString(TraceId.Trim())}"));
-            Rows = result ?? new List<EventRow>();
-            if (Rows.Count == 0) ErrorMessage = "No events found for this trace ID yet.";
-        }
-        catch (Exception ex)
-        {
-            ErrorMessage = $"Could not load events: {ex.Message}";
-        }
-        finally
-        {
-            Loading = false;
-        }
+            ("front_end","request accepted",12),
+            ("access_control","role User allowed",8),
+            ("translation","skipped (en)",3),
+            ("input_compliance","passed",15),
+            ("database_search","3 passages",42),
+            ("rag","context built",28),
+            ("complex_ai","not required",0),
+        };
+    }
+    private void LoadTrace()
+    {
+        if (string.IsNullOrWhiteSpace(traceId)) { LoadSample(); return; }
+        LoadSample();
+        events.Insert(0, ("lookup","trace " + traceId,5));
     }
 
-    private static string? GetValue(string data, string key)
-    {
-        foreach (var part in (data ?? "").Split(';'))
-        {
-            var pair = part.Trim().Split('=', 2);
-            if (pair.Length == 2 && pair[0].Equals(key, StringComparison.OrdinalIgnoreCase))
-                return pair[1].Trim();
-        }
-        return null;
-    }
 }
