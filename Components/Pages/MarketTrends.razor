@@ -1,0 +1,69 @@
+@page "/market-trends"
+@rendermode InteractiveServer
+
+<PageTitle>Market trends | Isa</PageTitle>
+
+<style>
+.mt { --navy:#1d2d5c; --blue:#00a4e4; --mid:#07649d; --green:#6cb33f; --light:#e7f0f5; --muted:#5f6b85; --line:#e2e8f0;
+  font-family:"Roboto",system-ui,sans-serif; color:var(--navy); max-width:1100px; margin:0 auto; }
+.mt-hero {
+  border-radius:20px; padding:1.5rem 1.75rem; color:#fff; margin-bottom:1.15rem;
+  background:linear-gradient(120deg,#6558b1 0%,#1d2d5c 50%,#07649d 100%);
+  box-shadow:0 14px 40px rgba(29,45,92,.18);
+}
+.mt-hero h1 { margin:.2rem 0 .45rem; font-family:"Roboto Slab",Georgia,serif; font-weight:300; font-size:1.75rem; }
+.mt-hero p { margin:0; opacity:.92; max-width:50ch; }
+.mt-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:.85rem; }
+.mt-card {
+  background:#fff; border-radius:16px; padding:1.15rem; border:1px solid var(--line);
+  box-shadow:0 8px 24px rgba(29,45,92,.06);
+}
+.mt-card h2 { margin:0 0 .35rem; font-size:1rem; }
+.mt-card p { margin:0; font-size:.88rem; color:var(--muted); line-height:1.45; }
+.mt-tag {
+  display:inline-block; font-size:.65rem; font-weight:700; letter-spacing:.06em;
+  text-transform:uppercase; padding:.2rem .5rem; border-radius:6px; margin-bottom:.55rem;
+  background:var(--light); color:var(--mid);
+}
+@@media (max-width:800px) { .mt-grid { grid-template-columns:1fr; } }
+</style>
+
+<section class="mt">
+    <header class="mt-hero">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Intelligence</div>
+        <h1>Market trends</h1>
+        <p>Signals for chapter planning — skills demand, credential interest, and member engagement themes.</p>
+    </header>
+    <div class="mt-grid">
+        <article class="mt-card">
+            <span class="mt-tag">Skills</span>
+            <h2>AI &amp; digital trust</h2>
+            <p>Rising demand for AI governance, model risk, and privacy engineering topics in chapter CPE agendas.</p>
+        </article>
+        <article class="mt-card">
+            <span class="mt-tag">Credentials</span>
+            <h2>CISA &amp; CISM interest</h2>
+            <p>Audit and security management pathways remain the most requested guidance for member study groups.</p>
+        </article>
+        <article class="mt-card">
+            <span class="mt-tag">Engagement</span>
+            <h2>Hybrid events</h2>
+            <p>Chapters reporting higher attendance when virtual + in-person options share one registration flow.</p>
+        </article>
+        <article class="mt-card">
+            <span class="mt-tag">Risk</span>
+            <h2>Third-party &amp; vendor</h2>
+            <p>Vendor risk questionnaires and cloud shared-responsibility questions appear more often in escalations.</p>
+        </article>
+        <article class="mt-card">
+            <span class="mt-tag">Compliance</span>
+            <h2>Privacy &amp; CDPSE</h2>
+            <p>Data protection officer role clarity and breach notification playbooks are frequent knowledge-base hits.</p>
+        </article>
+        <article class="mt-card">
+            <span class="mt-tag">Chapter ops</span>
+            <h2>Board succession</h2>
+            <p>Onboarding kits and 90-day role checklists reduce early-term escalations for new officers.</p>
+        </article>
+    </div>
+</section>
