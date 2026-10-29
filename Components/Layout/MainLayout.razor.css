@@ -1,31 +1,110 @@
+/* Main workspace shell: keep navigation beside content on desktop. */
+.page {
+    display: flex !important;
+    flex-direction: row;
+    align-items: stretch;
+    width: 100%;
+    min-height: 100vh;
+    background: #f4f7fb;
+}
 
-.page { display: flex; min-height: 100vh; background: #f4f7fb; }
 .sidebar {
-    flex: 0 0 270px; width: 270px; max-width: 270px;
-    position: sticky; top: 0; height: 100vh; z-index: 40; overflow: hidden;
+    flex: 0 0 280px;
+    width: 280px;
+    max-width: 280px;
+    min-width: 0;
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    z-index: 40;
+    overflow: hidden;
     background: #1d2d5c;
 }
-.main { flex: 1 1 auto; min-width: 0; display: flex; flex-direction: column; }
+
+.main {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+}
+
 .top-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 0.85rem 1.5rem; background: #fff; border-bottom: 1px solid #e5e7eb;
-    position: sticky; top: 0; z-index: 30;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: .85rem 1.5rem;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    position: sticky;
+    top: 0;
+    z-index: 30;
 }
-.top-row__context { display: flex; flex-direction: column; gap: 0.08rem; }
+
+.top-row__context {
+    display: flex;
+    flex-direction: column;
+    gap: .08rem;
+}
+
 .top-row__eyebrow {
-    font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
-    text-transform: uppercase; color: #7b8794;
+    font-size: .65rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: #7b8794;
 }
+
 .top-row__title {
-    font-family: "Roboto Slab", Georgia, serif; font-weight: 300;
-    font-size: 1.1rem; color: #1d2d5c;
+    font-family: "Roboto Slab", Georgia, serif;
+    font-weight: 400;
+    font-size: 1.1rem;
+    color: #1d2d5c;
 }
-.content { flex: 1 1 auto; padding: 1.25rem 1.5rem 2.5rem; }
+
+.content {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 1.25rem 1.5rem 2.5rem;
+}
+
 #blazor-error-ui {
-    display: none; position: fixed; bottom: 0; left: 0; right: 0; z-index: 1000;
-    padding: 0.85rem 1.25rem; background: #e31837; color: #fff;
+    display: none;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    padding: .85rem 1.25rem;
+    background: #e31837;
+    color: #fff;
 }
-@@media (max-width: 900px) {
-    .page { flex-direction: column; }
-    .sidebar { flex: 0 0 auto; width: 100%; max-width: none; height: auto; position: relative; }
+
+@media (max-width: 900px) {
+    .page {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        position: relative;
+        top: auto;
+        flex: 0 0 auto;
+        width: 100%;
+        max-width: none;
+        height: auto;
+        min-height: 0;
+    }
+
+    .main {
+        width: 100%;
+    }
+
+    .top-row {
+        position: relative;
+        padding: .75rem 1rem;
+    }
+
+    .content {
+        padding: 1rem;
+    }
 }
