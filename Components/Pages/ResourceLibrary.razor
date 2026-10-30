@@ -76,7 +76,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
     <div class="rl-cats">
         @foreach (var t in Tabs)
         {
-            <div class="rl-cat @(tab==t.Name?"on":null)" @onclick="() => { tab = t.Name; search = \"\"; }">
+            <div class="rl-cat @(tab==t.Name?"on":null)" @onclick="() => SelectTab(t.Name)">
                 <div class="ico">@t.Icon</div>
                 <strong>@t.Name</strong>
                 <small>@All.Count(r => r.Category == t.Name) items</small>
@@ -88,7 +88,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
         <div class="rl-tabs">
             @foreach (var t in Tabs)
             {
-                <button type="button" class="rl-tab @(tab==t.Name?"on":null)" @onclick="() => { tab = t.Name; }">@t.Name</button>
+                <button type="button" class="rl-tab @(tab==t.Name?"on":null)" @onclick="() => SelectTab(t.Name)">@t.Name</button>
             }
         </div>
         <input @bind="search" @bind:event="oninput" placeholder="Search title or description…" />
@@ -198,6 +198,12 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
                 return new CatCount(t.Name, c, (int)(c * 100.0 / max));
             });
         }
+    }
+
+    private void SelectTab(string name)
+    {
+        tab = name;
+        search = string.Empty;
     }
 
     private async Task Download(Res r)
