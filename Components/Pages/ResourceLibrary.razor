@@ -11,20 +11,41 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
 background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 24px rgba(29,45,92,.12)}
 .rl-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
 .rl-hero p{margin:0;opacity:.92;font-size:.88rem}
-.rl-tabs{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:.35rem}
-.rl-tab{border:none;cursor:pointer;padding:.42rem .9rem;border-radius:999px;font-weight:600;font-size:.82rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.2fr;gap:.5rem}
+.rl-kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7rem .85rem;box-shadow:0 3px 10px rgba(29,45,92,.05)}
+.rl-kpi span{display:block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rl-kpi strong{font-size:1.25rem;color:var(--navy)}
+.rl-chart{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.65rem .85rem;box-shadow:0 3px 10px rgba(29,45,92,.05)}
+.rl-chart h3{margin:0 0 .4rem;font-size:.82rem;font-weight:600}
+.rl-bar-row{display:flex;align-items:center;gap:.45rem;margin:.22rem 0;font-size:.75rem}
+.rl-bar-row span{width:72px;flex-shrink:0;color:var(--muted)}
+.rl-bar{flex:1;height:8px;background:var(--light);border-radius:999px;overflow:hidden}
+.rl-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00a4e4,#36ac91)}
+.rl-bar-row b{width:28px;text-align:right;font-size:.72rem}
+.rl-cats{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+.rl-cat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.85rem .9rem;text-align:center;cursor:pointer;transition:border-color .12s,box-shadow .12s}
+.rl-cat:hover,.rl-cat.on{border-color:var(--blue);box-shadow:0 6px 16px rgba(0,164,228,.12)}
+.rl-cat .ico{width:40px;height:40px;margin:0 auto .4rem;border-radius:11px;display:grid;place-items:center;font-size:1.1rem;background:var(--light);color:var(--mid)}
+.rl-cat strong{display:block;font-size:.88rem}
+.rl-cat small{font-size:.72rem;color:var(--muted)}
+.rl-toolbar{flex:0 0 auto;display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
+.rl-toolbar input{flex:1;min-width:160px;padding:.48rem .75rem;border:1px solid var(--line);border-radius:9px;font-family:inherit}
+.rl-tabs{display:flex;flex-wrap:wrap;gap:.3rem}
+.rl-tab{border:none;cursor:pointer;padding:.38rem .8rem;border-radius:999px;font-weight:600;font-size:.8rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
 .rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
-.rl-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.55rem;align-content:start}
-.rl-card{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05);display:flex;flex-direction:column;gap:.4rem;min-height:160px}
-.rl-card .ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.8rem}
-.rl-card h3{margin:0;font-size:.95rem}
-.rl-card p{margin:0;font-size:.84rem;color:var(--muted);line-height:1.4;flex:1}
-.rl-card .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.2rem}
-.rl-card a,.rl-card button{padding:.4rem .75rem;border-radius:9px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem;align-content:start}
+.rl-card{background:#fff;border-radius:12px;padding:.85rem;border:1px solid var(--line);box-shadow:0 3px 12px rgba(29,45,92,.05);display:flex;flex-direction:column;gap:.35rem;min-height:150px}
+.rl-card .badge{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.72rem}
+.rl-card h3{margin:0;font-size:.9rem}
+.rl-card p{margin:0;font-size:.8rem;color:var(--muted);line-height:1.35;flex:1}
+.rl-card .actions{display:flex;flex-wrap:wrap;gap:.3rem}
+.rl-card a,.rl-card button{padding:.36rem .7rem;border-radius:8px;font-weight:600;font-size:.76rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
 .rl-link{background:var(--light);color:var(--mid)!important}
 .rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.65rem 1rem;border-radius:11px;font-weight:600;z-index:100}
-@@media(max-width:560px){.rl{min-height:auto}}
+.rl-empty{grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.9rem}
+@@media(max-width:1100px){.rl-top{grid-template-columns:1fr 1fr 1fr}.rl-chart{grid-column:1/-1}.rl-cats{grid-template-columns:repeat(3,1fr)}}
+@@media(max-width:700px){.rl-top,.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:auto}}
 </style>
 
 <section class="rl">
@@ -34,28 +55,67 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
         <p>Guides, policies, certification paths, learning packs, and templates for chapter leaders.</p>
     </header>
 
-    <div class="rl-tabs">
+    <div class="rl-top">
+        <div class="rl-kpi"><span>Total resources</span><strong>@All.Length</strong></div>
+        <div class="rl-kpi"><span>This category</span><strong>@Filtered.Count()</strong></div>
+        <div class="rl-kpi"><span>With links</span><strong>@All.Count(r => !string.IsNullOrEmpty(r.Url))</strong></div>
+        <div class="rl-kpi"><span>Downloads (session)</span><strong>@downloads</strong></div>
+        <div class="rl-chart">
+            <h3>By category</h3>
+            @foreach (var c in CategoryCounts)
+            {
+                <div class="rl-bar-row">
+                    <span>@c.Name</span>
+                    <div class="rl-bar"><i style="width:@(c.Pct)%"></i></div>
+                    <b>@c.Count</b>
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="rl-cats">
         @foreach (var t in Tabs)
         {
-            <button type="button" class="rl-tab @(tab==t?"on":null)" @onclick="() => tab=t">@t</button>
+            <div class="rl-cat @(tab==t.Name?"on":null)" @onclick="() => { tab = t.Name; search = \"\"; }">
+                <div class="ico">@t.Icon</div>
+                <strong>@t.Name</strong>
+                <small>@All.Count(r => r.Category == t.Name) items</small>
+            </div>
         }
     </div>
 
+    <div class="rl-toolbar">
+        <div class="rl-tabs">
+            @foreach (var t in Tabs)
+            {
+                <button type="button" class="rl-tab @(tab==t.Name?"on":null)" @onclick="() => { tab = t.Name; }">@t.Name</button>
+            }
+        </div>
+        <input @bind="search" @bind:event="oninput" placeholder="Search title or description…" />
+    </div>
+
     <div class="rl-grid">
-        @foreach (var r in Filtered)
+        @if (!Filtered.Any())
         {
-            <article class="rl-card">
-                <div class="ico" style="background:@r.Color">@r.Icon</div>
-                <h3>@r.Title</h3>
-                <p>@r.Description</p>
-                <div class="actions">
-                    <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
-                    @if (!string.IsNullOrEmpty(r.Url))
-                    {
-                        <a class="rl-link" href="@r.Url" target="_blank" rel="noopener">Open link</a>
-                    }
-                </div>
-            </article>
+            <div class="rl-empty">No resources match your search in @tab.</div>
+        }
+        else
+        {
+            @foreach (var r in Filtered)
+            {
+                <article class="rl-card">
+                    <div class="badge" style="background:@r.Color">@r.Icon</div>
+                    <h3>@r.Title</h3>
+                    <p>@r.Description</p>
+                    <div class="actions">
+                        <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
+                        @if (!string.IsNullOrEmpty(r.Url))
+                        {
+                            <a class="rl-link" href="@r.Url" target="_blank" rel="noopener">Open link</a>
+                        }
+                    </div>
+                </article>
+            }
         }
     </div>
 
@@ -67,9 +127,20 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
 
 @code {
     private string tab = "Guides";
+    private string search = "";
     private string toast = "";
-    private static readonly string[] Tabs = { "Guides", "Policies", "Certifications", "Learning", "Templates" };
+    private int downloads;
+
+    private record TabInfo(string Name, string Icon);
+    private static readonly TabInfo[] Tabs =
+    {
+        new("Guides", "📘"), new("Policies", "📋"), new("Certifications", "🎓"),
+        new("Learning", "💡"), new("Templates", "📄")
+    };
+
     private record Res(string Category, string Title, string Description, string Icon, string Color, string Url, string FileName);
+    private record CatCount(string Name, int Count, int Pct);
+
     private static readonly Res[] All =
     {
         new("Guides", "Chapter Leader Handbook", "Roles, calendar, and operating cadence for officers.", "HB", "linear-gradient(135deg,#1d2d5c,#07649d)", "https://www.isaca.org", "Chapter-Leader-Handbook.txt"),
@@ -103,14 +174,40 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
         new("Templates", "Project Planning Template", "Initiative charter and milestone plan.", "TP", "linear-gradient(135deg,#6558b1,#07649d)", "", "Project-Planning-Template.txt"),
         new("Templates", "Speaker Invite Email", "Ready-to-send invitation for CPE speakers.", "TS", "linear-gradient(135deg,#36ac91,#1d2d5c)", "", "Speaker-Invite.txt"),
     };
-    private IEnumerable<Res> Filtered => All.Where(r => r.Category == tab);
+
+    private IEnumerable<Res> Filtered
+    {
+        get
+        {
+            var q = All.Where(r => r.Category == tab);
+            if (!string.IsNullOrWhiteSpace(search))
+                q = q.Where(r => r.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
+                              || r.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
+            return q;
+        }
+    }
+
+    private IEnumerable<CatCount> CategoryCounts
+    {
+        get
+        {
+            var max = Math.Max(1, Tabs.Max(t => All.Count(r => r.Category == t.Name)));
+            return Tabs.Select(t =>
+            {
+                var c = All.Count(r => r.Category == t.Name);
+                return new CatCount(t.Name, c, (int)(c * 100.0 / max));
+            });
+        }
+    }
+
     private async Task Download(Res r)
     {
+        downloads++;
         toast = $"Preparing {r.FileName}…";
         StateHasChanged();
-        await Task.Delay(400);
-        toast = $"Ready: {r.Title} — open link when available or save from downloads.";
-        await Task.Delay(3200);
+        await Task.Delay(350);
+        toast = $"Ready: {r.Title}";
+        await Task.Delay(2800);
         toast = "";
     }
 }
