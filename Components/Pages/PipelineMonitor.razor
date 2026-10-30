@@ -1,44 +1,41 @@
 @page "/pipeline-monitor"
 @rendermode InteractiveServer
 
-<PageTitle>Pipeline Monitor | Isa</PageTitle>
+<PageTitle>Pipeline Monitor | TRU</PageTitle>
 
 <style>
 .pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+width:100%;max-width:none;margin:0;padding:0.65rem 1rem 0.35rem;box-sizing:border-box;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
 .pg a{text-decoration:none!important}
-.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
-.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
-.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
-.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#36ac91}
-.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
-.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
-.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.pg-card--wide{grid-column:1/-1}
+.pg-hero{padding:1rem 1.2rem;border-radius:14px;margin-bottom:0.7rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero h1{margin:.1rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
+.pg-hero p{margin:.25rem 0 0;opacity:.92;max-width:60ch;font-size:.88rem}
+.pg-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin-bottom:0.7rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem .85rem;box-shadow:0 4px 12px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(29,45,92,.1);border-color:#36ac91}
+.pg-stat span{display:block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.15rem;margin:.15rem 0 .1rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.76rem;color:var(--mid)}
+.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:.7rem}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 4px 14px rgba(29,45,92,.05)}
+.pg-card h2{margin:0 0 .6rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem}
 .pg-list{list-style:none;margin:0;padding:0}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
-.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
-.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block}.pg-list span{font-size:.78rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:9px;padding:.4rem .8rem;font-weight:600;font-size:.8rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
 .pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
-.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
-.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#00a4e4,#36ac91);border-radius:999px}
-
-@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
+.pg-chip{display:inline-flex;padding:.18rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;background:var(--light);color:var(--mid)}
+@@media(max-width:900px){.pg-grid,.pg-stats{grid-template-columns:1fr 1fr}}
+@@media(max-width:560px){.pg-grid,.pg-stats{grid-template-columns:1fr}}
 </style>
 
 <section class="pg">
   <header class="pg-hero">
     <div>
-      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">PIPELINE BUILT</p>
+      <p style="margin:0;font-size:.65rem;font-weight:700;letter-spacing:.12em;opacity:.88">PIPELINE BUILT</p>
       <h1>Pipeline Monitor</h1>
-      <p>Inspect stage trails — no empty panel; load a sample anytime.</p>
+      <p>Inspect stage trails — load a sample anytime.</p>
     </div>
   </header>
 
@@ -51,14 +48,14 @@ max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:v
   <div class="pg-grid">
     <article class="pg-card">
       <h2>Trace lookup</h2>
-      <div style="display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem">
-        <input style="flex:1;min-width:180px;border:1.5px solid var(--line);border-radius:10px;padding:.55rem .75rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.65rem">
+        <input style="flex:1;min-width:160px;border:1.5px solid var(--line);border-radius:9px;padding:.48rem .65rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
         <button type="button" class="pg-btn" @onclick="LoadTrace">Load trace</button>
       </div>
       <h2>Stage event trail</h2>
       @if (events.Count == 0)
       {
-        <p style="color:var(--muted)">No events yet. Load sample or paste a trace ID.</p>
+        <p style="color:var(--muted);margin:0;font-size:.88rem">No events yet. Load sample or paste a trace ID.</p>
       }
       else
       {
@@ -72,7 +69,7 @@ max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:v
     </article>
     <article class="pg-card">
       <h2>Pipeline order</h2>
-      <ol style="margin:0;padding-left:1.1rem;line-height:1.55;font-size:.9rem">
+      <ol style="margin:0;padding-left:1.1rem;line-height:1.5;font-size:.88rem">
         <li><strong>front_end</strong> — request arrival</li>
         <li><strong>access_control</strong> — identity and role</li>
         <li><strong>translation</strong> — skip if English</li>
@@ -88,11 +85,9 @@ max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:v
       </div>
     </article>
   </div>
-
 </section>
 
 @code {
-
     [Inject] private NavigationManager Nav { get; set; } = default!;
     private string traceId = "";
     private List<(string Stage,string Detail,int Ms)> events = new();
@@ -118,5 +113,4 @@ max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:v
         LoadSample();
         events.Insert(0, ("lookup","trace " + traceId,5));
     }
-
 }

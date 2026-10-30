@@ -1,4 +1,8 @@
-/* Compact full-width layout — no empty side gaps */
+/* ============================================================
+   FULL WIDTH — no centered max-width, no empty side gaps
+   Applies to every workspace page.
+   ============================================================ */
+
 .main .content,
 article.content {
   padding: 0 !important;
@@ -7,25 +11,50 @@ article.content {
   width: 100% !important;
 }
 
-.ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
+/* Common page shells (every class used across Pages/*.razor) */
+.pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
 .contact-page, .settings-page, .isa-page, .wx, .rl, .market-page,
-.translator-page, .page-root, .page-content, .dashboard {
+.translator-page, .page-root, .page-content, .dashboard, .pipeline-monitor,
+section.pg, section.ct, section.tr, section.st, section.hm, section.an,
+section.ev, section.kb, section.gov, section.esc, section.ch, section.mt,
+section.dev, section.pipe, section.isa-page {
   max-width: none !important;
   width: 100% !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
-  padding: 0.65rem 0.9rem 0.35rem !important;
+  margin-inline: 0 !important;
+  padding: 0.65rem 1rem 0.35rem !important;
   box-sizing: border-box !important;
 }
 
-section[class],
-.isa-page,
+/* Kill Bootstrap / generic containers centering */
 .container,
-.container-fluid {
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
   max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding-left: 0.75rem !important;
+  padding-right: 0.75rem !important;
 }
 
-.ct-hero, .tr-hero, .st-hero, .isa-hero-strip, .hm-top {
+/* Any section with margin:auto centering */
+.main section[class],
+.main article[class],
+.content > section,
+.content > article {
+  max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.ct-hero, .tr-hero, .st-hero, .pg-hero, .isa-hero-strip, .hm-top {
   margin-bottom: 0.65rem !important;
 }
 
@@ -34,6 +63,10 @@ section[class],
   background: #f0f4f8 !important;
 }
 
-.hm {
-  padding: 0.45rem 0.65rem !important;
+/* Footer sits full width under content */
+.sf {
+  width: calc(100% - 1.3rem) !important;
+  max-width: none !important;
+  margin: 0.75rem 0.65rem 1rem !important;
+  box-sizing: border-box !important;
 }
