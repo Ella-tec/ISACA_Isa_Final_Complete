@@ -4,29 +4,33 @@
 <PageTitle>Pipeline Monitor | TRU</PageTitle>
 
 <style>
-.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-width:100%;max-width:none;margin:0;padding:0.65rem 1rem 0.35rem;box-sizing:border-box;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+width:100%;max-width:none;margin:0;padding:0.55rem 0.9rem 0.75rem;box-sizing:border-box;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
 .pg a{text-decoration:none!important}
-.pg-hero{padding:1rem 1.2rem;border-radius:14px;margin-bottom:0.7rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.pg-hero{flex:0 0 auto;padding:1rem 1.2rem;border-radius:14px;margin-bottom:0.55rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff}
 .pg-hero h1{margin:.1rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
-.pg-hero p{margin:.25rem 0 0;opacity:.92;max-width:60ch;font-size:.88rem}
-.pg-stats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.6rem;margin-bottom:0.7rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem .85rem;box-shadow:0 4px 12px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(29,45,92,.1);border-color:#36ac91}
+.pg-hero p{margin:.25rem 0 0;opacity:.92;font-size:.88rem}
+.pg-stats{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin-bottom:.55rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem .85rem;box-shadow:0 4px 12px rgba(29,45,92,.05);cursor:pointer;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{border-color:#36ac91;box-shadow:0 8px 18px rgba(29,45,92,.1)}
 .pg-stat span{display:block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .pg-stat strong{display:block;font-size:1.15rem;margin:.15rem 0 .1rem;color:var(--navy)}
 .pg-stat em{font-style:normal;font-size:.76rem;color:var(--mid)}
-.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:.7rem}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 4px 14px rgba(29,45,92,.05)}
-.pg-card h2{margin:0 0 .6rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem}
-.pg-list{list-style:none;margin:0;padding:0}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.pg-grid{flex:1 1 auto;display:grid;grid-template-columns:1.25fr 1fr;gap:.55rem;min-height:0}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 4px 14px rgba(29,45,92,.05);display:flex;flex-direction:column;min-height:0;height:100%}
+.pg-card h2{margin:0 0 .55rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem;flex:0 0 auto}
+.pg-list{list-style:none;margin:0;padding:0;flex:1 1 auto;overflow:auto}
+.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--line)}
 .pg-list strong{display:block}.pg-list span{font-size:.78rem;color:var(--muted)}
 .pg-btn{border:none;border-radius:9px;padding:.4rem .8rem;font-weight:600;font-size:.8rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
 .pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.65rem;flex:0 0 auto}
 .pg-chip{display:inline-flex;padding:.18rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;background:var(--light);color:var(--mid)}
-@@media(max-width:900px){.pg-grid,.pg-stats{grid-template-columns:1fr 1fr}}
+.pg-empty{color:var(--muted);margin:0;font-size:.88rem;flex:1 1 auto}
+.pg-order{margin:0;padding-left:1.1rem;line-height:1.5;font-size:.88rem;flex:1 1 auto}
+@@media(max-width:900px){.pg-grid,.pg-stats{grid-template-columns:1fr 1fr}.pg{min-height:auto}}
 @@media(max-width:560px){.pg-grid,.pg-stats{grid-template-columns:1fr}}
 </style>
 
@@ -45,17 +49,18 @@ width:100%;max-width:none;margin:0;padding:0.65rem 1rem 0.35rem;box-sizing:borde
     <button type="button" class="pg-stat" @onclick='() => Go("developer-dashboard")'><span>API health</span><strong>Live</strong><em>Dashboard →</em></button>
     <button type="button" class="pg-stat" @onclick='() => Go("analytics")'><span>Analytics</span><strong>Vol</strong><em>Usage →</em></button>
   </div>
+
   <div class="pg-grid">
     <article class="pg-card">
       <h2>Trace lookup</h2>
-      <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.65rem">
+      <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.55rem;flex:0 0 auto">
         <input style="flex:1;min-width:160px;border:1.5px solid var(--line);border-radius:9px;padding:.48rem .65rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
         <button type="button" class="pg-btn" @onclick="LoadTrace">Load trace</button>
       </div>
       <h2>Stage event trail</h2>
       @if (events.Count == 0)
       {
-        <p style="color:var(--muted);margin:0;font-size:.88rem">No events yet. Load sample or paste a trace ID.</p>
+        <p class="pg-empty">No events yet. Load sample or paste a trace ID.</p>
       }
       else
       {
@@ -69,7 +74,7 @@ width:100%;max-width:none;margin:0;padding:0.65rem 1rem 0.35rem;box-sizing:borde
     </article>
     <article class="pg-card">
       <h2>Pipeline order</h2>
-      <ol style="margin:0;padding-left:1.1rem;line-height:1.5;font-size:.88rem">
+      <ol class="pg-order">
         <li><strong>front_end</strong> — request arrival</li>
         <li><strong>access_control</strong> — identity and role</li>
         <li><strong>translation</strong> — skip if English</li>
