@@ -19,8 +19,14 @@ body { overflow-x: clip !important; }
   z-index: 100 !important;
   margin: 0 !important; padding: 0 !important; border: none !important;
   background: linear-gradient(175deg, #0a1224 0%, #1d2d5c 48%, #12233f 100%) !important;
-  display: block !important;
-  align-content: start !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.sidebar > .nv,
+.sidebar > nav {
+  flex: 1 1 auto !important;
+  min-height: 100% !important;
+  height: 100% !important;
 }
 
 .main {
@@ -60,7 +66,7 @@ body { overflow-x: clip !important; }
 .hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
 .contact-page, .an, .settings-page, .translator-page, .market-page,
 .page-root, .page-content, .dashboard, .card-grid,
-.container, .container-fluid, .ct, .st {
+.container, .container-fluid, .ct, .st, .pg {
   max-width: none !important; width: 100% !important;
   margin-left: 0 !important; margin-right: 0 !important;
   padding-left: 0.65rem !important; padding-right: 0.65rem !important;
