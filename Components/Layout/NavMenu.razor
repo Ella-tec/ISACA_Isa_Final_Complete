@@ -3,75 +3,108 @@
 <style>
 .nv{
   --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;
-  --orange:#e57524;--red:#e31837;--purple:#6558b1;--yellow:#fbb034;
   box-sizing:border-box;width:100%;max-width:260px;
   min-height:100%;height:100%;
-  display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;
-  gap:0!important;
-  padding:.4rem .45rem 0;margin:0;
+  display:flex;flex-direction:column;
+  padding:.55rem .55rem .6rem;margin:0;
   background:transparent;
   color:#e8eef6;font-family:"Roboto",system-ui,sans-serif;
-  overflow:visible;
+  overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;
 }
 .nv a{text-decoration:none!important;color:inherit;max-width:100%}
-.nv__brand{display:flex;align-items:center;gap:.4rem;padding:0 .15rem .35rem;flex-shrink:0}
+
+.nv__brand{
+  display:flex;align-items:center;gap:.55rem;
+  padding:.15rem .35rem .7rem;flex-shrink:0;
+}
 .nv__logo{
-  width:32px;height:32px;border-radius:50%;flex-shrink:0;
+  width:40px;height:40px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(145deg,#6cb33f 0%,#36ac91 42%,#00a4e4 100%);
-  border:none;display:grid;place-items:center;
-  box-shadow:0 2px 8px rgba(0,164,228,.28);
+  display:grid;place-items:center;
+  box-shadow:0 4px 14px rgba(0,164,228,.35);
 }
-.nv__logo span{color:#fff;font-weight:800;font-size:.58rem;letter-spacing:.08em;font-family:"Roboto Slab",Georgia,serif}
-.nv__brand strong{display:block;font-size:.88rem;font-weight:700;line-height:1.1}
-.nv__brand small{font-size:.5rem;opacity:.7}
+.nv__logo span{
+  color:#fff;font-weight:800;font-size:.7rem;letter-spacing:.08em;
+  font-family:"Roboto Slab",Georgia,serif;
+}
+.nv__brand strong{display:block;font-size:1rem;font-weight:700;line-height:1.15}
+.nv__brand small{font-size:.58rem;opacity:.65}
+
 .nv__sec{
-  font-size:.48rem;font-weight:700;letter-spacing:.11em;text-transform:uppercase;
-  opacity:.42;padding:.22rem .3rem 0;margin:0!important;flex-shrink:0;line-height:1.2;
+  font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+  opacity:.45;padding:.55rem .45rem .25rem;flex-shrink:0;
 }
+
+/* Pill-style items like the Isa reference */
 .nv__item{
-  position:relative;display:flex!important;align-items:center;gap:.35rem;
-  box-sizing:border-box;width:100%!important;max-width:100%!important;
-  padding:.22rem .45rem!important;margin:0!important;
-  border-radius:7px!important;font-size:.76rem!important;font-weight:600!important;
-  color:#c9d6ea!important;background:transparent!important;
-  border:none!important;line-height:1.25!important;flex-shrink:0;
+  display:flex!important;align-items:center;gap:.55rem;
+  box-sizing:border-box;width:100%!important;
+  padding:.55rem .75rem!important;margin:.15rem 0!important;
+  border-radius:12px!important;
+  font-size:.84rem!important;font-weight:600!important;
+  color:#c5d2e8!important;
+  background:transparent!important;
+  border:1px solid transparent!important;
+  transition:background .15s,color .15s,border-color .15s,box-shadow .15s;
+  flex-shrink:0;
   overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
 }
-.nv__item::before{
-  content:"";position:absolute;left:0;top:20%;bottom:20%;width:2px;border-radius:0 2px 2px 0;
-  background:var(--accent,#00a4e4);opacity:0;
+.nv__item:hover{
+  background:rgba(255,255,255,.07)!important;
+  color:#fff!important;
+  border-color:rgba(255,255,255,.06)!important;
 }
-.nv__item:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
-.nv__item:hover::before,.nv__item.active::before{opacity:1}
-.nv__item.active{background:rgba(255,255,255,.1)!important;color:#fff!important}
+.nv__item.active{
+  background:linear-gradient(135deg,#07649d,#00a4e4)!important;
+  color:#fff!important;
+  border-color:transparent!important;
+  box-shadow:0 4px 14px rgba(0,164,228,.28)!important;
+}
 .nv__ico{
-  width:1.05rem;height:1.05rem;border-radius:5px;display:grid;place-items:center;
-  font-size:.6rem;flex-shrink:0;background:var(--accent-bg,rgba(0,164,228,.2));
-  color:var(--accent,#00a4e4);font-weight:700;
+  width:1.35rem;height:1.35rem;border-radius:8px;
+  display:grid;place-items:center;flex-shrink:0;
+  font-size:.72rem;font-weight:700;
+  background:var(--accent-bg,rgba(0,164,228,.18));
+  color:var(--accent,#00a4e4);
 }
-.nv__item.active .nv__ico{background:var(--accent,#00a4e4);color:#fff}
+.nv__item.active .nv__ico{
+  background:rgba(255,255,255,.22)!important;
+  color:#fff!important;
+}
 
-/* Main nav grows; Account+Sign out stay at bottom edge */
-.nv__main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:0}
+.nv__main{flex:1 1 auto;min-height:0}
+
 .nv__foot{
   flex:0 0 auto;
   margin-top:auto;
-  padding:.35rem 0 .55rem;
+  padding-top:.35rem;
   border-top:1px solid rgba(255,255,255,.08);
 }
+
+.nv__settings{
+  display:flex;align-items:center;gap:.55rem;
+  padding:.55rem .75rem;margin:.15rem 0;
+  border-radius:12px;font-size:.84rem;font-weight:600;
+  color:#c5d2e8!important;
+}
+.nv__settings:hover{
+  background:rgba(255,255,255,.07)!important;
+  color:#fff!important;
+}
+
 .nv__signout{
-  display:flex;align-items:center;justify-content:center;gap:.28rem;
-  margin:.12rem 0 0!important;padding:.4rem .55rem;border-radius:8px;flex-shrink:0;
-  background:linear-gradient(135deg,#0b1220,#1a3a28);color:#fff!important;
-  font-weight:700;font-size:.76rem;border:1px solid rgba(108,179,63,.35);
+  display:flex;align-items:center;justify-content:center;gap:.4rem;
+  margin:.25rem 0 0;padding:.6rem .75rem;
+  border-radius:12px;flex-shrink:0;
+  background:linear-gradient(135deg,#0b1220,#1a3a28);
+  color:#fff!important;font-weight:700;font-size:.86rem;
+  border:1px solid rgba(108,179,63,.4);
 }
 .nv__signout:hover{filter:brightness(1.1)}
-.nv__signout::before{content:"";width:6px;height:6px;border-radius:50%;background:#6cb33f;box-shadow:0 0 5px #6cb33f}
-.nv__settings{
-  display:flex;align-items:center;gap:.3rem;padding:.22rem .45rem;margin:0!important;
-  border-radius:7px;font-size:.76rem;color:#b0bfd4!important;flex-shrink:0;
+.nv__signout::before{
+  content:"";width:7px;height:7px;border-radius:50%;
+  background:#6cb33f;box-shadow:0 0 8px #6cb33f;
 }
-.nv__settings:hover{background:rgba(255,255,255,.07);color:#fff!important}
 </style>
 
 <nav class="nv" aria-label="TRU workspace">
