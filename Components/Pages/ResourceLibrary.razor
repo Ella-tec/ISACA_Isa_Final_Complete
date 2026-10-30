@@ -1,65 +1,75 @@
 @page "/resource-library"
 @rendermode InteractiveServer
+@inject IJSRuntime JS
 
 <PageTitle>Resource Library | TRU</PageTitle>
 
 <style>
 .rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;
-min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
-.rl-hero{flex:0 0 auto;border-radius:14px;padding:1rem 1.2rem;color:#fff;
-background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 24px rgba(29,45,92,.12)}
-.rl-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
-.rl-hero p{margin:0;opacity:.92;font-size:.88rem}
-.rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.2fr;gap:.5rem}
-.rl-kpi{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7rem .85rem;box-shadow:0 3px 10px rgba(29,45,92,.05)}
-.rl-kpi span{display:block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.rl-kpi strong{font-size:1.25rem;color:var(--navy)}
-.rl-chart{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.65rem .85rem;box-shadow:0 3px 10px rgba(29,45,92,.05)}
-.rl-chart h3{margin:0 0 .4rem;font-size:.82rem;font-weight:600}
-.rl-bar-row{display:flex;align-items:center;gap:.45rem;margin:.22rem 0;font-size:.75rem}
-.rl-bar-row span{width:72px;flex-shrink:0;color:var(--muted)}
-.rl-bar{flex:1;height:8px;background:var(--light);border-radius:999px;overflow:hidden}
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:.45rem .8rem .55rem;box-sizing:border-box;
+min-height:calc(100vh - .2rem);display:flex;flex-direction:column;gap:.45rem}
+.rl-hero{flex:0 0 auto;border-radius:12px;padding:.85rem 1.1rem;color:#fff;
+background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
+.rl-hero h1{margin:.05rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem}
+.rl-hero p{margin:0;opacity:.92;font-size:.84rem}
+.rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.15fr;gap:.4rem}
+.rl-kpi{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.55rem .7rem}
+.rl-kpi span{display:block;font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.rl-kpi strong{font-size:1.15rem;color:var(--navy)}
+.rl-chart{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.5rem .7rem}
+.rl-chart h3{margin:0 0 .3rem;font-size:.78rem;font-weight:600}
+.rl-bar-row{display:flex;align-items:center;gap:.35rem;margin:.15rem 0;font-size:.7rem}
+.rl-bar-row span{width:68px;flex-shrink:0;color:var(--muted)}
+.rl-bar{flex:1;height:7px;background:var(--light);border-radius:999px;overflow:hidden}
 .rl-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00a4e4,#36ac91)}
-.rl-bar-row b{width:28px;text-align:right;font-size:.72rem}
-.rl-cats{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
-.rl-cat{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.85rem .9rem;text-align:center;cursor:pointer;transition:border-color .12s,box-shadow .12s}
-.rl-cat:hover,.rl-cat.on{border-color:var(--blue);box-shadow:0 6px 16px rgba(0,164,228,.12)}
-.rl-cat .ico{width:40px;height:40px;margin:0 auto .4rem;border-radius:11px;display:grid;place-items:center;font-size:1.1rem;background:var(--light);color:var(--mid)}
-.rl-cat strong{display:block;font-size:.88rem}
-.rl-cat small{font-size:.72rem;color:var(--muted)}
-.rl-toolbar{flex:0 0 auto;display:flex;gap:.45rem;flex-wrap:wrap;align-items:center}
-.rl-toolbar input{flex:1;min-width:160px;padding:.48rem .75rem;border:1px solid var(--line);border-radius:9px;font-family:inherit}
-.rl-tabs{display:flex;flex-wrap:wrap;gap:.3rem}
-.rl-tab{border:none;cursor:pointer;padding:.38rem .8rem;border-radius:999px;font-weight:600;font-size:.8rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.rl-bar-row b{width:24px;text-align:right;font-size:.68rem}
+.rl-cats{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.rl-cat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.65rem .7rem;text-align:center;cursor:pointer}
+.rl-cat:hover,.rl-cat.on{border-color:var(--blue);box-shadow:0 4px 12px rgba(0,164,228,.12)}
+.rl-cat .ico{width:34px;height:34px;margin:0 auto .3rem;border-radius:9px;display:grid;place-items:center;font-size:1rem;background:var(--light)}
+.rl-cat strong{display:block;font-size:.82rem}
+.rl-cat small{font-size:.68rem;color:var(--muted)}
+.rl-toolbar{flex:0 0 auto;display:flex;gap:.4rem;flex-wrap:wrap;align-items:center}
+.rl-toolbar input{flex:1;min-width:140px;padding:.42rem .65rem;border:1px solid var(--line);border-radius:8px;font-family:inherit;font-size:.85rem}
+.rl-tabs{display:flex;flex-wrap:wrap;gap:.25rem}
+.rl-tab{border:none;cursor:pointer;padding:.32rem .7rem;border-radius:999px;font-weight:600;font-size:.78rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
 .rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
-.rl-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:.5rem;align-content:start}
-.rl-card{background:#fff;border-radius:12px;padding:.85rem;border:1px solid var(--line);box-shadow:0 3px 12px rgba(29,45,92,.05);display:flex;flex-direction:column;gap:.35rem;min-height:150px}
-.rl-card .badge{width:36px;height:36px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.72rem}
-.rl-card h3{margin:0;font-size:.9rem}
-.rl-card p{margin:0;font-size:.8rem;color:var(--muted);line-height:1.35;flex:1}
-.rl-card .actions{display:flex;flex-wrap:wrap;gap:.3rem}
-.rl-card a,.rl-card button{padding:.36rem .7rem;border-radius:8px;font-weight:600;font-size:.76rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-body{flex:1 1 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:.45rem;min-height:0}
+.rl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.4rem;align-content:start;overflow:auto;min-height:0}
+.rl-card{background:#fff;border-radius:11px;padding:.7rem;border:1px solid var(--line);display:flex;flex-direction:column;gap:.28rem;cursor:pointer;min-height:140px}
+.rl-card:hover,.rl-card.sel{border-color:var(--blue);box-shadow:0 4px 14px rgba(0,164,228,.12)}
+.rl-card .badge{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.68rem}
+.rl-card h3{margin:0;font-size:.84rem}
+.rl-card p{margin:0;font-size:.76rem;color:var(--muted);line-height:1.3;flex:1}
+.rl-card .actions{display:flex;flex-wrap:wrap;gap:.25rem}
+.rl-card a,.rl-card button{padding:.3rem .55rem;border-radius:7px;font-weight:600;font-size:.72rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
 .rl-link{background:var(--light);color:var(--mid)!important}
-.rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.65rem 1rem;border-radius:11px;font-weight:600;z-index:100}
-.rl-empty{grid-column:1/-1;text-align:center;padding:1.5rem;color:var(--muted);font-size:.9rem}
-@@media(max-width:1100px){.rl-top{grid-template-columns:1fr 1fr 1fr}.rl-chart{grid-column:1/-1}.rl-cats{grid-template-columns:repeat(3,1fr)}}
-@@media(max-width:700px){.rl-top,.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:auto}}
+.rl-fav{background:#fff8e8;color:#a85a12!important}
+.rl-detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:flex;flex-direction:column;min-height:0;overflow:auto}
+.rl-detail h2{margin:0 0 .35rem;font-size:1.05rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
+.rl-detail .meta{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
+.rl-detail .body{font-size:.86rem;line-height:1.5;flex:1 1 auto;white-space:pre-wrap}
+.rl-detail .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem;padding-top:.5rem;border-top:1px solid var(--line)}
+.rl-detail .actions button,.rl-detail .actions a{padding:.4rem .75rem;border-radius:8px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-empty{color:var(--muted);font-size:.88rem;padding:1rem 0;text-align:center}
+.rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.6rem .9rem;border-radius:10px;font-weight:600;z-index:100}
+@@media(max-width:1100px){.rl-top{grid-template-columns:1fr 1fr}.rl-chart{grid-column:1/-1}.rl-cats{grid-template-columns:repeat(3,1fr)}.rl-body{grid-template-columns:1fr}}
+@@media(max-width:700px){.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:auto}}
 </style>
 
 <section class="rl">
     <header class="rl-hero">
-        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Library</div>
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Library</div>
         <h1>Resource Library</h1>
-        <p>Guides, policies, certification paths, learning packs, and templates for chapter leaders.</p>
+        <p>Guides, policies, certification paths, learning packs, and templates — click any card to preview.</p>
     </header>
 
     <div class="rl-top">
-        <div class="rl-kpi"><span>Total resources</span><strong>@All.Length</strong></div>
+        <div class="rl-kpi"><span>Total resources</span><strong>@All.Count</strong></div>
         <div class="rl-kpi"><span>This category</span><strong>@Filtered.Count()</strong></div>
-        <div class="rl-kpi"><span>With links</span><strong>@All.Count(r => !string.IsNullOrEmpty(r.Url))</strong></div>
-        <div class="rl-kpi"><span>Downloads (session)</span><strong>@downloads</strong></div>
+        <div class="rl-kpi"><span>Favorites</span><strong>@favs.Count</strong></div>
+        <div class="rl-kpi"><span>Downloads</span><strong>@downloads</strong></div>
         <div class="rl-chart">
             <h3>By category</h3>
             @foreach (var c in CategoryCounts)
@@ -94,29 +104,59 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
         <input @bind="search" @bind:event="oninput" placeholder="Search title or description…" />
     </div>
 
-    <div class="rl-grid">
-        @if (!Filtered.Any())
-        {
-            <div class="rl-empty">No resources match your search in @tab.</div>
-        }
-        else
-        {
-            @foreach (var r in Filtered)
+    <div class="rl-body">
+        <div class="rl-grid">
+            @if (!Filtered.Any())
             {
-                <article class="rl-card">
-                    <div class="badge" style="background:@r.Color">@r.Icon</div>
-                    <h3>@r.Title</h3>
-                    <p>@r.Description</p>
-                    <div class="actions">
-                        <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
-                        @if (!string.IsNullOrEmpty(r.Url))
-                        {
-                            <a class="rl-link" href="@r.Url" target="_blank" rel="noopener">Open link</a>
-                        }
-                    </div>
-                </article>
+                <div class="rl-empty" style="grid-column:1/-1">No resources match in @tab.</div>
             }
-        }
+            else
+            {
+                @foreach (var r in Filtered)
+                {
+                    <article class="rl-card @(selected?.Title==r.Title?"sel":null)" @onclick="() => Select(r)">
+                        <div class="badge" style="background:@r.Color">@r.Icon</div>
+                        <h3>@r.Title</h3>
+                        <p>@r.Description</p>
+                        <div class="actions" @onclick:stopPropagation="true">
+                            <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
+                            <button type="button" class="rl-link" @onclick="() => Select(r)">Preview</button>
+                            <button type="button" class="rl-fav" @onclick="() => ToggleFav(r)">@(favs.Contains(r.Title)?"★ Fav":"☆ Fav")</button>
+                        </div>
+                    </article>
+                }
+            }
+        </div>
+
+        <aside class="rl-detail">
+            @if (selected is null)
+            {
+                <h2>Preview</h2>
+                <p class="meta">Click a card or Preview to see full content here.</p>
+                <div class="body rl-empty">
+                    Tips
+                    · Use category cards or tabs to switch sets.
+                    · Search filters titles and descriptions.
+                    · Download saves a text pack and counts in the KPI.
+                    · Favorite marks items for this session.
+                </div>
+            }
+            else
+            {
+                <h2>@selected.Title</h2>
+                <div class="meta">@selected.Category · @selected.FileName @(favs.Contains(selected.Title) ? "· ★ Favorite" : "")</div>
+                <div class="body">@selected.Body</div>
+                <div class="actions">
+                    <button type="button" class="rl-dl" @onclick="() => Download(selected)">Download file</button>
+                    @if (!string.IsNullOrEmpty(selected.Url))
+                    {
+                        <a class="rl-link" href="@selected.Url" target="_blank" rel="noopener">Open external link</a>
+                    }
+                    <button type="button" class="rl-fav" @onclick="() => ToggleFav(selected)">@(favs.Contains(selected.Title)?"Remove favorite":"Add favorite")</button>
+                    <button type="button" class="rl-link" @onclick="() => selected = null">Close</button>
+                </div>
+            }
+        </aside>
     </div>
 
     @if (!string.IsNullOrEmpty(toast))
@@ -130,6 +170,8 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
     private string search = "";
     private string toast = "";
     private int downloads;
+    private Res? selected;
+    private readonly HashSet<string> favs = new();
 
     private record TabInfo(string Name, string Icon);
     private static readonly TabInfo[] Tabs =
@@ -138,42 +180,66 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
         new("Learning", "💡"), new("Templates", "📄")
     };
 
-    private record Res(string Category, string Title, string Description, string Icon, string Color, string Url, string FileName);
+    private record Res(string Category, string Title, string Description, string Icon, string Color, string Url, string FileName, string Body);
     private record CatCount(string Name, int Count, int Pct);
 
-    private static readonly Res[] All =
+    private static Res R(string cat, string title, string desc, string icon, string color, string url, string file, string body)
+        => new(cat, title, desc, icon, color, url, file, body);
+
+    private static readonly List<Res> All = BuildAll();
+
+    private static List<Res> BuildAll()
     {
-        new("Guides", "Chapter Leader Handbook", "Roles, calendar, and operating cadence for officers.", "HB", "linear-gradient(135deg,#1d2d5c,#07649d)", "https://www.isaca.org", "Chapter-Leader-Handbook.txt"),
-        new("Guides", "Governance Guide", "Board practices and policy lifecycle overview.", "GV", "linear-gradient(135deg,#6558b1,#1d2d5c)", "https://www.isaca.org/resources", "Governance-Guide.txt"),
-        new("Guides", "Financial Management Guide", "Budgets, controls, and reporting for chapters.", "FM", "linear-gradient(135deg,#00a4e4,#07649d)", "", "Financial-Management-Guide.txt"),
-        new("Guides", "Event Planning Playbook", "End-to-end checklist for CPE and networking events.", "EV", "linear-gradient(135deg,#6cb33f,#1d2d5c)", "", "Event-Planning-Playbook.txt"),
-        new("Guides", "Volunteer Onboarding Kit", "Welcome path for new chapter volunteers.", "VO", "linear-gradient(135deg,#36ac91,#07649d)", "", "Volunteer-Onboarding.txt"),
-        new("Guides", "CPE Reporting Guide", "How members log and verify CPE hours.", "CP", "linear-gradient(135deg,#e57524,#1d2d5c)", "https://www.isaca.org", "CPE-Reporting-Guide.txt"),
-        new("Policies", "Chapter Governance Policy", "Sample governance policy for chapter boards.", "PG", "linear-gradient(135deg,#1d2d5c,#00a4e4)", "", "Chapter-Governance-Policy.txt"),
-        new("Policies", "Financial Controls Policy", "Approval thresholds and dual-control guidance.", "PF", "linear-gradient(135deg,#07649d,#36ac91)", "", "Financial-Controls-Policy.txt"),
-        new("Policies", "Data Privacy Policy", "Member data handling and retention baseline.", "PP", "linear-gradient(135deg,#6558b1,#07649d)", "https://www.isaca.org/credentialing/cdpse", "Data-Privacy-Policy.txt"),
-        new("Policies", "AI Usage Guidelines", "Acceptable use of AI tools in chapter work.", "AI", "linear-gradient(135deg,#e57524,#1d2d5c)", "", "AI-Usage-Guidelines.txt"),
-        new("Policies", "Content Review Policy", "Review workflow before publishing guidance.", "CR", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Content-Review-Policy.txt"),
-        new("Policies", "Incident Response Policy", "Severity levels and escalation contacts.", "IR", "linear-gradient(135deg,#e31837,#1d2d5c)", "", "Incident-Response-Policy.txt"),
-        new("Certifications", "CISA", "Audit credential overview and prep links.", "CISA", "linear-gradient(135deg,#e31837,#1d2d5c)", "https://www.isaca.org/credentialing/cisa", "CISA-Overview.txt"),
-        new("Certifications", "CISM", "Security management credential path.", "CISM", "linear-gradient(135deg,#6cb33f,#1d2d5c)", "https://www.isaca.org/credentialing/cism", "CISM-Overview.txt"),
-        new("Certifications", "CRISC", "IT risk and control credential.", "CRISC", "linear-gradient(135deg,#fbb034,#e57524)", "https://www.isaca.org/credentialing/crisc", "CRISC-Overview.txt"),
-        new("Certifications", "CGEIT", "Enterprise IT governance credential.", "CGEIT", "linear-gradient(135deg,#00a4e4,#07649d)", "https://www.isaca.org/credentialing/cgeit", "CGEIT-Overview.txt"),
-        new("Certifications", "CDPSE", "Privacy solutions engineering credential.", "CDPSE", "linear-gradient(135deg,#07649d,#1d2d5c)", "https://www.isaca.org/credentialing/cdpse", "CDPSE-Overview.txt"),
-        new("Certifications", "AAIA / AISM / AAIR / CCOA", "Advanced and operations-oriented paths.", "ADV", "linear-gradient(135deg,#6558b1,#1d2d5c)", "https://www.isaca.org/credentialing", "Advanced-Credentials.txt"),
-        new("Learning", "Cybersecurity Fundamentals", "Starter pack for member onboarding sessions.", "CY", "linear-gradient(135deg,#e31837,#07649d)", "https://www.isaca.org", "Cyber-Fundamentals.txt"),
-        new("Learning", "Governance & Risk Management", "Board-ready GRC talking points.", "GR", "linear-gradient(135deg,#6558b1,#00a4e4)", "", "GRC-Learning.txt"),
-        new("Learning", "Audit & Assurance", "Audit committee briefing outline.", "AU", "linear-gradient(135deg,#1d2d5c,#6cb33f)", "", "Audit-Assurance.txt"),
-        new("Learning", "Privacy & Data Protection", "DSAR and retention workshop outline.", "PR", "linear-gradient(135deg,#36ac91,#1d2d5c)", "", "Privacy-Learning.txt"),
-        new("Learning", "AI Governance", "Model risk discussion guide for chapters.", "AIG", "linear-gradient(135deg,#e57524,#6558b1)", "", "AI-Governance-Learning.txt"),
-        new("Learning", "Emerging Technologies", "Cloud, identity, and automation themes.", "ET", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Emerging-Tech.txt"),
-        new("Templates", "Meeting Agenda Template", "Standard board and committee agenda.", "TA", "linear-gradient(135deg,#1d2d5c,#07649d)", "", "Meeting-Agenda-Template.txt"),
-        new("Templates", "Event Planning Template", "Milestones, owners, and budget lines.", "TE", "linear-gradient(135deg,#6cb33f,#07649d)", "", "Event-Planning-Template.txt"),
-        new("Templates", "Budget Tracking Template", "Simple monthly chapter budget tracker.", "TB", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Budget-Tracking-Template.txt"),
-        new("Templates", "Risk Assessment Template", "Likelihood/impact grid for chapter risks.", "TR", "linear-gradient(135deg,#e57524,#1d2d5c)", "", "Risk-Assessment-Template.txt"),
-        new("Templates", "Project Planning Template", "Initiative charter and milestone plan.", "TP", "linear-gradient(135deg,#6558b1,#07649d)", "", "Project-Planning-Template.txt"),
-        new("Templates", "Speaker Invite Email", "Ready-to-send invitation for CPE speakers.", "TS", "linear-gradient(135deg,#36ac91,#1d2d5c)", "", "Speaker-Invite.txt"),
-    };
+        string G(string t) => $"TRU Ask · Chapter resource\n\n{t}\n\nPurpose\nThis pack supports ISACA chapter leaders with practical steps, checklists, and talking points.\n\nHow to use\n1. Review with your board or committee.\n2. Adapt names, dates, and contacts for your chapter.\n3. Store the approved version in your knowledge base.\n\nRelated\nUse TRU Ask to query approved documents after you publish this guide.\n\n© Chapter educational use · Not legal advice.";
+
+        return new List<Res>
+        {
+            R("Guides","Chapter Leader Handbook","Roles, calendar, and operating cadence for officers.","HB","linear-gradient(135deg,#1d2d5c,#07649d)","https://www.isaca.org","Chapter-Leader-Handbook.txt",G("Chapter Leader Handbook — roles, calendar, succession, and monthly operating rhythm.")),
+            R("Guides","Governance Guide","Board practices and policy lifecycle overview.","GV","linear-gradient(135deg,#6558b1,#1d2d5c)","https://www.isaca.org/resources","Governance-Guide.txt",G("Governance Guide — board practices, policy lifecycle, and decision logs.")),
+            R("Guides","Financial Management Guide","Budgets, controls, and reporting for chapters.","FM","linear-gradient(135deg,#00a4e4,#07649d)","","Financial-Management-Guide.txt",G("Financial Management — budgets, dual control, monthly reporting, and reserves.")),
+            R("Guides","Event Planning Playbook","End-to-end checklist for CPE and networking events.","EV","linear-gradient(135deg,#6cb33f,#1d2d5c)","","Event-Planning-Playbook.txt",G("Event Planning — venue, CPE credit, speakers, budget, and day-of runbook.")),
+            R("Guides","Volunteer Onboarding Kit","Welcome path for new chapter volunteers.","VO","linear-gradient(135deg,#36ac91,#07649d)","","Volunteer-Onboarding.txt",G("Volunteer Onboarding — welcome email, access checklist, first 30 days.")),
+            R("Guides","CPE Reporting Guide","How members log and verify CPE hours.","CP","linear-gradient(135deg,#e57524,#1d2d5c)","https://www.isaca.org","CPE-Reporting-Guide.txt",G("CPE Reporting — eligible activities, evidence, and submission tips.")),
+            R("Guides","Sponsorship Playbook","Approach local sponsors ethically and clearly.","SP","linear-gradient(135deg,#07649d,#36ac91)","","Sponsorship-Playbook.txt",G("Sponsorship Playbook — tiers, benefits, disclosure, and sample outreach.")),
+            R("Guides","Board Meeting Cadence","Annual calendar of board and committee meetings.","BM","linear-gradient(135deg,#1d2d5c,#00a4e4)","","Board-Meeting-Cadence.txt",G("Board Meeting Cadence — annual grid, quorum notes, and packet deadlines.")),
+
+            R("Policies","Chapter Governance Policy","Sample governance policy for chapter boards.","PG","linear-gradient(135deg,#1d2d5c,#00a4e4)","","Chapter-Governance-Policy.txt",G("Governance Policy — authority, conflicts of interest, and record keeping.")),
+            R("Policies","Financial Controls Policy","Approval thresholds and dual-control guidance.","PF","linear-gradient(135deg,#07649d,#36ac91)","","Financial-Controls-Policy.txt",G("Financial Controls — thresholds, dual signatures, and audit trail.")),
+            R("Policies","Data Privacy Policy","Member data handling and retention baseline.","PP","linear-gradient(135deg,#6558b1,#07649d)","https://www.isaca.org/credentialing/cdpse","Data-Privacy-Policy.txt",G("Data Privacy — collection, retention, access requests, and vendor clauses.")),
+            R("Policies","AI Usage Guidelines","Acceptable use of AI tools in chapter work.","AI","linear-gradient(135deg,#e57524,#1d2d5c)","","AI-Usage-Guidelines.txt",G("AI Usage — approved tools, human review, and member data restrictions.")),
+            R("Policies","Content Review Policy","Review workflow before publishing guidance.","CR","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Content-Review-Policy.txt",G("Content Review — draft, SME review, board approve, publish.")),
+            R("Policies","Incident Response Policy","Severity levels and escalation contacts.","IR","linear-gradient(135deg,#e31837,#1d2d5c)","","Incident-Response-Policy.txt",G("Incident Response — severity, notify list, and post-incident review.")),
+            R("Policies","Code of Conduct","Member and volunteer behavior expectations.","CC","linear-gradient(135deg,#6cb33f,#1d2d5c)","","Code-of-Conduct.txt",G("Code of Conduct — respectful participation, harassment policy, reporting path.")),
+            R("Policies","Social Media Policy","Chapter voice and approval for public posts.","SM","linear-gradient(135deg,#36ac91,#07649d)","","Social-Media-Policy.txt",G("Social Media — brand voice, approval, and crisis takedown steps.")),
+
+            R("Certifications","CISA","Audit credential overview and prep links.","CISA","linear-gradient(135deg,#e31837,#1d2d5c)","https://www.isaca.org/credentialing/cisa","CISA-Overview.txt",G("CISA — domains overview, exam tips, and chapter study group ideas.")),
+            R("Certifications","CISM","Security management credential path.","CISM","linear-gradient(135deg,#6cb33f,#1d2d5c)","https://www.isaca.org/credentialing/cism","CISM-Overview.txt",G("CISM — domains, experience requirements, and study plan outline.")),
+            R("Certifications","CRISC","IT risk and control credential.","CRISC","linear-gradient(135deg,#fbb034,#e57524)","https://www.isaca.org/credentialing/crisc","CRISC-Overview.txt",G("CRISC — risk domains and chapter workshop outline.")),
+            R("Certifications","CGEIT","Enterprise IT governance credential.","CGEIT","linear-gradient(135deg,#00a4e4,#07649d)","https://www.isaca.org/credentialing/cgeit","CGEIT-Overview.txt",G("CGEIT — governance domains and board briefing tips.")),
+            R("Certifications","CDPSE","Privacy solutions engineering credential.","CDPSE","linear-gradient(135deg,#07649d,#1d2d5c)","https://www.isaca.org/credentialing/cdpse","CDPSE-Overview.txt",G("CDPSE — privacy engineering themes and study resources.")),
+            R("Certifications","AAIA / AISM / AAIR / CCOA","Advanced and operations-oriented paths.","ADV","linear-gradient(135deg,#6558b1,#1d2d5c)","https://www.isaca.org/credentialing","Advanced-Credentials.txt",G("Advanced credentials — overview of AAIA, AISM, AAIR, and CCOA paths.")),
+            R("Certifications","Exam Day Checklist","What members should prepare before test day.","EX","linear-gradient(135deg,#1d2d5c,#36ac91)","","Exam-Day-Checklist.txt",G("Exam Day — ID, arrival, materials, and post-exam CPE recording.")),
+            R("Certifications","Study Group Charter","How to run a chapter certification study group.","SG","linear-gradient(135deg,#00a4e4,#6558b1)","","Study-Group-Charter.txt",G("Study Group — cadence, facilitators, materials, and virtual etiquette.")),
+
+            R("Learning","Cybersecurity Fundamentals","Starter pack for member onboarding sessions.","CY","linear-gradient(135deg,#e31837,#07649d)","https://www.isaca.org","Cyber-Fundamentals.txt",G("Cyber Fundamentals — 60-minute session outline with discussion prompts.")),
+            R("Learning","Governance & Risk Management","Board-ready GRC talking points.","GR","linear-gradient(135deg,#6558b1,#00a4e4)","","GRC-Learning.txt",G("GRC Learning — board slides outline and case discussion.")),
+            R("Learning","Audit & Assurance","Audit committee briefing outline.","AU","linear-gradient(135deg,#1d2d5c,#6cb33f)","","Audit-Assurance.txt",G("Audit & Assurance — committee briefing structure and sample questions.")),
+            R("Learning","Privacy & Data Protection","DSAR and retention workshop outline.","PR","linear-gradient(135deg,#36ac91,#1d2d5c)","","Privacy-Learning.txt",G("Privacy workshop — DSAR flow, retention matrix, and tabletop.")),
+            R("Learning","AI Governance","Model risk discussion guide for chapters.","AIG","linear-gradient(135deg,#e57524,#6558b1)","","AI-Governance-Learning.txt",G("AI Governance — model risk, human oversight, and policy hooks.")),
+            R("Learning","Emerging Technologies","Cloud, identity, and automation themes.","ET","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Emerging-Tech.txt",G("Emerging Tech — cloud, identity, automation discussion cards.")),
+            R("Learning","Member Mentoring Guide","Pair experienced members with newcomers.","MG","linear-gradient(135deg,#6cb33f,#07649d)","","Mentoring-Guide.txt",G("Mentoring — pairing tips, 90-day goals, and check-in agenda.")),
+            R("Learning","Tabletop Exercise Pack","Scenario cards for risk and IR practice.","TT","linear-gradient(135deg,#e31837,#6558b1)","","Tabletop-Pack.txt",G("Tabletop — three scenarios, injects, and debrief questions.")),
+
+            R("Templates","Meeting Agenda Template","Standard board and committee agenda.","TA","linear-gradient(135deg,#1d2d5c,#07649d)","","Meeting-Agenda-Template.txt",G("Agenda Template\n1. Call to order\n2. Minutes\n3. Officer reports\n4. Old business\n5. New business\n6. Adjourn")),
+            R("Templates","Event Planning Template","Milestones, owners, and budget lines.","TE","linear-gradient(135deg,#6cb33f,#07649d)","","Event-Planning-Template.txt",G("Event Template — milestones, owners, budget lines, and risk notes.")),
+            R("Templates","Budget Tracking Template","Simple monthly chapter budget tracker.","TB","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Budget-Tracking-Template.txt",G("Budget Tracker — income, expense categories, and variance notes.")),
+            R("Templates","Risk Assessment Template","Likelihood/impact grid for chapter risks.","TR","linear-gradient(135deg,#e57524,#1d2d5c)","","Risk-Assessment-Template.txt",G("Risk Template — likelihood × impact grid and treatment owners.")),
+            R("Templates","Project Planning Template","Initiative charter and milestone plan.","TP","linear-gradient(135deg,#6558b1,#07649d)","","Project-Planning-Template.txt",G("Project Charter — goal, scope, milestones, risks, success metrics.")),
+            R("Templates","Speaker Invite Email","Ready-to-send invitation for CPE speakers.","TS","linear-gradient(135deg,#36ac91,#1d2d5c)","","Speaker-Invite.txt",G("Speaker Invite — subject line, body, logistics, and CPE note.")),
+            R("Templates","Volunteer Role Description","Standard role blurbs for recruitment.","VR","linear-gradient(135deg,#07649d,#6cb33f)","","Volunteer-Role-Description.txt",G("Role Description — duties, time commitment, and skills.")),
+            R("Templates","Post-Event Survey","Quick feedback form for attendees.","SV","linear-gradient(135deg,#00a4e4,#6558b1)","","Post-Event-Survey.txt",G("Survey — rating, CPE usefulness, topic ideas, open comments.")),
+        };
+    }
 
     private IEnumerable<Res> Filtered
     {
@@ -204,16 +270,44 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 
     {
         tab = name;
         search = string.Empty;
+        selected = null;
+    }
+
+    private void Select(Res r) => selected = r;
+
+    private void ToggleFav(Res r)
+    {
+        if (!favs.Add(r.Title)) favs.Remove(r.Title);
+        toast = favs.Contains(r.Title) ? $"★ Favorited: {r.Title}" : $"Removed favorite: {r.Title}";
+        _ = ClearToast();
     }
 
     private async Task Download(Res r)
     {
         downloads++;
-        toast = $"Preparing {r.FileName}…";
+        selected = r;
+        toast = $"Downloading {r.FileName}…";
         StateHasChanged();
-        await Task.Delay(350);
-        toast = $"Ready: {r.Title}";
+        try
+        {
+            var text = r.Body;
+            await JS.InvokeVoidAsync("eval", $"(() => {{ const b=new Blob([`{EscapeJs(text)}`],{{type:'text/plain'}}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='{EscapeJs(r.FileName)}'; a.click(); URL.revokeObjectURL(a.href); }})()");
+            toast = $"Saved: {r.FileName}";
+        }
+        catch
+        {
+            toast = $"Ready: {r.Title} (preview in panel)";
+        }
+        await ClearToast();
+    }
+
+    private static string EscapeJs(string s) =>
+        s.Replace("\\", "\\\\").Replace("`", "\\`").Replace("$", "\\$");
+
+    private async Task ClearToast()
+    {
         await Task.Delay(2800);
         toast = "";
+        StateHasChanged();
     }
 }
