@@ -1,119 +1,56 @@
-/* ============================================================
-   FILL ALL PAGES — no empty band under content
-   ============================================================ */
-
+/* Elegant global frame for every page */
 html, body {
   margin: 0 !important;
   padding: 0 !important;
-  background: #f0f4f8 !important;
-  height: 100% !important;
+  background: #eef2f7 !important;
+  font-family: "Roboto", system-ui, -apple-system, sans-serif !important;
+}
+
+.page, .main, .content, article.content {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
 }
 
 .main {
   min-height: 100vh !important;
-  background: #f0f4f8 !important;
-  display: block !important;
+  background:
+    radial-gradient(1200px 600px at 100% -10%, rgba(0,164,228,.06), transparent 55%),
+    radial-gradient(900px 500px at -5% 100%, rgba(54,172,145,.05), transparent 50%),
+    #eef2f7 !important;
 }
 
-.main .content,
 article.content {
-  padding: 0 !important;
-  margin: 0 !important;
-  max-width: none !important;
-  width: 100% !important;
   min-height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
+}
+
+/* Page roots */
+.pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
+.rl, .wx, .isa-page, .settings-page, .translator-page, .market-page, .page-root {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 0.65rem 1rem 0.85rem !important;
   box-sizing: border-box !important;
 }
 
-/* Page root fills the main column */
-.main .content > section,
-.main .content > article,
-.pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
-.contact-page, .settings-page, .isa-page, .wx, .rl, .market-page,
-.translator-page, .page-root, .page-content, .dashboard, .pipeline-monitor {
+/* Soft cards everywhere */
+.isa-panel, .isa-stat-card, .isa-card,
+.pg-card, .ct-card, .st-card, .rl-card, .wx-card, .mt-panel, .rl-kpi, .rl-chart, .rl-cat {
+  border-radius: 14px !important;
+  box-shadow: 0 4px 16px rgba(29, 45, 92, 0.05) !important;
+  border-color: #e4ebf3 !important;
+}
+
+.isa-stat-grid, .isa-content-grid, .isa-hero-strip, .isa-page-heading {
+  margin-bottom: 0.65rem !important;
+}
+
+.container, .container-fluid {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
-  padding: 0.55rem 0.9rem 0.75rem !important;
-  box-sizing: border-box !important;
-  flex: 1 1 auto !important;
-  min-height: calc(100vh - 0.5rem) !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* Inner grids grow to use remaining height */
-.pg-grid, .ct-grid, .tr-grid, .st-grid,
-.isa-content-grid, .isa-stat-grid {
-  flex: 1 1 auto !important;
-  align-content: stretch !important;
-}
-
-.pg-card, .ct-card, .st-card, .tr-box, .isa-panel {
-  min-height: 0 !important;
-  height: 100% !important;
-  display: flex !important;
-  flex-direction: column !important;
-}
-
-/* Stats / heroes stay natural height */
-.pg-hero, .ct-hero, .st-hero, .tr-hero, .hm-top, .isa-hero-strip,
-.pg-stats, .st-tabs, .tr-bar, .tr-top, .ct-grid + * {
-  flex: 0 0 auto !important;
-}
-
-.pg-stats {
-  display: grid !important;
-  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-  gap: 0.55rem !important;
-  margin-bottom: 0.55rem !important;
-}
-
-.pg-grid {
-  display: grid !important;
-  grid-template-columns: 1.25fr 1fr !important;
-  gap: 0.55rem !important;
-  flex: 1 1 auto !important;
-  min-height: 220px !important;
-}
-
-.container,
-.container-fluid,
-.container-lg,
-.container-md,
-.container-sm,
-.container-xl,
-.container-xxl {
-  max-width: none !important;
-  width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
   padding-left: 0.75rem !important;
   padding-right: 0.75rem !important;
-}
-
-.ct-hero, .tr-hero, .st-hero, .pg-hero, .isa-hero-strip, .hm-top {
-  margin-bottom: 0.55rem !important;
-}
-
-.sf {
-  width: 100% !important;
-  max-width: none !important;
-  margin: 0.5rem 0 0 !important;
-  box-sizing: border-box !important;
-  flex: 0 0 auto !important;
-}
-
-@media (max-width: 900px) {
-  .pg-grid, .pg-stats {
-    grid-template-columns: 1fr 1fr !important;
-  }
-}
-
-@media (max-width: 560px) {
-  .pg-grid, .pg-stats {
-    grid-template-columns: 1fr !important;
-  }
 }
