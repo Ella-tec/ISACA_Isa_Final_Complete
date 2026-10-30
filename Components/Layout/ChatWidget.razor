@@ -120,7 +120,7 @@
            on its own, anchored at the top-right corner instead (see
            wireframe "Expanded" and the note on
            .isa-widget__panel.is-expanded in the .css file for why). *@
-        <button type="button" class="isa-widget__bubble" @onclick="Expand" aria-label="Open chat">
+        <button type="button" class="isa-widget__bubble" @onclick="Expand" aria-label="Open TRU Ask">
             <Throbber Spinning="false" SpinOnHover="true" />
         </button>
     }
@@ -138,41 +138,14 @@
                role, and a cropped "C" brand graphic behind it (same
                graphic as the landing page). Icons sit on the right.
                Redesigned 16 October 2026 (Matthew's approved mockup). *@
+            @* Slim modern header — TRU only, no long title, no big blue C *@
             <div class="isa-widget__header">
-                <svg class="isa-widget__headerC" viewBox="-25 -25 250 250" aria-hidden="true">
-                    <path d="M153.26 74.88L193.32 74.88A3.33 3.33 0 0 0 196.5 70.58A100.89 100.89 0 1 0 196.5 129.42A3.33 3.33 0 0 0 193.32 125.12L153.26 125.12A3.33 3.33 0 0 0 150.32 126.88A57.05 57.05 0 1 1 150.32 73.12A3.33 3.33 0 0 0 153.26 74.88Z" fill="currentColor" />
-                </svg>
                 <div class="isa-widget__identity">
-                    @* Only while the rail is hidden: brings it back. The green
-                       dot says there are steps for today. *@
-                    @if (IsRailHidden)
-                    {
-                        <button type="button" class="isa-widget__headerLink isa-widget__menuBtn" @onclick="ShowRailAgain"
-                                title="Show the menu" aria-label="@(StepsLeftToday > 0 ? "Show the menu, steps for today" : "Show the menu")">
-                            <svg viewBox="0 0 24 24" class="isa-widget__menuIcon" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
-                                <path d="M4 7h16M4 12h16M4 17h16" />
-                            </svg>
-                            @if (StepsLeftToday > 0)
-                            {
-                                <span class="isa-widget__menuDot" aria-hidden="true"></span>
-                            }
-                        </button>
-                    }
-                    <span class="isa-widget__badge" aria-hidden="true"><Throbber Spinning="false" /></span>
-                    <span class="isa-widget__identityText">
-                        <span class="isa-widget__name">Isa</span>
-                        <span class="isa-widget__role"><span class="isa-widget__statusDot" aria-hidden="true"></span>Chapter Support Assistant</span>
+                    <span class="isa-widget__badge isa-widget__badge--wiggle" title="TRU" aria-label="TRU">
+                        <Throbber Spinning="false" />
                     </span>
                 </div>
-                @* Header icons: only New conversation and Close. Today, the
-                   notebook, Chapter 360, Engage, Config and the dashboards
-                   moved to the rail on the left (IsaRail.razor, 21 October
-                   2026), so the header leaves more room for the chat. *@
                 <div class="isa-widget__headerLinks">
-                    @* New conversation: clears the chat so the welcome
-                       message and suggested questions show again. Hidden
-                       while the chat is already empty or a question is
-                       still being answered. *@
                     @if (Messages.Count > 0 && !IsSending)
                     {
                         <button type="button" class="isa-widget__headerLink" @onclick="NewConversation" title="New conversation" aria-label="New conversation">
@@ -184,6 +157,50 @@
                     }
                     <button type="button" class="isa-widget__close" @onclick="Collapse" aria-label="Close chat">&times;</button>
                 </div>
+            </div>
+
+            @* Model router toolbar — Automatic dropdown + Web *@
+            <div class="isa-widget__toolbar">
+                <div class="isa-widget__modelDrop">
+                    <button type="button"
+                            class="isa-widget__toolBtn isa-widget__toolBtn--model"
+                            @onclick="ToggleModelMenu"
+                            aria-haspopup="listbox"
+                            aria-expanded="@IsModelMenuOpen">
+                        <span>@SelectedRouterLabel</span>
+                        <span class="isa-widget__caret" aria-hidden="true">▼</span>
+                    </button>
+                    @if (IsModelMenuOpen)
+                    {
+                        <ul class="isa-widget__modelMenu" role="listbox">
+                            @foreach (var opt in RouterOptions)
+                            {
+                                <li role="option">
+                                    <button type="button"
+                                            class="isa-widget__modelMenuItem @(SelectedRouterLabel == opt ? "is-active" : "")"
+                                            @onclick="() => SelectRouter(opt)">
+                                        @opt
+                                    </button>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+                <button type="button"
+                        class="isa-widget__toolBtn @(WebSearchEnabled ? "is-on" : "")"
+                        @onclick="ToggleWebSearch"
+                        title="Web search">
+                    <span aria-hidden="true">🌐</span>
+                    <span>Web</span>
+                </button>
+                <button type="button" class="isa-widget__toolBtn" title="Activity" @onclick="ToggleActivity">
+                    <span aria-hidden="true">∿</span>
+                    <span>Activity</span>
+                </button>
+                <a class="isa-widget__toolBtn" href="/settings" title="Settings">
+                    <span aria-hidden="true">⚙</span>
+                    <span>Settings</span>
+                </a>
             </div>
 
             @* Developer tools (Ollama hosts, model list, model picker):
@@ -268,7 +285,7 @@
                 @if (_liveFeed is { } live && Settings.ShowTheWork)
                 {
                     <div class="isa-widget__message isa-widget__message--ai" style="@BubbleStyle("ai")">
-                        <div class="isa-widget__who">@(Settings.UseIsaLabel ? "Isa" : "pipeline")</div>
+                        <div class="isa-widget__who">@(Settings.UseIsaLabel ? "TRU Ask" : "pipeline")</div>
                         <ShowTheWork Steps="@live.View.Steps" Current="@live.View.Current" Live="true" Developer="@(ShowDeveloperTools && !Settings.PanelUserView)"
                                      CanToggle="@ShowDeveloperTools" OnToggle="@TogglePanelView" />
                     </div>
@@ -348,7 +365,7 @@
                 @if (Messages.Count == 0)
                 {
                     <div class="isa-widget__message isa-widget__message--ai isa-widget__welcome" style="@BubbleStyle("ai")">
-                        <div class="isa-widget__who">Isa</div>
+                        <div class="isa-widget__who">TRU Ask</div>
                         <div class="isa-widget__text">Hello! I can answer questions about running your chapter, using ISACA's approved guidance. Every answer shows where it came from.</div>
                         <div class="isa-widget__suggestions">
                             @foreach (var s in SuggestedQuestions)
@@ -402,8 +419,8 @@
                still the placeholder for the future ticketing bridge --
                not wired up yet; add the click handler once it exists. *@
             <div class="isa-widget__footer">
-                <span class="isa-widget__footerNote">Answers come from approved ISACA documents.</span>
-                <a href="#" class="isa-widget__directSupportLink" @onclick:preventDefault="true">@Title &rsaquo;</a>
+                <span class="isa-widget__footerNote">Answers from approved documents.</span>
+                <a href="/contact" class="isa-widget__directSupportLink" title="Contact Team">🎧 Contact Team</a>
             </div>
         </div>
 
@@ -616,6 +633,47 @@
     private List<string> HostStatuses { get; set; } = new();
     private int? SelectedIndex { get; set; }
 
+    // ---- TRU model router toolbar ------------------------------------------
+    private static readonly string[] RouterOptions =
+    {
+        "Automatic",
+        "Auto Router",
+        "GPT-5.4",
+        "GPT-5 Mini",
+        "Claude Sonnet",
+        "Claude Opus",
+        "Gemini",
+        "Grok",
+        "DeepSeek"
+    };
+    private string SelectedRouterLabel { get; set; } = "Automatic";
+    private bool IsModelMenuOpen { get; set; }
+    private bool WebSearchEnabled { get; set; }
+    private bool ShowActivity { get; set; }
+
+    private void ToggleModelMenu() => IsModelMenuOpen = !IsModelMenuOpen;
+
+    private void SelectRouter(string label)
+    {
+        SelectedRouterLabel = label;
+        IsModelMenuOpen = false;
+        if (label is "Automatic" or "Auto Router")
+        {
+            UsePipeline = true;
+        }
+        else
+        {
+            UsePipeline = false;
+            if (ModelEntries.Count > 0 && SelectedIndex is null)
+                SelectedIndex = 0;
+        }
+    }
+
+    private void ToggleWebSearch() => WebSearchEnabled = !WebSearchEnabled;
+    private void ToggleActivity() => ShowActivity = !ShowActivity;
+
+
+
     // ---- Live elapsed-time ticker --------------------------------------
     //
     // While a request is in flight, TickLoop forces a re-render every
@@ -695,6 +753,7 @@
         IsExpanded = false;
         IsTodayOpen = false;
         IsNotebookOpen = false;
+        IsModelMenuOpen = false;
         Enlarged = null;
     }
 
@@ -750,7 +809,7 @@
     // chat with Today, Notebook, Chapter 360, Engage and, for staff roles,
     // Backstage. "Hide" tucks it away; the menu button in the header brings
     // it back. Hiding is remembered while Isa stays open in this tab.
-    private bool IsRailHidden { get; set; }
+    private bool IsRailHidden { get; set; } = true; // default hidden — no Hide strip
     private bool ShowRail => IsExpanded && !IsRailHidden;
 
     // True for the half second while the rail glides away. During it the
@@ -1064,12 +1123,12 @@
             // -- transcript only; the model picker dropdown above
             // always shows real model names, since that's a testing
             // tool for the team, not something a chapter leader sees.
-            var aiDisplayName = Settings.UseIsaLabel ? "Isa" : $"{entry.ModelName} ({entry.HostName})";
+            var aiDisplayName = Settings.UseIsaLabel ? "TRU Ask" : $"{entry.ModelName} ({entry.HostName})";
             Messages.Add(new ChatEntry("ai", aiDisplayName, result?.Response ?? "(empty response)", entry.ModelName, elapsedMs));
         }
         catch (Exception ex) when (UsePipeline)
         {
-            Messages.Add(new ChatEntry("error", "Isa", IsaChatApp.Services.ShowTheWork.Wording.WentWrong));
+            Messages.Add(new ChatEntry("error", "TRU Ask", IsaChatApp.Services.ShowTheWork.Wording.WentWrong));
             Console.Error.WriteLine($"Pipeline error: {ex}");
         }
         catch (Exception ex)
@@ -1186,7 +1245,7 @@
             return;
         }
 
-        var name = Settings.UseIsaLabel ? "Isa" : "pipeline";
+        var name = Settings.UseIsaLabel ? "TRU Ask" : "pipeline";
         var sources = result.Sources.Distinct().ToList();
 
         switch (result.Status)
@@ -1282,3 +1341,4 @@
         [JsonPropertyName("size")] public long? Size { get; set; }
     }
 }
+.

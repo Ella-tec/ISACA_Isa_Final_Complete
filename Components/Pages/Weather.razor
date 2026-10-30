@@ -1,64 +1,149 @@
-﻿@page "/weather"
-@attribute [StreamRendering]
+@page "/weather"
+@rendermode InteractiveServer
+@implements IDisposable
 
-<PageTitle>Weather</PageTitle>
+<PageTitle>Weather | Isa</PageTitle>
 
-<h1>Weather</h1>
+<style>
+.wx{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1100px;margin:0 auto;padding-bottom:1.5rem}
+.wx-hero{border-radius:18px;padding:1.5rem 1.6rem;color:#fff;margin-bottom:.85rem;
+background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 12px 36px rgba(29,45,92,.16)}
+.wx-hero h1{margin:.15rem 0 .25rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
+.wx-hero p{margin:0;opacity:.92}
+.wx-search{display:flex;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap}
+.wx-search input{flex:1;min-width:180px;padding:.6rem .85rem;border-radius:10px;border:1px solid var(--line);font-family:inherit}
+.wx-search button{border:none;cursor:pointer;padding:.6rem 1.1rem;border-radius:10px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.wx-now{display:grid;grid-template-columns:1.2fr 1fr;gap:.75rem;margin-bottom:.85rem}
+.wx-card{background:#fff;border-radius:16px;padding:1.2rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.wx-temp{font-size:3rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;line-height:1}
+.wx-meta{color:var(--muted);font-size:.9rem;margin-top:.35rem}
+.wx-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;margin-top:1rem}
+.wx-kpi{background:var(--light);border-radius:12px;padding:.75rem;text-align:center}
+.wx-kpi b{display:block;font-size:1.1rem}
+.wx-kpi span{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.wx-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.45rem}
+.wx-day{background:#fff;border-radius:12px;padding:.75rem .4rem;border:1px solid var(--line);text-align:center;cursor:pointer;transition:border-color .12s}
+.wx-day:hover,.wx-day.on{border-color:var(--blue)}
+.wx-day .d{font-size:.72rem;font-weight:700;color:var(--muted)}
+.wx-day .t{font-size:1.05rem;font-weight:600;margin:.25rem 0}
+.wx-day .c{font-size:.75rem;color:var(--muted)}
+.wx-bars{display:flex;align-items:flex-end;gap:4px;height:100px;margin-top:.75rem}
+.wx-bar{flex:1;background:linear-gradient(180deg,var(--blue),var(--mid));border-radius:4px 4px 2px 2px;min-height:6px;cursor:pointer;border:none;padding:0}
+.wx-alert{background:#fff8e8;border:1px solid #f0d78c;border-radius:12px;padding:.85rem 1rem;margin-top:.85rem;font-size:.88rem}
+@@media(max-width:800px){.wx-now{grid-template-columns:1fr}.wx-days{grid-template-columns:repeat(4,1fr)}}
+</style>
 
-<p>This component demonstrates showing data.</p>
+<section class="wx">
+    <header class="wx-hero">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Local conditions</div>
+        <h1>Weather</h1>
+        <p>@location · updated @timeText</p>
+    </header>
 
-@if (forecasts == null)
-{
-    <p><em>Loading...</em></p>
-}
-else
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Date</th>
-                <th aria-label="Temperature in Celsius">Temp. (C)</th>
-                <th aria-label="Temperature in Fahrenheit">Temp. (F)</th>
-                <th>Summary</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var forecast in forecasts)
+    <div class="wx-search">
+        <input @bind="locationQuery" placeholder="City (e.g. Kansas City, Chicago)" />
+        <button type="button" @onclick="Search">Search</button>
+    </div>
+
+    <div class="wx-now">
+        <article class="wx-card">
+            <div class="wx-temp">@temp°F</div>
+            <div class="wx-meta">@condition · Feels like @feels°F</div>
+            <div class="wx-kpis">
+                <div class="wx-kpi"><b>@humidity%</b><span>Humidity</span></div>
+                <div class="wx-kpi"><b>@wind mph</b><span>Wind</span></div>
+                <div class="wx-kpi"><b>@uv</b><span>UV index</span></div>
+            </div>
+            @if (!string.IsNullOrEmpty(alert))
             {
-                <tr>
-                    <td>@forecast.Date.ToShortDateString()</td>
-                    <td>@forecast.TemperatureC</td>
-                    <td>@forecast.TemperatureF</td>
-                    <td>@forecast.Summary</td>
-                </tr>
+                <div class="wx-alert"><strong>Alert:</strong> @alert</div>
             }
-        </tbody>
-    </table>
-}
+        </article>
+        <article class="wx-card">
+            <h2 style="margin:0 0 .35rem;font-size:1rem">Temperature trend (24h sample)</h2>
+            <p style="margin:0;font-size:.8rem;color:var(--muted)">Click a bar for hour detail</p>
+            <div class="wx-bars">
+                @for (var i = 0; i < hours.Length; i++)
+                {
+                    var ii = i;
+                    <button type="button" class="wx-bar" style="height:@hours[i]%" @onclick="() => HourDetail(ii)"></button>
+                }
+            </div>
+            <p style="margin:.65rem 0 0;font-size:.85rem;color:var(--muted)">@hourText</p>
+        </article>
+    </div>
+
+    <h2 style="font-size:1.05rem;margin:0 0 .55rem">7-day forecast</h2>
+    <div class="wx-days">
+        @for (var i = 0; i < forecast.Length; i++)
+        {
+            var fi = i;
+            var f = forecast[i];
+            <div class="wx-day @(dayIndex==i?"on":null)" @onclick="() => dayIndex = fi">
+                <div class="d">@f.Day</div>
+                <div class="t">@f.High°</div>
+                <div class="c">@f.Low° · @f.Cond</div>
+            </div>
+        }
+    </div>
+    @if (dayIndex >= 0)
+    {
+        <article class="wx-card" style="margin-top:.85rem">
+            <strong>@forecast[dayIndex].Day</strong> — High @forecast[dayIndex].High°F / Low @forecast[dayIndex].Low°F · @forecast[dayIndex].Cond
+            <div style="color:var(--muted);font-size:.88rem;margin-top:.25rem">Chapter planning tip: outdoor events prefer lows above 50°F and low wind.</div>
+        </article>
+    }
+</section>
 
 @code {
-    private WeatherForecast[]? forecasts;
+    private string location = "Kansas City, MO";
+    private string locationQuery = "Kansas City";
+    private string timeText = "";
+    private int temp = 72, feels = 70, humidity = 48, wind = 9, uv = 4;
+    private string condition = "Partly cloudy";
+    private string alert = "";
+    private string hourText = "Hover or click a bar";
+    private int dayIndex = 0;
+    private int[] hours = { 45, 48, 50, 55, 62, 70, 78, 85, 90, 88, 80, 72, 65, 60, 55, 52, 50, 48, 46, 44, 42, 40, 42, 44 };
+    private System.Threading.Timer? timer;
+    private readonly Random rng = new();
 
-    protected override async Task OnInitializedAsync()
+    private record DayF(string Day, int High, int Low, string Cond);
+    private DayF[] forecast = Array.Empty<DayF>();
+
+    protected override void OnInitialized()
     {
-        // Simulate asynchronous loading to demonstrate streaming rendering
-        await Task.Delay(500);
-
-        var startDate = DateOnly.FromDateTime(DateTime.Now);
-        var summaries = new[] { "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching" };
-        forecasts = Enumerable.Range(1, 5).Select(index => new WeatherForecast
+        forecast = new[]
         {
-            Date = startDate.AddDays(index),
-            TemperatureC = Random.Shared.Next(-20, 55),
-            Summary = summaries[Random.Shared.Next(summaries.Length)]
-        }).ToArray();
+            new DayF("Mon", 74, 55, "Sun"), new DayF("Tue", 71, 52, "Cloud"), new DayF("Wed", 68, 50, "Rain"),
+            new DayF("Thu", 70, 51, "Cloud"), new DayF("Fri", 76, 56, "Sun"), new DayF("Sat", 78, 58, "Sun"), new DayF("Sun", 75, 57, "Cloud")
+        };
+        Tick(null);
+        timer = new System.Threading.Timer(Tick, null, 15000, 15000);
     }
 
-    private class WeatherForecast
+    private void Tick(object? _)
     {
-        public DateOnly Date { get; set; }
-        public int TemperatureC { get; set; }
-        public string? Summary { get; set; }
-        public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        timeText = DateTime.Now.ToString("h:mm tt");
+        temp = Math.Clamp(temp + rng.Next(-1, 2), 55, 88);
+        feels = temp - rng.Next(0, 3);
+        _ = InvokeAsync(StateHasChanged);
     }
+
+    private void Search()
+    {
+        if (string.IsNullOrWhiteSpace(locationQuery)) return;
+        location = locationQuery.Trim();
+        temp = 60 + rng.Next(0, 25);
+        condition = rng.Next(0, 3) switch { 0 => "Sunny", 1 => "Partly cloudy", _ => "Cloudy" };
+        humidity = 35 + rng.Next(0, 40);
+        wind = 4 + rng.Next(0, 15);
+        alert = wind > 14 ? "Elevated wind — secure outdoor event materials." : "";
+        hours = hours.Select(_ => rng.Next(30, 95)).ToArray();
+    }
+
+    private void HourDetail(int i) => hourText = $"Hour +{i}: relative temp index {hours[i]}% of daily peak sample.";
+
+    public void Dispose() => timer?.Dispose();
 }

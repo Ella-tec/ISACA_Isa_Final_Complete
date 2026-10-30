@@ -1,91 +1,243 @@
 @page "/escalations"
 @rendermode InteractiveServer
 
-<PageTitle>Escalations | Isa</PageTitle>
+<PageTitle>Escalations & Tickets | Isa</PageTitle>
 
 <style>
-.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.pg a{text-decoration:none!important}
-.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#e57524,#e31837);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
-.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
-.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
-.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#e31837}
-.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
-.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
-.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.pg-card--wide{grid-column:1/-1}
-.pg-list{list-style:none;margin:0;padding:0}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
-.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
-.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#e57524,#e31837);color:#fff}
-.pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
-.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
-.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#e57524,#e31837);border-radius:999px}
-
-@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+.es{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--red:#e31837;--orange:#e57524;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1220px;margin:0 auto;padding-bottom:1.5rem}
+.es-hero{border-radius:18px;padding:1.35rem 1.5rem;color:#fff;margin-bottom:.85rem;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;
+background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);box-shadow:0 12px 36px rgba(29,45,92,.16)}
+.es-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
+.es-hero p{margin:0;opacity:.92;font-size:.88rem}
+.es-btn{border:none;cursor:pointer;padding:.55rem 1.1rem;border-radius:10px;font-weight:600;font-family:inherit;background:#fff;color:var(--navy);transition:transform .12s}
+.es-btn:hover{transform:translateY(-1px)}
+.es-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.65rem;margin-bottom:.85rem}
+.es-kpi{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:border-color .12s,transform .12s}
+.es-kpi:hover{border-color:var(--blue);transform:translateY(-2px)}
+.es-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.22)}
+.es-kpi .l{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.es-kpi .v{font-size:1.45rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
+.es-kpi .t{font-size:.78rem;color:var(--muted)}
+.es-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:.75rem;margin-bottom:.75rem}
+.es-card{background:#fff;border-radius:14px;padding:1.1rem;border:1px solid var(--line);box-shadow:0 6px 20px rgba(29,45,92,.05)}
+.es-card h2{margin:0 0 .2rem;font-size:1rem}
+.es-card .sub{margin:0 0 .65rem;font-size:.8rem;color:var(--muted)}
+.es-filters{display:flex;gap:.35rem;flex-wrap:wrap;margin-bottom:.65rem}
+.es-filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.35rem .8rem;font-weight:600;font-size:.8rem;cursor:pointer;font-family:inherit;color:var(--navy);transition:background .12s}
+.es-filters button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.es-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.es-table th{text-align:left;font-size:.65rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.5rem .4rem;border-bottom:1px solid var(--line)}
+.es-table td{padding:.55rem .4rem;border-bottom:1px solid var(--line)}
+.es-badge{display:inline-block;padding:.15rem .45rem;border-radius:999px;font-size:.7rem;font-weight:700}
+.es-badge.open{background:#e8f0fe;color:#07649d}
+.es-badge.progress{background:#fff4e5;color:#b86e00}
+.es-badge.closed{background:#e8f6e8;color:#2d6a2d}
+.es-badge.escalated{background:#fdecea;color:#a12a2a}
+.es-actions button{margin-right:.25rem;border:1px solid var(--line);background:#fff;border-radius:7px;padding:.28rem .5rem;font-size:.75rem;font-weight:600;cursor:pointer;font-family:inherit;transition:background .12s}
+.es-actions button:hover{background:var(--light)}
+.es-bars{display:flex;align-items:flex-end;gap:6px;height:100px}
+.es-bar{flex:1;border-radius:5px 5px 2px 2px;background:linear-gradient(180deg,var(--blue),var(--mid));min-height:8px;cursor:pointer;border:none;padding:0}
+.es-bar:hover{filter:brightness(1.1)}
+.es-prio{display:flex;flex-direction:column;gap:.4rem}
+.es-prio-row{display:flex;align-items:center;gap:.5rem;font-size:.85rem}
+.es-prio-row .track{flex:1;height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden}
+.es-prio-row .fill{height:100%;border-radius:99px}
+.es-act{padding:.5rem .65rem;background:var(--light);border-radius:8px;margin-bottom:.35rem;font-size:.82rem}
+.es-act strong{display:block}
+.es-modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;z-index:80;padding:1rem}
+.es-modal{background:#fff;border-radius:16px;padding:1.25rem;width:min(460px,100%);box-shadow:0 24px 60px rgba(0,0,0,.25)}
+.es-modal h2{margin:0 0 .85rem;font-size:1.1rem}
+.es-modal label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:.2rem}
+.es-modal input,.es-modal textarea,.es-modal select{width:100%;box-sizing:border-box;padding:.55rem .7rem;border-radius:9px;border:1px solid var(--line);margin-bottom:.65rem;font-family:inherit}
+.es-modal .row{display:flex;gap:.45rem;justify-content:flex-end}
+.es-modal .row button{padding:.5rem .95rem;border-radius:9px;font-weight:600;border:none;cursor:pointer;font-family:inherit}
+.es-modal .save{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.es-modal .cancel{background:var(--light);color:var(--navy)}
+.es-toast{position:fixed;bottom:1.1rem;right:1.1rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:11px;font-weight:600;z-index:90}
+.es-detail{background:#e8f4fc;border-radius:12px;padding:.75rem 1rem;margin-bottom:.75rem;font-size:.88rem;border:1px solid #c5e0f5}
+@@media(max-width:900px){.es-kpis{grid-template-columns:1fr 1fr}.es-grid{grid-template-columns:1fr}}
 </style>
 
-<section class="pg">
-  <header class="pg-hero">
-    <div>
-      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">SUPPORT OPERATIONS</p>
-      <h1>Escalations & tickets</h1>
-      <p>Track follow-ups — metrics and rows are clickable.</p>
+<section class="es">
+    <header class="es-hero">
+        <div>
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Support operations</div>
+            <h1>Escalations &amp; Tickets</h1>
+            <p>Create, track, escalate — metrics fill the workspace.</p>
+        </div>
+        <button type="button" class="es-btn" @onclick="OpenCreate">+ Create ticket</button>
+    </header>
+
+    <div class="es-kpis">
+        <button type="button" class="es-kpi @(metric=="open"?"on":null)" @onclick='() => ShowMetric("open")'>
+            <div class="l">Open</div><div class="v">@Count("Open")</div><div class="t">Need action</div>
+        </button>
+        <button type="button" class="es-kpi @(metric=="prog"?"on":null)" @onclick='() => ShowMetric("prog")'>
+            <div class="l">In progress</div><div class="v">@Count("In progress")</div><div class="t">Active work</div>
+        </button>
+        <button type="button" class="es-kpi @(metric=="esc"?"on":null)" @onclick='() => ShowMetric("esc")'>
+            <div class="l">Escalated</div><div class="v">@Count("Escalated")</div><div class="t">Priority</div>
+        </button>
+        <button type="button" class="es-kpi @(metric=="sla"?"on":null)" @onclick='() => ShowMetric("sla")'>
+            <div class="l">SLA on-track</div><div class="v">@sla%</div><div class="t">Illustrative</div>
+        </button>
     </div>
-  </header>
 
-  <div class="pg-stats">
-    <button type="button" class="pg-stat" @onclick='() => Filter("Open")'><span>Open</span><strong>4</strong><em>Need action →</em></button>
-    <button type="button" class="pg-stat" @onclick='() => Filter("High")'><span>High / urgent</span><strong>2</strong><em>Prioritize →</em></button>
-    <button type="button" class="pg-stat" @onclick='() => Filter("Progress")'><span>In progress</span><strong>1</strong><em>Active →</em></button>
-    <button type="button" class="pg-stat" @onclick="NewTicket"><span>New ticket</span><strong>+</strong><em>Create →</em></button>
-  </div>
-  <div class="pg-grid">
-    <article class="pg-card pg-card--wide">
-      <h2>Ticket queue</h2>
-      <ul class="pg-list">
-        @foreach (var t in Tickets.Where(x => filter=="All" || x.Status.Contains(filter) || (filter=="High" && x.Priority=="High")))
-        {
-          <li>
-            <div><strong>@t.Id · @t.Subject</strong><span>@t.Category · @t.Priority · @t.Status</span></div>
-            <button type="button" class="pg-btn" @onclick="() => OpenTicket(t.Id)">Open</button>
-          </li>
-        }
-      </ul>
-      <div class="pg-actions">
-        <button type="button" class="pg-btn" @onclick="NewTicket">+ New ticket</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Filter("All")'>Show all</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("contact")'>Contact client</button>
-      </div>
-      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
-    </article>
-  </div>
+    @if (!string.IsNullOrEmpty(metricText))
+    {
+        <div class="es-detail">@metricText</div>
+    }
 
+    <div class="es-grid">
+        <article class="es-card">
+            <h2>Ticket queue</h2>
+            <p class="sub">Filter and update status</p>
+            <div class="es-filters">
+                <button type="button" class="@(filter=="All"?"on":null)" @onclick="FilterAll">All</button>
+                <button type="button" class="@(filter=="Open"?"on":null)" @onclick="FilterOpen">Open</button>
+                <button type="button" class="@(filter=="In progress"?"on":null)" @onclick="FilterProgress">In progress</button>
+                <button type="button" class="@(filter=="Escalated"?"on":null)" @onclick="FilterEscalated">Escalated</button>
+                <button type="button" class="@(filter=="Closed"?"on":null)" @onclick="FilterClosed">Closed</button>
+            </div>
+            <table class="es-table">
+                <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
+                <tbody>
+                @foreach (var t in Visible)
+                {
+                    <tr>
+                        <td><strong>@t.Id</strong></td>
+                        <td>@t.Subject</td>
+                        <td><span class="es-badge @StatusClass(t.Status)">@t.Status</span></td>
+                        <td>@t.Priority</td>
+                        <td class="es-actions">
+                            @if (t.Status != "Closed")
+                            {
+                                <button type="button" @onclick="() => MarkProgress(t)">Progress</button>
+                                <button type="button" @onclick="() => MarkEscalated(t)">Escalate</button>
+                                <button type="button" @onclick="() => MarkClosed(t)">Close</button>
+                            }
+                            else
+                            {
+                                <button type="button" @onclick="() => MarkOpen(t)">Reopen</button>
+                            }
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </article>
+        <div>
+            <article class="es-card" style="margin-bottom:.75rem">
+                <h2>Resolution trend</h2>
+                <p class="sub">Tickets closed per day (sample) · click a bar</p>
+                <div class="es-bars">
+                    @for (var i = 0; i < trend.Length; i++)
+                    {
+                        var ii = i;
+                        <button type="button" class="es-bar" style="height:@trend[i]%" @onclick="() => ClickTrend(ii)" title="Day @(i+1)"></button>
+                    }
+                </div>
+            </article>
+            <article class="es-card" style="margin-bottom:.75rem">
+                <h2>Priority mix</h2>
+                <p class="sub">Current queue</p>
+                <div class="es-prio">
+                    <div class="es-prio-row"><span style="width:3.5rem">Urgent</span><div class="track"><div class="fill" style="width:@urgentPct%;background:#e31837"></div></div><span>@urgentPct%</span></div>
+                    <div class="es-prio-row"><span style="width:3.5rem">High</span><div class="track"><div class="fill" style="width:@highPct%;background:#e57524"></div></div><span>@highPct%</span></div>
+                    <div class="es-prio-row"><span style="width:3.5rem">Normal</span><div class="track"><div class="fill" style="width:@normalPct%;background:#07649d"></div></div><span>@normalPct%</span></div>
+                </div>
+            </article>
+            <article class="es-card">
+                <h2>Recent activity</h2>
+                <p class="sub">Workspace feed</p>
+                @foreach (var a in activity)
+                {
+                    <div class="es-act"><strong>@a.Title</strong>@a.When</div>
+                }
+            </article>
+        </div>
+    </div>
 </section>
 
+@if (showCreate)
+{
+    <div class="es-modal-bg" @onclick="CloseCreate">
+        <div class="es-modal" @onclick:stopPropagation="true">
+            <h2>Create ticket</h2>
+            <label>Subject</label>
+            <input @bind="newSubject" placeholder="Short summary" />
+            <label>Priority</label>
+            <select @bind="newPriority"><option>Normal</option><option>High</option><option>Urgent</option></select>
+            <label>Details</label>
+            <textarea rows="3" @bind="newDetails"></textarea>
+            <div class="row">
+                <button type="button" class="cancel" @onclick="CloseCreate">Cancel</button>
+                <button type="button" class="save" @onclick="Create">Submit</button>
+            </div>
+        </div>
+    </div>
+}
+@if (!string.IsNullOrEmpty(toast)) { <div class="es-toast">@toast</div> }
+
 @code {
-
-    [Inject] private NavigationManager Nav { get; set; } = default!;
-    private string filter = "All";
-    private string? toast;
-    private readonly List<(string Id,string Subject,string Category,string Priority,string Status)> Tickets = new()
+    private sealed class Ticket { public string Id { get; set; } = ""; public string Subject { get; set; } = ""; public string Status { get; set; } = "Open"; public string Priority { get; set; } = "Normal"; public string Updated { get; set; } = ""; }
+    private readonly List<Ticket> tickets = new()
     {
-        ("ISA-1024","Membership renewal question","Membership","Medium","Open"),
-        ("ISA-1023","Event registration issue","Event","High","In progress"),
-        ("ISA-1022","Certification resource access","Certification","High","Open"),
-        ("ISA-1021","Policy clarification","Governance","Low","Open"),
+        new() { Id = "ISA-1023", Subject = "Portal access for new officer", Status = "In progress", Priority = "High", Updated = "Yesterday" },
+        new() { Id = "ISA-1018", Subject = "CPE credit not reflecting", Status = "Open", Priority = "Normal", Updated = "2 days ago" },
+        new() { Id = "ISA-1005", Subject = "Event registration capacity", Status = "Closed", Priority = "Normal", Updated = "Last week" },
+        new() { Id = "ISA-1028", Subject = "Study group room booking", Status = "Open", Priority = "Urgent", Updated = "Today" },
     };
-    private void Go(string p) => Nav.NavigateTo(p);
-    private void Filter(string f) { filter = f; toast = "Filter: " + f; }
-    private void NewTicket() => toast = "New ticket form ready (sample)";
-    private void OpenTicket(string id) => toast = "Opened ticket " + id;
+    private string filter = "All", metric = "", metricText = "", toast = "", newSubject = "", newPriority = "Normal", newDetails = "";
+    private bool showCreate;
+    private int sla = 94;
+    private int[] trend = { 40, 55, 35, 70, 60, 85, 50 };
+    private readonly List<(string Title, string When)> activity = new()
+    {
+        ("ISA-1023 moved to In progress", "1h ago"),
+        ("New ticket ISA-1028 created", "3h ago"),
+        ("ISA-1005 closed", "Yesterday"),
+    };
 
+    private IEnumerable<Ticket> Visible => filter == "All" ? tickets : tickets.Where(t => t.Status == filter);
+    private int Count(string s) => tickets.Count(t => t.Status == s);
+    private int urgentPct => tickets.Count == 0 ? 0 : (int)(100.0 * tickets.Count(t => t.Priority == "Urgent") / tickets.Count);
+    private int highPct => tickets.Count == 0 ? 0 : (int)(100.0 * tickets.Count(t => t.Priority == "High") / tickets.Count);
+    private int normalPct => Math.Max(0, 100 - urgentPct - highPct);
+
+    private static string StatusClass(string s) => s switch { "Open" => "open", "In progress" => "progress", "Escalated" => "escalated", _ => "closed" };
+    private void FilterAll() => filter = "All";
+    private void FilterOpen() => filter = "Open";
+    private void FilterProgress() => filter = "In progress";
+    private void FilterEscalated() => filter = "Escalated";
+    private void FilterClosed() => filter = "Closed";
+    private void OpenCreate() => showCreate = true;
+    private void CloseCreate() => showCreate = false;
+    private void ShowMetric(string m)
+    {
+        metric = m;
+        metricText = m switch
+        {
+            "open" => $"{Count("Open")} open tickets need triage.",
+            "prog" => $"{Count("In progress")} tickets actively worked.",
+            "esc" => $"{Count("Escalated")} escalated — review ownership.",
+            "sla" => $"SLA on-track {sla}% (illustrative chapter target).",
+            _ => ""
+        };
+    }
+    private void ClickTrend(int i) => metricText = $"Day {i + 1}: relative closed volume {trend[i]}% of peak sample day.";
+    private void Create()
+    {
+        if (string.IsNullOrWhiteSpace(newSubject)) return;
+        var id = $"ISA-{1000 + tickets.Count + 20}";
+        tickets.Insert(0, new Ticket { Id = id, Subject = newSubject.Trim(), Status = "Open", Priority = newPriority, Updated = "Just now" });
+        activity.Insert(0, ($"Ticket {id} created", "Just now"));
+        newSubject = ""; newDetails = ""; newPriority = "Normal"; showCreate = false; ShowToast($"Created {id}");
+    }
+    private void MarkProgress(Ticket t) { t.Status = "In progress"; t.Updated = "Just now"; ShowToast($"{t.Id} → In progress"); }
+    private void MarkEscalated(Ticket t) { t.Status = "Escalated"; t.Updated = "Just now"; ShowToast($"{t.Id} → Escalated"); }
+    private void MarkClosed(Ticket t) { t.Status = "Closed"; t.Updated = "Just now"; ShowToast($"{t.Id} → Closed"); }
+    private void MarkOpen(Ticket t) { t.Status = "Open"; t.Updated = "Just now"; ShowToast($"{t.Id} → Open"); }
+    private async void ShowToast(string msg) { toast = msg; StateHasChanged(); await Task.Delay(2200); toast = ""; StateHasChanged(); }
 }

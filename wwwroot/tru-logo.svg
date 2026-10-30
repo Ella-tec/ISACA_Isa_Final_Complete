@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" fill="none">
+  <defs>
+    <linearGradient id="ring" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#6CB33F"/>
+      <stop offset="45%" stop-color="#36AC91"/>
+      <stop offset="100%" stop-color="#00A4E4"/>
+    </linearGradient>
+    <linearGradient id="ringSoft" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#00A4E4" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#6CB33F" stop-opacity="0.85"/>
+    </linearGradient>
+  </defs>
+  <!-- outer soft glow ring -->
+  <circle cx="128" cy="128" r="110" stroke="url(#ringSoft)" stroke-width="10" opacity="0.35"/>
+  <!-- main ring -->
+  <circle cx="128" cy="128" r="98" stroke="url(#ring)" stroke-width="14" stroke-linecap="round"/>
+  <!-- inner thin ring -->
+  <circle cx="128" cy="128" r="82" stroke="url(#ring)" stroke-width="3" opacity="0.55"/>
+  <!-- TRU wordmark -->
+  <text x="128" y="142" text-anchor="middle"
+        font-family="Segoe UI, Roboto, Arial, sans-serif"
+        font-size="56" font-weight="800" letter-spacing="6"
+        fill="#FFFFFF">TRU</text>
+</svg>

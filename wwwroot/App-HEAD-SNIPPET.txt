@@ -1,0 +1,7 @@
+<!-- Put these inside <head> in Components/App.razor -->
+<title>TRU</title>
+<link rel="icon" type="image/svg+xml" href="tru-icon.svg" />
+<link rel="apple-touch-icon" href="tru-icon.svg" />
+<link rel="manifest" href="manifest.webmanifest" />
+<meta name="theme-color" content="#1d2d5c" />
+<meta name="application-name" content="TRU" />

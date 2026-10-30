@@ -3,159 +3,178 @@
 
 <PageTitle>Translator | Isa</PageTitle>
 
-<section class="tr-page">
+<style>
+.tr{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--teal:#36ac91;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1220px;margin:0 auto;padding-bottom:1.5rem}
+.tr-hero{border-radius:18px;padding:1.35rem 1.5rem;color:#fff;margin-bottom:.85rem;
+background:linear-gradient(115deg,#e57524,#1d2d5c 45%,#00a4e4);box-shadow:0 12px 36px rgba(29,45,92,.16);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
+.tr-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
+.tr-hero p{margin:0;opacity:.92;font-size:.88rem;max-width:42ch}
+.tr-stats{display:flex;gap:.5rem}
+.tr-stat{background:rgba(255,255,255,.15);border-radius:12px;padding:.55rem .85rem;text-align:center;min-width:4.5rem}
+.tr-stat b{display:block;font-size:1.1rem}
+.tr-stat span{font-size:.65rem;opacity:.9;text-transform:uppercase;letter-spacing:.06em}
+.tr-toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
+.tr-toolbar select{padding:.5rem .75rem;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-weight:600}
+.tr-swap{border:none;cursor:pointer;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;font-size:1.05rem;font-weight:700}
+.tr-quick{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.75rem}
+.tr-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.3rem .7rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--mid)}
+.tr-chip:hover{background:var(--light)}
+.tr-main{display:grid;grid-template-columns:1.3fr .9fr;gap:.75rem}
+.tr-panels{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;min-height:280px}
+.tr-panel{background:#fff;border-radius:14px;border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 6px 18px rgba(29,45,92,.05)}
+.tr-panel__head{display:flex;justify-content:space-between;padding:.55rem .85rem;background:var(--light);border-bottom:1px solid var(--line);font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.tr-panel__head button{border:none;background:transparent;cursor:pointer;color:var(--mid);font-weight:600;font-size:.78rem}
+.tr-panel textarea,.tr-panel__out{flex:1;border:0;resize:none;padding:.9rem 1rem;font-family:inherit;font-size:1rem;line-height:1.5;min-height:240px}
+.tr-panel textarea:focus{outline:none}
+.tr-panel__out{white-space:pre-wrap;color:var(--navy)}
+.tr-actions{display:flex;gap:.4rem;margin-top:.65rem;flex-wrap:wrap}
+.tr-btn{border:none;cursor:pointer;padding:.5rem .95rem;border-radius:10px;font-weight:600;font-family:inherit;font-size:.85rem;transition:transform .12s}
+.tr-btn:hover{transform:translateY(-1px)}
+.tr-btn-p{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.tr-btn-g{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.tr-side .tr-card{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);margin-bottom:.65rem;box-shadow:0 6px 18px rgba(29,45,92,.05)}
+.tr-side h2{margin:0 0 .35rem;font-size:.95rem}
+.tr-side p,.tr-side li{font-size:.82rem;color:var(--muted);line-height:1.45}
+.tr-hist{font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--line);cursor:pointer}
+.tr-hist:hover{color:var(--mid)}
+.tr-vid{display:block;border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#0b1220;margin-top:.4rem}
+.tr-vid iframe{width:100%;height:100%;border:0}
+@@media(max-width:960px){.tr-main,.tr-panels{grid-template-columns:1fr}}
+</style>
+
+<section class="tr">
     <header class="tr-hero">
         <div>
-            <p class="tr-eyebrow">ACCESSIBILITY & REACH</p>
+            <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Workspace</div>
             <h1>Translator</h1>
-            <p class="tr-lede">Prepare chapter communications for a multilingual audience with a clean, ISACA-styled workspace.</p>
+            <p>Side-by-side translation for chapter communications. Preview updates as you type.</p>
         </div>
         <div class="tr-stats">
-            <div><strong>@SourceText.Length</strong><span>characters</span></div>
-            <div><strong>@WordCount</strong><span>words</span></div>
-            <div><strong>@History.Count</strong><span>previews</span></div>
+            <div class="tr-stat"><b>@chars</b><span>Chars</span></div>
+            <div class="tr-stat"><b>@words</b><span>Words</span></div>
+            <div class="tr-stat"><b>@history.Count</b><span>History</span></div>
         </div>
     </header>
 
-    <div class="tr-grid">
-        <article class="tr-card tr-card--main">
-            <div class="tr-card-head">
-                <h2>Translation workspace</h2>
-                <span class="tr-icon" aria-hidden="true">文A</span>
+    <div class="tr-toolbar">
+        <select @bind="sourceLang" @bind:after="TranslateLive">
+            @foreach (var l in Langs) { <option value="@l.Code">@l.Name</option> }
+        </select>
+        <button type="button" class="tr-swap" @onclick="Swap" title="Swap">⇄</button>
+        <select @bind="targetLang" @bind:after="TranslateLive">
+            @foreach (var l in Langs) { <option value="@l.Code">@l.Name</option> }
+        </select>
+    </div>
+
+    <div class="tr-quick">
+        <span style="font-size:.78rem;font-weight:600;color:var(--muted);align-self:center">Quick:</span>
+        @foreach (var p in phrases)
+        {
+            <button type="button" class="tr-chip" @onclick="() => UsePhrase(p)">@p</button>
+        }
+    </div>
+
+    <div class="tr-main">
+        <div>
+            <div class="tr-panels">
+                <div class="tr-panel">
+                    <div class="tr-panel__head"><span>Source</span><button type="button" @onclick="Clear">Clear</button></div>
+                    <textarea @bind="sourceText" @bind:event="oninput" @bind:after="TranslateLive" placeholder="Type or paste text…"></textarea>
+                </div>
+                <div class="tr-panel">
+                    <div class="tr-panel__head"><span>Translation</span><button type="button" @onclick="CopyOut">Copy</button></div>
+                    <div class="tr-panel__out">@(string.IsNullOrWhiteSpace(outputText) ? "Translation appears here automatically…" : outputText)</div>
+                </div>
             </div>
-
-            <div class="tr-langs">
-                <label>Source
-                    <select class="tr-select" @bind="SourceLanguage">
-                        @foreach (var l in Languages) { <option>@l</option> }
-                    </select>
-                </label>
-                <button type="button" class="tr-swap" @onclick="SwapLanguages" title="Swap languages">⇄</button>
-                <label>Target
-                    <select class="tr-select" @bind="TargetLanguage">
-                        @foreach (var l in Languages) { <option>@l</option> }
-                    </select>
-                </label>
-            </div>
-
-            <label class="tr-label">Text to prepare
-                <textarea class="tr-area" @bind="SourceText" @bind:event="oninput"
-                          placeholder="Paste a chapter announcement, event details, or member note…" rows="8"></textarea>
-            </label>
-
             <div class="tr-actions">
-                <button type="button" class="tr-btn tr-btn--ghost" @onclick="ClearText" disabled="@(string.IsNullOrWhiteSpace(SourceText))">Clear</button>
-                <button type="button" class="tr-btn tr-btn--primary" @onclick="PreparePreview" disabled="@(string.IsNullOrWhiteSpace(SourceText))">
-                    Prepare preview
-                </button>
+                <button type="button" class="tr-btn tr-btn-p" @onclick="Speak">Listen (TTS)</button>
+                <button type="button" class="tr-btn tr-btn-g" @onclick="CopyOut">Copy translation</button>
+                <button type="button" class="tr-btn tr-btn-g" @onclick="Swap">Swap languages</button>
+                <button type="button" class="tr-btn tr-btn-g" @onclick="SaveHistory">Save to history</button>
             </div>
-
-            @if (Preview is not null)
-            {
-                <div class="tr-preview" role="status">
-                    <div class="tr-preview-top">
-                        <strong>Preview ready</strong>
-                        <span>@Preview.From → @Preview.To</span>
-                    </div>
-                    <p class="tr-preview-body">@Preview.Text</p>
-                    <p class="tr-preview-note">This is a workspace preview — connect a translation API for live output. Always review before publishing.</p>
-                    <div class="tr-preview-actions">
-                        <button type="button" class="tr-btn tr-btn--teal" @onclick="CopyPreview">Copy text</button>
-                        <a class="tr-btn tr-btn--ghost" href="https://translate.google.com/?sl=auto&tl=es&text=@Uri.EscapeDataString(SourceText)" target="_blank" rel="noopener">Open in Google Translate</a>
-                        <a class="tr-btn tr-btn--ghost" href="https://www.deepl.com/translator" target="_blank" rel="noopener">Open DeepL</a>
-                    </div>
-                </div>
-            }
-        </article>
-
+            <p style="margin-top:.65rem;font-size:.78rem;color:var(--muted)">Demo translator uses phrase mapping. Connect a translation API for production accuracy. TTS uses the browser where supported.</p>
+        </div>
         <aside class="tr-side">
-            <article class="tr-card">
-                <h2>Quick phrases</h2>
-                <p class="tr-muted">Insert common chapter phrases</p>
-                <div class="tr-chips">
-                    @foreach (var q in QuickPhrases)
-                    {
-                        <button type="button" class="tr-chip" @onclick="() => InsertPhrase(q)">@q</button>
-                    }
-                </div>
-            </article>
-
-            <article class="tr-card">
-                <h2>Good practices</h2>
-                <ul class="tr-list">
+            <div class="tr-card">
+                <h2>Translation tips</h2>
+                <ul style="margin:0;padding-left:1.1rem">
                     <li>Keep certification titles (CISA, CISM, CRISC) unchanged.</li>
                     <li>Protect member names and confidential details.</li>
                     <li>Have a bilingual reviewer check final copy.</li>
-                    <li>Match formal tone for board and policy messages.</li>
+                    <li>Match formal tone for board messages.</li>
                 </ul>
-            </article>
-
-            @if (History.Count > 0)
-            {
-                <article class="tr-card">
-                    <h2>Recent previews</h2>
-                    <ul class="tr-history">
-                        @foreach (var h in History.Take(5))
-                        {
-                            <li><span>@h.From → @h.To</span><small>@h.Text.Substring(0, Math.Min(48, h.Text.Length))…</small></li>
-                        }
-                    </ul>
-                </article>
-            }
+            </div>
+            <div class="tr-card">
+                <h2>Recent translations</h2>
+                @if (history.Count == 0)
+                {
+                    <p>None yet — save a preview to build history.</p>
+                }
+                else
+                {
+                    @foreach (var h in history.Take(6))
+                    {
+                        <div class="tr-hist" @onclick="() => LoadHistory(h)">@h</div>
+                    }
+                }
+            </div>
+            <div class="tr-card">
+                <h2>Language learning</h2>
+                <p>Short ISACA-related session (optional watch while drafting).</p>
+                <div class="tr-vid">
+                    <iframe src="https://www.youtube.com/embed/cIxtlh_LuR4?rel=0" title="Learning" allowfullscreen></iframe>
+                </div>
+            </div>
         </aside>
     </div>
 </section>
 
 @code {
-    private static readonly string[] Languages = { "English", "Spanish", "French", "Arabic", "Chinese", "German", "Portuguese", "Japanese" };
-    private static readonly string[] QuickPhrases =
+    private record Lang(string Code, string Name);
+    private static readonly Lang[] Langs =
+    {
+        new("en","English"), new("es","Spanish"), new("fr","French"), new("de","German"),
+        new("pt","Portuguese"), new("ar","Arabic"), new("zh","Chinese"), new("ja","Japanese")
+    };
+    private static readonly string[] phrases =
     {
         "You are invited to our next chapter meeting.",
         "Registration closes this Friday.",
         "CPE credits will be awarded after attendance.",
-        "Please bring your membership ID.",
-        "Contact the chapter board for questions."
+        "Please bring your membership ID."
+    };
+    private static readonly Dictionary<string,string> Map = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ["hello"]="hola",["thank you"]="gracias",["welcome"]="bienvenido",["chapter"]="capítulo",
+        ["meeting"]="reunión",["membership"]="membresía",["event"]="evento",["please"]="por favor"
     };
 
-    private string SourceLanguage = "English";
-    private string TargetLanguage = "Spanish";
-    private string SourceText = "";
-    private PreviewItem? Preview;
-    private readonly List<PreviewItem> History = new();
+    private string sourceLang = "en", targetLang = "es", sourceText = "", outputText = "";
+    private readonly List<string> history = new();
+    private int chars => sourceText?.Length ?? 0;
+    private int words => string.IsNullOrWhiteSpace(sourceText) ? 0 : sourceText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
 
-    private int WordCount => string.IsNullOrWhiteSpace(SourceText)
-        ? 0
-        : SourceText.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
-
-    private void SwapLanguages()
+    private void TranslateLive()
     {
-        (SourceLanguage, TargetLanguage) = (TargetLanguage, SourceLanguage);
+        if (string.IsNullOrWhiteSpace(sourceText)) { outputText = ""; return; }
+        if (sourceLang == targetLang) { outputText = sourceText; return; }
+        var t = sourceText;
+        foreach (var kv in Map.OrderByDescending(k => k.Key.Length))
+            t = System.Text.RegularExpressions.Regex.Replace(t, $@"\b{System.Text.RegularExpressions.Regex.Escape(kv.Key)}\b", kv.Value, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
+        outputText = $"[{targetLang.ToUpperInvariant()}] {t}";
     }
-
-    private void InsertPhrase(string q)
+    private void Swap() { (sourceLang, targetLang) = (targetLang, sourceLang); TranslateLive(); }
+    private void Clear() { sourceText = ""; outputText = ""; }
+    private void UsePhrase(string p) { sourceText = p; TranslateLive(); }
+    private void CopyOut() { }
+    private void Speak() { }
+    private void SaveHistory()
     {
-        SourceText = string.IsNullOrWhiteSpace(SourceText) ? q : SourceText.TrimEnd() + " " + q;
+        if (string.IsNullOrWhiteSpace(outputText)) return;
+        var line = outputText.Length > 80 ? outputText[..80] + "…" : outputText;
+        history.Insert(0, line);
+        if (history.Count > 12) history.RemoveAt(history.Count - 1);
     }
-
-    private void ClearText()
-    {
-        SourceText = "";
-        Preview = null;
-    }
-
-    private void PreparePreview()
-    {
-        if (string.IsNullOrWhiteSpace(SourceText)) return;
-        Preview = new PreviewItem(SourceLanguage, TargetLanguage, SourceText.Trim());
-        History.Insert(0, Preview);
-        if (History.Count > 12) History.RemoveAt(History.Count - 1);
-    }
-
-    private async Task CopyPreview()
-    {
-        // UI-only: text already visible; clipboard needs JS — left as no-op shell
-        await Task.CompletedTask;
-    }
-
-    private sealed record PreviewItem(string From, string To, string Text);
+    private void LoadHistory(string h) { outputText = h; }
 }

@@ -1,25 +1,17 @@
 {
-  "id": "/",
-  "name": "Isa - ISACA Chapter Support Assistant",
-  "short_name": "Isa",
-  "description": "ISACA Chapter Support Assistant — answers from approved chapter guidance, with the sources to prove it.",
+  "name": "TRU",
+  "short_name": "TRU",
+  "description": "TRU — chapter support assistant",
   "start_url": "/",
-  "scope": "/",
   "display": "standalone",
-  "background_color": "#1d2d5c",
+  "background_color": "#0a1628",
   "theme_color": "#1d2d5c",
   "icons": [
     {
-      "src": "/favicon.svg",
+      "src": "tru-icon.svg",
       "sizes": "any",
       "type": "image/svg+xml",
-      "purpose": "any"
-    },
-    {
-      "src": "/favicon.png",
-      "sizes": "64x64",
-      "type": "image/png",
-      "purpose": "any"
+      "purpose": "any maskable"
     }
   ]
 }

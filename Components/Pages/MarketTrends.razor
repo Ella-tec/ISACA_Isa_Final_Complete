@@ -1,0 +1,241 @@
+@page "/market-trends"
+@rendermode InteractiveServer
+@implements IDisposable
+
+<PageTitle>Market trends | TRU Ask</PageTitle>
+
+<style>
+.mt{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c;width:100%;max-width:100%;box-sizing:border-box}
+.mt h1{margin:0 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
+.mt .sub{margin:0 0 .75rem;color:#5f6b85;font-size:.88rem}
+.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:.75rem}
+.mt-kpi{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem .9rem;box-shadow:0 4px 14px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s}
+.mt-kpi:hover{transform:translateY(-2px)}
+.mt-kpi span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5f6b85}
+.mt-kpi strong{font-size:1.35rem;color:#1d2d5c}
+.mt-kpi small{font-size:.78rem;color:#6cb33f}
+.mt-kpi small.down{color:#e31837}
+.mt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.75rem;align-items:start}
+.mt-panel{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:1rem 1.1rem;box-shadow:0 6px 18px rgba(29,45,92,.05)}
+.mt-panel h2{margin:0 0 .15rem;font-size:1.05rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
+.mt-panel p.lead{margin:0 0 .7rem;font-size:.82rem;color:#5f6b85}
+.mt-toolbar{display:flex;gap:.5rem;margin-bottom:.65rem;flex-wrap:wrap}
+.mt-toolbar input{flex:1;min-width:160px;padding:.45rem .7rem;border:1px solid #e2e8f0;border-radius:10px;font-family:inherit}
+.mt-toolbar button{border:none;cursor:pointer;padding:.45rem .95rem;border-radius:10px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
+.mt table{width:100%;border-collapse:collapse;font-size:.86rem}
+.mt th{text-align:left;padding:.45rem .4rem;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85;border-bottom:2px solid #e2e8f0}
+.mt td{padding:.5rem .4rem;border-bottom:1px solid #eef1f5}
+.mt tr{cursor:pointer;transition:background .1s}
+.mt tr:hover,.mt tr.is-on{background:#eef6fb}
+.mt .up{color:#2d6a2d;font-weight:600}.mt .down{color:#e31837;font-weight:600}
+.mt-bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin:.5rem 0 .35rem}
+.mt-bars div{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#00a4e4,#07649d);min-height:8px;position:relative}
+.mt-bars div span{position:absolute;bottom:-1.2rem;left:50%;transform:translateX(-50%);font-size:.65rem;color:#5f6b85;white-space:nowrap}
+.mt-detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.5rem}
+.mt-detail-head strong{font-size:1.5rem}
+.mt-trade{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.65rem}
+.mt-trade input{padding:.4rem .55rem;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit}
+.mt-trade button{border:none;cursor:pointer;padding:.5rem;border-radius:8px;font-weight:700;font-family:inherit}
+.mt-buy{background:#6cb33f;color:#fff}.mt-sell{background:#e31837;color:#fff}
+.mt-note{font-size:.75rem;color:#5f6b85;margin-top:.5rem}
+.mt-empty-fill{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.35rem}
+.mt-empty-fill div{background:#f4f7fb;border-radius:10px;padding:.65rem .75rem;font-size:.82rem}
+.mt-empty-fill strong{display:block;font-size:1.1rem;color:#1d2d5c}
+@@media(max-width:960px){.mt-grid,.mt-kpis{grid-template-columns:1fr}.mt-kpis{grid-template-columns:1fr 1fr}}
+</style>
+
+<section class="mt">
+    <h1>Market trends</h1>
+    <p class="sub">Cybersecurity, governance, AI, risk, and tech signals for chapter planning. Paper trade is educational only.</p>
+
+    <div class="mt-kpis">
+        <div class="mt-kpi" @onclick='() => Select("CRWD")'><span>Cyber demand</span><strong>118</strong><small>▲ 6% QoQ</small></div>
+        <div class="mt-kpi" @onclick='() => Select("NVDA")'><span>AI governance</span><strong>+34%</strong><small>YoY CPE topics</small></div>
+        <div class="mt-kpi" @onclick='() => Select("OKTA")'><span>Privacy interest</span><strong>High</strong><small>▲ study groups</small></div>
+        <div class="mt-kpi" @onclick='() => Select("PANW")'><span>Vendor risk</span><strong>+12%</strong><small>ticket volume</small></div>
+    </div>
+
+    <div class="mt-grid">
+        <div class="mt-panel">
+            <h2>Equity watchlist</h2>
+            <p class="lead">Click a row for chart &amp; paper trade · prices refresh on a timer (simulated live)</p>
+            <div class="mt-toolbar">
+                <input @bind="search" @bind:event="oninput" placeholder="Search symbol or name (AAPL, MSFT, CRWD...)" />
+                <button type="button" @onclick="Refresh">Refresh</button>
+            </div>
+            <div style="overflow-x:auto;max-height:420px;overflow-y:auto">
+                <table>
+                    <thead>
+                        <tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>Sector</th></tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var s in Filtered)
+                        {
+                            <tr class="@(selected?.Symbol==s.Symbol?"is-on":null)" @onclick="() => Select(s.Symbol)">
+                                <td><strong>@s.Symbol</strong></td>
+                                <td>@s.Name</td>
+                                <td>$@s.Price.ToString("0.00")</td>
+                                <td class="@(s.Change>=0?"up":"down")">@(s.Change>=0?"+":"")@s.Change.ToString("0.00")%</td>
+                                <td>@s.Sector</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="mt-panel">
+            @if (selected is null)
+            {
+                <h2>Market overview</h2>
+                <p class="lead">Select a symbol for detail — or use the KPIs above. Skill demand themes stay visible here.</p>
+                <div class="mt-bars">
+                    @foreach (var b in skillBars)
+                    {
+                        <div style="height:@b.H%"><span>@b.Label</span></div>
+                    }
+                </div>
+                <p class="lead" style="margin-top:1.4rem">Skill demand (chapter questions)</p>
+                <div class="mt-empty-fill">
+                    <div><span>Audit</span><strong>High</strong></div>
+                    <div><span>Security</span><strong>Very high</strong></div>
+                    <div><span>AI</span><strong>Rising</strong></div>
+                    <div><span>Risk</span><strong>Steady</strong></div>
+                    <div><span>Privacy</span><strong>High</strong></div>
+                    <div><span>Cloud</span><strong>High</strong></div>
+                </div>
+            }
+            else
+            {
+                <div class="mt-detail-head">
+                    <div>
+                        <h2>@selected.Symbol · @selected.Name</h2>
+                        <p class="lead">@selected.Sector</p>
+                    </div>
+                    <div style="text-align:right">
+                        <strong>$@selected.Price.ToString("0.00")</strong>
+                        <div class="@(selected.Change>=0?"up":"down")">@(selected.Change>=0?"+":"")@selected.Change.ToString("0.00")%</div>
+                    </div>
+                </div>
+                <div class="mt-bars">
+                    @foreach (var h in selected.Spark)
+                    {
+                        <div style="height:@h%"></div>
+                    }
+                </div>
+                <p class="lead">Paper trade (educational)</p>
+                <div class="mt-trade">
+                    <input type="number" @bind="qty" min="1" placeholder="Shares" />
+                    <input type="number" @bind="limit" step="0.01" placeholder="Limit price" />
+                    <button type="button" class="mt-buy" @onclick="Buy">Buy</button>
+                    <button type="button" class="mt-sell" @onclick="Sell">Sell</button>
+                </div>
+                @if (!string.IsNullOrEmpty(tradeMsg))
+                {
+                    <p class="mt-note">@tradeMsg</p>
+                }
+                else
+                {
+                    <p class="mt-note">Simulated only — not real brokerage. Use for chapter education.</p>
+                }
+            }
+        </div>
+    </div>
+</section>
+
+@code {
+    private string search = "";
+    private string tradeMsg = "";
+    private int qty = 10;
+    private double limit = 0;
+    private Stock? selected;
+    private System.Threading.Timer? timer;
+    private readonly Random rng = new();
+
+    private record Stock(string Symbol, string Name, double Price, double Change, string Sector, int[] Spark);
+    private record Bar(string Label, int H);
+
+    private List<Stock> stocks = new();
+    private readonly Bar[] skillBars =
+    {
+        new("Audit", 55), new("Security", 88), new("AI", 95),
+        new("Risk", 70), new("Privacy", 62), new("Cloud", 58)
+    };
+
+    private IEnumerable<Stock> Filtered =>
+        string.IsNullOrWhiteSpace(search)
+            ? stocks
+            : stocks.Where(s =>
+                s.Symbol.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                s.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+
+    protected override void OnInitialized()
+    {
+        Seed();
+        timer = new System.Threading.Timer(_ =>
+        {
+            foreach (var i in Enumerable.Range(0, stocks.Count))
+            {
+                var s = stocks[i];
+                var d = (rng.NextDouble() - 0.48) * 0.8;
+                var p = Math.Max(1, s.Price * (1 + d / 100));
+                var ch = s.Change + (rng.NextDouble() - 0.5) * 0.15;
+                var spark = s.Spark.Skip(1).Append(rng.Next(30, 100)).ToArray();
+                stocks[i] = s with { Price = p, Change = ch, Spark = spark };
+                if (selected?.Symbol == s.Symbol) selected = stocks[i];
+            }
+            _ = InvokeAsync(StateHasChanged);
+        }, null, 4000, 4000);
+    }
+
+    private void Seed()
+    {
+        stocks = new List<Stock>
+        {
+            Mk("AAPL","Apple Inc.",225.92,0.64,"Technology"),
+            Mk("MSFT","Microsoft",414.11,0.36,"Technology"),
+            Mk("GOOGL","Alphabet",175.85,-0.28,"Technology"),
+            Mk("AMZN","Amazon",187.39,1.14,"Consumer"),
+            Mk("NVDA","NVIDIA",120.85,2.32,"Semiconductors"),
+            Mk("CRWD","CrowdStrike",309.76,1.45,"Cybersecurity"),
+            Mk("PANW","Palo Alto Networks",347.32,0.87,"Cybersecurity"),
+            Mk("ZS","Zscaler",190.17,-0.56,"Cybersecurity"),
+            Mk("S","SentinelOne",24.12,1.09,"Cybersecurity"),
+            Mk("FTNT","Fortinet",78.12,0.26,"Cybersecurity"),
+            Mk("OKTA","Okta",81.47,-1.22,"Identity"),
+            Mk("NET","Cloudflare",93.23,1.89,"Cloud security"),
+            Mk("IBM","IBM",222.05,0.25,"Enterprise IT"),
+            Mk("ORCL","Oracle",168.67,0.60,"Enterprise IT"),
+            Mk("CRM","Salesforce",282.01,-0.67,"SaaS"),
+            Mk("PLTR","Palantir",99.50,0.88,"AI / Analytics"),
+        };
+    }
+
+    private Stock Mk(string sym, string name, double price, double ch, string sector)
+    {
+        var spark = Enumerable.Range(0, 8).Select(_ => rng.Next(35, 100)).ToArray();
+        return new Stock(sym, name, price, ch, sector, spark);
+    }
+
+    private void Select(string symbol)
+    {
+        selected = stocks.FirstOrDefault(s => s.Symbol == symbol);
+        if (selected != null) limit = Math.Round(selected.Price, 2);
+        tradeMsg = "";
+    }
+
+    private void Refresh() { Seed(); if (selected != null) Select(selected.Symbol); }
+
+    private void Buy()
+    {
+        if (selected is null) return;
+        tradeMsg = $"Paper BUY {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00} (simulated).";
+    }
+    private void Sell()
+    {
+        if (selected is null) return;
+        tradeMsg = $"Paper SELL {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00} (simulated).";
+    }
+
+    public void Dispose() => timer?.Dispose();
+}

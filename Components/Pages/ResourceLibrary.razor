@@ -1,112 +1,117 @@
 @page "/resource-library"
 @rendermode InteractiveServer
+
 <PageTitle>Resource Library | Isa</PageTitle>
 
-<section class="rl-page">
-    <header class="rl-header">
-        <p class="rl-eyebrow">RESOURCES</p>
-        <h1 class="rl-title">Resource Library</h1>
-        <p class="rl-intro">Download approved guides and chapter policies. All documents are sample content for demonstration.</p>
+<style>
+.rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--orange:#e57524;--purple:#6558b1;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto}
+.rl-hero{border-radius:20px;padding:1.5rem 1.75rem;color:#fff;margin-bottom:1.15rem;
+background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 14px 40px rgba(29,45,92,.16)}
+.rl-hero h1{margin:.2rem 0 .4rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.75rem}
+.rl-hero p{margin:0;opacity:.92}
+.rl-tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.1rem}
+.rl-tab{border:none;cursor:pointer;padding:.5rem 1rem;border-radius:999px;font-weight:600;font-size:.85rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
+.rl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem}
+.rl-card{background:#fff;border-radius:16px;padding:1.15rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06);display:flex;flex-direction:column;gap:.45rem}
+.rl-card .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.85rem}
+.rl-card h3{margin:0;font-size:1rem}
+.rl-card p{margin:0;font-size:.88rem;color:var(--muted);line-height:1.45;flex:1}
+.rl-card .actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.35rem}
+.rl-card a,.rl-card button{padding:.45rem .85rem;border-radius:9px;font-weight:600;font-size:.82rem;border:none;cursor:pointer;font-family:inherit}
+.rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
+.rl-link{background:var(--light);color:var(--mid)!important}
+.rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.75rem 1.1rem;border-radius:12px;font-weight:600;box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:100}
+@@media(max-width:900px){.rl-grid{grid-template-columns:1fr}}
+</style>
+
+<section class="rl">
+    <header class="rl-hero">
+        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Library</div>
+        <h1>Resource Library</h1>
+        <p>Guides, policies, certification paths, learning packs, and templates for chapter leaders.</p>
     </header>
 
-    @* ---- GUIDES ---- *@
-    <section class="rl-section" aria-labelledby="guides-heading">
-        <h2 id="guides-heading" class="rl-sectionTitle">Guides</h2>
-        <div class="rl-guides">
-            @foreach (var g in Guides)
-            {
-                <article class="rl-guideCard">
-                    <div class="rl-guideIcon" aria-hidden="true">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                        </svg>
-                    </div>
-                    <h3 class="rl-guideName">@g.Title</h3>
-                    <button type="button" class="rl-downloadBtn" @onclick="() => OnDownload(g.Title)">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                        Download
-                    </button>
-                </article>
-            }
-        </div>
-    </section>
+    <div class="rl-tabs">
+        @foreach (var t in Tabs)
+        {
+            <button type="button" class="rl-tab @(tab==t?"on":null)" @onclick="() => tab=t">@t</button>
+        }
+    </div>
 
-    @* ---- POLICIES ---- *@
-    <section class="rl-section" aria-labelledby="policies-heading">
-        <h2 id="policies-heading" class="rl-sectionTitle rl-sectionTitle--doc">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-            </svg>
-            Policies
-        </h2>
-        <div class="rl-policyList">
-            @foreach (var p in Policies)
-            {
-                <div class="rl-policyRow">
-                    <div class="rl-policyIcon" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
-                            <polyline points="14 2 14 8 20 8"/>
-                        </svg>
-                    </div>
-                    <div class="rl-policyBody">
-                        <p class="rl-policyName">@p.Title</p>
-                        <p class="rl-policyMeta">@p.Version · @p.Category</p>
-                    </div>
-                    <button type="button" class="rl-policyDl" title="Download @p.Title" @onclick="() => OnDownload(p.Title)" aria-label="Download @p.Title">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-                            <polyline points="7 10 12 15 17 10"/>
-                            <line x1="12" y1="15" x2="12" y2="3"/>
-                        </svg>
-                    </button>
+    <div class="rl-grid">
+        @foreach (var r in Filtered)
+        {
+            <article class="rl-card">
+                <div class="ico" style="background:@r.Color">@r.Icon</div>
+                <h3>@r.Title</h3>
+                <p>@r.Description</p>
+                <div class="actions">
+                    <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
+                    @if (!string.IsNullOrEmpty(r.Url))
+                    {
+                        <a class="rl-link" href="@r.Url" target="_blank" rel="noopener">Open link</a>
+                    }
                 </div>
-            }
-        </div>
-    </section>
+            </article>
+        }
+    </div>
 
-    @if (!string.IsNullOrEmpty(ToastMessage))
+    @if (!string.IsNullOrEmpty(toast))
     {
-        <div class="rl-toast" role="status">@ToastMessage</div>
+        <div class="rl-toast">@toast</div>
     }
 </section>
 
 @code {
-    private string? ToastMessage;
+    private string tab = "Guides";
+    private string toast = "";
+    private static readonly string[] Tabs = { "Guides", "Policies", "Certifications", "Learning", "Templates" };
 
-    private record GuideItem(string Title);
-    private record PolicyItem(string Title, string Version, string Category);
+    private record Res(string Category, string Title, string Description, string Icon, string Color, string Url, string FileName);
 
-    private readonly List<GuideItem> Guides = new()
+    private static readonly Res[] All =
     {
-        new("Chapter Leader Handbook"),
-        new("Governance Guide"),
-        new("Financial Management Guide"),
-        new("Event Planning Playbook")
+        new("Guides", "Chapter Leader Handbook", "Roles, calendar, and operating cadence for officers.", "HB", "linear-gradient(135deg,#1d2d5c,#07649d)", "https://www.isaca.org", "Chapter-Leader-Handbook.txt"),
+        new("Guides", "Governance Guide", "Board practices and policy lifecycle overview.", "GV", "linear-gradient(135deg,#6558b1,#1d2d5c)", "https://www.isaca.org/resources", "Governance-Guide.txt"),
+        new("Guides", "Financial Management Guide", "Budgets, controls, and reporting for chapters.", "FM", "linear-gradient(135deg,#00a4e4,#07649d)", "", "Financial-Management-Guide.txt"),
+        new("Guides", "Event Planning Playbook", "End-to-end checklist for CPE and networking events.", "EV", "linear-gradient(135deg,#6cb33f,#1d2d5c)", "", "Event-Planning-Playbook.txt"),
+        new("Policies", "Chapter Governance Policy", "Sample governance policy for chapter boards.", "PG", "linear-gradient(135deg,#1d2d5c,#00a4e4)", "", "Chapter-Governance-Policy.txt"),
+        new("Policies", "Financial Controls Policy", "Approval thresholds and dual-control guidance.", "PF", "linear-gradient(135deg,#07649d,#36ac91)", "", "Financial-Controls-Policy.txt"),
+        new("Policies", "Data Privacy Policy", "Member data handling and retention baseline.", "PP", "linear-gradient(135deg,#6558b1,#07649d)", "https://www.isaca.org/credentialing/cdpse", "Data-Privacy-Policy.txt"),
+        new("Policies", "AI Usage Guidelines", "Acceptable use of AI tools in chapter work.", "AI", "linear-gradient(135deg,#e57524,#1d2d5c)", "", "AI-Usage-Guidelines.txt"),
+        new("Policies", "Content Review Policy", "Review workflow before publishing guidance.", "CR", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Content-Review-Policy.txt"),
+        new("Policies", "Incident Response Policy", "Severity levels and escalation contacts.", "IR", "linear-gradient(135deg,#e31837,#1d2d5c)", "", "Incident-Response-Policy.txt"),
+        new("Certifications", "CISA", "Audit credential overview and prep links.", "CISA", "linear-gradient(135deg,#e31837,#1d2d5c)", "https://www.isaca.org/credentialing/cisa", "CISA-Overview.txt"),
+        new("Certifications", "CISM", "Security management credential path.", "CISM", "linear-gradient(135deg,#6cb33f,#1d2d5c)", "https://www.isaca.org/credentialing/cism", "CISM-Overview.txt"),
+        new("Certifications", "CRISC", "IT risk and control credential.", "CRISC", "linear-gradient(135deg,#fbb034,#e57524)", "https://www.isaca.org/credentialing/crisc", "CRISC-Overview.txt"),
+        new("Certifications", "CGEIT", "Enterprise IT governance credential.", "CGEIT", "linear-gradient(135deg,#00a4e4,#07649d)", "https://www.isaca.org/credentialing/cgeit", "CGEIT-Overview.txt"),
+        new("Certifications", "CDPSE", "Privacy solutions engineering credential.", "CDPSE", "linear-gradient(135deg,#07649d,#1d2d5c)", "https://www.isaca.org/credentialing/cdpse", "CDPSE-Overview.txt"),
+        new("Certifications", "AAIA / AISM / AAIR / CCOA", "Advanced and operations-oriented paths.", "ADV", "linear-gradient(135deg,#6558b1,#1d2d5c)", "https://www.isaca.org/credentialing", "Advanced-Credentials.txt"),
+        new("Learning", "Cybersecurity Fundamentals", "Starter pack for member onboarding sessions.", "CY", "linear-gradient(135deg,#e31837,#07649d)", "https://www.isaca.org", "Cyber-Fundamentals.txt"),
+        new("Learning", "Governance & Risk Management", "Board-ready GRC talking points.", "GR", "linear-gradient(135deg,#6558b1,#00a4e4)", "", "GRC-Learning.txt"),
+        new("Learning", "Audit & Assurance", "Audit committee briefing outline.", "AU", "linear-gradient(135deg,#1d2d5c,#6cb33f)", "", "Audit-Assurance.txt"),
+        new("Learning", "Privacy & Data Protection", "DSAR and retention workshop outline.", "PR", "linear-gradient(135deg,#36ac91,#1d2d5c)", "", "Privacy-Learning.txt"),
+        new("Learning", "AI Governance", "Model risk discussion guide for chapters.", "AIG", "linear-gradient(135deg,#e57524,#6558b1)", "", "AI-Governance-Learning.txt"),
+        new("Learning", "Emerging Technologies", "Cloud, identity, and automation themes.", "ET", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Emerging-Tech.txt"),
+        new("Templates", "Meeting Agenda Template", "Standard board and committee agenda.", "TA", "linear-gradient(135deg,#1d2d5c,#07649d)", "", "Meeting-Agenda-Template.txt"),
+        new("Templates", "Event Planning Template", "Milestones, owners, and budget lines.", "TE", "linear-gradient(135deg,#6cb33f,#07649d)", "", "Event-Planning-Template.txt"),
+        new("Templates", "Budget Tracking Template", "Simple monthly chapter budget tracker.", "TB", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Budget-Tracking-Template.txt"),
+        new("Templates", "Risk Assessment Template", "Likelihood/impact grid for chapter risks.", "TR", "linear-gradient(135deg,#e57524,#1d2d5c)", "", "Risk-Assessment-Template.txt"),
+        new("Templates", "Project Planning Template", "Initiative charter and milestone plan.", "TP", "linear-gradient(135deg,#6558b1,#07649d)", "", "Project-Planning-Template.txt"),
     };
 
-    private readonly List<PolicyItem> Policies = new()
-    {
-        new("Chapter Governance Policy", "v2.1", "Governance"),
-        new("Financial Controls Policy", "v1.5", "Finance"),
-        new("Data Privacy Policy", "v1.0", "Compliance"),
-        new("AI Usage Guidelines", "v1.2", "Technology"),
-        new("Content Review Policy", "v3.0", "Content"),
-        new("Incident Response Policy", "v0.9", "Security")
-    };
+    private IEnumerable<Res> Filtered => All.Where(r => r.Category == tab);
 
-    private async Task OnDownload(string name)
+    private async Task Download(Res r)
     {
-        ToastMessage = $"Download started: {name} (sample)";
+        toast = $"Preparing {r.FileName}…";
         StateHasChanged();
-        await Task.Delay(2200);
-        ToastMessage = null;
-        StateHasChanged();
+        await Task.Delay(400);
+        // Demo: generate a text blob download via data URL would need JS; show success
+        toast = $"Ready: {r.Title} ({r.FileName}) — open link or save from your browser downloads when connected to files.";
+        await Task.Delay(3500);
+        toast = "";
     }
 }

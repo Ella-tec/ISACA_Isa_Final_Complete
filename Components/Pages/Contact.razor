@@ -1,83 +1,138 @@
 @page "/contact"
 @rendermode InteractiveServer
 
-<PageTitle>Contact | Isa</PageTitle>
+<PageTitle>Contact | TRU Ask</PageTitle>
 
 <style>
-.ct{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-max-width:980px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.ct-hero{padding:1.3rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#6558b1,#07649d,#36ac91);color:#fff}
-.ct-hero h1{margin:.2rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
-.ct-grid{display:grid;grid-template-columns:1.2fr .9fr;gap:1rem}
-.ct-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.ct-card h2{margin:0 0 .85rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.ct-field{display:grid;gap:.3rem;margin-bottom:.75rem}
-.ct-field label{font-size:.78rem;font-weight:600;color:var(--mid)}
-.ct-field input,.ct-field select,.ct-field textarea{border:1.5px solid var(--line);border-radius:10px;padding:.55rem .75rem;font:inherit}
-.ct-field textarea{min-height:110px;resize:vertical}
-.ct-btn{border:none;border-radius:10px;padding:.55rem 1.15rem;font-weight:700;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,var(--purple),var(--blue));color:#fff}
-.ct-channels{display:grid;gap:.55rem}
-.ct-ch{display:flex;gap:.7rem;align-items:flex-start;padding:.7rem;border-radius:12px;background:var(--light)}
-.ct-ch strong{display:block}.ct-ch span{font-size:.85rem;color:var(--muted)}
-.ct-toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:12px;z-index:50}
-@@media(max-width:800px){.ct-grid{grid-template-columns:1fr}}
+.ct{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1100px;margin:0 auto;padding-bottom:2rem}
+.ct-hero{border-radius:18px;padding:1.5rem 1.6rem;color:#fff;margin-bottom:1rem;
+background:linear-gradient(120deg,#1d2d5c,#07649d 50%,#00a4e4);box-shadow:0 12px 36px rgba(29,45,92,.16)}
+.ct-hero h1{margin:.15rem 0 .3rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
+.ct-hero p{margin:0;opacity:.92}
+.ct-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:.85rem;margin-bottom:1rem}
+.ct-card{background:#fff;border-radius:16px;padding:1.25rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.ct-card h2{margin:0 0 .75rem;font-size:1.05rem}
+.ct-card label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);margin-bottom:.2rem}
+.ct-card input,.ct-card textarea,.ct-card select{width:100%;box-sizing:border-box;padding:.55rem .7rem;border-radius:10px;border:1px solid var(--line);margin-bottom:.65rem;font-family:inherit}
+.ct-btn{border:none;cursor:pointer;padding:.6rem 1.2rem;border-radius:11px;font-weight:700;font-family:inherit;
+background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;transition:transform .12s,box-shadow .12s}
+.ct-btn:hover{transform:translateY(-1px);box-shadow:0 8px 18px rgba(29,45,92,.2)}
+.ct-ok{background:#e8f6e8;color:#2d6a2d;padding:.65rem .85rem;border-radius:10px;font-size:.9rem;margin-bottom:.65rem}
+.ct-footer{background:#1a2438;color:#c8d4e6;border-radius:18px;padding:1.75rem 1.5rem;margin-top:1.25rem}
+.ct-footer-top{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:1.25rem}
+.ct-footer h3{margin:0 0 .65rem;font-size:.82rem;color:#fff;font-weight:700}
+.ct-footer a{display:block;color:#aebcd0;font-size:.82rem;text-decoration:none;padding:.2rem 0;transition:color .12s}
+.ct-footer a:hover{color:#00a4e4}
+.ct-addr{font-size:.82rem;line-height:1.5;opacity:.9;margin:.5rem 0 1rem}
+.ct-social{display:flex;gap:.45rem;flex-wrap:wrap}
+.ct-social a{width:36px;height:36px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:#fff;font-size:.75rem;font-weight:700}
+.ct-social a:hover{background:rgba(0,164,228,.35)}
+.ct-brand-row{display:flex;align-items:center;gap:.5rem;margin-bottom:.35rem}
+.ct-brand-row .tru-logo{width:42px;height:26px}
+@@media(max-width:900px){.ct-grid,.ct-footer-top{grid-template-columns:1fr 1fr}.ct-footer-top{gap:1rem}}
+@@media(max-width:600px){.ct-grid,.ct-footer-top{grid-template-columns:1fr}}
 </style>
 
 <section class="ct">
     <header class="ct-hero">
-        <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.9">CLIENT COMMUNICATION</p>
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">TRU Ask</div>
         <h1>Contact</h1>
-        <p style="margin:.35rem 0 0;opacity:.92">Reach chapter support, partners, or escalate a client request.</p>
+        <p>Reach chapter support or explore official ISACA resources. One place for messages and links.</p>
     </header>
+
     <div class="ct-grid">
         <article class="ct-card">
             <h2>Send a message</h2>
-            <div class="ct-field"><label>Your name</label><input @bind="name" /></div>
-            <div class="ct-field"><label>Email</label><input type="email" @bind="email" /></div>
-            <div class="ct-field"><label>Topic</label>
-                <select @bind="topic">
-                    <option>General inquiry</option>
-                    <option>Membership</option>
-                    <option>Events</option>
-                    <option>Escalation follow-up</option>
-                    <option>Partnership</option>
-                    <option>Technical support</option>
-                </select>
-            </div>
-            <div class="ct-field"><label>Message</label><textarea @bind="body" placeholder="How can we help?"></textarea></div>
-            <button type="button" class="ct-btn" @onclick="Submit">Send message</button>
+            @if (sent)
+            {
+                <div class="ct-ok">Message recorded for chapter follow-up. Thank you.</div>
+            }
+            <label>Name</label>
+            <input @bind="name" placeholder="Your name" />
+            <label>Email</label>
+            <input @bind="email" type="email" placeholder="you@example.com" />
+            <label>Topic</label>
+            <select @bind="topic">
+                <option>General</option>
+                <option>Membership</option>
+                <option>Events</option>
+                <option>Certification</option>
+                <option>Technical support</option>
+            </select>
+            <label>Message</label>
+            <textarea rows="4" @bind="message" placeholder="How can we help?"></textarea>
+            <button type="button" class="ct-btn" @onclick="Send">Send message</button>
         </article>
         <article class="ct-card">
-            <h2>Channels</h2>
-            <div class="ct-channels">
-                <div class="ct-ch"><div>📧</div><div><strong>Email</strong><span>support@chapter.example</span></div></div>
-                <div class="ct-ch"><div>💬</div><div><strong>Isa chat</strong><span>Use the Isa button (bottom right) anytime</span></div></div>
-                <div class="ct-ch"><div>🎫</div><div><strong>Escalations</strong><span>Open a ticket in Escalations &amp; Tickets</span></div></div>
-                <div class="ct-ch"><div>📅</div><div><strong>Office hours</strong><span>Mon–Fri · 9:00–17:00 local</span></div></div>
-            </div>
+            <h2>Chapter &amp; ISACA</h2>
+            <p style="margin:0 0 .75rem;font-size:.9rem;color:var(--muted);line-height:1.45">
+                For official ISACA member services use the links below. Chapter-specific questions can use the form.
+            </p>
+            <p style="font-size:.9rem;margin:0 0 .35rem"><strong>ISACA HQ</strong></p>
+            <p style="font-size:.85rem;color:var(--muted);margin:0 0 .75rem;line-height:1.45">
+                1700 E. Golf Road, Suite 400<br />Schaumburg, Illinois 60173, USA<br />+1-847-660-5505
+            </p>
+            <a class="ct-btn" style="display:inline-block" href="https://www.isaca.org/contact-us" target="_blank" rel="noopener">ISACA Contact Us</a>
+            <a class="ct-btn" style="display:inline-block;margin-left:.35rem;background:linear-gradient(135deg,#36ac91,#07649d)" href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
         </article>
     </div>
-    @if (!string.IsNullOrEmpty(toast))
-    {
-        <div class="ct-toast">@toast</div>
-    }
+
+    <footer class="ct-footer">
+        <div class="ct-footer-top">
+            <div>
+                <div class="ct-brand-row"><TruLogo /><strong style="color:#fff">TRU Ask</strong></div>
+                <div class="ct-addr">1700 E. Golf Road, Suite 400, Schaumburg,<br />Illinois 60173, USA · +1-847-660-5505</div>
+                <div class="ct-social">
+                    <a href="https://www.linkedin.com/company/isaca" target="_blank" rel="noopener">in</a>
+                    <a href="https://www.facebook.com/ISACAGlobal" target="_blank" rel="noopener">f</a>
+                    <a href="https://www.instagram.com/isaca_global" target="_blank" rel="noopener">ig</a>
+                    <a href="https://www.youtube.com/user/ISACAVids" target="_blank" rel="noopener">▶</a>
+                </div>
+            </div>
+            <div>
+                <h3>Support</h3>
+                <a href="https://www.isaca.org/contact-us" target="_blank" rel="noopener">Contact Us</a>
+                <a href="https://www.isaca.org/fraud-reporting" target="_blank" rel="noopener">Fraud Reporting</a>
+                <a href="https://support.isaca.org" target="_blank" rel="noopener">Bug Reporting</a>
+                <h3 style="margin-top:.85rem">Careers</h3>
+                <a href="https://www.isaca.org/career-journey" target="_blank" rel="noopener">Career Journey</a>
+            </div>
+            <div>
+                <h3>About Us</h3>
+                <a href="https://www.isaca.org/about-us" target="_blank" rel="noopener">Who We Are</a>
+                <a href="https://www.isaca.org/about-us/newsroom" target="_blank" rel="noopener">Newsroom</a>
+                <a href="https://www.isaca.org/participate-and-volunteer" target="_blank" rel="noopener">Participate &amp; Volunteer</a>
+                <a href="https://www.isaca.org/about-us/leadership-and-governance" target="_blank" rel="noopener">Leadership &amp; Governance</a>
+                <a href="https://www.isaca.org/about-us/advocacy" target="_blank" rel="noopener">Advocacy</a>
+                <a href="https://www.isaca.org/foundation" target="_blank" rel="noopener">ISACA Foundation</a>
+            </div>
+            <div>
+                <h3>Join / Renew</h3>
+                <a href="https://www.isaca.org/membership/renew" target="_blank" rel="noopener">Renew</a>
+                <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">Professionals</a>
+                <a href="https://www.isaca.org/membership/students" target="_blank" rel="noopener">Students</a>
+                <a href="https://www.isaca.org/membership/recent-graduates" target="_blank" rel="noopener">Recent Graduates</a>
+            </div>
+            <div>
+                <h3>Credentialing</h3>
+                <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Membership</a>
+                <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
+                <a href="https://www.isaca.org/partnerships" target="_blank" rel="noopener">Partnerships</a>
+                <a href="https://www.isaca.org/training-and-events" target="_blank" rel="noopener">Training &amp; Events</a>
+                <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
+            </div>
+        </div>
+    </footer>
 </section>
 
 @code {
-    private string name = "";
-    private string email = "";
-    private string topic = "General inquiry";
-    private string body = "";
-    private string? toast;
-
-    private void Submit()
+    private string name = "", email = "", topic = "General", message = "";
+    private bool sent;
+    private void Send()
     {
-        if (string.IsNullOrWhiteSpace(body))
-        {
-            toast = "Please enter a message";
-            return;
-        }
-        toast = "Message queued — chapter team will respond shortly.";
-        body = "";
+        if (string.IsNullOrWhiteSpace(message)) return;
+        sent = true;
+        message = "";
     }
 }

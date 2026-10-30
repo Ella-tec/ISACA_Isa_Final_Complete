@@ -1,27 +1,23 @@
 @inherits LayoutComponentBase
 
-@* ============================================================
-   LandingLayout.razor
+<style>
+html, body { margin: 0; padding: 0; min-height: 100%; background: #f0f4f8; }
+.landing-shell { min-height: 100vh; }
+.isa-widget__bubble {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483000 !important;
+}
+</style>
 
-   Full-width layout with no sidebar, used only by the landing page
-   (Components/Pages/Home.razor, via @layout LandingLayout). Every
-   other page still uses MainLayout.razor.
-
-   It places the same ChatWidget, with the same Hosts, as
-   MainLayout.razor. If you change the Hosts in one layout, change
-   them in the other too.
-   ============================================================ *@
-
+@* TRU ASK available on landing pages too *@
 <ChatWidget @rendermode="InteractiveServer"
             Hosts="@(new Dictionary<string,string> {
                 ["remote"] = "http://100.89.6.69:11434",
                 ["local"]  = "http://localhost:11434"
             })" />
 
-@Body
-
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">&#x1F5D9;</span>
+<div class="landing-shell">
+    @Body
 </div>

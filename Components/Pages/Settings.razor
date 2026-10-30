@@ -4,15 +4,15 @@
 <PageTitle>Settings | Isa</PageTitle>
 
 <style>
-.st{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;max-width:920px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.st-hero{padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1.1rem;background:linear-gradient(125deg,#1d2d5c,#07649d,#36ac91);color:#fff}
+.st{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;max-width:960px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
+.st-hero{padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1.15rem;background:linear-gradient(125deg,#1d2d5c 0%,#07649d 45%,#36ac91 100%);color:#fff}
 .st-hero h1{margin:.2rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
 .st-hero p{margin:.35rem 0 0;opacity:.92}
 .st-tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem}
-.st-tab{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:.4rem .9rem;font-weight:600;font-size:.85rem;cursor:pointer;font-family:inherit;color:var(--navy)}
+.st-tab{border:none;border-radius:999px;padding:.45rem .95rem;font-weight:600;font-size:.85rem;cursor:pointer;background:#fff;color:var(--navy);border:1px solid var(--line);font-family:inherit}
 .st-tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
 .st-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.2rem 1.3rem;box-shadow:0 8px 24px rgba(29,45,92,.06);margin-bottom:1rem}
-.st-card h2{margin:0 0 1rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.15rem}
+.st-card h2{margin:0 0 .85rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.15rem}
 .st-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem}
 .st-field{display:grid;gap:.3rem}
 .st-field label{font-size:.78rem;font-weight:600;color:var(--mid)}
@@ -20,9 +20,10 @@
 .st-field input:focus,.st-field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,164,228,.15)}
 .st-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.65rem 0;border-bottom:1px solid var(--line)}
 .st-row:last-child{border-bottom:none}
+.st-row span{font-size:.9rem}
 .st-toggle{width:44px;height:26px;border-radius:999px;border:none;background:#c5d0e0;cursor:pointer;position:relative}
 .st-toggle.on{background:var(--teal)}
-.st-toggle i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s;display:block}
+.st-toggle i{position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;transition:left .15s}
 .st-toggle.on i{left:21px}
 .st-actions{display:flex;justify-content:flex-end;gap:.5rem;margin-top:1rem}
 .st-btn{border:none;border-radius:10px;padding:.55rem 1.1rem;font-weight:600;font-size:.88rem;cursor:pointer;font-family:inherit}
@@ -48,7 +49,7 @@
 
     @if (tab == 0)
     {
-        <div class="st-card">
+        <article class="st-card">
             <h2>Profile</h2>
             <div class="st-grid">
                 <div class="st-field"><label>Display name</label><input @bind="displayName" /></div>
@@ -64,41 +65,37 @@
                 <button type="button" class="st-btn st-btn--ghost" @onclick="ResetProfile">Reset</button>
                 <button type="button" class="st-btn st-btn--primary" @onclick="Save">Save profile</button>
             </div>
-        </div>
+        </article>
     }
     else if (tab == 1)
     {
-        <div class="st-card">
+        <article class="st-card">
             <h2>Preferences</h2>
             <div class="st-row"><span>Compact sidebar</span><button type="button" class="st-toggle @(compact?"on":null)" @onclick="() => compact=!compact"><i></i></button></div>
             <div class="st-row"><span>Show weather on Home</span><button type="button" class="st-toggle @(showWeather?"on":null)" @onclick="() => showWeather=!showWeather"><i></i></button></div>
             <div class="st-row"><span>Auto-play Home video</span><button type="button" class="st-toggle @(autoVideo?"on":null)" @onclick="() => autoVideo=!autoVideo"><i></i></button></div>
-            <div class="st-row"><span>ISACA color accents</span><button type="button" class="st-toggle @(accents?"on":null)" @onclick="() => accents=!accents"><i></i></button></div>
             <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save preferences</button></div>
-        </div>
+        </article>
     }
     else if (tab == 2)
     {
-        <div class="st-card">
+        <article class="st-card">
             <h2>Notifications</h2>
             <div class="st-row"><span>Escalation alerts</span><button type="button" class="st-toggle @(nEsc?"on":null)" @onclick="() => nEsc=!nEsc"><i></i></button></div>
             <div class="st-row"><span>Content approval requests</span><button type="button" class="st-toggle @(nContent?"on":null)" @onclick="() => nContent=!nContent"><i></i></button></div>
             <div class="st-row"><span>Event reminders</span><button type="button" class="st-toggle @(nEvents?"on":null)" @onclick="() => nEvents=!nEvents"><i></i></button></div>
             <div class="st-row"><span>Weekly chapter digest</span><button type="button" class="st-toggle @(nDigest?"on":null)" @onclick="() => nDigest=!nDigest"><i></i></button></div>
             <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save notifications</button></div>
-        </div>
+        </article>
     }
     else
     {
-        <div class="st-card">
+        <article class="st-card">
             <h2>Security</h2>
-            <div class="st-row"><span>Require sign-in for workspace</span><button type="button" class="st-toggle @(secAuth?"on":null)" @onclick="() => secAuth=!secAuth"><i></i></button></div>
+            <div class="st-row"><span>Require sign-in for workspace tools</span><button type="button" class="st-toggle @(reqAuth?"on":null)" @onclick="() => reqAuth=!reqAuth"><i></i></button></div>
             <div class="st-row"><span>Session timeout (idle)</span><span style="color:var(--muted);font-size:.85rem">30 minutes</span></div>
-            <div class="st-actions">
-                <a class="st-btn st-btn--ghost" href="sign-in" style="text-decoration:none">Sign out</a>
-                <button type="button" class="st-btn st-btn--primary" @onclick="Save">Save security</button>
-            </div>
-        </div>
+            <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save security</button></div>
+        </article>
     }
 
     @if (!string.IsNullOrEmpty(toast))
@@ -109,26 +106,25 @@
 
 @code {
     private int tab;
-    private string displayName = "Chapter Leader";
-    private string email = "leader@chapter.example";
+    private string displayName = "Chapter Member";
+    private string email = "member@chapter.isaca.org";
     private string role = "Chapter leader";
     private string lang = "English";
-    private bool compact, showWeather = true, autoVideo = true, accents = true;
+    private bool compact, showWeather = true, autoVideo = true;
     private bool nEsc = true, nContent = true, nEvents = true, nDigest;
-    private bool secAuth = true;
+    private bool reqAuth = true;
     private string? toast;
-
-    private void Save()
-    {
-        toast = "Settings saved";
-    }
 
     private void ResetProfile()
     {
-        displayName = "Chapter Leader";
-        email = "leader@chapter.example";
+        displayName = "Chapter Member";
+        email = "member@chapter.isaca.org";
         role = "Chapter leader";
         lang = "English";
-        toast = "Profile reset";
+    }
+
+    private void Save()
+    {
+        toast = "Settings saved · " + DateTime.Now.ToString("t");
     }
 }

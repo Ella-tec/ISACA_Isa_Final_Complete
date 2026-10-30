@@ -5,6 +5,12 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <BlazorDisableThrowNavigationException>true</BlazorDisableThrowNavigationException>
+
+    <!-- TRU branding -->
+    <Product>TRU</Product>
+    <AssemblyTitle>TRU</AssemblyTitle>
+    <ApplicationTitle>TRU</ApplicationTitle>
+    <RootNamespace>IsaChatApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

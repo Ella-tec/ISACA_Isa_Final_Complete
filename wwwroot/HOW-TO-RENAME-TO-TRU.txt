@@ -1,0 +1,121 @@
+================================================================================
+  HOW TO REPLACE THE LOGO AND RENAME THE APP TO "TRU"
+================================================================================
+
+Files included in this package (wwwroot):
+  tru-logo.svg       → transparent ring + TRU (for headers / light or dark UI)
+  tru-logo-dark.svg  → simple transparent ring version
+  tru-icon.svg       → solid gradient disc (best for Windows desktop / taskbar)
+  manifest.webmanifest → PWA name = "TRU"
+
+--------------------------------------------------------------------------------
+STEP 1 — Copy logo files into your project
+--------------------------------------------------------------------------------
+Copy into your project wwwroot folder:
+
+  wwwroot\tru-logo.svg
+  wwwroot\tru-logo-dark.svg
+  wwwroot\tru-icon.svg
+  wwwroot\manifest.webmanifest
+
+--------------------------------------------------------------------------------
+STEP 2 — Browser tab title + favicon
+--------------------------------------------------------------------------------
+Open:  Components\App.razor   (or wwwroot\index.html if you use one)
+
+Set the title to TRU only:
+
+  <title>TRU</title>
+
+Add / replace favicon links inside <head>:
+
+  <link rel="icon" type="image/svg+xml" href="tru-icon.svg" />
+  <link rel="apple-touch-icon" href="tru-icon.svg" />
+  <link rel="manifest" href="manifest.webmanifest" />
+
+Remove any old links to favicon.png / ISA icons.
+
+--------------------------------------------------------------------------------
+STEP 3 — Web app manifest (name under installed / mobile)
+--------------------------------------------------------------------------------
+Overwrite wwwroot\manifest.webmanifest with the one from this ZIP
+(or edit yours so name and short_name are both "TRU").
+
+--------------------------------------------------------------------------------
+STEP 4 — Desktop shortcut name (Windows)
+--------------------------------------------------------------------------------
+1. Right-click the current "ISA-Chapter Support Assistant" desktop icon
+2. Click Rename
+3. Type:  TRU
+4. Press Enter
+
+--------------------------------------------------------------------------------
+STEP 5 — Desktop icon picture (Windows)
+--------------------------------------------------------------------------------
+The .svg cannot be set directly as a Windows .ico sometimes.
+Easiest options:
+
+A) Keep using the app in the browser (Chrome/Edge) and pin the tab —
+   the favicon from Step 2 will show.
+
+B) Create a shortcut to your app URL or to the .exe, then:
+   1. Right-click shortcut → Properties → Change Icon
+   2. If you convert tru-icon.svg to .ico (see below), browse to that file
+
+Convert SVG → ICO (optional, one-time):
+  - Open https://convertio.co/svg-ico/  (or any SVG→ICO converter)
+  - Upload wwwroot\tru-icon.svg
+  - Download tru-icon.ico
+  - Put it in your project folder or Desktop
+  - Use it in "Change Icon"
+
+--------------------------------------------------------------------------------
+STEP 6 — Blazor / .NET assembly title (optional but clean)
+--------------------------------------------------------------------------------
+Open your .csproj (IsaChatApp.csproj) and add or update:
+
+  <PropertyGroup>
+    <AssemblyName>TRU</AssemblyName>
+    <Product>TRU</Product>
+    <AssemblyTitle>TRU</AssemblyTitle>
+    <ApplicationTitle>TRU</ApplicationTitle>
+  </PropertyGroup>
+
+--------------------------------------------------------------------------------
+STEP 7 — In-app branding (already done in this ZIP)
+--------------------------------------------------------------------------------
+These files in the ZIP already use TRU branding:
+  - NavMenu.razor          → sidebar "TRU"
+  - MainLayout.razor       → top bar hidden / TRU
+  - Home.razor             → <PageTitle>TRU</PageTitle>
+  - ChatWidget.razor       → header shows TRU mark only
+  - Throbber.razor.css     → green→cyan gradient TRU disc
+  - manifest.webmanifest   → name TRU
+
+Overwrite those from the ZIP as before.
+
+--------------------------------------------------------------------------------
+STEP 8 — Clean rebuild
+--------------------------------------------------------------------------------
+  cd your project folder
+
+  Remove-Item -Recurse -Force bin,obj -ErrorAction SilentlyContinue
+  dotnet clean
+  dotnet build
+  dotnet run
+
+  Browser: Ctrl+Shift+R  (hard refresh so favicon updates)
+
+--------------------------------------------------------------------------------
+STEP 9 — Verify
+--------------------------------------------------------------------------------
+  [ ] Browser tab says "TRU"
+  [ ] Sidebar shows TRU (colored circle)
+  [ ] Chat header shows colored TRU only (no extra text)
+  [ ] Desktop shortcut renamed to TRU
+  [ ] No "ISA-Chapter Support Assistant" left in the UI
+
+If the tab still shows the old name, clear browser cache or open
+an Incognito window.
+
+================================================================================

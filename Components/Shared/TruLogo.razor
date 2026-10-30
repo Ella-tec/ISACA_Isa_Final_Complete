@@ -1,0 +1,17 @@
+<svg class="tru-logo @CssClass" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRU Ask">
+  <defs>
+    <linearGradient id="g1-@Id" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00a4e4"/><stop offset="100%" stop-color="#1d2d5c"/>
+    </linearGradient>
+    <linearGradient id="g2-@Id" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6cb33f"/><stop offset="100%" stop-color="#00a4e4"/>
+    </linearGradient>
+  </defs>
+  <path fill="none" stroke="url(#g1-@Id)" stroke-width="7" stroke-linecap="round" d="M28 8 A12 12 0 1 0 28 32"/>
+  <path fill="none" stroke="url(#g2-@Id)" stroke-width="7" stroke-linecap="round" d="M36 8 A12 12 0 1 1 36 32"/>
+  <circle cx="32" cy="20" r="3" fill="#fff"/>
+</svg>
+@code {
+    [Parameter] public string CssClass { get; set; } = "";
+    private string Id { get; } = Guid.NewGuid().ToString("N")[..6];
+}

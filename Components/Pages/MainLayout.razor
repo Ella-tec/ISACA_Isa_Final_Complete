@@ -1,0 +1,110 @@
+@inherits LayoutComponentBase
+@inject NavigationManager Navigation
+
+<style>
+html, body { margin: 0; padding: 0; height: 100%; }
+.page {
+  display: flex !important;
+  flex-direction: row !important;
+  min-height: 100vh !important;
+  width: 100% !important;
+  overflow-x: hidden !important;
+  background: #f4f7fb;
+}
+.sidebar {
+  width: 270px !important;
+  min-width: 270px !important;
+  max-width: 270px !important;
+  flex: 0 0 270px !important;
+  height: 100vh !important;
+  position: sticky !important;
+  top: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  z-index: 30 !important;
+}
+.main {
+  flex: 1 1 auto !important;
+  min-width: 0 !important;
+  max-width: calc(100vw - 270px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: 100vh !important;
+}
+.top-row {
+  display: flex !important;
+  align-items: center !important;
+  padding: 0.55rem 1.1rem !important;
+  background: #fff !important;
+  border-bottom: 1px solid #e2e8f0 !important;
+  flex-shrink: 0 !important;
+}
+.top-row__context { display: flex; flex-direction: column; gap: 0; }
+.top-row__eyebrow {
+  font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: #5f6b85;
+}
+.top-row__title {
+  font-size: 0.98rem; color: #1d2d5c;
+  font-family: "Roboto Slab", Georgia, serif; font-weight: 400;
+}
+.top-row__actions { display: none !important; }
+/* KEY: reduce empty gap on every page */
+.content {
+  flex: 1 1 auto !important;
+  padding: 0.75rem 1rem 1rem !important;
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  width: 100% !important;
+}
+#blazor-error-ui {
+  display: none; position: fixed; bottom: 1rem; left: 50%;
+  transform: translateX(-50%); background: #1d2d5c; color: #fff;
+  padding: 0.75rem 1.25rem; border-radius: 12px; z-index: 9999;
+}
+@@media (max-width: 900px) {
+  .page { flex-direction: column !important; }
+  .sidebar {
+    width: 100% !important; min-width: 0 !important; max-width: none !important;
+    flex: none !important; height: auto !important; max-height: 40vh !important;
+    position: relative !important;
+  }
+  .main { max-width: 100% !important; }
+}
+</style>
+
+@if (!IsEmbedded)
+{
+    <ChatWidget @rendermode="InteractiveServer"
+                Hosts="@(new Dictionary<string,string> {
+                    ["remote"] = "http://100.89.6.69:11434",
+                    ["local"]  = "http://localhost:11434"
+                })" />
+}
+
+<div class="page">
+    <aside class="sidebar">
+        <NavMenu />
+    </aside>
+    <div class="main">
+        <header class="top-row">
+            <div class="top-row__context">
+                <span class="top-row__eyebrow">ISACA Chapter Support</span>
+                <span class="top-row__title">TRU Ask workspace</span>
+            </div>
+        </header>
+        <article class="content">
+            @Body
+        </article>
+    </div>
+</div>
+
+<div id="blazor-error-ui" data-nosnippet>
+    An unexpected error occurred. You can reload the page to continue.
+    <a href="." class="reload">Reload</a>
+    <span class="dismiss" aria-label="Dismiss">✕</span>
+</div>
+
+@code {
+    private bool IsEmbedded => new Uri(Navigation.Uri).Query.Contains("embed=1");
+}

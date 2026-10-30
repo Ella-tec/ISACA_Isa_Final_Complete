@@ -3,10 +3,9 @@
 @using IsaChatApp.Services
 @inject NavigationManager Nav
 @rendermode InteractiveServer
-
 @* Clean landing: after sign-in go straight to workspace. Guests see intro + feature grid. *@
 
-<PageTitle>Isa | Chapter Support Assistant</PageTitle>
+<PageTitle>TRU</PageTitle>
 
 <AuthorizeView>
     <Authorized>
@@ -14,23 +13,28 @@
             <header class="landing__topbar">
                 <div class="landing__brand">
                     <span class="landing__brandMark">
-                        <img src="images/isa-mark.svg" alt="" width="40" height="40" />
+                        <img src="tru-icon.svg" alt="TRU" width="40" height="40"
+                             onerror="this.style.display='none'" />
+                        <span class="landing__brandFallback">TRU</span>
                     </span>
                     <span class="landing__brandText">
-                        <span class="landing__brandName">Isa</span>
-                        <span class="landing__brandTag">ISACA Chapter Support Workspace</span>
+                        <span class="landing__brandName">TRU</span>
+                        <span class="landing__brandTag">Trusted Resource &amp; Unified Support</span>
                     </span>
                 </div>
                 <div class="landing__topbarRight">
                     <a class="landing__btn landing__btn--primary" href="/knowledge-base">Knowledge base</a>
                 </div>
             </header>
+
             <section class="landing__hero">
                 <div class="landing__heroInner">
                     <div class="landing__heroText">
                         <p class="landing__eyebrow">WELCOME TO YOUR WORKSPACE</p>
-                        <h1 class="landing__headline">How can Isa help your chapter today?</h1>
-                        <p class="landing__lede">Access chapter resources, review activity, manage events, and get support from one place.</p>
+                        <h1 class="landing__headline">How can TRU help your chapter today?</h1>
+                        <p class="landing__lede">
+                            Access chapter resources, review activity, manage events, and get support from one place.
+                        </p>
                         <div class="landing__ctaRow">
                             <a class="landing__btn landing__btn--primary" href="/knowledge-base">Browse knowledge base</a>
                             <a class="landing__btn landing__btn--ghost" href="/analytics">View analytics</a>
@@ -39,6 +43,7 @@
                     </div>
                 </div>
             </section>
+
             <section id="workspace" class="landing__section">
                 <h2 class="landing__sectionTitle">Your workspace</h2>
                 <p class="landing__sectionLede">Choose a tool to get started.</p>
@@ -53,21 +58,24 @@
                     <a class="landing__featureCard" href="/pipeline-monitor"><strong>Pipeline monitor</strong><span>Inspect processing stages</span></a>
                 </div>
             </section>
+
             <footer class="landing__footer">
-                Isa is a prototype built for ISACA chapter support scenarios. This is a demonstration workspace, not an official ISACA website.
+                TRU is a prototype built for ISACA chapter support scenarios. This is a demonstration workspace, not an official ISACA website.
             </footer>
         </div>
     </Authorized>
+
     <NotAuthorized>
         <div class="landing">
-
             <header class="landing__topbar">
                 <div class="landing__brand">
                     <span class="landing__brandMark">
-                        <img src="images/isa-mark.svg" alt="" width="40" height="40" />
+                        <img src="tru-icon.svg" alt="TRU" width="40" height="40"
+                             onerror="this.style.display='none'" />
+                        <span class="landing__brandFallback">TRU</span>
                     </span>
                     <span class="landing__brandText">
-                        <span class="landing__brandName">Isa</span>
+                        <span class="landing__brandName">TRU</span>
                         <span class="landing__brandTag">Chapter Support Assistant</span>
                     </span>
                 </div>
@@ -85,9 +93,9 @@
                 <div class="landing__heroInner">
                     <div class="landing__heroText">
                         <p class="landing__eyebrow">FOR ISACA CHAPTER LEADERS</p>
-                        <h1 class="landing__headline">Meet Isa, your chapter support assistant</h1>
+                        <h1 class="landing__headline">Meet TRU, your chapter support assistant</h1>
                         <p class="landing__lede">
-                            Ask a question about running your chapter. Isa searches approved
+                            Ask a question about running your chapter. TRU searches approved
                             chapter guidance, shows its sources, and hands off to a person when needed.
                         </p>
                         <div class="landing__ctaRow">
@@ -96,25 +104,32 @@
                             <a class="landing__btn landing__btn--ghost" href="/analytics">Analytics</a>
                         </div>
                         <p class="landing__cta">
-                            Or click the Isa button in the bottom-right corner to chat.
+                            Or click the TRU button in the bottom-right corner to chat.
                         </p>
                     </div>
                     <div class="landing__heroBadge" aria-hidden="true">
                         <svg viewBox="0 0 120 120" width="120" height="120">
-                            <circle cx="60" cy="60" r="52" fill="none" stroke="#6cb33f" stroke-width="10" stroke-dasharray="240 80" stroke-linecap="round"/>
-                            <text x="60" y="68" text-anchor="middle" font-family="Roboto,sans-serif" font-size="28" font-weight="700" fill="#1d2d5c">Isa</text>
+                            <defs>
+                                <linearGradient id="truRing" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#6cb33f"/>
+                                    <stop offset="50%" stop-color="#36ac91"/>
+                                    <stop offset="100%" stop-color="#00a4e4"/>
+                                </linearGradient>
+                            </defs>
+                            <circle cx="60" cy="60" r="52" fill="none" stroke="url(#truRing)" stroke-width="10" stroke-linecap="round"/>
+                            <text x="60" y="68" text-anchor="middle" font-family="Roboto Slab, Georgia, serif" font-size="26" font-weight="800" letter-spacing="2" fill="#1d2d5c">TRU</text>
                         </svg>
                     </div>
                 </div>
             </section>
 
             <section id="how" class="landing__section">
-                <h2 class="landing__sectionTitle">How Isa answers</h2>
+                <h2 class="landing__sectionTitle">How TRU answers</h2>
                 <div class="landing__steps">
                     <div class="landing__step">
                         <span class="landing__stepNum">1</span>
                         <h3 class="landing__stepTitle">SEARCHES APPROVED CONTENT</h3>
-                        <p>Isa looks only in documents ISACA has approved for chapter leaders, not the open internet.</p>
+                        <p>TRU looks only in documents ISACA has approved for chapter leaders, not the open internet.</p>
                     </div>
                     <div class="landing__step">
                         <span class="landing__stepNum">2</span>
@@ -155,13 +170,13 @@
                     <a class="landing__featureCard" href="/users-settings"><strong>Users &amp; settings</strong><span>Roles</span></a>
                     <a class="landing__featureCard" href="/pipeline-monitor"><strong>Pipeline monitor</strong><span>Stage traces</span></a>
                     <a class="landing__featureCard" href="/dev-dashboard"><strong>Developer dashboard</strong><span>Diagnostics</span></a>
-                    <a class="landing__featureCard" href="/isa-config"><strong>Isa configuration</strong><span>Model settings</span></a>
+                    <a class="landing__featureCard" href="/isa-config"><strong>TRU configuration</strong><span>Model settings</span></a>
                 </div>
             </section>
 
             <section id="try" class="landing__section">
                 <h2 class="landing__sectionTitle">Questions to try</h2>
-                <p class="landing__sectionLede">Open Isa and type any of these.</p>
+                <p class="landing__sectionLede">Open TRU and type any of these.</p>
                 <div class="landing__questions">
                     <div class="landing__question">How many board meetings must a chapter hold each year?</div>
                     <div class="landing__question">How many educational events must a chapter hold?</div>
@@ -171,13 +186,12 @@
             </section>
 
             <footer class="landing__footer">
-                Isa is a prototype built for ISACA by Second Star Collective (i.c.stars Kansas City).
+                TRU is a prototype built for ISACA by Second Star Collective (i.c.stars Kansas City).
                 This is a demonstration page, not an official ISACA website.
             </footer>
         </div>
     </NotAuthorized>
 </AuthorizeView>
-
 
 @code {
     // The authenticated root route is the workspace home. Do not redirect

@@ -1,0 +1,1 @@
+.page{display:flex;flex-direction:row;min-height:100vh}.sidebar{width:270px;flex:0 0 270px}.main{flex:1;min-width:0}.content{padding:.75rem 1rem}

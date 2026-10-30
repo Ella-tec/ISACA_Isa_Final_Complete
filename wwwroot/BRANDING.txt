@@ -1,0 +1,11 @@
+APP NAME = TRU
+
+Update these in your project (manual if not in this ZIP):
+1. Properties/launchSettings.json  -> applicationUrl titles
+2. wwwroot/manifest.webmanifest    -> "name": "TRU", "short_name": "TRU"
+3. wwwroot/index.html or App.razor <title>TRU</title>
+4. Desktop shortcut: rename "ISA-Chapter Support Assistant" to "TRU"
+5. favicon: replace with TRU mark (transparent background logo)
+
+Chat header now shows only "TRU" with transparent badge + wiggle.
+Home page title is "TRU".

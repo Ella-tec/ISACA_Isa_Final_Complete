@@ -4,103 +4,115 @@
 <PageTitle>Knowledge base | Isa</PageTitle>
 
 <style>
-.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.pg a{text-decoration:none!important}
-.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#00a4e4);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
-.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
-.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
-.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#00a4e4}
-.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
-.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
-.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.pg-card--wide{grid-column:1/-1}
-.pg-list{list-style:none;margin:0;padding:0}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
-.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
-.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#00a4e4);color:#fff}
-.pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
-.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
-.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#1d2d5c,#00a4e4);border-radius:999px}
-
-@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+.kb{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1100px;margin:0 auto;padding-bottom:1.5rem}
+.kb-hero{border-radius:18px;padding:1.5rem 1.6rem;color:#fff;margin-bottom:.85rem;
+background:linear-gradient(115deg,#07649d,#00a4e4 60%,#1d2d5c);box-shadow:0 12px 36px rgba(29,45,92,.16)}
+.kb-hero h1{margin:.15rem 0 .3rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
+.kb-hero p{margin:0;opacity:.92;max-width:48ch}
+.kb-tools{display:flex;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap}
+.kb-tools input,.kb-tools select{padding:.55rem .8rem;border-radius:10px;border:1px solid var(--line);font-family:inherit}
+.kb-tools input{flex:1;min-width:180px}
+.kb-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:.85rem}
+.kb-kpi{background:#fff;border-radius:14px;padding:1.1rem;border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:border-color .12s,transform .12s}
+.kb-kpi:hover{border-color:var(--blue);transform:translateY(-2px)}
+.kb-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.22)}
+.kb-kpi .l{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kb-kpi .v{font-size:1.5rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
+.kb-detail{background:#e8f4fc;border-radius:12px;padding:.75rem 1rem;margin-bottom:.85rem;font-size:.88rem;border:1px solid #c5e0f5}
+.kb-list{background:#fff;border-radius:14px;border:1px solid var(--line);overflow:hidden}
+.kb-item{padding:1rem 1.1rem;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
+.kb-item:hover{background:var(--light)}
+.kb-item:last-child{border-bottom:0}
+.kb-item strong{display:block}
+.kb-item span{font-size:.82rem;color:var(--muted)}
 </style>
 
-<section class="pg">
-  <header class="pg-hero">
-    <div>
-      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">KNOWLEDGE</p>
-      <h1>Knowledge base</h1>
-      <p>Approved guidance and chapter articles — every card is actionable.</p>
+<section class="kb">
+    <header class="kb-hero">
+        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Resources</div>
+        <h1>Knowledge base</h1>
+        <p>Approved guidance, chapter articles and support content. Search and filter by topic. KPI cards are clickable.</p>
+    </header>
+
+    <div class="kb-tools">
+        <input @bind="search" @bind:event="oninput" placeholder="Search articles, topics or keywords…" />
+        <select @bind="category">
+            <option>All categories</option>
+            <option>Membership</option>
+            <option>Events</option>
+            <option>Governance</option>
+            <option>Security</option>
+            <option>Education</option>
+        </select>
     </div>
-  </header>
 
-  <div class="pg-stats">
-    <button type="button" class="pg-stat" @onclick='() => Go("knowledge-base")'><span>Articles</span><strong>8</strong><em>Open catalog →</em></button>
-    <button type="button" class="pg-stat" @onclick='() => SetCat("All")'><span>Categories</span><strong>6</strong><em>Filter topics →</em></button>
-    <button type="button" class="pg-stat" @onclick="Refresh"><span>Matching</span><strong>@matchCount</strong><em>Current filters →</em></button>
-    <button type="button" class="pg-stat" @onclick='() => Go("content-health")'><span>Health</span><strong>86</strong><em>Quality score →</em></button>
-  </div>
-  <div class="pg-grid">
-    <article class="pg-card">
-      <h2>Articles</h2>
-      <ul class="pg-list">
-        @foreach (var a in Articles.Where(x => cat=="All" || x.Cat==cat))
+    <div class="kb-kpis">
+        <button type="button" class="kb-kpi @(focus=="a"?"on":null)" @onclick='() => SetFocus("a")'>
+            <div class="l">Articles</div><div class="v">@articles.Count</div>
+        </button>
+        <button type="button" class="kb-kpi @(focus=="c"?"on":null)" @onclick='() => SetFocus("c")'>
+            <div class="l">Categories</div><div class="v">@catCount</div>
+        </button>
+        <button type="button" class="kb-kpi @(focus=="m"?"on":null)" @onclick='() => SetFocus("m")'>
+            <div class="l">Matching</div><div class="v">@Filtered.Count()</div>
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(detail))
+    {
+        <div class="kb-detail">@detail</div>
+    }
+
+    <div class="kb-list">
+        @foreach (var a in Filtered)
         {
-          <li>
-            <div><strong>@a.Title</strong><span>@a.Cat · @a.Updated</span></div>
-            <button type="button" class="pg-btn" @onclick="() => OpenArticle(a.Title)">View</button>
-          </li>
+            <div class="kb-item" @onclick="() => Open(a)">
+                <strong>@a.Title</strong>
+                <span>@a.Category · @a.Summary</span>
+            </div>
         }
-      </ul>
-      <div class="pg-actions">
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Membership")'>Membership</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Events")'>Events</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("Certification")'>Certification</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => SetCat("All")'>All</button>
-      </div>
-    </article>
-    <article class="pg-card">
-      <h2>Quick actions</h2>
-      <div class="pg-actions" style="flex-direction:column;align-items:stretch">
-        <button type="button" class="pg-btn" @onclick='() => Go("translator")'>Open Translator</button>
-        <button type="button" class="pg-btn" @onclick='() => Go("content-health")'>Content health</button>
-        <button type="button" class="pg-btn" @onclick='() => Go("escalations")'>Escalate a question</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("market")'>Market trends</button>
-      </div>
-      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:1rem;color:var(--mid)">@toast</p> }
-    </article>
-  </div>
-
+    </div>
 </section>
 
 @code {
-
-    [Inject] private NavigationManager Nav { get; set; } = default!;
-    private string cat = "All";
-    private int matchCount = 8;
-    private string? toast;
-    private readonly List<(string Title,string Cat,string Updated)> Articles = new()
+    private sealed class Art { public string Title { get; set; } = ""; public string Category { get; set; } = ""; public string Summary { get; set; } = ""; }
+    private readonly List<Art> articles = new()
     {
-        ("Membership support basics","Membership","Oct 2026"),
-        ("Planning a chapter event","Events","Oct 2026"),
-        ("Certification pathways","Certification","Sep 2026"),
-        ("Content review policy","Policies","Sep 2026"),
-        ("Troubleshooting access","Technology","Aug 2026"),
-        ("Chapter communications","Membership","Aug 2026"),
-        ("Board officer handbook","Governance","Oct 2026"),
-        ("CPE reporting guide","Certification","Sep 2026"),
+        new() { Title = "Chapter meeting checklist", Category = "Governance", Summary = "Board agenda and quorum reminders" },
+        new() { Title = "CPE reporting guide", Category = "Education", Summary = "How members claim credits" },
+        new() { Title = "Event registration playbook", Category = "Events", Summary = "Capacity, waitlists, and CPE codes" },
+        new() { Title = "New member onboarding", Category = "Membership", Summary = "First 30 days checklist" },
+        new() { Title = "Incident response contacts", Category = "Security", Summary = "Severity and escalation paths" },
+        new() { Title = "Vendor risk questionnaire", Category = "Governance", Summary = "Third-party due diligence" },
+        new() { Title = "Study group facilitator tips", Category = "Education", Summary = "CISA/CISM circles" },
+        new() { Title = "Hybrid event AV checklist", Category = "Events", Summary = "Room and streaming setup" },
     };
-    private void Go(string path) => Nav.NavigateTo(path);
-    private void SetCat(string c) { cat = c; matchCount = c=="All" ? 8 : Articles.Count(a => a.Cat==c); toast = "Filter: " + c; }
-    private void Refresh() { matchCount = Articles.Count; toast = "Catalog refreshed"; }
-    private void OpenArticle(string t) => toast = "Opened: " + t;
-
+    private string search = "", category = "All categories", focus = "a", detail = "";
+    private int catCount => articles.Select(a => a.Category).Distinct().Count();
+    private IEnumerable<Art> Filtered
+    {
+        get
+        {
+            IEnumerable<Art> q = articles;
+            if (category != "All categories") q = q.Where(a => a.Category == category);
+            if (!string.IsNullOrWhiteSpace(search))
+                q = q.Where(a => a.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || a.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || a.Category.Contains(search, StringComparison.OrdinalIgnoreCase));
+            return q;
+        }
+    }
+    private void SetFocus(string f)
+    {
+        focus = f;
+        detail = f switch
+        {
+            "a" => $"Knowledge base has {articles.Count} articles across membership, events, governance, security, and education.",
+            "c" => $"{catCount} categories in use. Filter with the dropdown to narrow results.",
+            "m" => $"{Filtered.Count()} articles match your current search and category filters.",
+            _ => ""
+        };
+    }
+    private void Open(Art a) => detail = $"Opened: {a.Title} ({a.Category}) — {a.Summary}";
 }

@@ -1,0 +1,3 @@
+In wwwroot/index.html change:
+  <title>TRU Ask | ISACA Chapter Support</title>
+Also update any apple-touch / favicon alt text to TRU Ask.

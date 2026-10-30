@@ -1,0 +1,27 @@
+/* TRU — zero bottom gap */
+.content, article.content {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  overflow: hidden !important;
+}
+.hm {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+}
+.hm-media { flex: 1 1 auto !important; min-height: 0 !important; }
+.hm-slides, .hm-vid { flex: 1 1 0 !important; min-height: 180px !important; }
+.hm-vid__bar, .hm-vid__thumbs, .hm-vid__btns, .hm-certs, .cert-row { display: none !important; }
+.sidebar {
+  width: 260px !important;
+  min-width: 260px !important;
+  max-width: 260px !important;
+  flex: 0 0 260px !important;
+}

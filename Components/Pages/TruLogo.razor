@@ -1,0 +1,32 @@
+@* Premium dual-C logo — ISACA-inspired navy / cyan / teal / green *@
+<svg class="tru-logo @CssClass" viewBox="0 0 64 40" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="TRU Ask">
+  <defs>
+    <linearGradient id="truC1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#00a4e4"/>
+      <stop offset="55%" stop-color="#07649d"/>
+      <stop offset="100%" stop-color="#1d2d5c"/>
+    </linearGradient>
+    <linearGradient id="truC2" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#6cb33f"/>
+      <stop offset="50%" stop-color="#36ac91"/>
+      <stop offset="100%" stop-color="#00a4e4"/>
+    </linearGradient>
+    <filter id="truGlow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <!-- Left C -->
+  <path filter="url(#truGlow)" fill="none" stroke="url(#truC1)" stroke-width="7" stroke-linecap="round"
+        d="M28 8 A12 12 0 1 0 28 32"/>
+  <!-- Right C -->
+  <path filter="url(#truGlow)" fill="none" stroke="url(#truC2)" stroke-width="7" stroke-linecap="round"
+        d="M36 8 A12 12 0 1 1 36 32"/>
+  <!-- Soft center node -->
+  <circle cx="32" cy="20" r="3.2" fill="#ffffff" opacity="0.9"/>
+  <circle cx="32" cy="20" r="5.5" fill="#00a4e4" opacity="0.2"/>
+</svg>
+
+@code {
+    [Parameter] public string CssClass { get; set; } = "";
+}

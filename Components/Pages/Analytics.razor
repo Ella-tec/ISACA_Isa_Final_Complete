@@ -4,101 +4,258 @@
 <PageTitle>Analytics | Isa</PageTitle>
 
 <style>
-.pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--red:#e31837;--orange:#e57524;--yellow:#fbb034;--purple:#6558b1;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.pg a{text-decoration:none!important}
-.pg-hero{padding:1.2rem 1.35rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#07649d);color:#fff;display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
-.pg-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.6rem}
-.pg-hero p{margin:.3rem 0 0;opacity:.92;max-width:52ch}
-.pg-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:.65rem;margin-bottom:1rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;box-shadow:0 6px 16px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s,box-shadow .12s;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{transform:translateY(-2px);box-shadow:0 10px 24px rgba(29,45,92,.1);border-color:#07649d}
-.pg-stat span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pg-stat strong{display:block;font-size:1.25rem;margin:.2rem 0 .15rem;color:var(--navy)}
-.pg-stat em{font-style:normal;font-size:.78rem;color:var(--mid)}
-.pg-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:1rem}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.pg-card h2{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.pg-card--wide{grid-column:1/-1}
-.pg-list{list-style:none;margin:0;padding:0}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.6rem 0;border-bottom:1px solid var(--line)}
-.pg-list strong{display:block}.pg-list span{font-size:.8rem;color:var(--muted)}
-.pg-btn{border:none;border-radius:10px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
-.pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.75rem}
-.pg-chip{display:inline-flex;padding:.2rem .55rem;border-radius:999px;font-size:.72rem;font-weight:700;background:var(--light);color:var(--mid)}
-.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.35rem 0}
-.pg-bar i{display:block;height:100%;background:linear-gradient(90deg,#1d2d5c,#07649d);border-radius:999px}
-
-@@media(max-width:900px){.pg-grid{grid-template-columns:1fr}}
+.an{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--red:#e31837;--orange:#e57524;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1220px;margin:0 auto;padding-bottom:2rem}
+.an-hero{border-radius:20px;padding:1.75rem 2rem;color:#fff;margin-bottom:1rem;width:100%;box-sizing:border-box;
+background:linear-gradient(115deg,#1d2d5c 0%,#07649d 55%,#00a4e4 100%);box-shadow:0 16px 44px rgba(29,45,92,.18);
+display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;gap:1rem}
+.an-hero h1{margin:.2rem 0 .35rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.9rem}
+.an-hero p{margin:0;opacity:.92;max-width:48ch;line-height:1.45}
+.an-hero-actions{display:flex;gap:.5rem;flex-wrap:wrap}
+.an-hero select,.an-hero button{border:none;cursor:pointer;padding:.55rem 1rem;border-radius:10px;font-weight:600;font-family:inherit;font-size:.88rem}
+.an-hero select{background:#fff;color:var(--navy)}
+.an-hero button{background:rgba(255,255,255,.18);color:#fff;box-shadow:inset 0 0 0 1.5px rgba(255,255,255,.45)}
+.an-hero button:hover{background:rgba(255,255,255,.28)}
+.an-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.75rem;margin-bottom:1rem}
+.an-kpi{background:#fff;border-radius:16px;padding:1.15rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06);
+cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:transform .12s,box-shadow .12s,border-color .12s}
+.an-kpi:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(29,45,92,.12);border-color:var(--blue)}
+.an-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.28)}
+.an-kpi .l{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.an-kpi .v{font-size:1.65rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;margin:.15rem 0}
+.an-kpi .t{font-size:.8rem;color:var(--muted)}
+.an-detail{background:#e8f4fc;border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid #c5e0f5;font-size:.92rem;line-height:1.45}
+.an-grid{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;margin-bottom:1rem}
+.an-card{background:#fff;border-radius:16px;padding:1.2rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.an-card h2{margin:0 0 .25rem;font-size:1.05rem}
+.an-card .sub{margin:0 0 .85rem;font-size:.82rem;color:var(--muted)}
+.an-donut-wrap{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.an-donut{width:110px;height:110px;border-radius:50%;background:conic-gradient(var(--mid) 0 calc(var(--p)*1%),#e2e8f0 0);display:grid;place-items:center;flex-shrink:0}
+.an-donut span{width:72px;height:72px;border-radius:50%;background:#fff;display:grid;place-items:center;font-weight:700;font-size:1.15rem}
+.an-bars{display:flex;align-items:flex-end;gap:8px;height:150px}
+.an-bar{flex:1;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--blue),var(--mid));cursor:pointer;position:relative;min-height:12px;transition:filter .12s,transform .12s;border:none;padding:0}
+.an-bar:hover,.an-bar.on{filter:brightness(1.12);transform:scaleY(1.04)}
+.an-bar span{position:absolute;bottom:-1.25rem;left:50%;transform:translateX(-50%);font-size:.68rem;color:var(--muted)}
+.an-tip{margin-top:1.5rem;padding:.65rem .85rem;background:var(--light);border-radius:10px;font-size:.85rem}
+.an-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.an-table th{text-align:left;font-size:.65rem;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);padding:.5rem;border-bottom:1px solid var(--line)}
+.an-table td{padding:.55rem .5rem;border-bottom:1px solid var(--line)}
+.an-table tr{cursor:pointer}.an-table tr:hover td{background:var(--light)}
+.an-up{color:#2d6a2d;font-weight:600}.an-down{color:#a12a2a;font-weight:600}
+.an-activity{padding:.65rem .85rem;border-radius:10px;background:var(--light);margin-bottom:.5rem;font-size:.88rem}
+.an-activity strong{display:block}
+.an-activity span{font-size:.78rem;color:var(--muted)}
+.an-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:.35rem .7rem;font-size:.8rem;font-weight:600;cursor:pointer;font-family:inherit;margin-right:.35rem}
+@@media(max-width:900px){.an-kpis{grid-template-columns:1fr 1fr}.an-grid{grid-template-columns:1fr}}
 </style>
 
-<section class="pg">
-  <header class="pg-hero">
-    <div>
-      <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">INTELLIGENCE</p>
-      <h1>Analytics overview</h1>
-      <p>Trends, resolution rates, and escalation health — click any metric.</p>
-    </div>
-  </header>
-
-  <div class="pg-stats">
-    <button type="button" class="pg-stat" @onclick="FocusQuestions"><span>Questions</span><strong>1,248</strong><em>Last 30 days →</em></button>
-    <button type="button" class="pg-stat" @onclick="FocusSelfServe"><span>Self-service</span><strong>76%</strong><em>Target 80% →</em></button>
-    <button type="button" class="pg-stat" @onclick="FocusResponse"><span>Avg response</span><strong>2.4s</strong><em>Pipeline →</em></button>
-    <button type="button" class="pg-stat" @onclick='() => Go("escalations")'><span>Open escalations</span><strong>3</strong><em>Need attention →</em></button>
-  </div>
-  <div class="pg-grid">
-    <article class="pg-card">
-      <h2>Self-service resolution</h2>
-      <div class="pg-bar"><i style="width:76%"></i></div>
-      <p style="font-size:.88rem;color:var(--muted)">Current 76% · Goal 80%</p>
-      <div class="pg-actions">
-        <button type="button" class="pg-btn" @onclick='() => Go("knowledge-base")'>Improve KB articles</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("content-health")'>Fix content gaps</button>
-      </div>
-      <h2 style="margin-top:1.2rem">Categories</h2>
-      @foreach (var c in Cats)
-      {
-        <div style="display:grid;grid-template-columns:100px 1fr 40px;gap:.4rem;align-items:center;font-size:.85rem;margin:.35rem 0">
-          <span>@c.Name</span><div class="pg-bar"><i style="width:@c.Pct%"></i></div><strong>@c.Pct%</strong>
+<section class="an">
+    <header class="an-hero">
+        <div>
+            <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Intelligence</div>
+            <h1>Analytics</h1>
+            <p>Chapter usage trends, self-service rates, escalation health and member questions. Every KPI card is clickable.</p>
         </div>
-      }
-    </article>
-    <article class="pg-card">
-      <h2>Activity timeline</h2>
-      <ul class="pg-list">
-        @foreach (var a in Timeline)
-        {
-          <li><div><strong>@a.Title</strong><span>@a.When</span></div>
-            <button type="button" class="pg-btn pg-btn--ghost" @onclick="() => Toast(a.Title)">Open</button></li>
-        }
-      </ul>
-      <div class="pg-actions">
-        <button type="button" class="pg-btn" @onclick='() => Go("developer-dashboard")'>Developer metrics</button>
-        <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("market")'>Market context</button>
-      </div>
-      @if (!string.IsNullOrEmpty(toast)) { <p style="margin-top:.75rem;color:var(--mid)">@toast</p> }
-    </article>
-  </div>
+        <div class="an-hero-actions">
+            <select @bind="range">
+                <option>Last 7 days</option>
+                <option>Last 30 days</option>
+                <option>Last 90 days</option>
+            </select>
+            <button type="button" @onclick="Refresh">↻ Refresh</button>
+        </div>
+    </header>
 
+    <div class="an-kpis">
+        <button type="button" class="an-kpi @(focus=="q"?"on":null)" @onclick='() => SetFocus("q")'>
+            <div class="l">Questions</div>
+            <div class="v">@questions.ToString("N0")</div>
+            <div class="t">@range</div>
+        </button>
+        <button type="button" class="an-kpi @(focus=="ss"?"on":null)" @onclick='() => SetFocus("ss")'>
+            <div class="l">Self-service</div>
+            <div class="v">@selfService%</div>
+            <div class="t">Target 80%</div>
+        </button>
+        <button type="button" class="an-kpi @(focus=="rt"?"on":null)" @onclick='() => SetFocus("rt")'>
+            <div class="l">Avg response</div>
+            <div class="v">@avgResponse s</div>
+            <div class="t">Illustrative</div>
+        </button>
+        <button type="button" class="an-kpi @(focus=="ot"?"on":null)" @onclick='() => SetFocus("ot")'>
+            <div class="l">Open tickets</div>
+            <div class="v">@openTickets</div>
+            <div class="t">Need attention</div>
+        </button>
+    </div>
+
+    @if (!string.IsNullOrEmpty(focusText))
+    {
+        <div class="an-detail">@focusText</div>
+    }
+
+    <div class="an-grid">
+        <article class="an-card">
+            <h2>Self-service resolution</h2>
+            <p class="sub">Resolved without chapter team help</p>
+            <div class="an-donut-wrap">
+                <div class="an-donut" style="--p:@selfService"><span>@selfService%</span></div>
+                <div>
+                    <div style="font-size:.9rem;margin-bottom:.5rem">Current @selfService% · Goal 80%</div>
+                    <div style="height:8px;background:#e2e8f0;border-radius:99px;overflow:hidden;width:160px">
+                        <div style="height:100%;width:@(selfService)%;background:linear-gradient(90deg,var(--mid),var(--green))"></div>
+                    </div>
+                    <ul style="margin:.75rem 0 0;padding-left:1.1rem;font-size:.85rem;color:var(--muted)">
+                        <li>Review unanswered weekly</li>
+                        <li>Add missing documentation</li>
+                        <li>Improve search titles</li>
+                    </ul>
+                </div>
+            </div>
+        </article>
+        <article class="an-card">
+            <h2>Question volume</h2>
+            <p class="sub">Daily pattern · click a day for detail</p>
+            <div class="an-bars">
+                @for (var i = 0; i < days.Length; i++)
+                {
+                    var di = i;
+                    var h = (int)(100.0 * days[i].Count / maxDay);
+                    <button type="button" class="an-bar @(dayIndex==i?"on":null)" style="height:@h%" @onclick="() => SelectDay(di)">
+                        <span>@days[i].Label</span>
+                    </button>
+                }
+            </div>
+            <div class="an-tip">
+                @if (dayIndex >= 0)
+                {
+                    <text>@days[dayIndex].Label — @days[dayIndex].Count questions (@((100.0*days[dayIndex].Count/questions).ToString("0.0"))% of period)</text>
+                }
+                else
+                {
+                    <text>Click a bar to see daily detail</text>
+                }
+            </div>
+        </article>
+    </div>
+
+    <div class="an-grid">
+        <article class="an-card">
+            <h2>Top topics</h2>
+            <p class="sub">Most frequent member questions · click a row</p>
+            <table class="an-table">
+                <thead><tr><th>Topic</th><th>Count</th><th>Trend</th></tr></thead>
+                <tbody>
+                    @foreach (var t in topics)
+                    {
+                        <tr @onclick="() => ShowTopic(t)">
+                            <td><strong>@t.Name</strong></td>
+                            <td>@t.Count</td>
+                            <td class="@(t.Trend>=0?"an-up":"an-down")">@(t.Trend>=0?"+":"")@t.Trend%</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </article>
+        <article class="an-card">
+            <h2>Recent activity</h2>
+            <p class="sub">Workspace timeline</p>
+            @foreach (var a in activity)
+            {
+                <div class="an-activity">
+                    <strong>@a.Title</strong>
+                    <span>@a.When</span>
+                </div>
+            }
+            <button type="button" class="an-btn" @onclick="Refresh">Refresh data</button>
+            <button type="button" class="an-btn" @onclick='() => SetFocus("ot")'>View open tickets</button>
+        </article>
+    </div>
 </section>
 
 @code {
+    private string range = "Last 30 days";
+    private string focus = "q";
+    private string focusText = "";
+    private int questions = 1248, selfService = 76, openTickets = 3;
+    private double avgResponse = 2.4;
+    private int dayIndex = 4;
+    private int maxDay = 1;
 
-    [Inject] private NavigationManager Nav { get; set; } = default!;
-    private string? toast;
-    private readonly List<(string Name,int Pct)> Cats = new(){("Membership",34),("Events",26),("Certifications",22),("Technology",18)};
-    private readonly List<(string Title,string When)> Timeline = new()
+    private record Day(string Label, int Count);
+    private record Topic(string Name, int Count, int Trend);
+    private record Act(string Title, string When);
+
+    private Day[] days = Array.Empty<Day>();
+    private List<Topic> topics = new();
+    private List<Act> activity = new();
+    private readonly Random rng = new();
+
+    protected override void OnInitialized()
     {
-        ("Spike in membership questions","2h ago"),("New knowledge article published","Yesterday"),
-        ("Escalation ISA-1023 updated","Yesterday"),("Content health score improved","3 days ago"),
-        ("Weekly analytics digest sent","5 days ago"),
-    };
-    private void Go(string p) => Nav.NavigateTo(p);
-    private void FocusQuestions() => toast = "Question volume focus";
-    private void FocusSelfServe() => toast = "Self-service detail";
-    private void FocusResponse() => toast = "Response time detail";
-    private void Toast(string t) => toast = t;
+        Seed();
+        SetFocus("q");
+    }
 
+    private void Seed()
+    {
+        days = new[]
+        {
+            new Day("Mon", 142), new Day("Tue", 168), new Day("Wed", 155),
+            new Day("Thu", 190), new Day("Fri", 158), new Day("Sat", 210), new Day("Sun", 175)
+        };
+        maxDay = days.Max(d => d.Count);
+        questions = days.Sum(d => d.Count);
+        topics = new List<Topic>
+        {
+            new("Membership renewal", 186, 12),
+            new("Event registration", 142, 8),
+            new("CPE credit questions", 98, -3),
+            new("Certification prep", 87, 15),
+            new("Chapter governance", 64, 5),
+        };
+        activity = new List<Act>
+        {
+            new("Spike in membership questions", "2h ago · Renewal season pattern"),
+            new("New knowledge article published", "Yesterday · Event planning checklist"),
+            new("Escalation ISA-1023 updated", "Yesterday · In progress"),
+            new("Self-service rate improved", "3 days ago · +2 pts"),
+        };
+    }
+
+    private void SetFocus(string key)
+    {
+        focus = key;
+        focusText = key switch
+        {
+            "q" => $"Questions in {range}: {questions:N0}. Peak days often correlate with membership renewal windows and event registration deadlines.",
+            "ss" => $"Self-service rate is {selfService}% (goal 80%). Improving article titles and tags usually lifts this metric within 2–3 weeks.",
+            "rt" => $"Average first response is {avgResponse:0.0}s for automated answers. Human escalations average longer — see Escalations & Tickets.",
+            "ot" => $"There are {openTickets} open tickets needing attention. Open Escalations to progress, escalate, or close them.",
+            _ => ""
+        };
+    }
+
+    private void SelectDay(int i)
+    {
+        dayIndex = i;
+        focusText = $"{days[i].Label}: {days[i].Count} questions ({100.0 * days[i].Count / questions:0.0}% of period volume).";
+    }
+
+    private void ShowTopic(Topic t)
+    {
+        focusText = $"{t.Name}: {t.Count} questions, trend {(t.Trend >= 0 ? "+" : "")}{t.Trend}% vs prior period.";
+    }
+
+    private void Refresh()
+    {
+        selfService = Math.Clamp(selfService + rng.Next(-2, 3), 60, 92);
+        avgResponse = Math.Round(Math.Clamp(avgResponse + (rng.NextDouble() - 0.5) * 0.3, 1.5, 4.0), 1);
+        openTickets = Math.Clamp(openTickets + rng.Next(-1, 2), 0, 12);
+        for (var i = 0; i < days.Length; i++)
+            days[i] = days[i] with { Count = Math.Max(80, days[i].Count + rng.Next(-15, 20)) };
+        maxDay = days.Max(d => d.Count);
+        questions = days.Sum(d => d.Count);
+        SetFocus(focus);
+    }
 }

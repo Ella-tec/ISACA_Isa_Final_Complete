@@ -248,27 +248,16 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.9rem 1.1rem;
-    /* Same fixed height in all three windows (chat, Today, Notebook), so
-       the blue headers line up side by side (Matthew, 20 October 2026).
-       72px fits the chat's round Isa badge (42px) plus its padding. */
-    height: 72px;
+    gap: 0.5rem;
+    padding: 0.55rem 0.85rem;
+    height: 56px;
     box-sizing: border-box;
-    background: #1d2d5c;
+    background: linear-gradient(120deg, #06101f 0%, #1d2d5c 40%, #00a4e4 100%);
     color: #ffffff;
+    padding-top: 0.65rem;
 }
 
-.isa-widget__headerC {
-    position: absolute;
-    width: 210px;
-    height: 210px;
-    right: -70px;
-    top: -80px;
-    color: #07649d;
-    opacity: 0.55;
-    pointer-events: none;
-}
+.isa-widget__headerC { display: none !important; }
 
 .isa-widget__identity {
     position: relative;
@@ -284,33 +273,25 @@
     display: block;
     width: 42px;
     height: 42px;
-    padding: 6px;
+    padding: 0;
     border-radius: 50%;
-    background: #ffffff;
+    background: transparent !important;
+    box-shadow: none !important;
     box-sizing: border-box;
+    overflow: visible;
 }
 
-.isa-widget__identityText {
-    display: flex;
-    flex-direction: column;
-    line-height: 1.2;
-    min-width: 0;
-}
+.isa-widget__identityText { display: none !important; }
+.isa-widget__name { display: none !important; }
 
 .isa-widget__name {
     font-family: 'Roboto Slab', Georgia, serif;
-    font-weight: 400;
-    font-size: 1.2rem;
+    font-weight: 700;
+    font-size: 1.05rem;
+    letter-spacing: 0.06em;
 }
 
-.isa-widget__role {
-    display: flex;
-    align-items: center;
-    gap: 0.4rem;
-    font-size: 0.78rem;
-    color: #e7f0f5;
-    white-space: nowrap;
-}
+.isa-widget__role { display: none !important; }
 
 /* Small ISACA Green "available" dot. */
 .isa-widget__statusDot {
@@ -863,4 +844,134 @@
 .isa-widget__modelPickerRow {
     display: flex;
     padding: 0 1.25rem 0.6rem;
+}
+
+
+/* ---- TRU badge wiggle on hover (fast, modern) ---- */
+@keyframes tru-wiggle {
+  0%   { transform: rotate(0deg) scale(1); }
+  20%  { transform: rotate(-12deg) scale(1.06); }
+  40%  { transform: rotate(10deg) scale(1.06); }
+  60%  { transform: rotate(-6deg) scale(1.03); }
+  80%  { transform: rotate(4deg) scale(1.02); }
+  100% { transform: rotate(0deg) scale(1); }
+}
+.isa-widget__badge--wiggle {
+  transition: transform 0.15s ease;
+  cursor: default;
+  background: transparent !important;
+}
+.isa-widget__badge--wiggle:hover {
+  animation: tru-wiggle 0.45s ease;
+}
+/* Collapsed bubble also wiggles on hover */
+.isa-widget__bubble:hover .isa-throbber,
+.isa-widget__bubble:hover {
+  animation: tru-wiggle 0.45s ease;
+}
+
+
+/* ---- Model router toolbar (Automatic ▼ + Web) ----------------------- */
+.isa-widget__toolbar {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.45rem 0.75rem;
+    background: #f4f7fb;
+    border-bottom: 1px solid #e2e8f0;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 20;
+}
+.isa-widget__toolBtn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    height: 32px;
+    padding: 0 0.7rem;
+    border-radius: 999px;
+    border: 1px solid #d0d7e2;
+    background: #fff;
+    color: #1d2d5c;
+    font-size: 0.8rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .15s, border-color .15s, box-shadow .15s;
+}
+.isa-widget__toolBtn:hover {
+    background: #eef5fb;
+    border-color: #00a4e4;
+}
+.isa-widget__toolBtn.is-on {
+    background: linear-gradient(135deg, #e6f7f0, #e8f6fc);
+    border-color: #36ac91;
+    color: #0a5c4a;
+}
+.isa-widget__toolBtn--model {
+    min-width: 7.5rem;
+    justify-content: space-between;
+}
+.isa-widget__caret {
+    font-size: 0.6rem;
+    opacity: 0.7;
+}
+.isa-widget__modelDrop {
+    position: relative;
+}
+.isa-widget__modelMenu {
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    min-width: 11.5rem;
+    margin: 0;
+    padding: 0.35rem;
+    list-style: none;
+    background: #fff;
+    border: 1px solid #d8dee8;
+    border-radius: 12px;
+    box-shadow: 0 12px 28px rgba(29, 45, 92, 0.16);
+    z-index: 40;
+}
+.isa-widget__modelMenuItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: transparent;
+    padding: 0.5rem 0.7rem;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #1d2d5c;
+    cursor: pointer;
+}
+.isa-widget__modelMenuItem:hover {
+    background: #eef5fb;
+}
+.isa-widget__modelMenuItem.is-active {
+    background: linear-gradient(135deg, #6cb33f22, #00a4e422);
+    color: #0a5c4a;
+}
+
+
+/* TRU ASK global bubble lock */
+.isa-widget {
+    z-index: 2147483000 !important;
+}
+.isa-widget__bubble {
+    position: fixed !important;
+    bottom: 24px !important;
+    right: 24px !important;
+    z-index: 2147483000 !important;
+    display: grid !important;
+    width: 64px !important;
+    height: 64px !important;
+    border: none !important;
+    border-radius: 50% !important;
+    cursor: pointer !important;
+    background: transparent !important;
+    box-shadow: none !important;
+}
+.isa-widget__panel {
+    z-index: 2147483001 !important;
 }

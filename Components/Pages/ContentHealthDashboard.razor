@@ -1,182 +1,205 @@
 @page "/content-health"
-@page "/content-health-dashboard"
 @rendermode InteractiveServer
 
 <PageTitle>Content Health | Isa</PageTitle>
 
 <style>
-.ch{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#dce4ed;max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);padding-bottom:2rem}
-.ch-hero{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#1d2d5c,#07649d,#36ac91);color:#fff}
-.ch-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
-.ch-hero p{margin:.3rem 0 0;opacity:.92;max-width:48ch}
-.ch-score{display:flex;align-items:center;gap:.75rem}
-.ch-score-ring{width:68px;height:68px;border-radius:50%;background:conic-gradient(#6cb33f var(--pct),rgba(255,255,255,.2) 0);display:grid;place-items:center}
-.ch-score-ring span{width:50px;height:50px;border-radius:50%;background:#1d2d5c;display:grid;place-items:center;font-weight:700}
-.ch-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:.6rem;margin-bottom:1rem}
-.ch-stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem;box-shadow:0 6px 16px rgba(29,45,92,.05)}
-.ch-stat span{display:block;font-size:.7rem;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
-.ch-stat strong{display:block;font-size:1.25rem;margin:.15rem 0}
-.ch-stat small.ok{color:var(--green)}.ch-stat small.warn{color:#c47b0a}.ch-stat small.bad{color:#c0392b}
-.ch-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:1rem}
-.ch-card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.1rem 1.15rem;box-shadow:0 8px 22px rgba(29,45,92,.06)}
-.ch-card--wide{grid-column:1/-1}
-.ch-card-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:.75rem}
-.ch-card h2{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.1rem}
-.ch-list,.ch-alerts,.ch-recs{list-style:none;margin:0;padding:0}
-.ch-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.65rem 0;border-bottom:1px solid var(--line)}
-.ch-list strong{display:block}.ch-list span{font-size:.8rem;color:var(--muted)}
-.ch-badge{display:inline-flex;padding:.18rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700}
-.ch-badge.ok{background:#e8f6df;color:#3d6e1f}.ch-badge.warn{background:#fff3d6;color:#8a5a00}.ch-badge.bad{background:#fde8e6;color:#922b21}
-.ch-alerts li{border-radius:12px;padding:.7rem .8rem;margin-bottom:.45rem}
-.ch-alerts li.warn{background:#fff8e8;border:1px solid #f0d9a0}
-.ch-alerts li.bad{background:#fdf0ef;border:1px solid #f0c4bf}
-.ch-alerts li.ok{background:#f3faec;border:1px solid #cfe6b8}
-.ch-alerts strong{display:block;margin-bottom:.15rem}.ch-alerts p{margin:0;font-size:.88rem;color:var(--muted)}
-.ch-table{width:100%;border-collapse:collapse;font-size:.9rem}
-.ch-table th{text-align:left;font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.45rem .55rem;border-bottom:1px solid var(--line)}
-.ch-table td{padding:.6rem .55rem;border-bottom:1px solid var(--line)}
-.ch-recs li{padding:.55rem 0;border-bottom:1px solid var(--line)}
-.ch-rec-tag{display:inline-block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--mid);background:var(--light);padding:.12rem .4rem;border-radius:6px;margin-bottom:.25rem}
-.ch-bars{display:grid;gap:.55rem}
-.ch-bar-row{display:grid;grid-template-columns:110px 1fr 40px;gap:.45rem;align-items:center;font-size:.85rem}
-.ch-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden}
-.ch-bar i{display:block;height:100%;background:linear-gradient(90deg,var(--blue),var(--teal));border-radius:999px}
-.ch-btn{border:none;border-radius:10px;padding:.4rem .8rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:var(--navy);color:#fff}
-.ch-btn--ghost{background:var(--light);color:var(--navy)}.ch-btn--sm{padding:.28rem .55rem;font-size:.75rem;background:var(--light);color:var(--navy)}
-.ch-toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:12px;z-index:50}
-@@media(max-width:1000px){.ch-stats{grid-template-columns:repeat(3,1fr)}.ch-grid{grid-template-columns:1fr}}
-@@media(max-width:600px){.ch-stats{grid-template-columns:repeat(2,1fr)}}
+.ch{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--red:#e31837;--orange:#e57524;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1220px;margin:0 auto;padding-bottom:2rem}
+.ch-hero{border-radius:20px;padding:1.75rem 2rem;color:#fff;margin-bottom:1rem;width:100%;box-sizing:border-box;
+background:linear-gradient(115deg,#1d2d5c 0%,#07649d 50%,#36ac91 100%);box-shadow:0 16px 44px rgba(29,45,92,.18);
+display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.25rem}
+.ch-hero h1{margin:.2rem 0 .35rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.9rem}
+.ch-hero p{margin:0;opacity:.92;max-width:46ch;line-height:1.45}
+.ch-score{width:96px;height:96px;border-radius:50%;background:conic-gradient(#6cb33f 0 calc(var(--p)*1%),rgba(255,255,255,.25) 0);display:grid;place-items:center;flex-shrink:0}
+.ch-score span{width:68px;height:68px;border-radius:50%;background:rgba(15,30,60,.55);display:grid;place-items:center;font-weight:700;font-size:1.25rem}
+.ch-kpis{display:grid;grid-template-columns:repeat(6,1fr);gap:.65rem;margin-bottom:1rem}
+.ch-kpi{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06);
+cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:transform .12s,border-color .12s}
+.ch-kpi:hover{transform:translateY(-2px);border-color:var(--blue)}
+.ch-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.25)}
+.ch-kpi .l{font-size:.58rem;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+.ch-kpi .v{font-size:1.35rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;margin:.1rem 0}
+.ch-kpi .t{font-size:.75rem}
+.ch-kpi .ok{color:#2d6a2d}.ch-kpi .warn{color:#b86e00}.ch-kpi .bad{color:#a12a2a}
+.ch-detail{background:#e8f4fc;border-radius:14px;padding:1rem 1.2rem;margin-bottom:1rem;border:1px solid #c5e0f5;font-size:.9rem;line-height:1.45}
+.ch-grid{display:grid;grid-template-columns:1.25fr 1fr;gap:.85rem;margin-bottom:1rem}
+.ch-card{background:#fff;border-radius:16px;padding:1.2rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06)}
+.ch-card h2{margin:0 0 .25rem;font-size:1.05rem}
+.ch-card .sub{margin:0 0 .75rem;font-size:.82rem;color:var(--muted)}
+.ch-row{display:flex;align-items:center;justify-content:space-between;gap:.75rem;padding:.7rem 0;border-bottom:1px solid var(--line);cursor:pointer}
+.ch-row:hover{background:var(--light);margin:0 -.5rem;padding-left:.5rem;padding-right:.5rem;border-radius:8px}
+.ch-row:last-child{border-bottom:0}
+.ch-row strong{display:block;font-size:.92rem}
+.ch-row small{color:var(--muted);font-size:.8rem}
+.ch-badge{font-size:.72rem;font-weight:700;padding:.2rem .55rem;border-radius:999px}
+.ch-badge.fresh{background:#e8f6e8;color:#2d6a2d}
+.ch-badge.aging{background:#fff4e5;color:#b86e00}
+.ch-badge.stale{background:#fdecea;color:#a12a2a}
+.ch-badge.watch{background:#fff8e1;color:#9a7b0a}
+.ch-alert{padding:.75rem 1rem;border-radius:12px;margin-bottom:.5rem;font-size:.88rem;cursor:pointer}
+.ch-alert:hover{filter:brightness(.97)}
+.ch-alert strong{display:block;margin-bottom:.15rem}
+.ch-alert.y{background:#fff8e8}.ch-alert.r{background:#fdecea}.ch-alert.g{background:#e8f6e8}
+.ch-bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin:.5rem 0 1.2rem}
+.ch-bar{flex:1;border-radius:6px 6px 3px 3px;background:linear-gradient(180deg,var(--teal,#36ac91),var(--mid));cursor:pointer;min-height:8px;border:none;padding:0}
+.ch-bar:hover{filter:brightness(1.1)}
+.ch-btn{border:1px solid var(--line);background:#fff;border-radius:10px;padding:.45rem .9rem;font-weight:600;font-size:.85rem;cursor:pointer;font-family:inherit}
+.ch-btn-p{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border:none}
+@@media(max-width:1000px){.ch-kpis{grid-template-columns:repeat(3,1fr)}.ch-grid{grid-template-columns:1fr}}
+@@media(max-width:600px){.ch-kpis{grid-template-columns:1fr 1fr}}
 </style>
 
 <section class="ch">
     <header class="ch-hero">
         <div>
-            <p style="margin:0;font-size:.7rem;font-weight:700;letter-spacing:.12em;opacity:.88">KNOWLEDGE QUALITY</p>
+            <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Knowledge quality</div>
             <h1>Content Health</h1>
-            <p>Monitor freshness, metadata, links, and approval status across the chapter knowledge base.</p>
+            <p>Monitor freshness, metadata, links, and approval status. Click any KPI or row for detail.</p>
         </div>
-        <div class="ch-score">
-            <div class="ch-score-ring" style="--pct:@OverallScore%"><span>@OverallScore</span></div>
-            <div><strong>Overall quality</strong><br /><small style="opacity:.85">Weighted score</small></div>
-        </div>
+        <div class="ch-score" style="--p:@quality"><span>@quality</span></div>
     </header>
 
-    <div class="ch-stats">
-        @foreach (var s in Stats)
-        {
-            <article class="ch-stat"><span>@s.Label</span><strong>@s.Value</strong><small class="@s.Tone">@s.Hint</small></article>
-        }
+    <div class="ch-kpis">
+        <button type="button" class="ch-kpi @(focus=="art"?"on":null)" @onclick='() => SetFocus("art")'>
+            <div class="l">Articles</div><div class="v">@articles</div><div class="t ok">+@newMonth this month</div>
+        </button>
+        <button type="button" class="ch-kpi @(focus=="stale"?"on":null)" @onclick='() => SetFocus("stale")'>
+            <div class="l">Stale (&gt;12 mo)</div><div class="v">@stale</div><div class="t warn">Needs review</div>
+        </button>
+        <button type="button" class="ch-kpi @(focus=="links"?"on":null)" @onclick='() => SetFocus("links")'>
+            <div class="l">Broken links</div><div class="v">@broken</div><div class="t bad">Fix priority</div>
+        </button>
+        <button type="button" class="ch-kpi @(focus=="meta"?"on":null)" @onclick='() => SetFocus("meta")'>
+            <div class="l">Missing metadata</div><div class="v">@meta</div><div class="t warn">Title/tags</div>
+        </button>
+        <button type="button" class="ch-kpi @(focus=="fresh"?"on":null)" @onclick='() => SetFocus("fresh")'>
+            <div class="l">Avg. freshness</div><div class="v">@avgFresh mo</div><div class="t ok">Healthy band</div>
+        </button>
+        <button type="button" class="ch-kpi @(focus=="sla"?"on":null)" @onclick='() => SetFocus("sla")'>
+            <div class="l">Approval SLA</div><div class="v">@sla%</div><div class="t ok">On track</div>
+        </button>
     </div>
+
+    @if (!string.IsNullOrEmpty(detail))
+    {
+        <div class="ch-detail">@detail</div>
+    }
 
     <div class="ch-grid">
         <article class="ch-card">
-            <div class="ch-card-head"><h2>Freshness &amp; gaps</h2>
-                <button type="button" class="ch-btn ch-btn--ghost" @onclick="Refresh">Refresh</button></div>
-            <ul class="ch-list">
-                @foreach (var item in Freshness)
-                {
-                    <li><div><strong>@item.Title</strong><span>@item.Owner · @item.Updated</span></div>
-                        <span class="ch-badge @item.BadgeClass">@item.Status</span></li>
-                }
-            </ul>
-        </article>
-        <article class="ch-card">
-            <div class="ch-card-head"><h2>Alerts</h2></div>
-            <ul class="ch-alerts">
-                @foreach (var a in Alerts)
-                {
-                    <li class="@a.Level"><strong>@a.Title</strong><p>@a.Detail</p></li>
-                }
-            </ul>
-        </article>
-        <article class="ch-card ch-card--wide">
-            <div class="ch-card-head"><h2>Approval workflow</h2><span style="color:var(--muted);font-size:.85rem">@PendingCount pending</span></div>
-            <table class="ch-table">
-                <thead><tr><th>Document</th><th>Stage</th><th>Owner</th><th>Due</th><th></th></tr></thead>
-                <tbody>
-                @foreach (var r in Workflow)
-                {
-                    <tr>
-                        <td>@r.Doc</td>
-                        <td><span class="ch-badge @r.Badge">@r.Stage</span></td>
-                        <td>@r.Owner</td>
-                        <td>@r.Due</td>
-                        <td><button type="button" class="ch-btn ch-btn--sm" @onclick="() => ToastMsg(r.Doc)">Open</button></td>
-                    </tr>
-                }
-                </tbody>
-            </table>
-        </article>
-        <article class="ch-card">
-            <div class="ch-card-head"><h2>AI recommendations</h2></div>
-            <ul class="ch-recs">
-                @foreach (var r in Recs)
-                {
-                    <li><span class="ch-rec-tag">@r.Tag</span><p style="margin:.2rem 0 0">@r.Text</p></li>
-                }
-            </ul>
-        </article>
-        <article class="ch-card">
-            <div class="ch-card-head"><h2>Usage (30 days)</h2></div>
-            <div class="ch-bars">
-                @foreach (var u in Usage)
-                {
-                    <div class="ch-bar-row"><span>@u.Name</span><div class="ch-bar"><i style="width:@u.Pct%"></i></div><strong>@u.Views</strong></div>
-                }
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:.5rem;flex-wrap:wrap">
+                <div>
+                    <h2>Freshness &amp; gaps</h2>
+                    <p class="sub">Click a row · filter by status</p>
+                </div>
+                <button type="button" class="ch-btn" @onclick="Refresh">Refresh</button>
+            </div>
+            @foreach (var item in items)
+            {
+                <div class="ch-row" @onclick="() => SelectItem(item)">
+                    <div>
+                        <strong>@item.Title</strong>
+                        <small>@item.Area · @item.Age</small>
+                    </div>
+                    <span class="ch-badge @item.BadgeClass">@item.Status</span>
+                </div>
+            }
+            <div style="margin-top:1rem">
+                <h2 style="font-size:.95rem">Freshness distribution</h2>
+                <div class="ch-bars">
+                    @foreach (var b in dist)
+                    {
+                        <button type="button" class="ch-bar" style="height:@b%" title="@b%"></button>
+                    }
+                </div>
             </div>
         </article>
+        <article class="ch-card">
+            <h2>Alerts</h2>
+            <p class="sub">Click to focus related KPI</p>
+            <div class="ch-alert y" @onclick='() => SetFocus("meta")'>
+                <strong>Missing tags</strong>
+                @meta articles lack topic tags — search quality may drop.
+            </div>
+            <div class="ch-alert r" @onclick='() => SetFocus("links")'>
+                <strong>Broken external links</strong>
+                @broken policy PDFs reference outdated ISACA URLs.
+            </div>
+            <div class="ch-alert g" @onclick='() => SetFocus("sla")'>
+                <strong>Approval throughput</strong>
+                Average review cycle under 5 business days.
+            </div>
+            <div class="ch-alert y" @onclick='() => SetFocus("stale")'>
+                <strong>Knowledge gap</strong>
+                No content for “AI governance for chapters” searches.
+            </div>
+            <button type="button" class="ch-btn ch-btn-p" style="margin-top:.75rem" @onclick="Refresh">Recalculate scores</button>
+        </article>
     </div>
-    @if (toast is not null) { <div class="ch-toast">@toast</div> }
 </section>
 
 @code {
-    // NO role checks — open to all workspace users
-    private int OverallScore = 86;
-    private int PendingCount => Workflow.Count(w => w.Stage != "Published");
-    private string? toast;
+    private int quality = 86, articles = 248, newMonth = 12, stale = 17, broken = 4, meta = 9, sla = 92;
+    private double avgFresh = 7.4;
+    private string focus = "art";
+    private string detail = "";
+    private int[] dist = { 40, 55, 70, 85, 60, 45, 30, 50 };
+    private readonly Random rng = new();
 
-    private readonly List<(string Label,string Value,string Hint,string Tone)> Stats = new()
+    private sealed class Item
     {
-        ("Articles","248","+12 this month","ok"),("Stale (>12 mo)","17","Needs review","warn"),
-        ("Broken links","4","Fix priority","bad"),("Missing metadata","9","Title/tags","warn"),
-        ("Avg. freshness","7.4 mo","Healthy band","ok"),("Approval SLA","92%","On track","ok"),
-    };
-    private List<(string Title,string Owner,string Updated,string Status,string BadgeClass)> Freshness = new()
-    {
-        ("Chapter meeting checklist","Board","3 days ago","Fresh","ok"),
-        ("CPE reporting guide","Education","11 months ago","Aging","warn"),
-        ("Vendor risk template","Risk","14 months ago","Stale","bad"),
-        ("New member onboarding","Membership","2 weeks ago","Fresh","ok"),
-        ("Incident response playbook","Security","8 months ago","Watch","warn"),
-    };
-    private List<(string Level,string Title,string Detail)> Alerts = new()
-    {
-        ("warn","Missing tags","9 articles lack topic tags — search quality may drop."),
-        ("bad","Broken external links","4 policy PDFs reference outdated ISACA URLs."),
-        ("ok","Approval throughput","Average review cycle under 5 business days."),
-        ("warn","Knowledge gap","No content for “AI governance for chapters” searches."),
-    };
-    private List<(string Doc,string Stage,string Badge,string Owner,string Due)> Workflow = new()
-    {
-        ("Q4 education calendar","In review","warn","Maya R.","Oct 30"),
-        ("Board election FAQ","Draft","warn","James K.","Nov 5"),
-        ("Sponsorship guidelines","Approved","ok","Priya S.","—"),
-        ("Lab safety addendum","Published","ok","Board","—"),
-        ("Mentorship program brief","In review","warn","Alex T.","Nov 2"),
-    };
-    private List<(string Tag,string Text)> Recs = new()
-    {
-        ("Gap","Create a short AI & chapter events primer — 23 related searches last month."),
-        ("Freshness","Schedule refresh for CPE reporting guide before year-end."),
-        ("Metadata","Add audience tags (Board / Members / Volunteers) to 9 articles."),
-        ("Links","Replace 4 dead isaca.org deep links with current resource pages."),
-    };
-    private List<(string Name,int Pct,string Views)> Usage = new()
-    {
-        ("Meeting checklist",92,"1.2k"),("CPE guide",71,"890"),("Onboarding",64,"760"),
-        ("Risk template",48,"410"),("IR playbook",35,"290"),
-    };
+        public string Title { get; set; } = "";
+        public string Area { get; set; } = "";
+        public string Age { get; set; } = "";
+        public string Status { get; set; } = "";
+        public string BadgeClass { get; set; } = "";
+    }
 
-    private void Refresh() { OverallScore = 84 + Random.Shared.Next(0, 10); toast = "Content health refreshed · " + DateTime.Now.ToString("t"); }
-    private void ToastMsg(string n) => toast = $"Opened “{n}”";
+    private List<Item> items = new();
+
+    protected override void OnInitialized()
+    {
+        items = new List<Item>
+        {
+            new() { Title = "Chapter meeting checklist", Area = "Board", Age = "3 days ago", Status = "Fresh", BadgeClass = "fresh" },
+            new() { Title = "CPE reporting guide", Area = "Education", Age = "11 months ago", Status = "Aging", BadgeClass = "aging" },
+            new() { Title = "Vendor risk template", Area = "Risk", Age = "14 months ago", Status = "Stale", BadgeClass = "stale" },
+            new() { Title = "New member onboarding", Area = "Membership", Age = "2 weeks ago", Status = "Fresh", BadgeClass = "fresh" },
+            new() { Title = "Incident response playbook", Area = "Security", Age = "8 months ago", Status = "Watch", BadgeClass = "watch" },
+        };
+        SetFocus("art");
+    }
+
+    private void SetFocus(string key)
+    {
+        focus = key;
+        detail = key switch
+        {
+            "art" => $"Knowledge base holds {articles} articles (+{newMonth} this month). Quality score {quality}/100 weights freshness, links, metadata, and approvals.",
+            "stale" => $"{stale} articles are older than 12 months. Prioritize Vendor risk template and similar risk content for rewrite.",
+            "links" => $"{broken} broken external links detected — mostly outdated ISACA resource URLs in policy PDFs.",
+            "meta" => $"{meta} articles missing topic tags or titles. Tagging improves search and Isa assistant retrieval.",
+            "fresh" => $"Average content age is {avgFresh} months — inside the healthy band for chapter knowledge bases.",
+            "sla" => $"Approval SLA at {sla}% on-time. Keep review cycles under 5 business days.",
+            _ => ""
+        };
+    }
+
+    private void SelectItem(Item item)
+    {
+        detail = $"{item.Title} ({item.Area}) — status {item.Status}, last touch {item.Age}.";
+        focus = item.Status is "Stale" or "Aging" ? "stale" : "art";
+    }
+
+    private void Refresh()
+    {
+        quality = Math.Clamp(quality + rng.Next(-2, 3), 70, 98);
+        broken = Math.Clamp(broken + rng.Next(-1, 2), 0, 15);
+        meta = Math.Clamp(meta + rng.Next(-2, 2), 0, 25);
+        stale = Math.Clamp(stale + rng.Next(-1, 2), 5, 40);
+        sla = Math.Clamp(sla + rng.Next(-1, 2), 80, 99);
+        dist = dist.Select(_ => rng.Next(25, 95)).ToArray();
+        SetFocus(focus);
+    }
 }

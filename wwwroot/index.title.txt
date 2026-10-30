@@ -1,0 +1,3 @@
+In wwwroot/index.html set:
+<title>TRU Ask | ISACA Chapter Support</title>
+<link rel="icon" type="image/svg+xml" href="favicon.svg" />
