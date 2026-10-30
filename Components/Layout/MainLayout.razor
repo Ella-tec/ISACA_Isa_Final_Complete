@@ -18,6 +18,9 @@ body { overflow-x: clip !important; }
   overflow-y: auto !important; overflow-x: hidden !important;
   z-index: 100 !important;
   margin: 0 !important; padding: 0 !important; border: none !important;
+  background: linear-gradient(175deg, #0a1224 0%, #1d2d5c 48%, #12233f 100%) !important;
+  display: block !important;
+  align-content: start !important;
 }
 
 .main {
@@ -49,7 +52,7 @@ body { overflow-x: clip !important; }
   padding: 0 !important; margin: 0 !important;
   max-width: none !important; width: 100% !important;
   box-sizing: border-box !important;
-  min-height: 0 !important; height: 100% !important;
+  min-height: 0 !important;
   display: flex !important; flex-direction: column !important;
   overflow: auto !important;
 }
@@ -57,14 +60,14 @@ body { overflow-x: clip !important; }
 .hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
 .contact-page, .an, .settings-page, .translator-page, .market-page,
 .page-root, .page-content, .dashboard, .card-grid,
-.container, .container-fluid {
+.container, .container-fluid, .ct {
   max-width: none !important; width: 100% !important;
   margin-left: 0 !important; margin-right: 0 !important;
-  padding-left: 0.5rem !important; padding-right: 0.5rem !important;
+  padding-left: 0.65rem !important; padding-right: 0.65rem !important;
   box-sizing: border-box !important;
 }
 
-/* ===== TRU ASK global — always fixed floating, never in page flow ===== */
+/* TRU ASK global floating */
 .isa-widget {
   position: relative !important;
   z-index: 2147483000 !important;
@@ -84,12 +87,12 @@ body { overflow-x: clip !important; }
   height: 64px !important;
   border: none !important;
   border-radius: 50% !important;
-  background: #fff !important;
+  background: transparent !important;
   cursor: pointer !important;
   display: grid !important;
   place-items: center !important;
-  padding: 8px !important;
-  box-shadow: 0 4px 18px rgba(29,45,92,0.28) !important;
+  padding: 0 !important;
+  box-shadow: none !important;
   z-index: 2147483001 !important;
 }
 .isa-widget__panel.is-expanded {
@@ -128,7 +131,7 @@ body { overflow-x: clip !important; }
   .sidebar {
     position: relative !important;
     width: 100% !important; max-width: none !important;
-    height: auto !important; max-height: 40vh !important;
+    height: auto !important; max-height: 42vh !important;
   }
   .main { margin-left: 0 !important; width: 100% !important; }
   .isa-widget__panel.is-expanded {
