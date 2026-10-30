@@ -14,32 +14,22 @@
 .nv a{text-decoration:none!important;color:inherit;max-width:100%}
 
 .nv__brand{
-  display:flex;align-items:center;gap:.55rem;
-  padding:.15rem .35rem .7rem;flex-shrink:0;
+  display:flex;align-items:center;gap:.5rem;
+  padding:.1rem .25rem .65rem;flex-shrink:0;
 }
-.nv__logo{
-  width:40px;height:40px;border-radius:50%;flex-shrink:0;
-  background:linear-gradient(145deg,#6cb33f 0%,#36ac91 42%,#00a4e4 100%);
-  display:grid;place-items:center;
-  box-shadow:0 4px 14px rgba(0,164,228,.35);
-}
-.nv__logo span{
-  color:#fff;font-weight:800;font-size:.7rem;letter-spacing:.08em;
-  font-family:"Roboto Slab",Georgia,serif;
-}
+.nv__brand .tru-logo{width:42px;height:42px;flex-shrink:0}
 .nv__brand strong{display:block;font-size:1rem;font-weight:700;line-height:1.15}
 .nv__brand small{font-size:.58rem;opacity:.65}
 
 .nv__sec{
   font-size:.58rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
-  opacity:.45;padding:.55rem .45rem .25rem;flex-shrink:0;
+  opacity:.45;padding:.5rem .45rem .2rem;flex-shrink:0;
 }
 
-/* Pill-style items like the Isa reference */
 .nv__item{
   display:flex!important;align-items:center;gap:.55rem;
   box-sizing:border-box;width:100%!important;
-  padding:.55rem .75rem!important;margin:.15rem 0!important;
+  padding:.55rem .75rem!important;margin:.12rem 0!important;
   border-radius:12px!important;
   font-size:.84rem!important;font-weight:600!important;
   color:#c5d2e8!important;
@@ -83,7 +73,7 @@
 
 .nv__settings{
   display:flex;align-items:center;gap:.55rem;
-  padding:.55rem .75rem;margin:.15rem 0;
+  padding:.55rem .75rem;margin:.12rem 0;
   border-radius:12px;font-size:.84rem;font-weight:600;
   color:#c5d2e8!important;
 }
@@ -94,7 +84,7 @@
 
 .nv__signout{
   display:flex;align-items:center;justify-content:center;gap:.4rem;
-  margin:.25rem 0 0;padding:.6rem .75rem;
+  margin:.25rem 0 0;padding:.55rem .75rem;
   border-radius:12px;flex-shrink:0;
   background:linear-gradient(135deg,#0b1220,#1a3a28);
   color:#fff!important;font-weight:700;font-size:.86rem;
@@ -109,7 +99,7 @@
 
 <nav class="nv" aria-label="TRU workspace">
     <div class="nv__brand">
-        <div class="nv__logo"><span>TRU</span></div>
+        <TruLogo />
         <div><strong>TRU</strong><small>Ask</small></div>
     </div>
 

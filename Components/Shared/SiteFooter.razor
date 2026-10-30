@@ -1,23 +1,28 @@
 <style>
-.sf{background:#1a2438;color:#c8d4e6;border-radius:14px;padding:1.1rem 1.15rem;margin:0.75rem 0.65rem 1rem;box-sizing:border-box}
-.sf-grid{display:grid;grid-template-columns:1.3fr repeat(4,1fr);gap:1rem}
-.sf h3{margin:0 0 .4rem;font-size:.76rem;color:#fff;font-weight:700}
-.sf a{display:block;color:#aebcd0;font-size:.78rem;text-decoration:none;padding:.12rem 0}
+.sf{background:#1a2438;color:#c8d4e6;border-radius:14px;padding:1.1rem 1.15rem;margin:0.5rem 0 0;box-sizing:border-box;width:100%}
+.sf-grid{display:grid;grid-template-columns:1.35fr repeat(4,1fr);gap:1rem;align-items:start}
+.sf h3{margin:0 0 .35rem;font-size:.74rem;color:#fff;font-weight:700}
+.sf a{display:block;color:#aebcd0;font-size:.76rem;text-decoration:none;padding:.1rem 0}
 .sf a:hover{color:#00a4e4}
-.sf-addr{font-size:.78rem;line-height:1.45;opacity:.9;margin:.3rem 0 .55rem}
+.sf-addr{font-size:.76rem;line-height:1.4;opacity:.9;margin:.25rem 0 .45rem}
 .sf-social{display:flex;gap:.35rem;flex-wrap:wrap}
-.sf-social a{width:30px;height:30px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:#fff;font-size:.68rem;font-weight:700;padding:0}
+.sf-social a{width:28px;height:28px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:#fff;font-size:.65rem;font-weight:700;padding:0}
 .sf-social a:hover{background:rgba(0,164,228,.35)}
-.sf-brand{display:flex;align-items:center;gap:.4rem;margin-bottom:.2rem}
-.sf-brand strong{color:#fff;font-size:.9rem}
-@@media(max-width:900px){.sf-grid{grid-template-columns:1fr 1fr}}
+.sf-brand{display:flex;align-items:center;gap:.55rem;margin-bottom:.15rem}
+.sf-brand .tru-logo{width:72px;height:72px;flex-shrink:0}
+.sf-brand strong{color:#fff;font-size:1rem;line-height:1.15}
+.sf-brand small{display:block;font-size:.7rem;opacity:.7;font-weight:500}
+@@media(max-width:900px){.sf-grid{grid-template-columns:1fr 1fr}.sf-brand .tru-logo{width:56px;height:56px}}
 @@media(max-width:560px){.sf-grid{grid-template-columns:1fr}}
 </style>
 
 <footer class="sf" role="contentinfo">
     <div class="sf-grid">
         <div>
-            <div class="sf-brand"><TruLogo /><strong>TRU Ask</strong></div>
+            <div class="sf-brand">
+                <TruLogo />
+                <div><strong>TRU</strong><small>Ask · Chapter support</small></div>
+            </div>
             <div class="sf-addr">1700 E. Golf Road, Suite 400, Schaumburg,<br />Illinois 60173, USA · +1-847-660-5505</div>
             <div class="sf-social">
                 <a href="https://www.linkedin.com/company/isaca" target="_blank" rel="noopener">in</a>
@@ -31,7 +36,7 @@
             <a href="https://www.isaca.org/contact-us" target="_blank" rel="noopener">Contact Us</a>
             <a href="https://www.isaca.org/fraud-reporting" target="_blank" rel="noopener">Fraud Reporting</a>
             <a href="https://support.isaca.org" target="_blank" rel="noopener">Bug Reporting</a>
-            <h3 style="margin-top:.55rem">Careers</h3>
+            <h3 style="margin-top:.5rem">Careers</h3>
             <a href="https://www.isaca.org/career-journey" target="_blank" rel="noopener">Career Journey</a>
         </div>
         <div>
