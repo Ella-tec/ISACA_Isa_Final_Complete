@@ -5,39 +5,43 @@
 
 <style>
 .pg{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-width:100%;max-width:none;margin:0;padding:0.55rem 0.9rem 0.75rem;box-sizing:border-box;
+width:100%;max-width:none;margin:0;padding:0.5rem 0.85rem 0.65rem;box-sizing:border-box;
 font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
-min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
+min-height:calc(100vh - 0.25rem);display:flex;flex-direction:column;gap:.5rem}
 .pg a{text-decoration:none!important}
-.pg-hero{flex:0 0 auto;padding:1rem 1.2rem;border-radius:14px;margin-bottom:0.55rem;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff}
-.pg-hero h1{margin:.1rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
-.pg-hero p{margin:.25rem 0 0;opacity:.92;font-size:.88rem}
-.pg-stats{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.55rem;margin-bottom:.55rem}
-.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.75rem .85rem;box-shadow:0 4px 12px rgba(29,45,92,.05);cursor:pointer;color:inherit;text-align:left;font:inherit;width:100%}
-.pg-stat:hover{border-color:#36ac91;box-shadow:0 8px 18px rgba(29,45,92,.1)}
-.pg-stat span{display:block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
-.pg-stat strong{display:block;font-size:1.15rem;margin:.15rem 0 .1rem;color:var(--navy)}
-.pg-stat em{font-style:normal;font-size:.76rem;color:var(--mid)}
-.pg-grid{flex:1 1 auto;display:grid;grid-template-columns:1.25fr 1fr;gap:.55rem;min-height:0}
-.pg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;box-shadow:0 4px 14px rgba(29,45,92,.05);display:flex;flex-direction:column;min-height:0;height:100%}
-.pg-card h2{margin:0 0 .55rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem;flex:0 0 auto}
+.pg-hero{flex:0 0 auto;padding:.9rem 1.15rem;border-radius:14px;background:linear-gradient(125deg,#00a4e4,#36ac91);color:#fff}
+.pg-hero h1{margin:.08rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
+.pg-hero p{margin:.2rem 0 0;opacity:.92;font-size:.86rem}
+.pg-stats{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.5rem}
+.pg-stat{display:block;background:#fff;border:1px solid var(--line);border-radius:12px;padding:.7rem .8rem;box-shadow:0 3px 10px rgba(29,45,92,.05);cursor:pointer;color:inherit;text-align:left;font:inherit;width:100%}
+.pg-stat:hover{border-color:#36ac91}
+.pg-stat span{display:block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.pg-stat strong{display:block;font-size:1.1rem;margin:.12rem 0 .08rem;color:var(--navy)}
+.pg-stat em{font-style:normal;font-size:.74rem;color:var(--mid)}
+.pg-grid{flex:1 1 auto;display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:.5rem;min-height:0}
+.pg-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1rem;box-shadow:0 3px 12px rgba(29,45,92,.05);display:flex;flex-direction:column;min-height:0;height:100%}
+.pg-card h2{margin:0 0 .5rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1rem;flex:0 0 auto}
 .pg-list{list-style:none;margin:0;padding:0;flex:1 1 auto;overflow:auto}
-.pg-list li{display:flex;justify-content:space-between;gap:.75rem;align-items:center;padding:.45rem 0;border-bottom:1px solid var(--line)}
-.pg-list strong{display:block}.pg-list span{font-size:.78rem;color:var(--muted)}
-.pg-btn{border:none;border-radius:9px;padding:.4rem .8rem;font-weight:600;font-size:.8rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
+.pg-list li{display:flex;justify-content:space-between;gap:.6rem;align-items:center;padding:.4rem 0;border-bottom:1px solid var(--line)}
+.pg-list strong{display:block;font-size:.88rem}.pg-list span{font-size:.75rem;color:var(--muted)}
+.pg-btn{border:none;border-radius:9px;padding:.38rem .75rem;font-weight:600;font-size:.78rem;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,#00a4e4,#36ac91);color:#fff}
 .pg-btn--ghost{background:var(--light);color:var(--navy)}
-.pg-actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.65rem;flex:0 0 auto}
-.pg-chip{display:inline-flex;padding:.18rem .5rem;border-radius:999px;font-size:.7rem;font-weight:700;background:var(--light);color:var(--mid)}
-.pg-empty{color:var(--muted);margin:0;font-size:.88rem;flex:1 1 auto}
-.pg-order{margin:0;padding-left:1.1rem;line-height:1.5;font-size:.88rem;flex:1 1 auto}
-@@media(max-width:900px){.pg-grid,.pg-stats{grid-template-columns:1fr 1fr}.pg{min-height:auto}}
-@@media(max-width:560px){.pg-grid,.pg-stats{grid-template-columns:1fr}}
+.pg-actions{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto;padding-top:.5rem;flex:0 0 auto}
+.pg-chip{display:inline-flex;padding:.15rem .45rem;border-radius:999px;font-size:.68rem;font-weight:700;background:var(--light);color:var(--mid)}
+.pg-empty{color:var(--muted);margin:0;font-size:.86rem;flex:1 1 auto}
+.pg-order{margin:0;padding-left:1.05rem;line-height:1.45;font-size:.84rem;flex:1 1 auto;overflow:auto}
+.pg-bar{height:8px;background:var(--light);border-radius:999px;overflow:hidden;margin:.2rem 0 .55rem}
+.pg-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00a4e4,#36ac91)}
+.pg-stage{font-size:.8rem;margin-bottom:.15rem;display:flex;justify-content:space-between;gap:.5rem}
+.pg-stage span{color:var(--muted)}
+@@media(max-width:1100px){.pg-grid{grid-template-columns:1fr 1fr}.pg-grid .pg-card:last-child{grid-column:1/-1}}
+@@media(max-width:700px){.pg-grid,.pg-stats{grid-template-columns:1fr}.pg{min-height:auto}}
 </style>
 
 <section class="pg">
   <header class="pg-hero">
     <div>
-      <p style="margin:0;font-size:.65rem;font-weight:700;letter-spacing:.12em;opacity:.88">PIPELINE BUILT</p>
+      <p style="margin:0;font-size:.62rem;font-weight:700;letter-spacing:.12em;opacity:.88">PIPELINE BUILT</p>
       <h1>Pipeline Monitor</h1>
       <p>Inspect stage trails — load a sample anytime.</p>
     </div>
@@ -53,8 +57,8 @@ min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
   <div class="pg-grid">
     <article class="pg-card">
       <h2>Trace lookup</h2>
-      <div style="display:flex;gap:.45rem;flex-wrap:wrap;margin-bottom:.55rem;flex:0 0 auto">
-        <input style="flex:1;min-width:160px;border:1.5px solid var(--line);border-radius:9px;padding:.48rem .65rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
+      <div style="display:flex;gap:.4rem;flex-wrap:wrap;margin-bottom:.45rem;flex:0 0 auto">
+        <input style="flex:1;min-width:140px;border:1.5px solid var(--line);border-radius:9px;padding:.45rem .6rem;font:inherit" @bind="traceId" placeholder="Paste traceId from /api/ask" />
         <button type="button" class="pg-btn" @onclick="LoadTrace">Load trace</button>
       </div>
       <h2>Stage event trail</h2>
@@ -71,7 +75,12 @@ min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
           }
         </ul>
       }
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick="LoadSample">Run sample trail</button>
+        <button type="button" class="pg-btn pg-btn--ghost" @onclick="Clear">Clear</button>
+      </div>
     </article>
+
     <article class="pg-card">
       <h2>Pipeline order</h2>
       <ol class="pg-order">
@@ -85,8 +94,21 @@ min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
         <li><strong>complex_ai</strong> — Ollama on miss</li>
       </ol>
       <div class="pg-actions">
-        <button type="button" class="pg-btn" @onclick="LoadSample">Run sample trail</button>
         <button type="button" class="pg-btn pg-btn--ghost" @onclick='() => Go("developer-dashboard")'>Developer dashboard</button>
+      </div>
+    </article>
+
+    <article class="pg-card">
+      <h2>Stage latency (sample)</h2>
+      <div style="flex:1 1 auto;overflow:auto">
+        @foreach (var s in stages)
+        {
+          <div class="pg-stage"><strong>@s.Name</strong><span>@s.Ms ms</span></div>
+          <div class="pg-bar"><i style="width:@(Math.Min(100, s.Ms * 2))%"></i></div>
+        }
+      </div>
+      <div class="pg-actions">
+        <button type="button" class="pg-btn" @onclick="RefreshStages">Refresh bars</button>
       </div>
     </article>
   </div>
@@ -96,6 +118,11 @@ min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
     [Inject] private NavigationManager Nav { get; set; } = default!;
     private string traceId = "";
     private List<(string Stage,string Detail,int Ms)> events = new();
+    private List<(string Name,int Ms)> stages = new()
+    {
+        ("front_end",12),("access_control",8),("translation",3),
+        ("input_compliance",15),("database_search",42),("rag",28),("complex_ai",0)
+    };
     private void Go(string p) => Nav.NavigateTo(p);
     private void Clear() => events.Clear();
     private void LoadSample()
@@ -111,11 +138,17 @@ min-height:calc(100vh - 0.5rem);display:flex;flex-direction:column}
             ("rag","context built",28),
             ("complex_ai","not required",0),
         };
+        stages = events.Select(e => (e.Stage, e.Ms)).ToList();
     }
     private void LoadTrace()
     {
         if (string.IsNullOrWhiteSpace(traceId)) { LoadSample(); return; }
         LoadSample();
         events.Insert(0, ("lookup","trace " + traceId,5));
+    }
+    private void RefreshStages()
+    {
+        var rnd = new Random();
+        stages = stages.Select(s => (s.Name, rnd.Next(2, 55))).ToList();
     }
 }

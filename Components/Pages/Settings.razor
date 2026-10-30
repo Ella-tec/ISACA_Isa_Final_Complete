@@ -5,39 +5,44 @@
 
 <style>
 .st{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-width:100%;max-width:none;margin:0;padding:0.65rem 0.85rem 0.5rem;box-sizing:border-box;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
-.st-hero{padding:1rem 1.2rem;border-radius:14px;margin-bottom:0.7rem;background:linear-gradient(125deg,#1d2d5c 0%,#07649d 45%,#36ac91 100%);color:#fff}
-.st-hero h1{margin:.1rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
-.st-hero p{margin:.25rem 0 0;opacity:.92;font-size:.88rem}
-.st-tabs{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:0.65rem}
-.st-tab{border:none;border-radius:999px;padding:.4rem .85rem;font-weight:600;font-size:.82rem;cursor:pointer;background:#fff;color:var(--navy);border:1px solid var(--line);font-family:inherit}
+width:100%;max-width:none;margin:0;padding:0.5rem 0.85rem 0.65rem;box-sizing:border-box;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+min-height:calc(100vh - 0.25rem);display:flex;flex-direction:column;gap:.5rem}
+.st-hero{flex:0 0 auto;padding:.9rem 1.15rem;border-radius:14px;background:linear-gradient(125deg,#1d2d5c 0%,#07649d 45%,#36ac91 100%);color:#fff}
+.st-hero h1{margin:.08rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.35rem}
+.st-hero p{margin:.2rem 0 0;opacity:.92;font-size:.86rem}
+.st-tabs{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:.3rem}
+.st-tab{border:none;border-radius:999px;padding:.38rem .8rem;font-weight:600;font-size:.8rem;cursor:pointer;background:#fff;color:var(--navy);border:1px solid var(--line);font-family:inherit}
 .st-tab.on{background:var(--navy);color:#fff;border-color:var(--navy)}
-.st-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.15rem;box-shadow:0 4px 14px rgba(29,45,92,.05);margin-bottom:0.5rem}
-.st-card h2{margin:0 0 .65rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.05rem}
-.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-.st-field{display:grid;gap:.25rem}
-.st-field label{font-size:.75rem;font-weight:600;color:var(--mid)}
-.st-field input,.st-field select{border:1.5px solid var(--line);border-radius:9px;padding:.48rem .65rem;font:inherit;color:var(--navy)}
+.st-body{flex:1 1 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:.5rem;min-height:0}
+.st-card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:.9rem 1.05rem;box-shadow:0 3px 12px rgba(29,45,92,.05);height:100%;display:flex;flex-direction:column}
+.st-card h2{margin:0 0 .55rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1rem}
+.st-grid{display:grid;grid-template-columns:1fr 1fr;gap:.55rem}
+.st-field{display:grid;gap:.2rem}
+.st-field label{font-size:.72rem;font-weight:600;color:var(--mid)}
+.st-field input,.st-field select{border:1.5px solid var(--line);border-radius:9px;padding:.45rem .6rem;font:inherit;color:var(--navy)}
 .st-field input:focus,.st-field select:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,164,228,.15)}
-.st-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.5rem 0;border-bottom:1px solid var(--line)}
+.st-row{display:flex;align-items:center;justify-content:space-between;gap:1rem;padding:.42rem 0;border-bottom:1px solid var(--line)}
 .st-row:last-child{border-bottom:none}
-.st-row span{font-size:.88rem}
+.st-row span{font-size:.86rem}
 .st-toggle{width:42px;height:24px;border-radius:999px;border:none;background:#c5d0e0;cursor:pointer;position:relative}
 .st-toggle.on{background:var(--teal)}
 .st-toggle i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
 .st-toggle.on i{left:21px}
-.st-actions{display:flex;justify-content:flex-end;gap:.45rem;margin-top:.75rem}
-.st-btn{border:none;border-radius:9px;padding:.48rem 1rem;font-weight:600;font-size:.85rem;cursor:pointer;font-family:inherit}
+.st-actions{display:flex;justify-content:flex-end;gap:.4rem;margin-top:auto;padding-top:.55rem}
+.st-btn{border:none;border-radius:9px;padding:.45rem .95rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit}
 .st-btn--primary{background:var(--navy);color:#fff}
 .st-btn--ghost{background:var(--light);color:var(--navy)}
-.st-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.65rem .9rem;border-radius:11px;z-index:50}
-@@media(max-width:700px){.st-grid{grid-template-columns:1fr}}
+.st-side h3{margin:0 0 .4rem;font-size:.9rem}
+.st-side p{margin:0 0 .5rem;font-size:.82rem;color:var(--muted);line-height:1.4}
+.st-side ul{margin:0;padding-left:1.1rem;font-size:.82rem;line-height:1.5;flex:1 1 auto}
+.st-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.6rem .85rem;border-radius:11px;z-index:50}
+@@media(max-width:900px){.st-body{grid-template-columns:1fr}.st-grid{grid-template-columns:1fr}.st{min-height:auto}}
 </style>
 
 <section class="st">
     <header class="st-hero">
-        <p style="margin:0;font-size:.65rem;font-weight:700;letter-spacing:.12em;opacity:.88">ACCOUNT</p>
+        <p style="margin:0;font-size:.62rem;font-weight:700;letter-spacing:.12em;opacity:.88">ACCOUNT</p>
         <h1>Settings</h1>
         <p>Profile, notifications, and workspace preferences for your chapter.</p>
     </header>
@@ -49,56 +54,66 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy)}
         <button type="button" class="st-tab @(tab==3?"on":null)" @onclick="() => tab=3">Security</button>
     </div>
 
-    @if (tab == 0)
-    {
+    <div class="st-body">
         <article class="st-card">
-            <h2>Profile</h2>
-            <div class="st-grid">
-                <div class="st-field"><label>Display name</label><input @bind="displayName" /></div>
-                <div class="st-field"><label>Email</label><input @bind="email" type="email" /></div>
-                <div class="st-field"><label>Chapter role</label>
-                    <select @bind="role"><option>Chapter leader</option><option>Board member</option><option>Volunteer</option><option>Member</option></select>
+            @if (tab == 0)
+            {
+                <h2>Profile</h2>
+                <div class="st-grid">
+                    <div class="st-field"><label>Display name</label><input @bind="displayName" /></div>
+                    <div class="st-field"><label>Email</label><input @bind="email" type="email" /></div>
+                    <div class="st-field"><label>Chapter role</label>
+                        <select @bind="role"><option>Chapter leader</option><option>Board member</option><option>Volunteer</option><option>Member</option></select>
+                    </div>
+                    <div class="st-field"><label>Preferred language</label>
+                        <select @bind="lang"><option>English</option><option>Spanish</option><option>French</option><option>Arabic</option></select>
+                    </div>
                 </div>
-                <div class="st-field"><label>Preferred language</label>
-                    <select @bind="lang"><option>English</option><option>Spanish</option><option>French</option><option>Arabic</option></select>
+                <div class="st-actions">
+                    <button type="button" class="st-btn st-btn--ghost" @onclick="ResetProfile">Reset</button>
+                    <button type="button" class="st-btn st-btn--primary" @onclick="Save">Save profile</button>
                 </div>
-            </div>
+            }
+            else if (tab == 1)
+            {
+                <h2>Preferences</h2>
+                <div class="st-row"><span>Compact sidebar</span><button type="button" class="st-toggle @(compact?"on":null)" @onclick="() => compact=!compact"><i></i></button></div>
+                <div class="st-row"><span>Show weather on Home</span><button type="button" class="st-toggle @(showWeather?"on":null)" @onclick="() => showWeather=!showWeather"><i></i></button></div>
+                <div class="st-row"><span>Auto-play Home video</span><button type="button" class="st-toggle @(autoVideo?"on":null)" @onclick="() => autoVideo=!autoVideo"><i></i></button></div>
+                <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save preferences</button></div>
+            }
+            else if (tab == 2)
+            {
+                <h2>Notifications</h2>
+                <div class="st-row"><span>Escalation alerts</span><button type="button" class="st-toggle @(nEsc?"on":null)" @onclick="() => nEsc=!nEsc"><i></i></button></div>
+                <div class="st-row"><span>Content approval requests</span><button type="button" class="st-toggle @(nContent?"on":null)" @onclick="() => nContent=!nContent"><i></i></button></div>
+                <div class="st-row"><span>Event reminders</span><button type="button" class="st-toggle @(nEvents?"on":null)" @onclick="() => nEvents=!nEvents"><i></i></button></div>
+                <div class="st-row"><span>Weekly chapter digest</span><button type="button" class="st-toggle @(nDigest?"on":null)" @onclick="() => nDigest=!nDigest"><i></i></button></div>
+                <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save notifications</button></div>
+            }
+            else
+            {
+                <h2>Security</h2>
+                <div class="st-row"><span>Require sign-in for workspace tools</span><button type="button" class="st-toggle @(reqAuth?"on":null)" @onclick="() => reqAuth=!reqAuth"><i></i></button></div>
+                <div class="st-row"><span>Session timeout (idle)</span><span style="color:var(--muted);font-size:.85rem">30 minutes</span></div>
+                <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save security</button></div>
+            }
+        </article>
+
+        <article class="st-card st-side">
+            <h3>Workspace tips</h3>
+            <p>Use TRU Ask from any page with the floating bubble. Answers come from approved chapter documents.</p>
+            <ul>
+                <li>Profile language also drives Translator defaults.</li>
+                <li>Escalation alerts appear in Escalations &amp; Tickets.</li>
+                <li>Compact sidebar reduces padding on smaller screens.</li>
+                <li>Session timeout protects shared chapter devices.</li>
+            </ul>
             <div class="st-actions">
-                <button type="button" class="st-btn st-btn--ghost" @onclick="ResetProfile">Reset</button>
-                <button type="button" class="st-btn st-btn--primary" @onclick="Save">Save profile</button>
+                <a class="st-btn st-btn--ghost" href="contact">Contact support</a>
             </div>
         </article>
-    }
-    else if (tab == 1)
-    {
-        <article class="st-card">
-            <h2>Preferences</h2>
-            <div class="st-row"><span>Compact sidebar</span><button type="button" class="st-toggle @(compact?"on":null)" @onclick="() => compact=!compact"><i></i></button></div>
-            <div class="st-row"><span>Show weather on Home</span><button type="button" class="st-toggle @(showWeather?"on":null)" @onclick="() => showWeather=!showWeather"><i></i></button></div>
-            <div class="st-row"><span>Auto-play Home video</span><button type="button" class="st-toggle @(autoVideo?"on":null)" @onclick="() => autoVideo=!autoVideo"><i></i></button></div>
-            <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save preferences</button></div>
-        </article>
-    }
-    else if (tab == 2)
-    {
-        <article class="st-card">
-            <h2>Notifications</h2>
-            <div class="st-row"><span>Escalation alerts</span><button type="button" class="st-toggle @(nEsc?"on":null)" @onclick="() => nEsc=!nEsc"><i></i></button></div>
-            <div class="st-row"><span>Content approval requests</span><button type="button" class="st-toggle @(nContent?"on":null)" @onclick="() => nContent=!nContent"><i></i></button></div>
-            <div class="st-row"><span>Event reminders</span><button type="button" class="st-toggle @(nEvents?"on":null)" @onclick="() => nEvents=!nEvents"><i></i></button></div>
-            <div class="st-row"><span>Weekly chapter digest</span><button type="button" class="st-toggle @(nDigest?"on":null)" @onclick="() => nDigest=!nDigest"><i></i></button></div>
-            <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save notifications</button></div>
-        </article>
-    }
-    else
-    {
-        <article class="st-card">
-            <h2>Security</h2>
-            <div class="st-row"><span>Require sign-in for workspace tools</span><button type="button" class="st-toggle @(reqAuth?"on":null)" @onclick="() => reqAuth=!reqAuth"><i></i></button></div>
-            <div class="st-row"><span>Session timeout (idle)</span><span style="color:var(--muted);font-size:.85rem">30 minutes</span></div>
-            <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save security</button></div>
-        </article>
-    }
+    </div>
 
     @if (!string.IsNullOrEmpty(toast))
     {
