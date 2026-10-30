@@ -6,165 +6,73 @@
 
 <style>
 .hm{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important;max-width:none!important;margin:0!important;padding:0!important;box-sizing:border-box}
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+width:100%!important;max-width:none!important;margin:0!important;
+padding:.45rem .7rem .5rem!important;box-sizing:border-box;
+min-height:calc(100vh - .15rem);display:flex;flex-direction:column;gap:.4rem}
 .hm a{text-decoration:none!important}
-.hm-top{display:flex;align-items:center;justify-content:space-between;gap:.75rem;flex-wrap:wrap;margin-bottom:.55rem}
-.hm-brand{display:flex;align-items:center;gap:.5rem}
-.hm-logo{width:42px;height:42px;border-radius:50%;background:transparent;border:2px solid rgba(0,164,228,.55);display:grid;place-items:center;box-shadow:none}
-.hm-logo span{color:#1d2d5c;font-weight:800;font-size:.72rem;letter-spacing:.08em;font-family:"Roboto Slab",Georgia,serif}
-.hm-brand strong{display:block;font-size:1.1rem}.hm-brand small{color:var(--muted);font-size:.68rem}
-.hm-actions{display:flex;align-items:center;gap:.3rem;position:relative;flex-wrap:wrap}
-.hm-link{color:var(--mid);font-weight:600;font-size:.84rem;padding:.35rem .7rem;border-radius:8px}
-.hm-link:hover{background:var(--light)}
-.hm-account{border:none;cursor:pointer;font-family:inherit;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important;font-weight:600;font-size:.84rem;padding:.35rem .85rem;border-radius:8px}
-.hm-panel{position:absolute;top:calc(100%+.25rem);right:0;width:200px;background:#fff;border:1px solid var(--line);border-radius:11px;box-shadow:0 12px 30px rgba(29,45,92,.14);padding:.35rem;z-index:50}
-.hm-panel a{display:block;padding:.45rem .6rem;border-radius:7px;color:var(--navy)!important;font-size:.84rem}
-.hm-panel a:hover{background:var(--light)}.hm-panel .sep{height:1px;background:var(--line);margin:.2rem 0}
-.hm-strip{display:grid;grid-template-columns:1fr 1fr;gap:.55rem;margin-bottom:.55rem}
-.hm-widget{border-radius:12px;padding:.75rem .95rem;color:#fff;min-height:72px;display:flex;flex-direction:column;gap:.05rem;box-shadow:0 6px 18px rgba(29,45,92,.1);cursor:pointer;border:none;text-align:left;font-family:inherit;width:100%;transition:transform .12s}
-.hm-widget:hover{transform:translateY(-1px)}
+
+/* TOP: time + weather always visible */
+.hm-strip{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
+.hm-widget{border-radius:14px;padding:.85rem 1rem;color:#fff;min-height:78px;display:flex;flex-direction:column;gap:.05rem;
+box-shadow:0 8px 22px rgba(29,45,92,.12);cursor:pointer;border:none;text-align:left;font-family:inherit;width:100%;
+transition:transform .12s,box-shadow .12s}
+.hm-widget:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(29,45,92,.16)}
 .hm-widget--clock{background:linear-gradient(135deg,#1d2d5c,#07649d,#00a4e4)}
 .hm-widget--weather{background:linear-gradient(135deg,#36ac91,#00a4e4,#6cb33f)}
-.hm-widget__l{font-size:.6rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.88}
-.hm-widget__v{font-size:1.35rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif}
-.hm-widget__m{font-size:.76rem;opacity:.92}
+.hm-widget__l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
+.hm-widget__v{font-size:1.55rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif;line-height:1.15}
+.hm-widget__m{font-size:.78rem;opacity:.92}
 
-/* ===== STACKED: slides + video fill page, no bottom gap ===== */
-.hm{
-  min-height: calc(100vh - 0px);
-  display: flex;
-  flex-direction: column;
-  padding: 0.35rem 0.5rem 0.35rem !important;
-  box-sizing: border-box;
-}
-.hm-strip{
-  flex: 0 0 auto;
-  margin-bottom: 0.4rem !important;
-}
-.hm-media{
-  flex: 1 1 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
-  margin: 0;
-  width: 100%;
-  padding: 0;
-  min-height: 0;
-}
-/* Equal share of remaining height — no empty white under video */
-.hm-slides,
-.hm-vid{
-  flex: 1 1 0;
-  min-height: 200px;
-  margin: 0;
-  padding: 0;
-  width: 100%;
-}
-.hm-slides{
-  position: relative;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 8px 22px rgba(29,45,92,.12);
-  background: #0b1220;
-  touch-action: pan-y;
-  user-select: none;
-  -webkit-user-select: none;
-}
-.hm-slide{
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.9s ease-in-out;
-  background-size: cover;
-  background-position: center center;
-  background-repeat: no-repeat;
-  will-change: opacity;
-}
-.hm-slide.is-on{ opacity: 1; z-index: 1; }
-.hm-slide__shade{
-  position: absolute; inset: 0;
-  background: linear-gradient(90deg,rgba(13,22,40,.55),rgba(13,22,40,.08) 55%,transparent);
-  pointer-events: none;
-}
-.hm-slide__copy{
-  position: absolute; left: 1.15rem; bottom: 1.1rem; right: 1.15rem;
-  z-index: 2; color: #fff; max-width: 36rem; pointer-events: none;
-}
-.hm-slide__copy h2{ margin: 0 0 .2rem; font-size: 1.15rem; font-weight: 600; text-shadow: 0 2px 8px rgba(0,0,0,.45); }
-.hm-slide__copy p{ margin: 0; font-size: .88rem; opacity: .95; }
-.hm-slide__nav{
-  position: absolute; top: 50%; transform: translateY(-50%); z-index: 4;
-  width: 48px; height: 48px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,.96); color: var(--navy); font-size: 1.45rem; font-weight: 700;
-  box-shadow: 0 4px 14px rgba(0,0,0,.22); display: grid; place-items: center; line-height: 1;
-}
-.hm-slide__nav:hover{ background: #fff; transform: translateY(-50%) scale(1.06); }
-.hm-slide__nav.prev{ left: 10px; }
-.hm-slide__nav.next{ right: 10px; }
-.hm-slide__dots{
-  position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%);
-  z-index: 4; display: flex; gap: 6px;
-}
-.hm-slide__dot{
-  width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
-  background: rgba(255,255,255,.45); cursor: pointer;
-}
-.hm-slide__dot.is-on{ background: #fff; width: 18px; border-radius: 5px; }
+.hm-media{flex:1 1 auto;display:flex;flex-direction:column;gap:.4rem;min-height:0}
+.hm-slides,.hm-vid{flex:1 1 0;min-height:180px;margin:0;padding:0;width:100%}
 
-.hm-vid__frame{
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 200px;
-  border-radius: 14px;
-  overflow: hidden;
-  background: #0b1220;
-  box-shadow: 0 8px 22px rgba(29,45,92,.12);
-}
-.hm-vid__frame iframe{
-  position: absolute; inset: 0; width: 100%; height: 100%; border: 0;
-}
-.hm-vid__bar, .hm-vid__thumbs, .hm-vid__btns{ display: none !important; }
+.hm-slides{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 22px rgba(29,45,92,.12);background:#0b1220;
+touch-action:pan-y;user-select:none}
+.hm-slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;background-size:cover;background-position:center}
+.hm-slide.is-on{opacity:1;z-index:1}
+.hm-slide__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,22,40,.55),rgba(13,22,40,.08) 55%,transparent);pointer-events:none}
+.hm-slide__copy{position:absolute;left:1.1rem;bottom:1rem;right:1.1rem;z-index:2;color:#fff;max-width:36rem;pointer-events:none}
+.hm-slide__copy h2{margin:0 0 .15rem;font-size:1.1rem;font-weight:600;text-shadow:0 2px 8px rgba(0,0,0,.45)}
+.hm-slide__copy p{margin:0;font-size:.86rem;opacity:.95}
+.hm-slide__nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
+background:rgba(255,255,255,.96);color:var(--navy);font-size:1.4rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.2);display:grid;place-items:center}
+.hm-slide__nav:hover{background:#fff;transform:translateY(-50%) scale(1.05)}
+.hm-slide__nav.prev{left:10px}.hm-slide__nav.next{right:10px}
+.hm-slide__dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:6px}
+.hm-slide__dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.45);cursor:pointer}
+.hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
 
-.hm-top{ display: none !important; }
+.hm-vid__frame{position:relative;width:100%;height:100%;min-height:180px;border-radius:14px;overflow:hidden;background:#0b1220;box-shadow:0 8px 22px rgba(29,45,92,.12)}
+.hm-vid__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
 
-@@media(max-width:900px){
-  .hm-strip{ grid-template-columns: 1fr; }
-  .hm-slides, .hm-vid{ min-height: 180px; }
-}
+/* Modals */
+.hm-wx-bg{position:fixed;inset:0;background:rgba(19,31,66,.45);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
+.hm-wx-modal{background:#fff;border-radius:16px;padding:1.25rem 1.4rem;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(19,31,66,.25)}
+.hm-wx-modal h3{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400;font-size:1.15rem;color:var(--navy)}
+.hm-wx-modal input{width:100%;box-sizing:border-box;padding:.5rem .7rem;border:1px solid var(--line);border-radius:9px;font:inherit;margin-bottom:.5rem}
+.hm-wx-modal button{border:none;cursor:pointer;padding:.45rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;margin-right:.35rem;margin-bottom:.35rem;
+background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.hm-wx-modal button.ghost{background:var(--light);color:var(--navy)}
+.hm-wx-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0 .5rem}
+.hm-wx-grid div{background:var(--light);border-radius:10px;padding:.65rem .75rem;font-size:.86rem}
+.hm-wx-grid strong{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem}
+
+@@media(max-width:900px){.hm-strip{grid-template-columns:1fr}.hm-slides,.hm-vid{min-height:160px}.hm{min-height:auto}}
 </style>
 
-<div class="hm" @onclick="CloseAccount">
-    <header class="hm-top">
-        <div class="hm-brand">
-            <div class="hm-logo"><span>TRU</span></div>
-            <div><strong>TRU</strong><small>Ask</small></div>
-        </div>
-        <div class="hm-actions">
-            <a class="hm-link" href="https://openlibrary.org" target="_blank" rel="noopener">Open Library</a>
-            <a class="hm-link" href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
-            <button type="button" class="hm-account" @onclick="ToggleAccount" @onclick:stopPropagation="true">Account ▾</button>
-            @if (accountOpen)
-            {
-                <div class="hm-panel" @onclick:stopPropagation="true">
-                    <a href="settings">Profile &amp; preferences</a>
-                    <div class="sep"></div>
-                    <a href="sign-in">Sign out</a>
-                </div>
-            }
-        </div>
-    </header>
-
+<div class="hm">
+    @* TOP SCREEN: live time + weather *@
     <div class="hm-strip">
-        <button type="button" class="hm-widget hm-widget--clock" @onclick="() => clockOpen = true">
+        <button type="button" class="hm-widget hm-widget--clock" @onclick="() => clockOpen = true" title="Open world clocks">
             <span class="hm-widget__l">Local time</span>
             <span class="hm-widget__v">@timeText</span>
-            <span class="hm-widget__m">@dateText · world clocks</span>
+            <span class="hm-widget__m">@dateText · click for world clocks</span>
         </button>
-        <button type="button" class="hm-widget hm-widget--weather" @onclick="() => wxOpen = true">
+        <button type="button" class="hm-widget hm-widget--weather" @onclick="() => wxOpen = true" title="Open weather">
             <span class="hm-widget__l">Weather · @wxCity</span>
             <span class="hm-widget__v">@wxTemp</span>
-            <span class="hm-widget__m">@wxDesc · details</span>
+            <span class="hm-widget__m">@wxDesc · click for details</span>
         </button>
     </div>
 
@@ -174,8 +82,8 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
              @ontouchend="OnTouchEnd"
              @onpointerdown="OnPointerDown"
              @onpointerup="OnPointerUp">
-            <button type="button" class="hm-slide__nav prev" @onclick="PrevSlide" aria-label="Previous slide">‹</button>
-            <button type="button" class="hm-slide__nav next" @onclick="NextSlide" aria-label="Next slide">›</button>
+            <button type="button" class="hm-slide__nav prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
+            <button type="button" class="hm-slide__nav next" @onclick="NextSlide" aria-label="Next">›</button>
             @for (var i = 0; i < slides.Length; i++)
             {
                 var s = slides[i];
@@ -208,14 +116,15 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
     <div class="hm-wx-bg" @onclick="() => wxOpen = false">
         <div class="hm-wx-modal" @onclick:stopPropagation="true">
             <h3>Weather · @wxCity</h3>
-            <input @bind="wxSearch" placeholder="City" />
-            <button type="button" @onclick="ApplyWx">Update</button>
+            <input @bind="wxSearch" placeholder="City (e.g. Chicago)" />
+            <button type="button" @onclick="ApplyWx">Update city</button>
+            <button type="button" class="ghost" @onclick='() => Go("weather")'>Full weather page</button>
             <button type="button" class="ghost" @onclick="() => wxOpen = false">Close</button>
             <div class="hm-wx-grid">
-                <div><strong>Now</strong><br />@wxTemp · @wxDesc</div>
-                <div><strong>Humidity</strong><br />48%</div>
-                <div><strong>Wind</strong><br />9 mph</div>
-                <div><strong>UV</strong><br />4</div>
+                <div><strong>Now</strong>@wxTemp · @wxDesc</div>
+                <div><strong>Humidity</strong>@wxHumidity%</div>
+                <div><strong>Wind</strong>@wxWind mph</div>
+                <div><strong>UV</strong>@wxUv</div>
             </div>
         </div>
     </div>
@@ -226,10 +135,10 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
         <div class="hm-wx-modal" @onclick:stopPropagation="true">
             <h3>World clocks</h3>
             <div class="hm-wx-grid">
-                <div><strong>Local</strong><br />@timeText</div>
-                <div><strong>New York</strong><br />@DateTime.UtcNow.AddHours(-4).ToString("h:mm tt")</div>
-                <div><strong>London</strong><br />@DateTime.UtcNow.AddHours(1).ToString("h:mm tt")</div>
-                <div><strong>Singapore</strong><br />@DateTime.UtcNow.AddHours(8).ToString("h:mm tt")</div>
+                <div><strong>Local</strong>@timeText</div>
+                <div><strong>New York</strong>@NyTime</div>
+                <div><strong>London</strong>@LondonTime</div>
+                <div><strong>Singapore</strong>@SgTime</div>
             </div>
             <button type="button" class="ghost" @onclick="() => clockOpen = false">Close</button>
         </div>
@@ -237,11 +146,18 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
 }
 
 @code {
-    private bool accountOpen, wxOpen, clockOpen;
-    private string timeText="--:--", dateText="", wxCity="Kansas City", wxTemp="72°F", wxDesc="Partly cloudy", wxSearch="Kansas City";
+    [Inject] private NavigationManager Nav { get; set; } = default!;
+    private bool wxOpen, clockOpen;
+    private string timeText = "--:--", dateText = "";
+    private string wxCity = "Kansas City", wxTemp = "72°F", wxDesc = "Partly cloudy", wxSearch = "Kansas City";
+    private int wxHumidity = 48, wxWind = 9, wxUv = 4;
     private int slideIndex, videoIndex;
     private System.Threading.Timer? clockTimer, slideTimer, videoTimer;
     private readonly Random rng = new();
+
+    private string NyTime => DateTime.UtcNow.AddHours(-4).ToString("h:mm tt");
+    private string LondonTime => DateTime.UtcNow.AddHours(1).ToString("h:mm tt");
+    private string SgTime => DateTime.UtcNow.AddHours(8).ToString("h:mm tt");
 
     private record Slide(string Title, string Caption, string ImageUrl);
     private record YtVideo(string Id, string Title);
@@ -255,18 +171,12 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
         new("AI & emerging tech","Layer AI into audit, security, and risk.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"),
         new("Enterprise & community","Connect chapters with global ISACA resources.","https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"),
     };
-    
+
     private static readonly YtVideo[] Videos =
     {
-        new("2xBJcXFpPm4","ISACA session"),
-        new("yxXQnKUUR4k","ISACA learning"),
-        new("Chw9iTTHyhk","Chapter guidance"),
-        new("wi2be8nt6lw","Digital trust"),
-        new("9mPEksxW8VY","Certification path"),
-        new("ez54DQRYmqc","ISACA insights"),
-        new("hzQ7BCmHcX0","Governance focus"),
-        new("-JSt-e8H59Q","Risk & security"),
-        new("oIAvD1abWpg","Professional development"),
+        new("2xBJcXFpPm4","ISACA session"), new("yxXQnKUUR4k","ISACA learning"),
+        new("Chw9iTTHyhk","Chapter guidance"), new("wi2be8nt6lw","Digital trust"),
+        new("9mPEksxW8VY","Certification path"), new("ez54DQRYmqc","ISACA insights"),
     };
 
     private string CurrentEmbed => $"https://www.youtube.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1";
@@ -280,39 +190,41 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%!important
         slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 4500, 4500);
         videoTimer = new System.Threading.Timer(_ => { videoIndex = (videoIndex + 1) % Videos.Length; _ = InvokeAsync(StateHasChanged); }, null, 90000, 90000);
     }
-    private void Tick(object? _) { var n = DateTime.Now; timeText = n.ToString("h:mm:ss tt"); dateText = n.ToString("dddd, MMM d yyyy"); _ = InvokeAsync(StateHasChanged); }
-    private double _touchX;
-    private void OnTouchStart(Microsoft.AspNetCore.Components.Web.TouchEventArgs e)
+
+    private void Tick(object? _)
     {
-        if (e.Touches.Length > 0) _touchX = e.Touches[0].ClientX;
+        var n = DateTime.Now;
+        timeText = n.ToString("h:mm:ss tt");
+        dateText = n.ToString("dddd, MMM d yyyy");
+        _ = InvokeAsync(StateHasChanged);
     }
+
+    private double _touchX;
+    private void OnTouchStart(Microsoft.AspNetCore.Components.Web.TouchEventArgs e) { if (e.Touches.Length > 0) _touchX = e.Touches[0].ClientX; }
     private void OnTouchEnd(Microsoft.AspNetCore.Components.Web.TouchEventArgs e)
     {
         if (e.ChangedTouches.Length == 0) return;
         var dx = e.ChangedTouches[0].ClientX - _touchX;
-        if (dx > 50) PrevSlide();
-        else if (dx < -50) NextSlide();
+        if (dx > 50) PrevSlide(); else if (dx < -50) NextSlide();
     }
     private void OnPointerDown(Microsoft.AspNetCore.Components.Web.PointerEventArgs e) => _touchX = e.ClientX;
     private void OnPointerUp(Microsoft.AspNetCore.Components.Web.PointerEventArgs e)
     {
         var dx = e.ClientX - _touchX;
-        if (dx > 60) PrevSlide();
-        else if (dx < -60) NextSlide();
+        if (dx > 60) PrevSlide(); else if (dx < -60) NextSlide();
     }
     private void PrevSlide() => slideIndex = slideIndex == 0 ? slides.Length - 1 : slideIndex - 1;
     private void NextSlide() => slideIndex = (slideIndex + 1) % slides.Length;
-    private void PrevVideo() => videoIndex = videoIndex == 0 ? Videos.Length - 1 : videoIndex - 1;
-    private void NextVideo() => videoIndex = (videoIndex + 1) % Videos.Length;
-    private void SelectVideo(int i) => videoIndex = i;
-    private void ToggleAccount() => accountOpen = !accountOpen;
-    private void CloseAccount() => accountOpen = false;
+    private void Go(string p) { wxOpen = false; Nav.NavigateTo(p); }
     private void ApplyWx()
     {
         if (string.IsNullOrWhiteSpace(wxSearch)) return;
         wxCity = wxSearch.Trim();
         wxTemp = $"{60 + rng.Next(0, 25)}°F";
         wxDesc = rng.Next(0, 3) switch { 0 => "Sunny", 1 => "Partly cloudy", _ => "Cloudy" };
+        wxHumidity = 35 + rng.Next(0, 40);
+        wxWind = 4 + rng.Next(0, 14);
+        wxUv = 1 + rng.Next(0, 9);
     }
     public void Dispose() { clockTimer?.Dispose(); slideTimer?.Dispose(); videoTimer?.Dispose(); }
 }
