@@ -1,0 +1,47 @@
+/* ============================================================
+   TRU — compact full-width layout (no empty side gaps)
+   ============================================================ */
+
+.main .content,
+article.content {
+  padding: 0 !important;
+  margin: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+}
+
+.ct, .tr, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
+.contact-page, .settings-page, .isa-page, .wx, .rl, .market-page,
+.translator-page, .page-root, .page-content, .dashboard {
+  max-width: none !important;
+  width: 100% !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  padding: 0.65rem 0.9rem 1rem !important;
+  box-sizing: border-box !important;
+}
+
+section[class],
+.isa-page,
+.container,
+.container-fluid {
+  max-width: none !important;
+}
+
+.ct-hero, .tr-hero, .isa-hero-strip, .hm-top {
+  margin-bottom: 0.7rem !important;
+}
+
+.main {
+  min-height: 100vh !important;
+  background: #f0f4f8 !important;
+}
+
+.hm {
+  padding: 0.45rem 0.65rem !important;
+}
+
+.tr {
+  padding: 0.65rem 0.9rem 1rem !important;
+  max-width: none !important;
+}
