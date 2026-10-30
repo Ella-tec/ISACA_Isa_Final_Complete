@@ -34,8 +34,7 @@ body { overflow-x: clip !important; }
   width: calc(100% - 260px) !important;
   max-width: none !important;
   min-height: 100vh !important;
-  display: flex !important;
-  flex-direction: column !important;
+  display: block !important;
   margin-top: 0 !important; margin-right: 0 !important; margin-bottom: 0 !important;
   padding: 0 !important;
   background: #f0f4f8 !important;
@@ -54,13 +53,13 @@ body { overflow-x: clip !important; }
 .top-row { display: none !important; }
 
 .content, article.content {
-  flex: 1 1 auto !important;
+  display: block !important;
   padding: 0 !important; margin: 0 !important;
   max-width: none !important; width: 100% !important;
   box-sizing: border-box !important;
   min-height: 0 !important;
-  display: block !important;
-  overflow: auto !important;
+  height: auto !important;
+  overflow: visible !important;
 }
 
 .hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,

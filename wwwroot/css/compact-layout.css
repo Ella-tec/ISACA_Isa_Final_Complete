@@ -1,7 +1,12 @@
 /* ============================================================
-   FULL WIDTH — no centered max-width, no empty side gaps
-   Applies to every workspace page.
+   NO GAPS — compact full-width on every page
    ============================================================ */
+
+html, body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: #f0f4f8 !important;
+}
 
 .main .content,
 article.content {
@@ -9,25 +14,33 @@ article.content {
   margin: 0 !important;
   max-width: none !important;
   width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
+  display: block !important;
 }
 
-/* Common page shells (every class used across Pages/*.razor) */
+/* Every page shell: full width, tight padding, no side gaps */
 .pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
 .contact-page, .settings-page, .isa-page, .wx, .rl, .market-page,
 .translator-page, .page-root, .page-content, .dashboard, .pipeline-monitor,
 section.pg, section.ct, section.tr, section.st, section.hm, section.an,
 section.ev, section.kb, section.gov, section.esc, section.ch, section.mt,
-section.dev, section.pipe, section.isa-page {
+section.dev, section.pipe, section.isa-page,
+.main section[class],
+.main article[class],
+.content > section,
+.content > article {
   max-width: none !important;
   width: 100% !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
   margin-inline: 0 !important;
-  padding: 0.65rem 1rem 0.35rem !important;
+  margin-top: 0 !important;
+  padding: 0.5rem 0.85rem 0.75rem !important;
   box-sizing: border-box !important;
 }
 
-/* Kill Bootstrap / generic containers centering */
+/* Bootstrap containers */
 .container,
 .container-fluid,
 .container-lg,
@@ -43,30 +56,38 @@ section.dev, section.pipe, section.isa-page {
   padding-right: 0.75rem !important;
 }
 
-/* Any section with margin:auto centering */
-.main section[class],
-.main article[class],
-.content > section,
-.content > article {
-  max-width: none !important;
-  width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
+/* Heroes / strips — less bottom margin */
+.ct-hero, .tr-hero, .st-hero, .pg-hero, .isa-hero-strip, .hm-top,
+.isa-page-heading {
+  margin-bottom: 0.55rem !important;
 }
 
-.ct-hero, .tr-hero, .st-hero, .pg-hero, .isa-hero-strip, .hm-top {
-  margin-bottom: 0.65rem !important;
+/* Cards / panels — less bottom gap */
+.ct-card, .pg-card, .st-card, .isa-panel, .isa-stat-card, .tr-box, .tr-hist {
+  margin-bottom: 0.55rem !important;
 }
 
+/* Stat grids tighter */
+.isa-stat-grid, .pg-stats, .tr-meta {
+  margin-bottom: 0.55rem !important;
+  gap: 0.55rem !important;
+}
+
+/* Main area: no forced tall empty stretch */
 .main {
   min-height: 100vh !important;
+  height: auto !important;
   background: #f0f4f8 !important;
 }
 
-/* Footer sits full width under content */
+.hm {
+  padding: 0.4rem 0.6rem 0.6rem !important;
+}
+
+/* Footer only when present (Contact) */
 .sf {
-  width: calc(100% - 1.3rem) !important;
+  width: 100% !important;
   max-width: none !important;
-  margin: 0.75rem 0.65rem 1rem !important;
+  margin: 0.5rem 0 0 !important;
   box-sizing: border-box !important;
 }
