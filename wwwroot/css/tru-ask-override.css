@@ -1,0 +1,32 @@
+/* TRU ASK — force compact floating widget (overrides inline %) */
+.isa-widget__bubble {
+  position: fixed !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  z-index: 2147483001 !important;
+  width: 64px !important;
+  height: 64px !important;
+}
+.isa-widget__panel.is-expanded {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: min(380px, calc(100vw - 2rem)) !important;
+  height: min(560px, calc(100vh - 3rem)) !important;
+  max-height: calc(100vh - 3rem) !important;
+  z-index: 2147483001 !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #fff !important;
+  border-radius: 16px !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,.22) !important;
+  overflow: hidden !important;
+  border: 1px solid #cbd2d9 !important;
+}
+.isa-widget__backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  z-index: 2147483000 !important;
+  background: rgba(29,45,92,.25) !important;
+}
