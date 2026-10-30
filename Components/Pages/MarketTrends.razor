@@ -2,51 +2,54 @@
 @rendermode InteractiveServer
 @implements IDisposable
 
-<PageTitle>Market trends | TRU Ask</PageTitle>
+<PageTitle>Market trends | TRU</PageTitle>
 
 <style>
-.mt{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c;width:100%;max-width:100%;box-sizing:border-box}
-.mt h1{margin:0 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
-.mt .sub{margin:0 0 .75rem;color:#5f6b85;font-size:.88rem}
-.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem;margin-bottom:.75rem}
-.mt-kpi{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.75rem .9rem;box-shadow:0 4px 14px rgba(29,45,92,.05);cursor:pointer;transition:transform .12s}
-.mt-kpi:hover{transform:translateY(-2px)}
-.mt-kpi span{display:block;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5f6b85}
-.mt-kpi strong{font-size:1.35rem;color:#1d2d5c}
-.mt-kpi small{font-size:.78rem;color:#6cb33f}
-.mt-kpi small.down{color:#e31837}
-.mt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.75rem;align-items:start}
-.mt-panel{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:1rem 1.1rem;box-shadow:0 6px 18px rgba(29,45,92,.05)}
-.mt-panel h2{margin:0 0 .15rem;font-size:1.05rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
-.mt-panel p.lead{margin:0 0 .7rem;font-size:.82rem;color:#5f6b85}
-.mt-toolbar{display:flex;gap:.5rem;margin-bottom:.65rem;flex-wrap:wrap}
-.mt-toolbar input{flex:1;min-width:160px;padding:.45rem .7rem;border:1px solid #e2e8f0;border-radius:10px;font-family:inherit}
-.mt-toolbar button{border:none;cursor:pointer;padding:.45rem .95rem;border-radius:10px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
-.mt table{width:100%;border-collapse:collapse;font-size:.86rem}
-.mt th{text-align:left;padding:.45rem .4rem;font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85;border-bottom:2px solid #e2e8f0}
-.mt td{padding:.5rem .4rem;border-bottom:1px solid #eef1f5}
-.mt tr{cursor:pointer;transition:background .1s}
-.mt tr:hover,.mt tr.is-on{background:#eef6fb}
+.mt{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c;width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;
+min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
+.mt h1{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.35rem}
+.mt .sub{margin:0;color:#5f6b85;font-size:.86rem}
+.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;flex:0 0 auto}
+.mt-kpi{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.7rem .85rem;box-shadow:0 3px 12px rgba(29,45,92,.05);cursor:pointer}
+.mt-kpi:hover{border-color:#00a4e4}
+.mt-kpi span{display:block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85}
+.mt-kpi strong{font-size:1.25rem;color:#1d2d5c}
+.mt-kpi small{font-size:.76rem;color:#6cb33f}
+.mt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.5rem;flex:1 1 auto;min-height:0}
+.mt-panel{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:.9rem 1rem;box-shadow:0 3px 12px rgba(29,45,92,.05);display:flex;flex-direction:column;min-height:0;height:100%}
+.mt-panel h2{margin:0 0 .1rem;font-size:1rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
+.mt-panel p.lead{margin:0 0 .55rem;font-size:.8rem;color:#5f6b85}
+.mt-toolbar{display:flex;gap:.45rem;margin-bottom:.5rem;flex-wrap:wrap;flex:0 0 auto}
+.mt-toolbar input{flex:1;min-width:140px;padding:.42rem .65rem;border:1px solid #e2e8f0;border-radius:9px;font-family:inherit}
+.mt-toolbar button{border:none;cursor:pointer;padding:.42rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
+.mt-table-wrap{flex:1 1 auto;overflow:auto;min-height:0}
+.mt table{width:100%;border-collapse:collapse;font-size:.84rem}
+.mt th{text-align:left;padding:.4rem .35rem;font-size:.65rem;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85;border-bottom:2px solid #e2e8f0;position:sticky;top:0;background:#fff}
+.mt td{padding:.42rem .35rem;border-bottom:1px solid #eef1f5}
+.mt tr{cursor:pointer}.mt tr:hover,.mt tr.is-on{background:#eef6fb}
 .mt .up{color:#2d6a2d;font-weight:600}.mt .down{color:#e31837;font-weight:600}
-.mt-bars{display:flex;align-items:flex-end;gap:8px;height:120px;margin:.5rem 0 .35rem}
-.mt-bars div{flex:1;border-radius:6px 6px 0 0;background:linear-gradient(180deg,#00a4e4,#07649d);min-height:8px;position:relative}
-.mt-bars div span{position:absolute;bottom:-1.2rem;left:50%;transform:translateX(-50%);font-size:.65rem;color:#5f6b85;white-space:nowrap}
-.mt-detail-head{display:flex;justify-content:space-between;align-items:flex-start;gap:.5rem;margin-bottom:.5rem}
-.mt-detail-head strong{font-size:1.5rem}
-.mt-trade{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.65rem}
-.mt-trade input{padding:.4rem .55rem;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit}
-.mt-trade button{border:none;cursor:pointer;padding:.5rem;border-radius:8px;font-weight:700;font-family:inherit}
+.mt-bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin:.4rem 0 .3rem;flex:0 0 auto}
+.mt-bars div{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#00a4e4,#07649d);min-height:8px;position:relative}
+.mt-bars div span{position:absolute;bottom:-1.15rem;left:50%;transform:translateX(-50%);font-size:.62rem;color:#5f6b85;white-space:nowrap}
+.mt-detail-head{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.4rem}
+.mt-detail-head strong{font-size:1.4rem}
+.mt-trade{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.5rem}
+.mt-trade input{padding:.38rem .5rem;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit}
+.mt-trade button{border:none;cursor:pointer;padding:.45rem;border-radius:8px;font-weight:700;font-family:inherit}
 .mt-buy{background:#6cb33f;color:#fff}.mt-sell{background:#e31837;color:#fff}
-.mt-note{font-size:.75rem;color:#5f6b85;margin-top:.5rem}
-.mt-empty-fill{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin-top:.35rem}
-.mt-empty-fill div{background:#f4f7fb;border-radius:10px;padding:.65rem .75rem;font-size:.82rem}
-.mt-empty-fill strong{display:block;font-size:1.1rem;color:#1d2d5c}
-@@media(max-width:960px){.mt-grid,.mt-kpis{grid-template-columns:1fr}.mt-kpis{grid-template-columns:1fr 1fr}}
+.mt-note{font-size:.74rem;color:#5f6b85;margin-top:.4rem}
+.mt-empty-fill{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.3rem;flex:1 1 auto}
+.mt-empty-fill div{background:#f4f7fb;border-radius:10px;padding:.55rem .7rem;font-size:.8rem}
+.mt-empty-fill strong{display:block;font-size:1.05rem;color:#1d2d5c}
+@@media(max-width:960px){.mt-grid,.mt-kpis{grid-template-columns:1fr 1fr}.mt{min-height:auto}}
+@@media(max-width:560px){.mt-kpis{grid-template-columns:1fr}}
 </style>
 
 <section class="mt">
-    <h1>Market trends</h1>
-    <p class="sub">Cybersecurity, governance, AI, risk, and tech signals for chapter planning. Paper trade is educational only.</p>
+    <div>
+        <h1>Market trends</h1>
+        <p class="sub">Cybersecurity, governance, AI, risk, and tech signals for chapter planning. Paper trade is educational only.</p>
+    </div>
 
     <div class="mt-kpis">
         <div class="mt-kpi" @onclick='() => Select("CRWD")'><span>Cyber demand</span><strong>118</strong><small>▲ 6% QoQ</small></div>
@@ -58,16 +61,14 @@
     <div class="mt-grid">
         <div class="mt-panel">
             <h2>Equity watchlist</h2>
-            <p class="lead">Click a row for chart &amp; paper trade · prices refresh on a timer (simulated live)</p>
+            <p class="lead">Click a row for chart &amp; paper trade · prices refresh on a timer</p>
             <div class="mt-toolbar">
-                <input @bind="search" @bind:event="oninput" placeholder="Search symbol or name (AAPL, MSFT, CRWD...)" />
+                <input @bind="search" @bind:event="oninput" placeholder="Search symbol or name" />
                 <button type="button" @onclick="Refresh">Refresh</button>
             </div>
-            <div style="overflow-x:auto;max-height:420px;overflow-y:auto">
+            <div class="mt-table-wrap">
                 <table>
-                    <thead>
-                        <tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>Sector</th></tr>
-                    </thead>
+                    <thead><tr><th>Symbol</th><th>Name</th><th>Price</th><th>Change</th><th>Sector</th></tr></thead>
                     <tbody>
                         @foreach (var s in Filtered)
                         {
@@ -88,14 +89,14 @@
             @if (selected is null)
             {
                 <h2>Market overview</h2>
-                <p class="lead">Select a symbol for detail — or use the KPIs above. Skill demand themes stay visible here.</p>
+                <p class="lead">Select a symbol — or use the KPIs above</p>
                 <div class="mt-bars">
                     @foreach (var b in skillBars)
                     {
                         <div style="height:@b.H%"><span>@b.Label</span></div>
                     }
                 </div>
-                <p class="lead" style="margin-top:1.4rem">Skill demand (chapter questions)</p>
+                <p class="lead" style="margin-top:1.2rem">Skill demand (chapter questions)</p>
                 <div class="mt-empty-fill">
                     <div><span>Audit</span><strong>High</strong></div>
                     <div><span>Security</span><strong>Very high</strong></div>
@@ -130,58 +131,43 @@
                     <button type="button" class="mt-buy" @onclick="Buy">Buy</button>
                     <button type="button" class="mt-sell" @onclick="Sell">Sell</button>
                 </div>
-                @if (!string.IsNullOrEmpty(tradeMsg))
-                {
-                    <p class="mt-note">@tradeMsg</p>
-                }
-                else
-                {
-                    <p class="mt-note">Simulated only — not real brokerage. Use for chapter education.</p>
-                }
+                <p class="mt-note">@(string.IsNullOrEmpty(tradeMsg) ? "Simulated only — not real brokerage." : tradeMsg)</p>
             }
         </div>
     </div>
 </section>
 
 @code {
-    private string search = "";
-    private string tradeMsg = "";
+    private string search = "", tradeMsg = "";
     private int qty = 10;
     private double limit = 0;
     private Stock? selected;
     private System.Threading.Timer? timer;
     private readonly Random rng = new();
-
     private record Stock(string Symbol, string Name, double Price, double Change, string Sector, int[] Spark);
     private record Bar(string Label, int H);
-
     private List<Stock> stocks = new();
     private readonly Bar[] skillBars =
     {
         new("Audit", 55), new("Security", 88), new("AI", 95),
         new("Risk", 70), new("Privacy", 62), new("Cloud", 58)
     };
-
     private IEnumerable<Stock> Filtered =>
-        string.IsNullOrWhiteSpace(search)
-            ? stocks
-            : stocks.Where(s =>
-                s.Symbol.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                s.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
+        string.IsNullOrWhiteSpace(search) ? stocks
+        : stocks.Where(s => s.Symbol.Contains(search, StringComparison.OrdinalIgnoreCase) || s.Name.Contains(search, StringComparison.OrdinalIgnoreCase));
 
     protected override void OnInitialized()
     {
         Seed();
         timer = new System.Threading.Timer(_ =>
         {
-            foreach (var i in Enumerable.Range(0, stocks.Count))
+            for (var i = 0; i < stocks.Count; i++)
             {
                 var s = stocks[i];
                 var d = (rng.NextDouble() - 0.48) * 0.8;
                 var p = Math.Max(1, s.Price * (1 + d / 100));
                 var ch = s.Change + (rng.NextDouble() - 0.5) * 0.15;
-                var spark = s.Spark.Skip(1).Append(rng.Next(30, 100)).ToArray();
-                stocks[i] = s with { Price = p, Change = ch, Spark = spark };
+                stocks[i] = s with { Price = p, Change = ch, Spark = s.Spark.Skip(1).Append(rng.Next(30, 100)).ToArray() };
                 if (selected?.Symbol == s.Symbol) selected = stocks[i];
             }
             _ = InvokeAsync(StateHasChanged);
@@ -192,50 +178,26 @@
     {
         stocks = new List<Stock>
         {
-            Mk("AAPL","Apple Inc.",225.92,0.64,"Technology"),
-            Mk("MSFT","Microsoft",414.11,0.36,"Technology"),
-            Mk("GOOGL","Alphabet",175.85,-0.28,"Technology"),
-            Mk("AMZN","Amazon",187.39,1.14,"Consumer"),
-            Mk("NVDA","NVIDIA",120.85,2.32,"Semiconductors"),
-            Mk("CRWD","CrowdStrike",309.76,1.45,"Cybersecurity"),
-            Mk("PANW","Palo Alto Networks",347.32,0.87,"Cybersecurity"),
-            Mk("ZS","Zscaler",190.17,-0.56,"Cybersecurity"),
-            Mk("S","SentinelOne",24.12,1.09,"Cybersecurity"),
-            Mk("FTNT","Fortinet",78.12,0.26,"Cybersecurity"),
-            Mk("OKTA","Okta",81.47,-1.22,"Identity"),
-            Mk("NET","Cloudflare",93.23,1.89,"Cloud security"),
-            Mk("IBM","IBM",222.05,0.25,"Enterprise IT"),
-            Mk("ORCL","Oracle",168.67,0.60,"Enterprise IT"),
-            Mk("CRM","Salesforce",282.01,-0.67,"SaaS"),
-            Mk("PLTR","Palantir",99.50,0.88,"AI / Analytics"),
+            Mk("AAPL","Apple Inc.",225.92,0.64,"Technology"), Mk("MSFT","Microsoft",414.11,0.36,"Technology"),
+            Mk("GOOGL","Alphabet",175.85,-0.28,"Technology"), Mk("AMZN","Amazon",187.39,1.14,"Consumer"),
+            Mk("NVDA","NVIDIA",120.85,2.32,"Semiconductors"), Mk("CRWD","CrowdStrike",309.76,1.45,"Cybersecurity"),
+            Mk("PANW","Palo Alto Networks",347.32,0.87,"Cybersecurity"), Mk("ZS","Zscaler",190.17,-0.56,"Cybersecurity"),
+            Mk("S","SentinelOne",24.12,1.09,"Cybersecurity"), Mk("FTNT","Fortinet",78.12,0.26,"Cybersecurity"),
+            Mk("OKTA","Okta",81.47,-1.22,"Identity"), Mk("NET","Cloudflare",93.23,1.89,"Cloud security"),
+            Mk("IBM","IBM",222.05,0.25,"Enterprise IT"), Mk("ORCL","Oracle",168.67,0.60,"Enterprise IT"),
+            Mk("CRM","Salesforce",282.01,-0.67,"SaaS"), Mk("PLTR","Palantir",99.50,0.88,"AI / Analytics"),
         };
     }
-
     private Stock Mk(string sym, string name, double price, double ch, string sector)
-    {
-        var spark = Enumerable.Range(0, 8).Select(_ => rng.Next(35, 100)).ToArray();
-        return new Stock(sym, name, price, ch, sector, spark);
-    }
-
+        => new(sym, name, price, ch, sector, Enumerable.Range(0, 8).Select(_ => rng.Next(35, 100)).ToArray());
     private void Select(string symbol)
     {
         selected = stocks.FirstOrDefault(s => s.Symbol == symbol);
         if (selected != null) limit = Math.Round(selected.Price, 2);
         tradeMsg = "";
     }
-
     private void Refresh() { Seed(); if (selected != null) Select(selected.Symbol); }
-
-    private void Buy()
-    {
-        if (selected is null) return;
-        tradeMsg = $"Paper BUY {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00} (simulated).";
-    }
-    private void Sell()
-    {
-        if (selected is null) return;
-        tradeMsg = $"Paper SELL {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00} (simulated).";
-    }
-
+    private void Buy() { if (selected is null) return; tradeMsg = $"Paper BUY {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00}"; }
+    private void Sell() { if (selected is null) return; tradeMsg = $"Paper SELL {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00}"; }
     public void Dispose() => timer?.Dispose();
 }

@@ -1,34 +1,35 @@
 @page "/resource-library"
 @rendermode InteractiveServer
 
-<PageTitle>Resource Library | Isa</PageTitle>
+<PageTitle>Resource Library | TRU</PageTitle>
 
 <style>
-.rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--orange:#e57524;--purple:#6558b1;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1180px;margin:0 auto}
-.rl-hero{border-radius:20px;padding:1.5rem 1.75rem;color:#fff;margin-bottom:1.15rem;
-background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 14px 40px rgba(29,45,92,.16)}
-.rl-hero h1{margin:.2rem 0 .4rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.75rem}
-.rl-hero p{margin:0;opacity:.92}
-.rl-tabs{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.1rem}
-.rl-tab{border:none;cursor:pointer;padding:.5rem 1rem;border-radius:999px;font-weight:600;font-size:.85rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
+.rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;
+min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
+.rl-hero{flex:0 0 auto;border-radius:14px;padding:1rem 1.2rem;color:#fff;
+background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 8px 24px rgba(29,45,92,.12)}
+.rl-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
+.rl-hero p{margin:0;opacity:.92;font-size:.88rem}
+.rl-tabs{flex:0 0 auto;display:flex;flex-wrap:wrap;gap:.35rem}
+.rl-tab{border:none;cursor:pointer;padding:.42rem .9rem;border-radius:999px;font-weight:600;font-size:.82rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
 .rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
-.rl-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.85rem}
-.rl-card{background:#fff;border-radius:16px;padding:1.15rem;border:1px solid var(--line);box-shadow:0 8px 24px rgba(29,45,92,.06);display:flex;flex-direction:column;gap:.45rem}
-.rl-card .ico{width:42px;height:42px;border-radius:12px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.85rem}
-.rl-card h3{margin:0;font-size:1rem}
-.rl-card p{margin:0;font-size:.88rem;color:var(--muted);line-height:1.45;flex:1}
-.rl-card .actions{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.35rem}
-.rl-card a,.rl-card button{padding:.45rem .85rem;border-radius:9px;font-weight:600;font-size:.82rem;border:none;cursor:pointer;font-family:inherit}
+.rl-grid{flex:1 1 auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:.55rem;align-content:start}
+.rl-card{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05);display:flex;flex-direction:column;gap:.4rem;min-height:160px}
+.rl-card .ico{width:40px;height:40px;border-radius:11px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.8rem}
+.rl-card h3{margin:0;font-size:.95rem}
+.rl-card p{margin:0;font-size:.84rem;color:var(--muted);line-height:1.4;flex:1}
+.rl-card .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.2rem}
+.rl-card a,.rl-card button{padding:.4rem .75rem;border-radius:9px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
 .rl-link{background:var(--light);color:var(--mid)!important}
-.rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.75rem 1.1rem;border-radius:12px;font-weight:600;box-shadow:0 12px 32px rgba(0,0,0,.25);z-index:100}
-@@media(max-width:900px){.rl-grid{grid-template-columns:1fr}}
+.rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.65rem 1rem;border-radius:11px;font-weight:600;z-index:100}
+@@media(max-width:560px){.rl{min-height:auto}}
 </style>
 
 <section class="rl">
     <header class="rl-hero">
-        <div style="font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Library</div>
+        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Library</div>
         <h1>Resource Library</h1>
         <p>Guides, policies, certification paths, learning packs, and templates for chapter leaders.</p>
     </header>
@@ -68,15 +69,15 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 14px
     private string tab = "Guides";
     private string toast = "";
     private static readonly string[] Tabs = { "Guides", "Policies", "Certifications", "Learning", "Templates" };
-
     private record Res(string Category, string Title, string Description, string Icon, string Color, string Url, string FileName);
-
     private static readonly Res[] All =
     {
         new("Guides", "Chapter Leader Handbook", "Roles, calendar, and operating cadence for officers.", "HB", "linear-gradient(135deg,#1d2d5c,#07649d)", "https://www.isaca.org", "Chapter-Leader-Handbook.txt"),
         new("Guides", "Governance Guide", "Board practices and policy lifecycle overview.", "GV", "linear-gradient(135deg,#6558b1,#1d2d5c)", "https://www.isaca.org/resources", "Governance-Guide.txt"),
         new("Guides", "Financial Management Guide", "Budgets, controls, and reporting for chapters.", "FM", "linear-gradient(135deg,#00a4e4,#07649d)", "", "Financial-Management-Guide.txt"),
         new("Guides", "Event Planning Playbook", "End-to-end checklist for CPE and networking events.", "EV", "linear-gradient(135deg,#6cb33f,#1d2d5c)", "", "Event-Planning-Playbook.txt"),
+        new("Guides", "Volunteer Onboarding Kit", "Welcome path for new chapter volunteers.", "VO", "linear-gradient(135deg,#36ac91,#07649d)", "", "Volunteer-Onboarding.txt"),
+        new("Guides", "CPE Reporting Guide", "How members log and verify CPE hours.", "CP", "linear-gradient(135deg,#e57524,#1d2d5c)", "https://www.isaca.org", "CPE-Reporting-Guide.txt"),
         new("Policies", "Chapter Governance Policy", "Sample governance policy for chapter boards.", "PG", "linear-gradient(135deg,#1d2d5c,#00a4e4)", "", "Chapter-Governance-Policy.txt"),
         new("Policies", "Financial Controls Policy", "Approval thresholds and dual-control guidance.", "PF", "linear-gradient(135deg,#07649d,#36ac91)", "", "Financial-Controls-Policy.txt"),
         new("Policies", "Data Privacy Policy", "Member data handling and retention baseline.", "PP", "linear-gradient(135deg,#6558b1,#07649d)", "https://www.isaca.org/credentialing/cdpse", "Data-Privacy-Policy.txt"),
@@ -100,18 +101,16 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c);box-shadow:0 14px
         new("Templates", "Budget Tracking Template", "Simple monthly chapter budget tracker.", "TB", "linear-gradient(135deg,#00a4e4,#1d2d5c)", "", "Budget-Tracking-Template.txt"),
         new("Templates", "Risk Assessment Template", "Likelihood/impact grid for chapter risks.", "TR", "linear-gradient(135deg,#e57524,#1d2d5c)", "", "Risk-Assessment-Template.txt"),
         new("Templates", "Project Planning Template", "Initiative charter and milestone plan.", "TP", "linear-gradient(135deg,#6558b1,#07649d)", "", "Project-Planning-Template.txt"),
+        new("Templates", "Speaker Invite Email", "Ready-to-send invitation for CPE speakers.", "TS", "linear-gradient(135deg,#36ac91,#1d2d5c)", "", "Speaker-Invite.txt"),
     };
-
     private IEnumerable<Res> Filtered => All.Where(r => r.Category == tab);
-
     private async Task Download(Res r)
     {
         toast = $"Preparing {r.FileName}…";
         StateHasChanged();
         await Task.Delay(400);
-        // Demo: generate a text blob download via data URL would need JS; show success
-        toast = $"Ready: {r.Title} ({r.FileName}) — open link or save from your browser downloads when connected to files.";
-        await Task.Delay(3500);
+        toast = $"Ready: {r.Title} — open link when available or save from downloads.";
+        await Task.Delay(3200);
         toast = "";
     }
 }
