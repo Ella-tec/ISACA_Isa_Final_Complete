@@ -64,15 +64,51 @@ body { overflow-x: clip !important; }
   box-sizing: border-box !important;
 }
 
-/* Force TRU ASK bubble above everything */
-.isa-widget,
-.isa-widget__bubble {
+/* ===== TRU ASK global — always fixed floating, never in page flow ===== */
+.isa-widget {
+  position: relative !important;
+  z-index: 2147483000 !important;
+  --isa-rail-w: 0px;
+}
+.isa-widget__backdrop {
+  position: fixed !important;
+  inset: 0 !important;
+  background: rgba(29, 45, 92, 0.25) !important;
   z-index: 2147483000 !important;
 }
 .isa-widget__bubble {
   position: fixed !important;
   bottom: 24px !important;
   right: 24px !important;
+  width: 64px !important;
+  height: 64px !important;
+  border: none !important;
+  border-radius: 50% !important;
+  background: #fff !important;
+  cursor: pointer !important;
+  display: grid !important;
+  place-items: center !important;
+  padding: 8px !important;
+  box-shadow: 0 4px 18px rgba(29,45,92,0.28) !important;
+  z-index: 2147483001 !important;
+}
+.isa-widget__panel.is-expanded {
+  position: fixed !important;
+  top: auto !important;
+  bottom: 24px !important;
+  right: 24px !important;
+  width: min(380px, calc(100vw - 2rem)) !important;
+  height: min(560px, calc(100vh - 3rem)) !important;
+  max-height: calc(100vh - 3rem) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  background: #fff !important;
+  border-radius: 16px !important;
+  border: 1px solid #cbd2d9 !important;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.22) !important;
+  overflow: hidden !important;
+  z-index: 2147483001 !important;
+  font-family: Roboto, Arial, sans-serif !important;
 }
 
 #blazor-error-ui {
@@ -95,10 +131,16 @@ body { overflow-x: clip !important; }
     height: auto !important; max-height: 40vh !important;
   }
   .main { margin-left: 0 !important; width: 100% !important; }
+  .isa-widget__panel.is-expanded {
+    width: calc(100vw - 1rem) !important;
+    right: 0.5rem !important;
+    bottom: 0.5rem !important;
+    height: min(85vh, calc(100vh - 1rem)) !important;
+  }
 }
 </style>
 
-@* ========== TRU ASK — global on every page that uses MainLayout ========== *@
+@* ========== TRU ASK — global floating widget on every page ========== *@
 <ChatWidget @rendermode="InteractiveServer"
             Hosts="@(new Dictionary<string,string> {
                 ["remote"] = "http://100.89.6.69:11434",
