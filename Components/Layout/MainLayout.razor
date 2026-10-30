@@ -60,14 +60,13 @@ body { overflow-x: clip !important; }
 .hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
 .contact-page, .an, .settings-page, .translator-page, .market-page,
 .page-root, .page-content, .dashboard, .card-grid,
-.container, .container-fluid, .ct {
+.container, .container-fluid, .ct, .st {
   max-width: none !important; width: 100% !important;
   margin-left: 0 !important; margin-right: 0 !important;
   padding-left: 0.65rem !important; padding-right: 0.65rem !important;
   box-sizing: border-box !important;
 }
 
-/* TRU ASK global floating */
 .isa-widget {
   position: relative !important;
   z-index: 2147483000 !important;
@@ -143,7 +142,6 @@ body { overflow-x: clip !important; }
 }
 </style>
 
-@* ========== TRU ASK — global floating widget on every page ========== *@
 <ChatWidget @rendermode="InteractiveServer"
             Hosts="@(new Dictionary<string,string> {
                 ["remote"] = "http://100.89.6.69:11434",
@@ -153,7 +151,10 @@ body { overflow-x: clip !important; }
 <div class="page">
     <aside class="sidebar"><NavMenu /></aside>
     <div class="main">
-        <article class="content">@Body</article>
+        <article class="content">
+            @Body
+            <SiteFooter />
+        </article>
     </div>
 </div>
 

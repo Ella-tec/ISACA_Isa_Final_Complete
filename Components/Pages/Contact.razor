@@ -5,12 +5,12 @@
 
 <style>
 .ct{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:0.65rem 0.85rem 1rem;box-sizing:border-box}
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:0.65rem 0.85rem 0.25rem;box-sizing:border-box}
 .ct-hero{border-radius:14px;padding:1rem 1.25rem;color:#fff;margin-bottom:0.75rem;
 background:linear-gradient(120deg,#1d2d5c,#07649d 50%,#00a4e4);box-shadow:0 8px 24px rgba(29,45,92,.12)}
 .ct-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
 .ct-hero p{margin:0;opacity:.92;font-size:.88rem}
-.ct-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:.7rem;margin-bottom:.75rem}
+.ct-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:.7rem;margin-bottom:.5rem}
 .ct-card{background:#fff;border-radius:14px;padding:1rem 1.1rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05)}
 .ct-card h2{margin:0 0 .55rem;font-size:1rem}
 .ct-card label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:.15rem}
@@ -19,18 +19,7 @@ background:linear-gradient(120deg,#1d2d5c,#07649d 50%,#00a4e4);box-shadow:0 8px 
 background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
 .ct-btn:hover{filter:brightness(1.06)}
 .ct-ok{background:#e8f6e8;color:#2d6a2d;padding:.5rem .75rem;border-radius:9px;font-size:.85rem;margin-bottom:.5rem}
-.ct-footer{background:#1a2438;color:#c8d4e6;border-radius:14px;padding:1.15rem 1.15rem;margin-top:.75rem}
-.ct-footer-top{display:grid;grid-template-columns:1.2fr repeat(4,1fr);gap:1rem}
-.ct-footer h3{margin:0 0 .45rem;font-size:.78rem;color:#fff;font-weight:700}
-.ct-footer a{display:block;color:#aebcd0;font-size:.8rem;text-decoration:none;padding:.15rem 0}
-.ct-footer a:hover{color:#00a4e4}
-.ct-addr{font-size:.8rem;line-height:1.45;opacity:.9;margin:.35rem 0 .65rem}
-.ct-social{display:flex;gap:.35rem;flex-wrap:wrap}
-.ct-social a{width:32px;height:32px;border-radius:50%;background:rgba(255,255,255,.1);display:grid;place-items:center;color:#fff;font-size:.7rem;font-weight:700}
-.ct-social a:hover{background:rgba(0,164,228,.35)}
-.ct-brand-row{display:flex;align-items:center;gap:.45rem;margin-bottom:.25rem}
-@@media(max-width:900px){.ct-grid,.ct-footer-top{grid-template-columns:1fr 1fr}}
-@@media(max-width:600px){.ct-grid,.ct-footer-top{grid-template-columns:1fr}}
+@@media(max-width:900px){.ct-grid{grid-template-columns:1fr}}
 </style>
 
 <section class="ct">
@@ -76,53 +65,6 @@ background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
             <a class="ct-btn" style="display:inline-block;margin-left:.3rem;background:linear-gradient(135deg,#36ac91,#07649d)" href="https://www.isaca.org" target="_blank" rel="noopener">ISACA.org</a>
         </article>
     </div>
-
-    <footer class="ct-footer">
-        <div class="ct-footer-top">
-            <div>
-                <div class="ct-brand-row"><TruLogo /><strong style="color:#fff">TRU Ask</strong></div>
-                <div class="ct-addr">1700 E. Golf Road, Suite 400, Schaumburg,<br />Illinois 60173, USA · +1-847-660-5505</div>
-                <div class="ct-social">
-                    <a href="https://www.linkedin.com/company/isaca" target="_blank" rel="noopener">in</a>
-                    <a href="https://www.facebook.com/ISACAGlobal" target="_blank" rel="noopener">f</a>
-                    <a href="https://www.instagram.com/isaca_global" target="_blank" rel="noopener">ig</a>
-                    <a href="https://www.youtube.com/user/ISACAVids" target="_blank" rel="noopener">▶</a>
-                </div>
-            </div>
-            <div>
-                <h3>Support</h3>
-                <a href="https://www.isaca.org/contact-us" target="_blank" rel="noopener">Contact Us</a>
-                <a href="https://www.isaca.org/fraud-reporting" target="_blank" rel="noopener">Fraud Reporting</a>
-                <a href="https://support.isaca.org" target="_blank" rel="noopener">Bug Reporting</a>
-                <h3 style="margin-top:.65rem">Careers</h3>
-                <a href="https://www.isaca.org/career-journey" target="_blank" rel="noopener">Career Journey</a>
-            </div>
-            <div>
-                <h3>About Us</h3>
-                <a href="https://www.isaca.org/about-us" target="_blank" rel="noopener">Who We Are</a>
-                <a href="https://www.isaca.org/about-us/newsroom" target="_blank" rel="noopener">Newsroom</a>
-                <a href="https://www.isaca.org/participate-and-volunteer" target="_blank" rel="noopener">Participate &amp; Volunteer</a>
-                <a href="https://www.isaca.org/about-us/leadership-and-governance" target="_blank" rel="noopener">Leadership &amp; Governance</a>
-                <a href="https://www.isaca.org/about-us/advocacy" target="_blank" rel="noopener">Advocacy</a>
-                <a href="https://www.isaca.org/foundation" target="_blank" rel="noopener">ISACA Foundation</a>
-            </div>
-            <div>
-                <h3>Join / Renew</h3>
-                <a href="https://www.isaca.org/membership/renew" target="_blank" rel="noopener">Renew</a>
-                <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">Professionals</a>
-                <a href="https://www.isaca.org/membership/students" target="_blank" rel="noopener">Students</a>
-                <a href="https://www.isaca.org/membership/recent-graduates" target="_blank" rel="noopener">Recent Graduates</a>
-            </div>
-            <div>
-                <h3>Credentialing</h3>
-                <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Membership</a>
-                <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
-                <a href="https://www.isaca.org/partnerships" target="_blank" rel="noopener">Partnerships</a>
-                <a href="https://www.isaca.org/training-and-events" target="_blank" rel="noopener">Training &amp; Events</a>
-                <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
-            </div>
-        </div>
-    </footer>
 </section>
 
 @code {
