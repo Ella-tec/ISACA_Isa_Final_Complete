@@ -5,17 +5,16 @@
   --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;
   --orange:#e57524;--red:#e31837;--purple:#6558b1;--yellow:#fbb034;
   box-sizing:border-box;width:100%;max-width:260px;
-  height:auto;min-height:0;
+  min-height:100%;height:100%;
   display:flex;flex-direction:column;justify-content:flex-start;align-items:stretch;
-  gap:0!important;row-gap:0!important;
-  padding:.35rem .4rem .4rem;margin:0;
+  gap:0!important;
+  padding:.4rem .45rem 0;margin:0;
   background:transparent;
   color:#e8eef6;font-family:"Roboto",system-ui,sans-serif;
   overflow:visible;
 }
-.nv>*{margin-top:0!important;margin-bottom:0!important}
 .nv a{text-decoration:none!important;color:inherit;max-width:100%}
-.nv__brand{display:flex;align-items:center;gap:.4rem;padding:0 .15rem .3rem;flex-shrink:0}
+.nv__brand{display:flex;align-items:center;gap:.4rem;padding:0 .15rem .35rem;flex-shrink:0}
 .nv__logo{
   width:32px;height:32px;border-radius:50%;flex-shrink:0;
   background:linear-gradient(145deg,#6cb33f 0%,#36ac91 42%,#00a4e4 100%);
@@ -51,10 +50,18 @@
   color:var(--accent,#00a4e4);font-weight:700;
 }
 .nv__item.active .nv__ico{background:var(--accent,#00a4e4);color:#fff}
-.nv__spacer,.nv__foot{display:contents!important;margin:0!important;padding:0!important;height:0!important;flex:none!important}
+
+/* Main nav grows; Account+Sign out stay at bottom edge */
+.nv__main{flex:1 1 auto;min-height:0;display:flex;flex-direction:column;gap:0}
+.nv__foot{
+  flex:0 0 auto;
+  margin-top:auto;
+  padding:.35rem 0 .55rem;
+  border-top:1px solid rgba(255,255,255,.08);
+}
 .nv__signout{
   display:flex;align-items:center;justify-content:center;gap:.28rem;
-  margin:.12rem 0 0!important;padding:.36rem .55rem;border-radius:8px;flex-shrink:0;
+  margin:.12rem 0 0!important;padding:.4rem .55rem;border-radius:8px;flex-shrink:0;
   background:linear-gradient(135deg,#0b1220,#1a3a28);color:#fff!important;
   font-weight:700;font-size:.76rem;border:1px solid rgba(108,179,63,.35);
 }
@@ -73,25 +80,29 @@
         <div><strong>TRU</strong><small>Ask</small></div>
     </div>
 
-    <div class="nv__sec">Workspace</div>
-    <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="" Match="NavLinkMatch.All"><span class="nv__ico">⌂</span> Home / TRU Ask</NavLink>
-    <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="analytics"><span class="nv__ico">▦</span> Analytics</NavLink>
-    <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="events"><span class="nv__ico">▭</span> Events &amp; Calendar</NavLink>
-    <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="knowledge-base"><span class="nv__ico">☰</span> Knowledge base</NavLink>
-    <NavLink class="nv__item" style="--accent:#e31837;--accent-bg:rgba(227,24,55,.18)" href="escalations"><span class="nv__ico">△</span> Escalations &amp; Tickets</NavLink>
-    <NavLink class="nv__item" style="--accent:#1d2d5c;--accent-bg:rgba(255,255,255,.12)" href="governance"><span class="nv__ico">◈</span> Governance &amp; Policies</NavLink>
-    <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="translator"><span class="nv__ico">文</span> Translator</NavLink>
-    <NavLink class="nv__item" style="--accent:#6cb33f;--accent-bg:rgba(108,179,63,.2)" href="content-health"><span class="nv__ico">◎</span> Content health</NavLink>
-    <NavLink class="nv__item" style="--accent:#e57524;--accent-bg:rgba(229,117,36,.2)" href="market-trends"><span class="nv__ico">↗</span> Market trends</NavLink>
-    <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="resource-library"><span class="nv__ico">▣</span> Resource Library</NavLink>
-    <NavLink class="nv__item" style="--accent:#fbb034;--accent-bg:rgba(251,176,52,.2)" href="weather"><span class="nv__ico">☀</span> Weather</NavLink>
+    <div class="nv__main">
+        <div class="nv__sec">Workspace</div>
+        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="" Match="NavLinkMatch.All"><span class="nv__ico">⌂</span> Home / TRU Ask</NavLink>
+        <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="analytics"><span class="nv__ico">▦</span> Analytics</NavLink>
+        <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="events"><span class="nv__ico">▭</span> Events &amp; Calendar</NavLink>
+        <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="knowledge-base"><span class="nv__ico">☰</span> Knowledge base</NavLink>
+        <NavLink class="nv__item" style="--accent:#e31837;--accent-bg:rgba(227,24,55,.18)" href="escalations"><span class="nv__ico">△</span> Escalations &amp; Tickets</NavLink>
+        <NavLink class="nv__item" style="--accent:#1d2d5c;--accent-bg:rgba(255,255,255,.12)" href="governance"><span class="nv__ico">◈</span> Governance &amp; Policies</NavLink>
+        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="translator"><span class="nv__ico">文</span> Translator</NavLink>
+        <NavLink class="nv__item" style="--accent:#6cb33f;--accent-bg:rgba(108,179,63,.2)" href="content-health"><span class="nv__ico">◎</span> Content health</NavLink>
+        <NavLink class="nv__item" style="--accent:#e57524;--accent-bg:rgba(229,117,36,.2)" href="market-trends"><span class="nv__ico">↗</span> Market trends</NavLink>
+        <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="resource-library"><span class="nv__ico">▣</span> Resource Library</NavLink>
+        <NavLink class="nv__item" style="--accent:#fbb034;--accent-bg:rgba(251,176,52,.2)" href="weather"><span class="nv__ico">☀</span> Weather</NavLink>
 
-    <div class="nv__sec">Developer</div>
-    <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="developer-dashboard"><span class="nv__ico">&lt;/&gt;</span> Developer dashboard</NavLink>
-    <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="pipeline-monitor"><span class="nv__ico">→</span> Pipeline monitor</NavLink>
+        <div class="nv__sec">Developer</div>
+        <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="developer-dashboard"><span class="nv__ico">&lt;/&gt;</span> Developer dashboard</NavLink>
+        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="pipeline-monitor"><span class="nv__ico">→</span> Pipeline monitor</NavLink>
+    </div>
 
-    <div class="nv__sec">Account</div>
-    <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="contact"><span class="nv__ico">✉</span> Contact</NavLink>
-    <NavLink class="nv__settings" href="settings"><span class="nv__ico">⚙</span> Settings</NavLink>
-    <a class="nv__signout" href="sign-in">Sign out</a>
+    <div class="nv__foot">
+        <div class="nv__sec">Account</div>
+        <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="contact"><span class="nv__ico">✉</span> Contact</NavLink>
+        <NavLink class="nv__settings" href="settings"><span class="nv__ico">⚙</span> Settings</NavLink>
+        <a class="nv__signout" href="sign-in">Sign out</a>
+    </div>
 </nav>
