@@ -6,16 +6,11 @@ html, body {
   margin: 0 !important;
   padding: 0 !important;
   height: 100% !important;
-  min-height: 100% !important;
   background: #eef2f7 !important;
-}
-html {
-  height: -webkit-fill-available;
 }
 body {
   min-height: 100vh;
   min-height: 100dvh;
-  min-height: -webkit-fill-available;
   overflow-x: clip !important;
 }
 
@@ -24,32 +19,24 @@ body {
   left: 0 !important;
   top: 0 !important;
   bottom: 0 !important;
-  width: 260px !important;
-  min-width: 260px !important;
-  max-width: 260px !important;
+  width: 248px !important;
+  min-width: 248px !important;
+  max-width: 248px !important;
   height: 100vh !important;
   height: 100dvh !important;
-  height: -webkit-fill-available;
-  display: flex !important;
-  flex-direction: column !important;
-  overflow: hidden !important;
+  overflow-y: auto !important;
+  overflow-x: hidden !important;
   z-index: 100 !important;
   margin: 0 !important;
   padding: 0 !important;
   border: none !important;
   background: linear-gradient(175deg, #0a1224 0%, #1d2d5c 48%, #12233f 100%) !important;
-}
-.sidebar > .nv,
-.sidebar > nav {
-  flex: 1 1 auto !important;
-  min-height: 0 !important;
-  height: 100% !important;
-  width: 100% !important;
+  -webkit-overflow-scrolling: touch;
 }
 
 .main {
-  margin-left: 260px !important;
-  width: calc(100% - 260px) !important;
+  margin-left: 248px !important;
+  width: calc(100% - 248px) !important;
   max-width: none !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
@@ -65,14 +52,7 @@ body {
   box-sizing: border-box !important;
 }
 
-.page {
-  display: block !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  background: transparent !important;
-}
-
+.page { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
 .top-row { display: none !important; }
 
 .content, article.content {
@@ -86,8 +66,7 @@ body {
 
 .hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
 .contact-page, .an, .settings-page, .translator-page, .market-page,
-.page-root, .page-content, .dashboard, .card-grid,
-.container, .container-fluid, .ct, .st, .pg, .rl, .wx {
+.page-root, .container, .container-fluid, .ct, .st, .pg, .rl, .wx {
   max-width: none !important;
   width: 100% !important;
   margin-left: 0 !important;
@@ -95,97 +74,44 @@ body {
   box-sizing: border-box !important;
 }
 
-.isa-widget {
-  position: relative !important;
-  z-index: 2147483000 !important;
-  --isa-rail-w: 0px;
-}
+.isa-widget { position: relative !important; z-index: 2147483000 !important; --isa-rail-w: 0px; }
 .isa-widget__backdrop {
-  position: fixed !important;
-  inset: 0 !important;
-  background: rgba(29, 45, 92, 0.25) !important;
-  z-index: 2147483000 !important;
+  position: fixed !important; inset: 0 !important;
+  background: rgba(29, 45, 92, 0.25) !important; z-index: 2147483000 !important;
 }
 .isa-widget__bubble {
-  position: fixed !important;
-  bottom: 24px !important;
-  right: 24px !important;
-  width: 64px !important;
-  height: 64px !important;
-  border: none !important;
-  border-radius: 50% !important;
-  background: transparent !important;
-  cursor: pointer !important;
-  display: grid !important;
-  place-items: center !important;
-  padding: 0 !important;
-  box-shadow: none !important;
-  z-index: 2147483001 !important;
+  position: fixed !important; bottom: 24px !important; right: 24px !important;
+  width: 64px !important; height: 64px !important; border: none !important;
+  border-radius: 50% !important; background: transparent !important;
+  cursor: pointer !important; display: grid !important; place-items: center !important;
+  padding: 0 !important; z-index: 2147483001 !important;
 }
 .isa-widget__panel.is-expanded {
-  position: fixed !important;
-  top: auto !important;
-  bottom: 24px !important;
-  right: 24px !important;
+  position: fixed !important; top: auto !important; bottom: 24px !important; right: 24px !important;
   width: min(380px, calc(100vw - 2rem)) !important;
   height: min(560px, calc(100vh - 3rem)) !important;
-  max-height: calc(100vh - 3rem) !important;
-  display: flex !important;
-  flex-direction: column !important;
-  background: #fff !important;
-  border-radius: 16px !important;
-  border: 1px solid #cbd2d9 !important;
-  box-shadow: 0 12px 40px rgba(0,0,0,0.22) !important;
-  overflow: hidden !important;
-  z-index: 2147483001 !important;
-  font-family: Roboto, Arial, sans-serif !important;
+  display: flex !important; flex-direction: column !important;
+  background: #fff !important; border-radius: 16px !important;
+  border: 1px solid #cbd2d9 !important; box-shadow: 0 12px 40px rgba(0,0,0,0.22) !important;
+  overflow: hidden !important; z-index: 2147483001 !important;
 }
 
 #blazor-error-ui {
-  display: none;
-  position: fixed;
-  bottom: 1rem;
-  left: 50%;
-  transform: translateX(-50%);
-  background: #1d2d5c;
-  color: #fff;
-  padding: 0.7rem 1.1rem;
-  border-radius: 12px;
-  z-index: 9999;
+  display: none; position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
+  background: #1d2d5c; color: #fff; padding: 0.7rem 1.1rem; border-radius: 12px; z-index: 9999;
 }
 
 @@media (max-width: 1100px) {
-  .sidebar {
-    width: 240px !important;
-    min-width: 240px !important;
-    max-width: 240px !important;
-  }
-  .main {
-    margin-left: 240px !important;
-    width: calc(100% - 240px) !important;
-  }
+  .sidebar { width: 230px !important; min-width: 230px !important; max-width: 230px !important; }
+  .main { margin-left: 230px !important; width: calc(100% - 230px) !important; }
 }
 
 @@media (max-width: 800px) {
   .sidebar {
-    position: relative !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    height: auto !important;
-    max-height: 50vh !important;
-    overflow-y: auto !important;
+    position: relative !important; width: 100% !important; min-width: 0 !important; max-width: none !important;
+    height: auto !important; max-height: 48vh !important;
   }
-  .main {
-    margin-left: 0 !important;
-    width: 100% !important;
-  }
-  .isa-widget__panel.is-expanded {
-    width: calc(100vw - 1rem) !important;
-    right: 0.5rem !important;
-    bottom: 0.5rem !important;
-    height: min(85vh, calc(100vh - 1rem)) !important;
-  }
+  .main { margin-left: 0 !important; width: 100% !important; }
 }
 </style>
 
