@@ -1,180 +1,310 @@
 @page "/translator"
 @rendermode InteractiveServer
+@inject HttpClient Http
+@inject IJSRuntime JS
+@inject IsaChatApp.Services.Orchestrator.Orchestrator Pipeline
 
-<PageTitle>Translator | Isa</PageTitle>
+<PageTitle>Translator | TRU</PageTitle>
 
 <style>
-.tr{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--teal:#36ac91;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1220px;margin:0 auto;padding-bottom:1.5rem}
-.tr-hero{border-radius:18px;padding:1.35rem 1.5rem;color:#fff;margin-bottom:.85rem;
-background:linear-gradient(115deg,#e57524,#1d2d5c 45%,#00a4e4);box-shadow:0 12px 36px rgba(29,45,92,.16);display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center}
-.tr-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
-.tr-hero p{margin:0;opacity:.92;font-size:.88rem;max-width:42ch}
-.tr-stats{display:flex;gap:.5rem}
-.tr-stat{background:rgba(255,255,255,.15);border-radius:12px;padding:.55rem .85rem;text-align:center;min-width:4.5rem}
-.tr-stat b{display:block;font-size:1.1rem}
-.tr-stat span{font-size:.65rem;opacity:.9;text-transform:uppercase;letter-spacing:.06em}
-.tr-toolbar{display:flex;align-items:center;gap:.5rem;flex-wrap:wrap;margin-bottom:.75rem}
-.tr-toolbar select{padding:.5rem .75rem;border-radius:10px;border:1px solid var(--line);font-family:inherit;font-weight:600}
-.tr-swap{border:none;cursor:pointer;width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;font-size:1.05rem;font-weight:700}
-.tr-quick{display:flex;flex-wrap:wrap;gap:.35rem;margin-bottom:.75rem}
-.tr-chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.3rem .7rem;font-size:.78rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--mid)}
-.tr-chip:hover{background:var(--light)}
-.tr-main{display:grid;grid-template-columns:1.3fr .9fr;gap:.75rem}
-.tr-panels{display:grid;grid-template-columns:1fr 1fr;gap:.65rem;min-height:280px}
-.tr-panel{background:#fff;border-radius:14px;border:1px solid var(--line);display:flex;flex-direction:column;overflow:hidden;box-shadow:0 6px 18px rgba(29,45,92,.05)}
-.tr-panel__head{display:flex;justify-content:space-between;padding:.55rem .85rem;background:var(--light);border-bottom:1px solid var(--line);font-size:.72rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
-.tr-panel__head button{border:none;background:transparent;cursor:pointer;color:var(--mid);font-weight:600;font-size:.78rem}
-.tr-panel textarea,.tr-panel__out{flex:1;border:0;resize:none;padding:.9rem 1rem;font-family:inherit;font-size:1rem;line-height:1.5;min-height:240px}
-.tr-panel textarea:focus{outline:none}
-.tr-panel__out{white-space:pre-wrap;color:var(--navy)}
-.tr-actions{display:flex;gap:.4rem;margin-top:.65rem;flex-wrap:wrap}
-.tr-btn{border:none;cursor:pointer;padding:.5rem .95rem;border-radius:10px;font-weight:600;font-family:inherit;font-size:.85rem;transition:transform .12s}
-.tr-btn:hover{transform:translateY(-1px)}
-.tr-btn-p{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
-.tr-btn-g{background:#fff;color:var(--navy);border:1px solid var(--line)}
-.tr-side .tr-card{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);margin-bottom:.65rem;box-shadow:0 6px 18px rgba(29,45,92,.05)}
-.tr-side h2{margin:0 0 .35rem;font-size:.95rem}
-.tr-side p,.tr-side li{font-size:.82rem;color:var(--muted);line-height:1.45}
-.tr-hist{font-size:.82rem;padding:.4rem 0;border-bottom:1px solid var(--line);cursor:pointer}
-.tr-hist:hover{color:var(--mid)}
-.tr-vid{display:block;border-radius:10px;overflow:hidden;aspect-ratio:16/9;background:#0b1220;margin-top:.4rem}
-.tr-vid iframe{width:100%;height:100%;border:0}
-@@media(max-width:960px){.tr-main,.tr-panels{grid-template-columns:1fr}}
+.tr {
+  --navy:#1d2d5c; --blue:#00a4e4; --mid:#07649d; --green:#6cb33f; --teal:#36ac91;
+  --light:#e7f0f5; --muted:#5f6b85; --line:#e2e8f0;
+  font-family:"Roboto",system-ui,sans-serif; color:var(--navy);
+  width:100%; margin:0; padding:0.65rem 0.85rem 1rem; box-sizing:border-box;
+}
+.tr-top { display:flex; align-items:center; justify-content:space-between; gap:1rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+.tr-top h1 { margin:0; font-family:"Roboto Slab",Georgia,serif; font-weight:400; font-size:1.3rem; }
+.tr-top p { margin:0.15rem 0 0; color:var(--muted); font-size:0.84rem; }
+.tr-meta { display:flex; gap:0.4rem; flex-wrap:wrap; }
+.tr-meta span { background:#fff; border:1px solid var(--line); border-radius:999px; padding:0.28rem 0.65rem; font-size:0.74rem; font-weight:600; color:var(--muted); }
+.tr-bar {
+  display:flex; align-items:center; gap:0.45rem; flex-wrap:wrap;
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:0.5rem 0.7rem; margin-bottom:0.7rem;
+  box-shadow:0 2px 8px rgba(29,45,92,0.04);
+}
+.tr-bar select {
+  flex:1; min-width:130px; max-width:210px;
+  padding:0.42rem 0.6rem; border-radius:10px; border:1px solid var(--line);
+  font:inherit; font-weight:600; color:var(--navy); background:#f7fafc;
+}
+.tr-swap {
+  width:40px; height:40px; border:none; border-radius:50%; cursor:pointer;
+  background:linear-gradient(135deg,var(--navy),var(--mid)); color:#fff; font-size:1.1rem;
+  flex-shrink:0; box-shadow:0 4px 12px rgba(7,100,157,0.25);
+}
+.tr-swap:hover { filter:brightness(1.08); }
+.tr-grid { display:grid; grid-template-columns:1fr 1fr; gap:0.7rem; margin-bottom:0.65rem; }
+.tr-box {
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  display:flex; flex-direction:column; overflow:hidden;
+  box-shadow:0 4px 14px rgba(29,45,92,0.05); min-height:260px;
+}
+.tr-box__h {
+  display:flex; justify-content:space-between; align-items:center;
+  padding:0.45rem 0.8rem; background:var(--light); border-bottom:1px solid var(--line);
+  font-size:0.7rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; color:var(--muted);
+}
+.tr-box__h button { border:none; background:transparent; cursor:pointer; color:var(--mid); font-weight:600; font-size:0.78rem; font-family:inherit; }
+.tr-box__h button:hover { color:var(--blue); }
+.tr-box textarea, .tr-box__out {
+  flex:1; border:0; resize:none; padding:0.85rem 1rem;
+  font:inherit; font-size:1rem; line-height:1.55; min-height:220px; background:#fff; color:var(--navy);
+}
+.tr-box textarea:focus { outline:none; }
+.tr-box__out { white-space:pre-wrap; }
+.tr-box__out.is-empty { color:var(--muted); }
+.tr-actions { display:flex; gap:0.4rem; flex-wrap:wrap; margin-bottom:0.75rem; }
+.tr-btn {
+  border:none; cursor:pointer; padding:0.48rem 0.95rem; border-radius:10px;
+  font-weight:600; font-family:inherit; font-size:0.84rem;
+  transition:transform 0.12s;
+}
+.tr-btn:hover:not(:disabled) { transform:translateY(-1px); }
+.tr-btn:disabled { opacity:0.5; cursor:not-allowed; }
+.tr-btn-p { background:linear-gradient(135deg,var(--navy),var(--blue)); color:#fff; box-shadow:0 4px 14px rgba(0,164,228,0.28); }
+.tr-btn-g { background:#fff; color:var(--navy); border:1px solid var(--line); }
+.tr-status { font-size:0.8rem; color:var(--muted); margin:0 0 0.45rem; min-height:1.15em; }
+.tr-status.is-busy { color:var(--mid); font-weight:600; }
+.tr-hist {
+  background:#fff; border:1px solid var(--line); border-radius:14px;
+  padding:0.8rem 1rem; box-shadow:0 2px 8px rgba(29,45,92,0.04);
+}
+.tr-hist h2 { margin:0 0 0.45rem; font-size:0.9rem; }
+.tr-hist__item { font-size:0.82rem; padding:0.4rem 0; border-bottom:1px solid var(--line); cursor:pointer; }
+.tr-hist__item:last-child { border-bottom:none; }
+.tr-hist__item:hover { color:var(--mid); }
+.tr-hist__meta { font-size:0.7rem; color:var(--muted); }
+@media (max-width:900px) {
+  .tr-grid { grid-template-columns:1fr; }
+  .tr-bar select { max-width:none; }
+}
 </style>
 
 <section class="tr">
-    <header class="tr-hero">
+    <div class="tr-top">
         <div>
-            <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Workspace</div>
             <h1>Translator</h1>
-            <p>Side-by-side translation for chapter communications. Preview updates as you type.</p>
+            <p>60+ languages · auto-detect · powered by TRU AI</p>
         </div>
-        <div class="tr-stats">
-            <div class="tr-stat"><b>@chars</b><span>Chars</span></div>
-            <div class="tr-stat"><b>@words</b><span>Words</span></div>
-            <div class="tr-stat"><b>@history.Count</b><span>History</span></div>
+        <div class="tr-meta">
+            <span>@chars chars</span>
+            <span>@words words</span>
+            <span>@history.Count saved</span>
         </div>
-    </header>
+    </div>
 
-    <div class="tr-toolbar">
-        <select @bind="sourceLang" @bind:after="TranslateLive">
+    <div class="tr-bar">
+        <select @bind="sourceLang" aria-label="Source language">
             @foreach (var l in Langs) { <option value="@l.Code">@l.Name</option> }
         </select>
-        <button type="button" class="tr-swap" @onclick="Swap" title="Swap">⇄</button>
-        <select @bind="targetLang" @bind:after="TranslateLive">
-            @foreach (var l in Langs) { <option value="@l.Code">@l.Name</option> }
+        <button type="button" class="tr-swap" @onclick="Swap" title="Swap" aria-label="Swap languages">⇄</button>
+        <select @bind="targetLang" aria-label="Target language">
+            @foreach (var l in Langs.Where(x => x.Code != "auto")) { <option value="@l.Code">@l.Name</option> }
         </select>
     </div>
 
-    <div class="tr-quick">
-        <span style="font-size:.78rem;font-weight:600;color:var(--muted);align-self:center">Quick:</span>
-        @foreach (var p in phrases)
+    <div class="tr-grid">
+        <div class="tr-box">
+            <div class="tr-box__h"><span>Source</span><button type="button" @onclick="Clear">Clear</button></div>
+            <textarea @bind="sourceText" @bind:event="oninput" placeholder="Type or paste text…" aria-label="Source text"></textarea>
+        </div>
+        <div class="tr-box">
+            <div class="tr-box__h"><span>Translation</span><button type="button" @onclick="CopyOut">Copy</button></div>
+            <div class="tr-box__out @(string.IsNullOrWhiteSpace(outputText) ? "is-empty" : null)">
+                @(string.IsNullOrWhiteSpace(outputText) ? "Translation appears here…" : outputText)
+            </div>
+        </div>
+    </div>
+
+    <p class="tr-status @(busy ? "is-busy" : null)">@statusMsg</p>
+
+    <div class="tr-actions">
+        <button type="button" class="tr-btn tr-btn-p" @onclick="TranslateAsync" disabled="@(busy || string.IsNullOrWhiteSpace(sourceText))">
+            @(busy ? "Translating…" : "Translate")
+        </button>
+        <button type="button" class="tr-btn tr-btn-g" @onclick="CopyOut" disabled="@string.IsNullOrWhiteSpace(outputText)">Copy</button>
+        <button type="button" class="tr-btn tr-btn-g" @onclick="Swap">Swap</button>
+        <button type="button" class="tr-btn tr-btn-g" @onclick="Clear">Clear</button>
+        <button type="button" class="tr-btn tr-btn-g" @onclick="SaveHistory" disabled="@string.IsNullOrWhiteSpace(outputText)">Save</button>
+    </div>
+
+    <div class="tr-hist">
+        <h2>Recent</h2>
+        @if (history.Count == 0)
         {
-            <button type="button" class="tr-chip" @onclick="() => UsePhrase(p)">@p</button>
+            <p style="margin:0;font-size:0.85rem;color:var(--muted)">No saved translations yet.</p>
         }
-    </div>
-
-    <div class="tr-main">
-        <div>
-            <div class="tr-panels">
-                <div class="tr-panel">
-                    <div class="tr-panel__head"><span>Source</span><button type="button" @onclick="Clear">Clear</button></div>
-                    <textarea @bind="sourceText" @bind:event="oninput" @bind:after="TranslateLive" placeholder="Type or paste text…"></textarea>
+        else
+        {
+            @foreach (var h in history)
+            {
+                <div class="tr-hist__item" @onclick="() => LoadHistory(h)">
+                    <div class="tr-hist__meta">@h.From → @h.To</div>
+                    <div>@h.Preview</div>
                 </div>
-                <div class="tr-panel">
-                    <div class="tr-panel__head"><span>Translation</span><button type="button" @onclick="CopyOut">Copy</button></div>
-                    <div class="tr-panel__out">@(string.IsNullOrWhiteSpace(outputText) ? "Translation appears here automatically…" : outputText)</div>
-                </div>
-            </div>
-            <div class="tr-actions">
-                <button type="button" class="tr-btn tr-btn-p" @onclick="Speak">Listen (TTS)</button>
-                <button type="button" class="tr-btn tr-btn-g" @onclick="CopyOut">Copy translation</button>
-                <button type="button" class="tr-btn tr-btn-g" @onclick="Swap">Swap languages</button>
-                <button type="button" class="tr-btn tr-btn-g" @onclick="SaveHistory">Save to history</button>
-            </div>
-            <p style="margin-top:.65rem;font-size:.78rem;color:var(--muted)">Demo translator uses phrase mapping. Connect a translation API for production accuracy. TTS uses the browser where supported.</p>
-        </div>
-        <aside class="tr-side">
-            <div class="tr-card">
-                <h2>Translation tips</h2>
-                <ul style="margin:0;padding-left:1.1rem">
-                    <li>Keep certification titles (CISA, CISM, CRISC) unchanged.</li>
-                    <li>Protect member names and confidential details.</li>
-                    <li>Have a bilingual reviewer check final copy.</li>
-                    <li>Match formal tone for board messages.</li>
-                </ul>
-            </div>
-            <div class="tr-card">
-                <h2>Recent translations</h2>
-                @if (history.Count == 0)
-                {
-                    <p>None yet — save a preview to build history.</p>
-                }
-                else
-                {
-                    @foreach (var h in history.Take(6))
-                    {
-                        <div class="tr-hist" @onclick="() => LoadHistory(h)">@h</div>
-                    }
-                }
-            </div>
-            <div class="tr-card">
-                <h2>Language learning</h2>
-                <p>Short ISACA-related session (optional watch while drafting).</p>
-                <div class="tr-vid">
-                    <iframe src="https://www.youtube.com/embed/cIxtlh_LuR4?rel=0" title="Learning" allowfullscreen></iframe>
-                </div>
-            </div>
-        </aside>
+            }
+        }
     </div>
 </section>
 
 @code {
     private record Lang(string Code, string Name);
+    private record HistItem(string From, string To, string Preview, string Full);
+
     private static readonly Lang[] Langs =
     {
+        new("auto","Auto-detect"),
         new("en","English"), new("es","Spanish"), new("fr","French"), new("de","German"),
-        new("pt","Portuguese"), new("ar","Arabic"), new("zh","Chinese"), new("ja","Japanese")
-    };
-    private static readonly string[] phrases =
-    {
-        "You are invited to our next chapter meeting.",
-        "Registration closes this Friday.",
-        "CPE credits will be awarded after attendance.",
-        "Please bring your membership ID."
-    };
-    private static readonly Dictionary<string,string> Map = new(StringComparer.OrdinalIgnoreCase)
-    {
-        ["hello"]="hola",["thank you"]="gracias",["welcome"]="bienvenido",["chapter"]="capítulo",
-        ["meeting"]="reunión",["membership"]="membresía",["event"]="evento",["please"]="por favor"
+        new("pt","Portuguese"), new("it","Italian"), new("nl","Dutch"), new("pl","Polish"),
+        new("ru","Russian"), new("uk","Ukrainian"), new("cs","Czech"), new("sk","Slovak"),
+        new("ro","Romanian"), new("hu","Hungarian"), new("bg","Bulgarian"), new("hr","Croatian"),
+        new("sr","Serbian"), new("sl","Slovenian"), new("el","Greek"), new("tr","Turkish"),
+        new("ar","Arabic"), new("he","Hebrew"), new("fa","Persian"), new("ur","Urdu"),
+        new("hi","Hindi"), new("bn","Bengali"), new("pa","Punjabi"), new("ta","Tamil"),
+        new("te","Telugu"), new("mr","Marathi"), new("gu","Gujarati"), new("kn","Kannada"),
+        new("ml","Malayalam"), new("th","Thai"), new("vi","Vietnamese"), new("id","Indonesian"),
+        new("ms","Malay"), new("tl","Filipino"), new("zh","Chinese (Simplified)"), new("zh-TW","Chinese (Traditional)"),
+        new("ja","Japanese"), new("ko","Korean"), new("sw","Swahili"), new("am","Amharic"),
+        new("yo","Yoruba"), new("zu","Zulu"), new("af","Afrikaans"), new("sq","Albanian"),
+        new("hy","Armenian"), new("az","Azerbaijani"), new("eu","Basque"), new("be","Belarusian"),
+        new("bs","Bosnian"), new("ca","Catalan"), new("da","Danish"), new("et","Estonian"),
+        new("fi","Finnish"), new("gl","Galician"), new("ka","Georgian"), new("is","Icelandic"),
+        new("ga","Irish"), new("lv","Latvian"), new("lt","Lithuanian"), new("lb","Luxembourgish"),
+        new("mk","Macedonian"), new("mt","Maltese"), new("no","Norwegian"), new("sv","Swedish"),
+        new("cy","Welsh"), new("eo","Esperanto")
     };
 
-    private string sourceLang = "en", targetLang = "es", sourceText = "", outputText = "";
-    private readonly List<string> history = new();
+    private static readonly string[] OllamaHosts = { "http://100.89.6.69:11434", "http://localhost:11434" };
+
+    private string sourceLang = "auto";
+    private string targetLang = "es";
+    private string sourceText = "";
+    private string outputText = "";
+    private string statusMsg = "";
+    private bool busy;
+    private readonly List<HistItem> history = new();
+
     private int chars => sourceText?.Length ?? 0;
-    private int words => string.IsNullOrWhiteSpace(sourceText) ? 0 : sourceText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Length;
+    private int words => string.IsNullOrWhiteSpace(sourceText)
+        ? 0 : sourceText.Split((char[]?)null, StringSplitOptions.RemoveEmptyEntries).Length;
 
-    private void TranslateLive()
+    private string LangName(string code) => Langs.FirstOrDefault(l => l.Code == code)?.Name ?? code;
+
+    private async Task TranslateAsync()
     {
-        if (string.IsNullOrWhiteSpace(sourceText)) { outputText = ""; return; }
-        if (sourceLang == targetLang) { outputText = sourceText; return; }
-        var t = sourceText;
-        foreach (var kv in Map.OrderByDescending(k => k.Key.Length))
-            t = System.Text.RegularExpressions.Regex.Replace(t, $@"\b{System.Text.RegularExpressions.Regex.Escape(kv.Key)}\b", kv.Value, System.Text.RegularExpressions.RegexOptions.IgnoreCase);
-        outputText = $"[{targetLang.ToUpperInvariant()}] {t}";
+        if (string.IsNullOrWhiteSpace(sourceText) || busy) return;
+        busy = true;
+        statusMsg = "Translating with TRU AI…";
+        outputText = "";
+        StateHasChanged();
+
+        var from = sourceLang == "auto" ? "the detected source language" : LangName(sourceLang);
+        var to = LangName(targetLang);
+        var prompt =
+            $"Translate the following text from {from} to {to}.\n" +
+            "Return ONLY the translation. No quotes, labels, notes, or explanation.\n\n" +
+            sourceText.Trim();
+
+        try
+        {
+            var ctx = new IsaChatApp.Services.Orchestrator.QueryContext
+            {
+                TraceId = Guid.NewGuid().ToString("N"),
+                Question = prompt,
+                IncomingToken = null
+            };
+            var result = await Pipeline.RunAsync(ctx);
+            var text = (result.Message ?? "").Trim().Trim('"');
+            if (!string.IsNullOrWhiteSpace(text) && result.Status is "answered" or "escalated")
+            {
+                outputText = text;
+                statusMsg = "Done · TRU pipeline";
+            }
+            else
+            {
+                text = await TryOllamaAsync(prompt);
+                outputText = string.IsNullOrWhiteSpace(text) ? "(No translation returned — check AI connection)" : text.Trim().Trim('"');
+                statusMsg = string.IsNullOrWhiteSpace(text) ? "AI unavailable" : "Done · model";
+            }
+        }
+        catch (Exception ex)
+        {
+            try
+            {
+                var text = await TryOllamaAsync(prompt);
+                outputText = string.IsNullOrWhiteSpace(text) ? "" : text.Trim().Trim('"');
+                statusMsg = string.IsNullOrWhiteSpace(outputText) ? "Translation failed: " + ex.Message : "Done · model";
+            }
+            catch
+            {
+                outputText = "";
+                statusMsg = "Translation failed: " + ex.Message;
+            }
+        }
+        finally { busy = false; }
     }
-    private void Swap() { (sourceLang, targetLang) = (targetLang, sourceLang); TranslateLive(); }
-    private void Clear() { sourceText = ""; outputText = ""; }
-    private void UsePhrase(string p) { sourceText = p; TranslateLive(); }
-    private void CopyOut() { }
-    private void Speak() { }
+
+    private async Task<string?> TryOllamaAsync(string prompt)
+    {
+        foreach (var host in OllamaHosts)
+        {
+            try
+            {
+                using var cts = new CancellationTokenSource(TimeSpan.FromSeconds(45));
+                var tags = await Http.GetFromJsonAsync<TagsResponse>($"{host}/api/tags", cts.Token);
+                var model = tags?.Models?.FirstOrDefault()?.Name;
+                if (string.IsNullOrEmpty(model)) continue;
+
+                var res = await Http.PostAsJsonAsync($"{host}/api/generate", new
+                {
+                    model,
+                    prompt,
+                    stream = false
+                }, cts.Token);
+                if (!res.IsSuccessStatusCode) continue;
+                var body = await res.Content.ReadFromJsonAsync<GenResponse>(cancellationToken: cts.Token);
+                if (!string.IsNullOrWhiteSpace(body?.Response)) return body.Response;
+            }
+            catch { }
+        }
+        return null;
+    }
+
+    private void Swap()
+    {
+        if (sourceLang == "auto") { sourceLang = targetLang; targetLang = "en"; }
+        else (sourceLang, targetLang) = (targetLang, sourceLang);
+        if (!string.IsNullOrWhiteSpace(outputText) && !string.IsNullOrWhiteSpace(sourceText))
+            (sourceText, outputText) = (outputText, sourceText);
+    }
+
+    private void Clear() { sourceText = ""; outputText = ""; statusMsg = ""; }
+
+    private async Task CopyOut()
+    {
+        if (string.IsNullOrWhiteSpace(outputText)) return;
+        try
+        {
+            await JS.InvokeVoidAsync("navigator.clipboard.writeText", outputText);
+            statusMsg = "Copied";
+        }
+        catch { statusMsg = "Copy not available"; }
+    }
+
     private void SaveHistory()
     {
         if (string.IsNullOrWhiteSpace(outputText)) return;
-        var line = outputText.Length > 80 ? outputText[..80] + "…" : outputText;
-        history.Insert(0, line);
-        if (history.Count > 12) history.RemoveAt(history.Count - 1);
+        var preview = outputText.Length > 90 ? outputText[..90] + "…" : outputText;
+        history.Insert(0, new HistItem(LangName(sourceLang), LangName(targetLang), preview, outputText));
+        if (history.Count > 20) history.RemoveAt(history.Count - 1);
+        statusMsg = "Saved";
     }
-    private void LoadHistory(string h) { outputText = h; }
+
+    private void LoadHistory(HistItem h) { outputText = h.Full; statusMsg = ""; }
+
+    private class TagsResponse { public List<TagsModel>? Models { get; set; } }
+    private class TagsModel { public string? Name { get; set; } }
+    private class GenResponse { public string? Response { get; set; } }
 }
