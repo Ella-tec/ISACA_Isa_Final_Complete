@@ -10,8 +10,8 @@ font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width
 background:linear-gradient(120deg,#1d2d5c,#07649d 50%,#00a4e4);box-shadow:0 8px 24px rgba(29,45,92,.12)}
 .ct-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
 .ct-hero p{margin:0;opacity:.92;font-size:.88rem}
-.ct-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:.7rem;margin-bottom:.85rem}
-.ct-card{background:#fff;border-radius:14px;padding:1rem 1.1rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05)}
+.ct-grid{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(280px,1fr);gap:.85rem;margin-bottom:.85rem;align-items:stretch}
+.ct-card{background:#fff;border-radius:14px;padding:1.1rem 1.2rem;min-width:0;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05)}
 .ct-card h2{margin:0 0 .55rem;font-size:1rem}
 .ct-card label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:.15rem}
 .ct-card input,.ct-card textarea,.ct-card select{width:100%;box-sizing:border-box;padding:.48rem .65rem;border-radius:9px;border:1px solid var(--line);margin-bottom:.5rem;font-family:inherit}
@@ -19,7 +19,7 @@ background:linear-gradient(120deg,#1d2d5c,#07649d 50%,#00a4e4);box-shadow:0 8px 
 background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
 .ct-btn:hover{filter:brightness(1.06)}
 .ct-ok{background:#e8f6e8;color:#2d6a2d;padding:.5rem .75rem;border-radius:9px;font-size:.85rem;margin-bottom:.5rem}
-@@media(max-width:900px){.ct-grid{grid-template-columns:1fr}}
+@@media(max-width:900px){.ct-grid{grid-template-columns:1fr}} @@media(max-width:560px){.ct{padding:.5rem}.ct-card{padding:.9rem}.ct-hero{padding:.85rem 1rem}.ct-btn{margin:.15rem 0}}
 </style>
 
 <section class="ct">
