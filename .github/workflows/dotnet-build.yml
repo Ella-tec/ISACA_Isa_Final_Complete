@@ -19,10 +19,34 @@ jobs:
         with:
           dotnet-version: 10.0.x
 
+      # Resolve the project from the checked-out workspace instead of assuming
+      # an extra nested directory exists on the GitHub-hosted runner.
+      - name: Locate solution or project
+        shell: pwsh
+        run: |
+          $candidate = Get-ChildItem -Path $env:GITHUB_WORKSPACE -Recurse -File |
+            Where-Object {
+              ($_.Extension -in '.sln', '.slnx', '.csproj') -and
+              $_.FullName -notmatch '[\\/](bin|obj)[\\/]'
+            } |
+            Sort-Object @{
+              Expression = {
+                if ($_.Extension -in '.sln', '.slnx') { 0 } else { 1 }
+              }
+            }, FullName |
+            Select-Object -First 1
+
+          if (-not $candidate) {
+            throw "No .sln, .slnx, or .csproj file was found under $env:GITHUB_WORKSPACE."
+          }
+
+          "PROJECT_PATH=$($candidate.FullName)" | Out-File -FilePath $env:GITHUB_ENV -Append -Encoding utf8
+          Write-Host "Using project: $($candidate.FullName)"
+
       - name: Restore dependencies
-        run: dotnet restore IsaChatApp.csproj
-        working-directory: ISACA_Isa_Final_Complete
+        shell: pwsh
+        run: dotnet restore "$env:PROJECT_PATH"
 
       - name: Build
-        run: dotnet build IsaChatApp.csproj --configuration Release --no-restore
-        working-directory: ISACA_Isa_Final_Complete
+        shell: pwsh
+        run: dotnet build "$env:PROJECT_PATH" --configuration Release --no-restore

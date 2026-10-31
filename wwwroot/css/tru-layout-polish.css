@@ -1,0 +1,158 @@
+/* TRU platform-wide layout normalization.
+   Loaded after the existing theme files so page-level legacy rules cannot
+   reintroduce narrow containers, stretched cards, or oversized blank panels. */
+
+:root {
+  --tru-page-gutter: clamp(0.65rem, 1.15vw, 1.15rem);
+  --tru-section-gap: clamp(0.65rem, 1vw, 1rem);
+}
+
+html, body {
+  width: 100%;
+  min-width: 320px;
+  margin: 0;
+}
+
+.main {
+  min-width: 0 !important;
+}
+
+article.content {
+  width: 100% !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible;
+}
+
+.content > * {
+  min-width: 0;
+}
+
+/* Standard page roots used throughout the workspace. */
+.hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
+.contact-page, .an, .settings-page, .translator-page, .market-page,
+.page-root, .ct, .st, .pg, .rl, .wx, .dd {
+  width: 100% !important;
+  max-width: none !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+  box-sizing: border-box !important;
+}
+
+/* Page padding stays consistent without imposing a fixed page height. */
+.ct, .st, .pg, .dd, .an, .ev, .kb, .gov, .esc, .tr, .ch, .mt,
+.dev, .pipe, .rl, .wx, .isa-page, .settings-page, .translator-page,
+.market-page, .page-root {
+  padding: var(--tru-page-gutter) !important;
+}
+
+/* Developer dashboard was the one page retaining a centered 1180px cap. */
+.dd {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: var(--tru-page-gutter) !important;
+}
+
+/* Do not stretch short forms and information cards to fill the viewport. */
+.st {
+  min-height: 0 !important;
+  height: auto !important;
+}
+.st-body {
+  flex: 0 0 auto !important;
+  min-height: 0 !important;
+  align-items: start;
+}
+.st-card {
+  height: auto !important;
+  min-height: 0 !important;
+}
+.st-side ul {
+  flex: 0 1 auto !important;
+}
+.ct {
+  min-height: 0 !important;
+  height: auto !important;
+}
+.ct-grid {
+  align-items: start;
+}
+.ct-card {
+  min-width: 0;
+  height: auto;
+}
+
+/* Consistent grid behavior: cards may shrink instead of forcing overflow. */
+.isa-stat-grid, .isa-content-grid, .isa-card-grid, .isa-article-grid,
+.dd-stats, .dd-grid, .pg-stats, .pg-grid, .ct-grid, .st-body {
+  min-width: 0;
+}
+.isa-stat-grid > *, .isa-content-grid > *, .isa-card-grid > *,
+.isa-article-grid > *, .dd-stats > *, .dd-grid > *,
+.pg-stats > *, .pg-grid > *, .ct-grid > *, .st-body > * {
+  min-width: 0;
+}
+
+/* Shared spacing rhythm for page sections and cards. */
+.isa-page-heading,
+.isa-stat-grid,
+.isa-content-grid,
+.isa-hero-strip,
+.dd-hero,
+.dd-stats,
+.dd-grid,
+.pg-hero,
+.pg-stats,
+.pg-grid,
+.ct-hero,
+.ct-grid {
+  margin-bottom: var(--tru-section-gap);
+}
+
+/* Tables and long labels must remain inside their own cards. */
+.table-responsive, .table-responsive > table,
+.dd-card, .pg-card, .ct-card, .st-card {
+  max-width: 100%;
+}
+.table-responsive {
+  overflow-x: auto;
+}
+
+/* Responsive navigation and page content. */
+@media (max-width: 800px) {
+  .main {
+    margin-left: 0 !important;
+    width: 100% !important;
+  }
+  .dd-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+  .dd-grid, .st-body, .ct-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+@media (max-width: 560px) {
+  .dd-stats, .pg-stats, .isa-stat-grid, .isa-stat-grid--three {
+    grid-template-columns: 1fr !important;
+  }
+  .dd-hero, .isa-panel, .dd-card, .pg-card, .ct-card, .st-card {
+    padding: 0.85rem !important;
+  }
+  .table {
+    min-width: 540px;
+  }
+}
+
+/* Respect reduced-motion preferences across the complete workspace. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
