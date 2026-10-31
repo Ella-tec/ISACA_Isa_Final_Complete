@@ -7,34 +7,51 @@
 @inject KeycloakSignInService SignInService
 @inject NavigationManager Navigation
 
-@* Sign-in: top-left brand text + animated crossing Cs (user HTML) *@
-
-<PageTitle>Sign in | Isa</PageTitle>
+<PageTitle>Sign in | TRU</PageTitle>
 
 <div class="signin">
 
-    <aside class="signin__brand">
-        @* Text stays top-left, separate from the Cs *@
-        <div class="signin__brandInner">
-            <p class="signin__brandName">Isa</p>
-            <p class="signin__brandTag">Chapter Support Assistant</p>
-            <p class="signin__brandLine">@Text.BrandLine</p>
+    <aside class="signin__brand" aria-hidden="false">
+        @* Full-height left edge frame: rings + diamond lattice *@
+        <div class="signin__frame" aria-hidden="true">
+            <div class="signin__frame-rings">
+                <span class="fr fr1"></span>
+                <span class="fr fr2"></span>
+                <span class="fr fr3"></span>
+                <span class="fr fr4"></span>
+                <span class="fr fr5"></span>
+            </div>
+            <div class="signin__frame-lattice"></div>
         </div>
 
-        @* Exact crossing-C animation from provided HTML *@
-        <div class="signin__logoStage" aria-hidden="true">
-            <div class="signin__logo">
-                <div class="signin__c signin__c--blue"></div>
-                <div class="signin__c signin__c--green"></div>
-                <div class="signin__cGlow"></div>
+        <div class="signin__brandTop">
+            <span class="signin__dot"></span>
+            <strong>TRU</strong>
+        </div>
+
+        <div class="signin__orbitStage">
+            <div class="signin__orbits" aria-hidden="true">
+                @for (var i = 1; i <= 9; i++)
+                {
+                    <div class="signin__orbit signin__orbit--@i">
+                        <span class="signin__planet"></span>
+                    </div>
+                }
+            </div>
+            <div class="signin__core">
+                <div class="signin__sphere">
+                    <span class="signin__sphereText">TRU</span>
+                </div>
             </div>
         </div>
+
+        <p class="signin__brandLine">Answers from approved chapter guidance, with the sources to prove it.</p>
     </aside>
 
     <main class="signin__panel">
         <div class="signin__card">
-            <h1 class="signin__title">@Text.Title</h1>
-            <p class="signin__lede">@Text.Lede</p>
+            <h1 class="signin__title">Sign in</h1>
+            <p class="signin__lede">Use the email and password for your TRU account.</p>
 
             @if (ErrorMessage is not null)
             {
@@ -47,7 +64,7 @@
                     <DataAnnotationsValidator />
 
                     <div class="signin__field">
-                        <label class="signin__label" for="signin-email">@Text.EmailLabel</label>
+                        <label class="signin__label" for="signin-email">Email address</label>
                         <InputText id="signin-email"
                                    class="signin__input"
                                    @bind-Value="Input.Email"
@@ -61,7 +78,7 @@
                     </div>
 
                     <div class="signin__field">
-                        <label class="signin__label" for="signin-password">@Text.PasswordLabel</label>
+                        <label class="signin__label" for="signin-password">Password</label>
                         <InputText id="signin-password"
                                    class="signin__input"
                                    @bind-Value="Input.Password"
@@ -71,36 +88,19 @@
                         <ValidationMessage For="() => Input.Password" />
                     </div>
 
-                    <button type="submit" class="signin__submit">@Text.SubmitButton</button>
+                    <button type="submit" class="signin__submit">Sign in</button>
                 </EditForm>
             }
 
-            <p class="signin__note">@Text.PrototypeNote</p>
-            <a class="signin__back" href="/" data-enhance-nav="false">&larr; @Text.BackLink</a>
+            <p class="signin__note">TRU is a prototype. Test accounts are set up by the project team.</p>
+            <a class="signin__back" href="/" data-enhance-nav="false">&larr; Back to TRU home</a>
         </div>
     </main>
 
 </div>
 
 @code {
-    private static class Text
-    {
-        public const string BrandLine = "Answers from ISACA's approved chapter guidance, with the sources to prove it.";
-        public const string Title = "Sign in";
-        public const string Lede = "Use the email address and password for your Isa account.";
-        public const string EmailLabel = "Email address";
-        public const string PasswordLabel = "Password";
-        public const string SubmitButton = "Sign in";
-        public const string PrototypeNote = "Isa is a prototype. Test accounts are set up by the project team.";
-        public const string BackLink = "Back to Isa home";
-        public const string EmailRequired = "Enter your email address.";
-        public const string PasswordRequired = "Enter your password.";
-        public const string WrongCredentials = "That email address and password don't match an Isa account. Check them and try again.";
-        public const string ServiceUnavailable = "The sign-in service isn't reachable right now. Please try again in a few minutes.";
-        public const string NotConfigured = "Sign-in isn't set up on this server yet. A developer can find the details in the app log.";
-    }
-
-    [CascadingParameter] private HttpContext HttpContext { get; set; } = default!;
+    [CascadingParameter] private HttpContext? HttpContext { get; set; }
 
     [SupplyParameterFromForm(FormName = "isa-sign-in")]
     private SignInInput? Input { get; set; }
@@ -114,21 +114,32 @@
     private async Task HandleSignInAsync()
     {
         if (Input is null) return;
-        var result = await SignInService.SignInAsync(Input.Email, Input.Password);
 
-        if (result.Outcome == SignInOutcome.Success && result.Principal is not null)
+        try
         {
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Principal);
-            Navigation.NavigateTo(SafeReturnUrl, forceLoad: true);
-            return;
+            var result = await SignInService.SignInAsync(Input.Email, Input.Password);
+
+            if (result.Outcome == SignInOutcome.Success && result.Principal is not null)
+            {
+                if (HttpContext is not null)
+                {
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, result.Principal);
+                }
+                Navigation.NavigateTo(SafeReturnUrl, forceLoad: true);
+                return;
+            }
+
+            ErrorMessage = result.Outcome switch
+            {
+                SignInOutcome.WrongCredentials => "That email and password don't match a TRU account. Check them and try again.",
+                SignInOutcome.NotConfigured => "Sign-in isn't set up on this server yet.",
+                _ => "The sign-in service isn't reachable right now. Please try again in a few minutes."
+            };
         }
-
-        ErrorMessage = result.Outcome switch
+        catch
         {
-            SignInOutcome.WrongCredentials => Text.WrongCredentials,
-            SignInOutcome.NotConfigured => Text.NotConfigured,
-            _ => Text.ServiceUnavailable
-        };
+            ErrorMessage = "Something went wrong while signing in. Please reload and try again.";
+        }
 
         Input.Password = string.Empty;
     }
@@ -143,10 +154,10 @@
 
     private sealed class SignInInput
     {
-        [Required(ErrorMessage = Text.EmailRequired)]
+        [Required(ErrorMessage = "Enter your email address.")]
         public string Email { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = Text.PasswordRequired)]
+        [Required(ErrorMessage = "Enter your password.")]
         public string Password { get; set; } = string.Empty;
     }
 }
