@@ -2,77 +2,10 @@
 @inject NavigationManager Navigation
 
 <style>
-html, body {
-  margin: 0 !important;
-  padding: 0 !important;
-  height: 100% !important;
-  background: #eef2f7 !important;
-}
-body {
-  min-height: 100vh;
-  min-height: 100dvh;
-  overflow-x: clip !important;
-}
-
-.sidebar {
-  position: fixed !important;
-  left: 0 !important;
-  top: 0 !important;
-  bottom: 0 !important;
-  width: 224px !important;
-  min-width: 224px !important;
-  max-width: 224px !important;
-  height: 100vh !important;
-  height: 100dvh !important;
-  overflow-y: auto !important;
-  overflow-x: hidden !important;
-  z-index: 100 !important;
-  margin: 0 !important;
-  padding: 0 !important;
-  border: none !important;
-  background: linear-gradient(175deg, #0a1224 0%, #1d2d5c 48%, #12233f 100%) !important;
-  -webkit-overflow-scrolling: touch;
-}
-
-.main {
-  margin-left: 224px !important;
-  width: calc(100% - 224px) !important;
-  max-width: none !important;
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
-  display: block !important;
-  margin-top: 0 !important;
-  margin-right: 0 !important;
-  margin-bottom: 0 !important;
-  padding: 0 !important;
-  background:
-    radial-gradient(1200px 600px at 100% -10%, rgba(0,164,228,.06), transparent 55%),
-    radial-gradient(900px 500px at -5% 100%, rgba(54,172,145,.05), transparent 50%),
-    #eef2f7 !important;
-  box-sizing: border-box !important;
-}
-
-.page { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-.top-row { display: none !important; }
-
-.content, article.content {
-  display: block !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  max-width: none !important;
-  width: 100% !important;
-  box-sizing: border-box !important;
-}
-
-.hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
-.contact-page, .an, .settings-page, .translator-page, .market-page,
-.page-root, .container, .container-fluid, .ct, .st, .pg, .rl, .wx {
-  max-width: none !important;
-  width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  box-sizing: border-box !important;
-}
+/* MainLayout owns the chat widget only.
+   Shared page/sidebar/content geometry is defined once in
+   wwwroot/css/tru-platform-final.css. Do not add global layout
+   selectors here; they would override the shared layout stylesheet. */
 
 .isa-widget { position: relative !important; z-index: 2147483000 !important; --isa-rail-w: 0px; }
 .isa-widget__backdrop {
@@ -99,27 +32,6 @@ body {
 #blazor-error-ui {
   display: none; position: fixed; bottom: 1rem; left: 50%; transform: translateX(-50%);
   background: #1d2d5c; color: #fff; padding: 0.7rem 1.1rem; border-radius: 12px; z-index: 9999;
-}
-
-@@media (max-width: 1100px) {
-  .sidebar { width: 224px !important; min-width: 224px !important; max-width: 224px !important; }
-  .main { margin-left: 224px !important; width: calc(100% - 224px) !important; }
-}
-
-@@media (max-width: 800px) {
-  .page { display: block !important; width: 100% !important; }
-  .sidebar {
-    position: relative !important;
-    inset: auto !important;
-    width: 100% !important;
-    min-width: 0 !important;
-    max-width: none !important;
-    height: auto !important;
-    max-height: none !important;
-    overflow: visible !important;
-  }
-  .main { margin: 0 !important; width: 100% !important; min-height: 0 !important; }
-  .content, article.content { padding: 0 !important; min-height: 0 !important; }
 }
 </style>
 
