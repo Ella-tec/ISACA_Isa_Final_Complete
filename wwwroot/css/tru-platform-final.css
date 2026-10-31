@@ -1,0 +1,195 @@
+/* TRU platform layout — single authoritative layer.
+   This file is loaded last. It replaces the conflicting no-gap,
+   compact-layout, layout-polish and no-stretch overrides. */
+
+:root {
+  --tru-sidebar-width: 216px;
+  --tru-page-gutter: clamp(12px, 1.05vw, 18px);
+  --tru-section-gap: 12px;
+  --tru-canvas: #eef2f7;
+  --tru-navy: #1d2d5c;
+  --tru-blue: #00a4e4;
+}
+
+html, body {
+  width: 100%;
+  min-width: 320px;
+  min-height: 100%;
+  margin: 0 !important;
+  padding: 0 !important;
+  background: var(--tru-canvas) !important;
+  overflow-x: hidden;
+}
+*, *::before, *::after { box-sizing: border-box; }
+
+/* Shared application frame */
+.page {
+  display: flex !important;
+  width: 100% !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+.sidebar {
+  position: fixed !important;
+  inset: 0 auto 0 0 !important;
+  z-index: 100 !important;
+  width: var(--tru-sidebar-width) !important;
+  min-width: var(--tru-sidebar-width) !important;
+  max-width: var(--tru-sidebar-width) !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: linear-gradient(175deg,#0a1224 0%,#1d2d5c 48%,#12233f 100%) !important;
+}
+.main {
+  display: block !important;
+  width: calc(100% - var(--tru-sidebar-width)) !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 100vh;
+  min-height: 100dvh;
+  height: auto !important;
+  margin: 0 0 0 var(--tru-sidebar-width) !important;
+  padding: 0 !important;
+  background: var(--tru-canvas) !important;
+}
+article.content, .content {
+  display: block !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: none !important;
+  min-height: 0 !important;
+  height: auto !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  overflow: visible !important;
+}
+.top-row { display: none !important; }
+
+/* All page roots use the same horizontal alignment and gutters. */
+.hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
+.contact-page, .an, .settings-page, .translator-page, .market-page,
+.page-root, .ct, .st, .pg, .rl, .wx, .dd {
+  width: 100% !important;
+  max-width: none !important;
+  min-width: 0 !important;
+  height: auto !important;
+  max-height: none !important;
+  margin: 0 !important;
+  padding: var(--tru-page-gutter) !important;
+  box-sizing: border-box !important;
+}
+
+/* Predictable spacing and safe grid sizing across all workspace pages. */
+.isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-card-grid,
+.isa-article-grid, .isa-hero-strip, .dd-hero, .dd-stats, .dd-grid,
+.pg-hero, .pg-stats, .pg-grid, .ct-hero, .ct-grid, .st-body,
+.gov-grid, .an-grid, .ev-grid, .es-grid, .mt-grid, .rl-main, .wx-now {
+  min-width: 0;
+  gap: var(--tru-section-gap);
+}
+.isa-stat-grid, .isa-content-grid, .isa-card-grid, .isa-article-grid,
+.dd-stats, .dd-grid, .pg-stats, .pg-grid {
+  grid-template-columns: repeat( auto-fit, minmax(min(100%, 240px), 1fr) );
+}
+.isa-stat-grid > *, .isa-content-grid > *, .isa-card-grid > *,
+.isa-article-grid > *, .dd-stats > *, .dd-grid > *,
+.pg-stats > *, .pg-grid > *, .ct-grid > *, .st-body > *,
+.gov-grid > *, .an-grid > *, .ev-grid > *, .es-grid > *, .mt-grid > * {
+  min-width: 0;
+  max-width: 100%;
+}
+.isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-hero-strip,
+.dd-hero, .dd-stats, .dd-grid, .pg-hero, .pg-stats, .pg-grid,
+.ct-hero, .ct-grid {
+  margin-bottom: var(--tru-section-gap) !important;
+}
+.isa-panel, .isa-stat-card, .isa-card, .pg-card, .ct-card, .st-card,
+.dd-card, .mt-panel, .rl-card, .wx-card, .gov-card, .an-card,
+.ev-card, .es-card {
+  min-width: 0;
+  max-width: 100%;
+  border-radius: 14px;
+}
+
+/* Contact: equal-height columns, readable hero title, footer at viewport bottom. */
+.ct {
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.ct-hero h1 {
+  color: #fff !important;
+  font-weight: 600 !important;
+  line-height: 1.25 !important;
+}
+.ct-grid {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 1fr) !important;
+  align-items: stretch !important;
+  flex: 1 0 auto !important;
+}
+.ct-card {
+  height: 100% !important;
+  min-height: 0 !important;
+}
+.ct > .sf {
+  width: 100% !important;
+  margin-top: auto !important;
+  flex: 0 0 auto !important;
+}
+
+/* Keep wide tables and data panels inside the available content width. */
+.table-responsive { max-width: 100%; overflow-x: auto; }
+.table-responsive table { min-width: 540px; }
+img, video, canvas, svg { max-width: 100%; }
+
+/* Small screens: content becomes full width; sidebar becomes a compact top rail. */
+@media (max-width: 800px) {
+  .page { display: block !important; }
+  .sidebar {
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: 220px !important;
+    overflow-y: auto !important;
+  }
+  .main {
+    width: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+  }
+  .ct-grid, .st-body, .dd-grid, .pg-grid, .isa-content-grid,
+  .gov-grid, .an-grid, .ev-grid, .es-grid, .mt-grid, .wx-now {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+@media (max-width: 560px) {
+  :root { --tru-page-gutter: 10px; --tru-section-gap: 10px; }
+  .ct-grid { grid-template-columns: minmax(0, 1fr) !important; }
+  .ct-card, .st-card, .dd-card, .pg-card, .isa-panel { padding: .9rem !important; }
+  .isa-stat-grid, .isa-stat-grid--three, .dd-stats, .pg-stats,
+  .gov-kpis, .an-kpis, .ev-stats, .es-kpis, .kb-kpis, .mt-kpis,
+  .rl-top, .rl-cats, .wx-days {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+/* Respect reduced-motion settings. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+  }
+}
