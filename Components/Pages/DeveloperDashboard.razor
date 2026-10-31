@@ -5,7 +5,7 @@
 <PageTitle>Developer Dashboard | Isa</PageTitle>
 
 <style>
-.dd{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#dce4ed;max-width:1180px;margin:0 auto;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);padding-bottom:2rem}
+.dd{--navy:#1d2d5c;--blue:#00a4e4;--green:#6cb33f;--mid:#07649d;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#dce4ed;width:100%;max-width:none;margin:0;font-family:"Roboto",system-ui,sans-serif;color:var(--navy);padding:.75rem .85rem 1.25rem;box-sizing:border-box}
 .dd-hero{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;align-items:center;padding:1.25rem 1.4rem;border-radius:18px;margin-bottom:1rem;background:linear-gradient(125deg,#152447,#1d2d5c,#00a4e4);color:#fff}
 .dd-hero h1{margin:.15rem 0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.65rem}
 .dd-hero p{margin:.3rem 0 0;opacity:.92;max-width:50ch}
@@ -42,7 +42,7 @@
 .dd-btn{border:none;border-radius:10px;padding:.4rem .8rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;background:var(--navy);color:#fff}
 .dd-btn--ghost{background:var(--light);color:var(--navy)}.dd-btn--sm{padding:.28rem .55rem;font-size:.75rem;background:var(--light);color:var(--navy)}
 .dd-toast{position:fixed;bottom:1.2rem;right:1.2rem;background:var(--navy);color:#fff;padding:.7rem 1rem;border-radius:12px;z-index:50}
-@@media(max-width:1000px){.dd-stats{grid-template-columns:repeat(3,1fr)}.dd-grid{grid-template-columns:1fr}}
+@@media(max-width:1100px){.dd-stats{grid-template-columns:repeat(3,minmax(0,1fr))}.dd-grid{grid-template-columns:repeat(2,minmax(0,1fr))}} @@media(max-width:760px){.dd-stats{grid-template-columns:repeat(2,minmax(0,1fr))}.dd-grid{grid-template-columns:1fr}.dd-card--wide{grid-column:auto}.dd{padding:.55rem}} @@media(max-width:420px){.dd-stats{grid-template-columns:1fr}.dd-act-row{grid-template-columns:85px minmax(0,1fr) 35px}.dd-table{font-size:.78rem}}
 </style>
 
 <section class="dd">
