@@ -10,73 +10,72 @@
 <PageTitle>Sign in | TRU</PageTitle>
 
 <style>
-html, body { margin: 0; }
+html, body { margin: 0 !important; padding: 0 !important; }
 .signin {
   --navy-deep: #1d2d5c;
   --blue: #00a4e4;
   --mid: #07649d;
   --muted: #5f6b85;
   --line: #e2e8f0;
-  display: flex !important;
-  flex-direction: row !important;
-  width: 100%;
-  min-height: 100vh;
-  min-height: 100dvh;
-  margin: 0;
+  display: grid !important;
+  grid-template-columns: 1fr 1fr !important;
+  width: 100% !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  margin: 0 !important;
   background: #f4f7fb;
   font-family: "Roboto", system-ui, sans-serif;
   color: var(--navy-deep);
 }
 
-/* ===== LEFT: old art panel (always visible) ===== */
 .signin__brand {
-  position: relative;
-  flex: 0 0 50%;
-  width: 50%;
-  min-width: 280px;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-sizing: border-box;
+  position: relative !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  overflow: hidden !important;
   background:
     radial-gradient(ellipse 70% 55% at 55% 48%, rgba(0, 164, 228, 0.18), transparent 55%),
-    linear-gradient(165deg, #060d18 0%, #0c1a30 40%, #12233f 100%);
+    linear-gradient(165deg, #060d18 0%, #0c1a30 40%, #12233f 100%) !important;
 }
 
-/* Green triangle lattice — left edge only */
+/* Green triangle lattice — left edge */
 .signin__lattice {
   position: absolute;
   left: 0;
   top: 0;
   bottom: 0;
-  width: 28px;
-  z-index: 2;
+  width: 32px;
+  z-index: 5;
   pointer-events: none;
+  background-color: #1a5c45;
   background-image:
-    linear-gradient(45deg, #1a5c45 25%, transparent 25%),
+    linear-gradient(45deg, #0f3d2e 25%, transparent 25%),
     linear-gradient(-45deg, #2d8a6a 25%, transparent 25%),
     linear-gradient(45deg, transparent 75%, #6cb33f 75%),
     linear-gradient(-45deg, transparent 75%, #8fd15a 75%),
     linear-gradient(45deg, #36ac91 25%, transparent 25%),
-    linear-gradient(-45deg, #4db89a 25%, transparent 25%);
-  background-size: 14px 14px;
-  background-position: 0 0, 0 7px, 7px -7px, -7px 0, 0 0, 0 7px;
-  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
+    linear-gradient(-45deg, #4db89a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #a8d98a 75%),
+    linear-gradient(-45deg, transparent 75%, #1f6b55 75%);
+  background-size: 16px 16px;
+  background-position:
+    0 0, 0 8px, 8px -8px, -8px 0,
+    0 0, 0 8px, 8px -8px, -8px 0;
+  border-right: 2px solid #0a2e22;
 }
 
-/* Soft blue ring accents behind lattice */
 .signin__rings {
   position: absolute;
-  left: -60px;
-  top: -40px;
-  bottom: -40px;
-  width: 160px;
+  left: -50px;
+  top: -30px;
+  bottom: -30px;
+  width: 150px;
   z-index: 1;
+  opacity: 0.4;
   pointer-events: none;
-  opacity: 0.45;
 }
 .signin__rings span {
   position: absolute;
@@ -85,27 +84,21 @@ html, body { margin: 0; }
   border: 16px solid #1a4a9c;
   box-sizing: border-box;
 }
-.signin__rings .r1 { top: 0; width: 140px; height: 140px; border-color: #1a4a9c; }
+.signin__rings .r1 { top: 0; width: 140px; height: 140px; }
 .signin__rings .r2 { top: 110px; width: 130px; height: 130px; border-color: #2563c7; border-width: 18px; }
 .signin__rings .r3 { top: 230px; width: 145px; height: 145px; border-color: #1d2d5c; border-width: 20px; }
 .signin__rings .r4 { top: 370px; width: 125px; height: 125px; border-color: #2b6de0; }
-.signin__rings .r5 { top: 500px; width: 140px; height: 140px; border-color: #1a4a9c; border-width: 18px; }
+.signin__rings .r5 { top: 500px; width: 140px; height: 140px; border-color: #1a4a9c; }
 
-/* Orbit stage — more space between rings */
 .signin__orbitStage {
   position: relative;
   z-index: 3;
-  width: min(420px, 78%);
-  height: min(420px, 78%);
+  width: min(400px, 75%);
+  height: min(400px, 75%);
   display: grid;
   place-items: center;
 }
-.signin__orbits {
-  position: absolute;
-  inset: 0;
-  display: grid;
-  place-items: center;
-}
+.signin__orbits { position: absolute; inset: 0; display: grid; place-items: center; }
 .signin__orbit {
   position: absolute;
   border-radius: 50%;
@@ -113,7 +106,6 @@ html, body { margin: 0; }
   box-sizing: border-box;
   animation: siOrbit linear infinite;
 }
-/* Wider gaps between the 9 rings */
 .signin__orbit--1 { width: 18%; height: 18%; animation-duration: 22s; border-color: rgba(0,164,228,.38); }
 .signin__orbit--2 { width: 28%; height: 28%; animation-duration: 28s; animation-direction: reverse; border-color: rgba(54,172,145,.3); }
 .signin__orbit--3 { width: 38%; height: 38%; animation-duration: 34s; border-color: rgba(0,164,228,.26); }
@@ -125,16 +117,9 @@ html, body { margin: 0; }
 .signin__orbit--9 { width: 100%; height: 100%; animation-duration: 95s; border-color: rgba(255,255,255,.1); }
 
 .signin__planet {
-  position: absolute;
-  top: 0;
-  left: 50%;
-  width: 5px;
-  height: 5px;
-  margin-left: -2.5px;
-  margin-top: -2.5px;
-  border-radius: 50%;
-  background: #00a4e4;
-  box-shadow: 0 0 8px rgba(0, 164, 228, 0.8);
+  position: absolute; top: 0; left: 50%;
+  width: 5px; height: 5px; margin-left: -2.5px; margin-top: -2.5px;
+  border-radius: 50%; background: #00a4e4; box-shadow: 0 0 8px rgba(0,164,228,.8);
 }
 .signin__orbit--2 .signin__planet { background: #36ac91; left: 22%; }
 .signin__orbit--3 .signin__planet { background: #6cb33f; left: 72%; width: 4px; height: 4px; }
@@ -145,67 +130,42 @@ html, body { margin: 0; }
 .signin__orbit--8 .signin__planet { background: #e8eef6; left: 42%; width: 3px; height: 3px; opacity: .75; }
 .signin__orbit--9 .signin__planet { background: #00a4e4; left: 26%; width: 6px; height: 6px; }
 
-@@keyframes siOrbit {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
+@@keyframes siOrbit { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
 .signin__core {
-  position: relative;
-  z-index: 4;
-  width: 16%;
-  height: 16%;
-  min-width: 72px;
-  min-height: 72px;
-  display: grid;
-  place-items: center;
+  position: relative; z-index: 4;
+  width: 16%; height: 16%; min-width: 72px; min-height: 72px;
+  display: grid; place-items: center;
 }
 .signin__sphere {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
+  width: 100%; height: 100%; border-radius: 50%;
   background: linear-gradient(145deg, #00a4e4 0%, #36ac91 48%, #6cb33f 100%);
-  box-shadow:
-    0 0 0 4px rgba(255, 255, 255, 0.14),
-    0 0 42px rgba(0, 164, 228, 0.45),
-    inset 0 -8px 18px rgba(0, 0, 0, 0.14);
-  display: grid;
-  place-items: center;
+  box-shadow: 0 0 0 4px rgba(255,255,255,.14), 0 0 42px rgba(0,164,228,.45), inset 0 -8px 18px rgba(0,0,0,.14);
+  display: grid; place-items: center;
   animation: siPulse 4.5s ease-in-out infinite;
 }
 .signin__sphereText {
-  font-family: "Roboto Slab", Georgia, serif;
-  font-weight: 700;
-  font-size: clamp(0.85rem, 2vw, 1.15rem);
-  color: #fff;
-  letter-spacing: 0.08em;
-  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  font-family: "Roboto Slab", Georgia, serif; font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1.15rem); color: #fff; letter-spacing: 0.08em;
 }
 @@keyframes siPulse {
   0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,.14), 0 0 36px rgba(0,164,228,.4), inset 0 -8px 18px rgba(0,0,0,.14); }
   50% { box-shadow: 0 0 0 6px rgba(255,255,255,.2), 0 0 54px rgba(0,164,228,.55), inset 0 -8px 18px rgba(0,0,0,.14); }
 }
 
-/* ===== RIGHT: form ===== */
 .signin__panel {
-  flex: 1 1 50%;
-  width: 50%;
-  min-height: 100vh;
-  min-height: 100dvh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
   padding: 2.5rem 2rem;
   background: linear-gradient(180deg, #f7fafc 0%, #eef2f7 100%);
   box-sizing: border-box;
 }
 .signin__card {
-  width: 100%;
-  max-width: 400px;
-  background: #fff;
-  border-radius: 18px;
-  padding: 1.75rem 1.85rem 1.6rem;
-  border: 1px solid var(--line);
+  width: 100%; max-width: 400px; background: #fff; border-radius: 18px;
+  padding: 1.75rem 1.85rem 1.6rem; border: 1px solid var(--line);
   box-shadow: 0 16px 48px rgba(29, 45, 92, 0.08);
 }
 .signin__title { margin: 0 0 0.35rem; font-size: 1.55rem; font-weight: 700; color: var(--navy-deep); }
@@ -245,12 +205,10 @@ html, body { margin: 0; }
 .signin__back:hover { color: var(--navy-deep); text-decoration: underline; }
 
 @@media (max-width: 900px) {
-  .signin { flex-direction: column !important; }
-  .signin__brand {
-    flex: 0 0 auto; width: 100%; min-width: 0; min-height: 280px;
-  }
+  .signin { grid-template-columns: 1fr !important; }
+  .signin__brand { min-height: 280px !important; }
   .signin__orbitStage { width: min(260px, 70vw); height: min(260px, 70vw); }
-  .signin__panel { width: 100%; min-height: auto; padding: 1.75rem 1.25rem 2rem; }
+  .signin__panel { min-height: auto !important; padding: 1.75rem 1.25rem 2rem; }
 }
 @@media (prefers-reduced-motion: reduce) {
   .signin__orbit, .signin__sphere { animation: none !important; }
@@ -258,13 +216,12 @@ html, body { margin: 0; }
 </style>
 
 <div class="signin">
-    @* LEFT — old orbital design + green triangle lattice *@
     <aside class="signin__brand">
+        <div class="signin__lattice" aria-hidden="true"></div>
         <div class="signin__rings" aria-hidden="true">
             <span class="r1"></span><span class="r2"></span><span class="r3"></span>
             <span class="r4"></span><span class="r5"></span>
         </div>
-        <div class="signin__lattice" aria-hidden="true"></div>
 
         <div class="signin__orbitStage">
             <div class="signin__orbits" aria-hidden="true">
@@ -286,7 +243,6 @@ html, body { margin: 0; }
         </div>
     </aside>
 
-    @* RIGHT — form card *@
     <main class="signin__panel">
         <div class="signin__card">
             <h1 class="signin__title">Sign in</h1>
