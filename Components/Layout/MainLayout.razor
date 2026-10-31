@@ -19,9 +19,9 @@ body {
   left: 0 !important;
   top: 0 !important;
   bottom: 0 !important;
-  width: 248px !important;
-  min-width: 248px !important;
-  max-width: 248px !important;
+  width: 224px !important;
+  min-width: 224px !important;
+  max-width: 224px !important;
   height: 100vh !important;
   height: 100dvh !important;
   overflow-y: auto !important;
@@ -35,8 +35,8 @@ body {
 }
 
 .main {
-  margin-left: 248px !important;
-  width: calc(100% - 248px) !important;
+  margin-left: 224px !important;
+  width: calc(100% - 224px) !important;
   max-width: none !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
@@ -102,17 +102,24 @@ body {
 }
 
 @@media (max-width: 1100px) {
-  .sidebar { width: 230px !important; min-width: 230px !important; max-width: 230px !important; }
-  .main { margin-left: 230px !important; width: calc(100% - 230px) !important; }
+  .sidebar { width: 224px !important; min-width: 224px !important; max-width: 224px !important; }
+  .main { margin-left: 224px !important; width: calc(100% - 224px) !important; }
 }
 
 @@media (max-width: 800px) {
+  .page { display: block !important; width: 100% !important; }
   .sidebar {
-    position: relative !important; width: 100% !important; min-width: 0 !important; max-width: none !important;
-    height: auto !important; max-height: 48vh !important;
+    position: relative !important;
+    inset: auto !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    max-width: none !important;
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
   }
-  .main { margin-left: 0 !important; width: 100% !important; }
-  .content, article.content { padding: 0 !important; }
+  .main { margin: 0 !important; width: 100% !important; min-height: 0 !important; }
+  .content, article.content { padding: 0 !important; min-height: 0 !important; }
 }
 </style>
 
