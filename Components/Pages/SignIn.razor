@@ -9,10 +9,74 @@
 
 <PageTitle>Sign in | TRU</PageTitle>
 
-<div class="signin">
+<style>
+.signin{--navy:#0a1628;--navy-mid:#12233f;--navy-deep:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;
+display:flex;min-height:100vh;min-height:100dvh;margin:0;background:#f4f7fb;color:var(--navy-deep);font-family:"Roboto",system-ui,sans-serif;line-height:1.55}
+.signin__brand{position:relative;overflow:hidden;flex:0 0 48%;min-height:100vh;min-height:100dvh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem 1.5rem;box-sizing:border-box;
+background:radial-gradient(ellipse 80% 60% at 50% 45%,rgba(0,164,228,.18),transparent 55%),radial-gradient(ellipse 50% 40% at 70% 70%,rgba(108,179,63,.1),transparent 50%),linear-gradient(165deg,#060d18 0%,#0c1a30 40%,#12233f 100%);color:#e8eef6}
+.signin__frame{position:absolute;left:0;top:0;bottom:0;width:72px;z-index:0;pointer-events:none;overflow:hidden}
+.signin__frame-rings{position:absolute;left:-40px;top:0;bottom:0;width:120px}
+.signin__frame-rings .fr{position:absolute;left:0;width:100px;height:100px;border-radius:50%;border:14px solid rgba(0,164,228,.35);box-sizing:border-box}
+.signin__frame-rings .fr1{top:-20px;border-color:rgba(0,100,180,.55)}
+.signin__frame-rings .fr2{top:70px;border-color:rgba(0,164,228,.4);width:90px;height:90px;border-width:12px}
+.signin__frame-rings .fr3{top:160px;border-color:rgba(7,100,157,.5)}
+.signin__frame-rings .fr4{top:260px;border-color:rgba(0,164,228,.3);width:110px;height:110px}
+.signin__frame-rings .fr5{top:380px;border-color:rgba(29,45,92,.7);width:95px;height:95px;border-width:16px}
+.signin__frame-lattice{position:absolute;left:28px;top:0;bottom:0;width:44px;opacity:.85;
+background:linear-gradient(135deg,rgba(108,179,63,.35) 25%,transparent 25%) -10px 0,linear-gradient(225deg,rgba(54,172,145,.3) 25%,transparent 25%) -10px 0,linear-gradient(315deg,rgba(108,179,63,.25) 25%,transparent 25%),linear-gradient(45deg,rgba(0,164,228,.2) 25%,transparent 25%);
+background-size:22px 22px;
+-webkit-mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%);
+mask-image:linear-gradient(180deg,transparent 0%,#000 12%,#000 88%,transparent 100%)}
+.signin__brandTop{position:absolute;top:1.25rem;left:1.25rem;z-index:2;display:flex;align-items:center;gap:.45rem;font-weight:700;font-size:.95rem;letter-spacing:.04em}
+.signin__dot{width:12px;height:12px;border-radius:50%;background:linear-gradient(135deg,#00a4e4,#6cb33f);box-shadow:0 0 12px rgba(0,164,228,.5)}
+.signin__orbitStage{position:relative;z-index:1;width:min(340px,70vw);height:min(340px,70vw);display:grid;place-items:center;margin:0 auto}
+.signin__orbits{position:absolute;inset:0;display:grid;place-items:center}
+.signin__orbit{position:absolute;border-radius:50%;border:1px solid rgba(0,164,228,.22);box-sizing:border-box;animation:siOrbit linear infinite}
+.signin__orbit--1{width:28%;height:28%;animation-duration:18s;border-color:rgba(0,164,228,.35)}
+.signin__orbit--2{width:38%;height:38%;animation-duration:24s;animation-direction:reverse;border-color:rgba(54,172,145,.28)}
+.signin__orbit--3{width:48%;height:48%;animation-duration:30s;border-color:rgba(0,164,228,.25)}
+.signin__orbit--4{width:58%;height:58%;animation-duration:36s;animation-direction:reverse;border-color:rgba(108,179,63,.22)}
+.signin__orbit--5{width:68%;height:68%;animation-duration:42s;border-color:rgba(0,164,228,.2)}
+.signin__orbit--6{width:78%;height:78%;animation-duration:50s;animation-direction:reverse;border-color:rgba(7,100,157,.28)}
+.signin__orbit--7{width:86%;height:86%;animation-duration:58s;border-color:rgba(0,164,228,.16)}
+.signin__orbit--8{width:94%;height:94%;animation-duration:68s;animation-direction:reverse;border-color:rgba(54,172,145,.18)}
+.signin__orbit--9{width:100%;height:100%;animation-duration:80s;border-color:rgba(255,255,255,.12)}
+.signin__planet{position:absolute;top:0;left:50%;width:6px;height:6px;margin-left:-3px;margin-top:-3px;border-radius:50%;background:#00a4e4;box-shadow:0 0 8px rgba(0,164,228,.8)}
+.signin__orbit--2 .signin__planet{background:#36ac91;width:5px;height:5px}
+.signin__orbit--3 .signin__planet{background:#6cb33f;left:15%}
+.signin__orbit--4 .signin__planet{background:#00a4e4;left:80%;width:4px;height:4px}
+.signin__orbit--5 .signin__planet{background:#fbb034;box-shadow:0 0 6px rgba(251,176,52,.7)}
+.signin__orbit--6 .signin__planet{background:#00a4e4;left:30%;width:5px;height:5px}
+.signin__orbit--7 .signin__planet{background:#36ac91;left:70%}
+.signin__orbit--8 .signin__planet{background:#e8eef6;width:4px;height:4px;opacity:.7}
+.signin__orbit--9 .signin__planet{background:#00a4e4;left:22%;width:7px;height:7px}
+@@keyframes siOrbit{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+.signin__core{position:relative;z-index:2;width:22%;height:22%;min-width:72px;min-height:72px;display:grid;place-items:center}
+.signin__sphere{width:100%;height:100%;border-radius:50%;background:linear-gradient(145deg,#00a4e4 0%,#36ac91 45%,#6cb33f 100%);
+box-shadow:0 0 0 4px rgba(255,255,255,.15),0 0 40px rgba(0,164,228,.45),inset 0 -8px 20px rgba(0,0,0,.15);display:grid;place-items:center;animation:siPulse 4s ease-in-out infinite}
+.signin__sphereText{font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:clamp(.85rem,2.2vw,1.15rem);color:#fff;letter-spacing:.06em;text-shadow:0 2px 8px rgba(0,0,0,.25)}
+@@keyframes siPulse{0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.15),0 0 36px rgba(0,164,228,.4),inset 0 -8px 20px rgba(0,0,0,.15)}50%{box-shadow:0 0 0 6px rgba(255,255,255,.2),0 0 52px rgba(0,164,228,.55),inset 0 -8px 20px rgba(0,0,0,.15)}}
+.signin__brandLine{position:relative;z-index:1;margin:1.75rem 0 0;max-width:28ch;text-align:center;font-size:.88rem;color:rgba(200,212,230,.85);line-height:1.45}
+.signin__panel{flex:1;display:flex;align-items:center;justify-content:center;padding:2.5rem 2rem;background:linear-gradient(180deg,#f7fafc 0%,#eef2f7 100%);min-height:100vh;min-height:100dvh;box-sizing:border-box}
+.signin__card{width:100%;max-width:400px;background:#fff;border-radius:18px;padding:1.75rem 1.85rem 1.6rem;border:1px solid var(--line);box-shadow:0 16px 48px rgba(29,45,92,.08)}
+.signin__title{margin:0 0 .35rem;font-size:1.55rem;font-weight:700;color:var(--navy-deep)}
+.signin__lede{margin:0 0 1.35rem;color:var(--muted);font-size:.92rem}
+.signin__error{margin-bottom:1rem;padding:.75rem .9rem;border-left:4px solid #e31837;border-radius:8px;background:#fdecee;color:#9b1027;font-size:.88rem}
+.signin__field{margin-bottom:1.05rem}
+.signin__label{display:block;margin-bottom:.35rem;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
+.signin__input,.signin__field input{display:block;width:100%;padding:.75rem .9rem;border:1.5px solid #c9d3e0;border-radius:10px;background:#f8fafc;color:var(--navy-deep);font:inherit;font-size:.95rem;box-sizing:border-box}
+.signin__input:focus,.signin__field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,164,228,.2);background:#fff}
+.signin__submit{width:100%;margin-top:.25rem;padding:.85rem 1rem;border:none;border-radius:10px;background:linear-gradient(135deg,var(--navy-deep),var(--mid));color:#fff;font:inherit;font-weight:600;font-size:.95rem;cursor:pointer}
+.signin__submit:hover{filter:brightness(1.08);box-shadow:0 8px 22px rgba(29,45,92,.25)}
+.signin__note{margin:1.25rem 0 0;font-size:.8rem;color:var(--muted);line-height:1.45}
+.signin__back{display:inline-block;margin-top:.85rem;color:var(--mid);font-weight:600;font-size:.88rem;text-decoration:none}
+.signin__back:hover{color:var(--navy-deep);text-decoration:underline}
+@@media(max-width:960px){.signin{flex-direction:column}.signin__brand{flex:0 0 auto;min-height:320px}.signin__frame{width:48px}.signin__orbitStage{width:min(240px,60vw);height:min(240px,60vw)}.signin__panel{min-height:auto;padding:1.75rem 1.25rem 2rem}}
+@@media(prefers-reduced-motion:reduce){.signin__orbit,.signin__sphere{animation:none!important}}
+</style>
 
-    <aside class="signin__brand" aria-hidden="false">
-        @* Full-height left edge frame: rings + diamond lattice *@
+<div class="signin">
+    <aside class="signin__brand">
         <div class="signin__frame" aria-hidden="true">
             <div class="signin__frame-rings">
                 <span class="fr fr1"></span>
@@ -31,12 +95,15 @@
 
         <div class="signin__orbitStage">
             <div class="signin__orbits" aria-hidden="true">
-                @for (var i = 1; i <= 9; i++)
-                {
-                    <div class="signin__orbit signin__orbit--@i">
-                        <span class="signin__planet"></span>
-                    </div>
-                }
+                <div class="signin__orbit signin__orbit--1"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--2"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--3"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--4"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--5"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--6"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--7"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--8"><span class="signin__planet"></span></div>
+                <div class="signin__orbit signin__orbit--9"><span class="signin__planet"></span></div>
             </div>
             <div class="signin__core">
                 <div class="signin__sphere">
@@ -72,8 +139,7 @@
                                    inputmode="email"
                                    autocomplete="username"
                                    autocapitalize="none"
-                                   spellcheck="false"
-                                   dir="auto" />
+                                   spellcheck="false" />
                         <ValidationMessage For="() => Input.Email" />
                     </div>
 
@@ -83,8 +149,7 @@
                                    class="signin__input"
                                    @bind-Value="Input.Password"
                                    type="password"
-                                   autocomplete="current-password"
-                                   dir="auto" />
+                                   autocomplete="current-password" />
                         <ValidationMessage For="() => Input.Password" />
                     </div>
 
@@ -96,7 +161,6 @@
             <a class="signin__back" href="/" data-enhance-nav="false">&larr; Back to TRU home</a>
         </div>
     </main>
-
 </div>
 
 @code {
@@ -136,7 +200,7 @@
                 _ => "The sign-in service isn't reachable right now. Please try again in a few minutes."
             };
         }
-        catch
+        catch (Exception)
         {
             ErrorMessage = "Something went wrong while signing in. Please reload and try again.";
         }
