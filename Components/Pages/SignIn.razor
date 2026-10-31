@@ -10,143 +10,261 @@
 <PageTitle>Sign in | TRU</PageTitle>
 
 <style>
-.signin{
-  --navy:#0a1628;--navy-deep:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;
-  display:flex;min-height:100vh;min-height:100dvh;margin:0;background:#f4f7fb;
-  color:var(--navy-deep);font-family:"Roboto",system-ui,sans-serif;line-height:1.55;
+html, body { margin: 0; }
+.signin {
+  --navy-deep: #1d2d5c;
+  --blue: #00a4e4;
+  --mid: #07649d;
+  --muted: #5f6b85;
+  --line: #e2e8f0;
+  display: flex !important;
+  flex-direction: row !important;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  background: #f4f7fb;
+  font-family: "Roboto", system-ui, sans-serif;
+  color: var(--navy-deep);
 }
-.signin__brand{
-  position:relative;overflow:hidden;flex:0 0 48%;min-height:100vh;min-height:100dvh;
-  display:flex;align-items:center;justify-content:center;padding:2rem;
+
+/* ===== LEFT: old art panel (always visible) ===== */
+.signin__brand {
+  position: relative;
+  flex: 0 0 50%;
+  width: 50%;
+  min-width: 280px;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  box-sizing: border-box;
   background:
-    radial-gradient(ellipse 70% 55% at 50% 48%,rgba(0,164,228,.16),transparent 55%),
-    linear-gradient(165deg,#060d18 0%,#0c1a30 42%,#12233f 100%);
-  box-sizing:border-box;
+    radial-gradient(ellipse 70% 55% at 55% 48%, rgba(0, 164, 228, 0.18), transparent 55%),
+    linear-gradient(165deg, #060d18 0%, #0c1a30 40%, #12233f 100%);
 }
-/* Left edge frame: blue rings + green diamond column */
-.signin__frame{
-  position:absolute;left:0;top:0;bottom:0;width:88px;z-index:0;pointer-events:none;overflow:hidden;
+
+/* Green triangle lattice — left edge only */
+.signin__lattice {
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 28px;
+  z-index: 2;
+  pointer-events: none;
+  background-image:
+    linear-gradient(45deg, #1a5c45 25%, transparent 25%),
+    linear-gradient(-45deg, #2d8a6a 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #6cb33f 75%),
+    linear-gradient(-45deg, transparent 75%, #8fd15a 75%),
+    linear-gradient(45deg, #36ac91 25%, transparent 25%),
+    linear-gradient(-45deg, #4db89a 25%, transparent 25%);
+  background-size: 14px 14px;
+  background-position: 0 0, 0 7px, 7px -7px, -7px 0, 0 0, 0 7px;
+  box-shadow: inset -1px 0 0 rgba(0, 0, 0, 0.25);
 }
-.signin__frame-rings{position:absolute;left:-48px;top:-30px;bottom:-30px;width:140px}
-.signin__frame-rings .fr{
-  position:absolute;left:0;border-radius:50%;border-style:solid;box-sizing:border-box;
+
+/* Soft blue ring accents behind lattice */
+.signin__rings {
+  position: absolute;
+  left: -60px;
+  top: -40px;
+  bottom: -40px;
+  width: 160px;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0.45;
 }
-.signin__frame-rings .fr1{top:0;width:130px;height:130px;border-width:22px;border-color:#1a4a9c}
-.signin__frame-rings .fr2{top:95px;width:120px;height:120px;border-width:20px;border-color:#2563c7}
-.signin__frame-rings .fr3{top:195px;width:135px;height:135px;border-width:24px;border-color:#1d2d5c}
-.signin__frame-rings .fr4{top:310px;width:115px;height:115px;border-width:18px;border-color:#2b6de0}
-.signin__frame-rings .fr5{top:420px;width:125px;height:125px;border-width:20px;border-color:#1a4a9c}
-.signin__frame-rings .fr6{top:540px;width:130px;height:130px;border-width:22px;border-color:#2563c7}
-.signin__frame-lattice{
-  position:absolute;left:42px;top:0;bottom:0;width:46px;
-  background:
-    linear-gradient(135deg,#6cb33f 25%,transparent 25%) 0 0,
-    linear-gradient(225deg,#36ac91 25%,transparent 25%) 0 0,
-    linear-gradient(315deg,#8fd15a 25%,transparent 25%) 0 0,
-    linear-gradient(45deg,#2d8a6a 25%,transparent 25%) 0 0,
-    linear-gradient(135deg,#a8d98a 25%,transparent 25%) 11px 11px,
-    linear-gradient(225deg,#4db89a 25%,transparent 25%) 11px 11px,
-    linear-gradient(315deg,#c5e6b0 25%,transparent 25%) 11px 11px,
-    linear-gradient(45deg,#1f6b55 25%,transparent 25%) 11px 11px;
-  background-size:22px 22px;
-  opacity:.9;
+.signin__rings span {
+  position: absolute;
+  left: 0;
+  border-radius: 50%;
+  border: 16px solid #1a4a9c;
+  box-sizing: border-box;
 }
-/* Relaxed 9 orbits with more spacing */
-.signin__orbitStage{
-  position:relative;z-index:1;width:min(380px,72vw);height:min(380px,72vw);
-  display:grid;place-items:center;
+.signin__rings .r1 { top: 0; width: 140px; height: 140px; border-color: #1a4a9c; }
+.signin__rings .r2 { top: 110px; width: 130px; height: 130px; border-color: #2563c7; border-width: 18px; }
+.signin__rings .r3 { top: 230px; width: 145px; height: 145px; border-color: #1d2d5c; border-width: 20px; }
+.signin__rings .r4 { top: 370px; width: 125px; height: 125px; border-color: #2b6de0; }
+.signin__rings .r5 { top: 500px; width: 140px; height: 140px; border-color: #1a4a9c; border-width: 18px; }
+
+/* Orbit stage — more space between rings */
+.signin__orbitStage {
+  position: relative;
+  z-index: 3;
+  width: min(420px, 78%);
+  height: min(420px, 78%);
+  display: grid;
+  place-items: center;
 }
-.signin__orbits{position:absolute;inset:0;display:grid;place-items:center}
-.signin__orbit{
-  position:absolute;border-radius:50%;border:1px solid rgba(0,164,228,.18);
-  box-sizing:border-box;animation:siOrbit linear infinite;
+.signin__orbits {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
 }
-.signin__orbit--1{width:24%;height:24%;animation-duration:20s;border-color:rgba(0,164,228,.32)}
-.signin__orbit--2{width:34%;height:34%;animation-duration:26s;animation-direction:reverse;border-color:rgba(54,172,145,.26)}
-.signin__orbit--3{width:44%;height:44%;animation-duration:32s;border-color:rgba(0,164,228,.22)}
-.signin__orbit--4{width:54%;height:54%;animation-duration:40s;animation-direction:reverse;border-color:rgba(108,179,63,.2)}
-.signin__orbit--5{width:64%;height:64%;animation-duration:48s;border-color:rgba(0,164,228,.18)}
-.signin__orbit--6{width:74%;height:74%;animation-duration:56s;animation-direction:reverse;border-color:rgba(7,100,157,.24)}
-.signin__orbit--7{width:84%;height:84%;animation-duration:66s;border-color:rgba(0,164,228,.14)}
-.signin__orbit--8{width:92%;height:92%;animation-duration:78s;animation-direction:reverse;border-color:rgba(54,172,145,.14)}
-.signin__orbit--9{width:100%;height:100%;animation-duration:90s;border-color:rgba(255,255,255,.1)}
-.signin__planet{
-  position:absolute;top:0;left:50%;width:5px;height:5px;margin-left:-2.5px;margin-top:-2.5px;
-  border-radius:50%;background:#00a4e4;box-shadow:0 0 8px rgba(0,164,228,.75);
+.signin__orbit {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 164, 228, 0.2);
+  box-sizing: border-box;
+  animation: siOrbit linear infinite;
 }
-.signin__orbit--2 .signin__planet{background:#36ac91;left:20%}
-.signin__orbit--3 .signin__planet{background:#6cb33f;left:70%;width:4px;height:4px}
-.signin__orbit--4 .signin__planet{background:#00a4e4;left:35%}
-.signin__orbit--5 .signin__planet{background:#fbb034;box-shadow:0 0 6px rgba(251,176,52,.7);left:85%}
-.signin__orbit--6 .signin__planet{background:#00a4e4;left:12%;width:4px;height:4px}
-.signin__orbit--7 .signin__planet{background:#36ac91;left:55%}
-.signin__orbit--8 .signin__planet{background:#e8eef6;width:3px;height:3px;opacity:.75;left:40%}
-.signin__orbit--9 .signin__planet{background:#00a4e4;left:28%;width:6px;height:6px}
-@@keyframes siOrbit{from{transform:rotate(0)}to{transform:rotate(360deg)}}
-.signin__core{position:relative;z-index:2;width:20%;height:20%;min-width:78px;min-height:78px;display:grid;place-items:center}
-.signin__sphere{
-  width:100%;height:100%;border-radius:50%;
-  background:linear-gradient(145deg,#00a4e4 0%,#36ac91 48%,#6cb33f 100%);
-  box-shadow:0 0 0 4px rgba(255,255,255,.14),0 0 42px rgba(0,164,228,.42),inset 0 -8px 18px rgba(0,0,0,.14);
-  display:grid;place-items:center;animation:siPulse 4.5s ease-in-out infinite;
+/* Wider gaps between the 9 rings */
+.signin__orbit--1 { width: 18%; height: 18%; animation-duration: 22s; border-color: rgba(0,164,228,.38); }
+.signin__orbit--2 { width: 28%; height: 28%; animation-duration: 28s; animation-direction: reverse; border-color: rgba(54,172,145,.3); }
+.signin__orbit--3 { width: 38%; height: 38%; animation-duration: 34s; border-color: rgba(0,164,228,.26); }
+.signin__orbit--4 { width: 48%; height: 48%; animation-duration: 42s; animation-direction: reverse; border-color: rgba(108,179,63,.24); }
+.signin__orbit--5 { width: 58%; height: 58%; animation-duration: 50s; border-color: rgba(0,164,228,.2); }
+.signin__orbit--6 { width: 68%; height: 68%; animation-duration: 58s; animation-direction: reverse; border-color: rgba(7,100,157,.26); }
+.signin__orbit--7 { width: 78%; height: 78%; animation-duration: 68s; border-color: rgba(0,164,228,.16); }
+.signin__orbit--8 { width: 88%; height: 88%; animation-duration: 80s; animation-direction: reverse; border-color: rgba(54,172,145,.14); }
+.signin__orbit--9 { width: 100%; height: 100%; animation-duration: 95s; border-color: rgba(255,255,255,.1); }
+
+.signin__planet {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 5px;
+  height: 5px;
+  margin-left: -2.5px;
+  margin-top: -2.5px;
+  border-radius: 50%;
+  background: #00a4e4;
+  box-shadow: 0 0 8px rgba(0, 164, 228, 0.8);
 }
-.signin__sphereText{
-  font-family:"Roboto Slab",Georgia,serif;font-weight:700;
-  font-size:clamp(.9rem,2.2vw,1.2rem);color:#fff;letter-spacing:.08em;
-  text-shadow:0 2px 8px rgba(0,0,0,.25);
+.signin__orbit--2 .signin__planet { background: #36ac91; left: 22%; }
+.signin__orbit--3 .signin__planet { background: #6cb33f; left: 72%; width: 4px; height: 4px; }
+.signin__orbit--4 .signin__planet { background: #00a4e4; left: 30%; }
+.signin__orbit--5 .signin__planet { background: #fbb034; left: 82%; box-shadow: 0 0 6px rgba(251,176,52,.7); }
+.signin__orbit--6 .signin__planet { background: #00a4e4; left: 14%; width: 4px; height: 4px; }
+.signin__orbit--7 .signin__planet { background: #36ac91; left: 58%; }
+.signin__orbit--8 .signin__planet { background: #e8eef6; left: 42%; width: 3px; height: 3px; opacity: .75; }
+.signin__orbit--9 .signin__planet { background: #00a4e4; left: 26%; width: 6px; height: 6px; }
+
+@@keyframes siOrbit {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
-@@keyframes siPulse{
-  0%,100%{box-shadow:0 0 0 4px rgba(255,255,255,.14),0 0 36px rgba(0,164,228,.4),inset 0 -8px 18px rgba(0,0,0,.14)}
-  50%{box-shadow:0 0 0 6px rgba(255,255,255,.2),0 0 54px rgba(0,164,228,.55),inset 0 -8px 18px rgba(0,0,0,.14)}
+
+.signin__core {
+  position: relative;
+  z-index: 4;
+  width: 16%;
+  height: 16%;
+  min-width: 72px;
+  min-height: 72px;
+  display: grid;
+  place-items: center;
 }
-.signin__panel{
-  flex:1;display:flex;align-items:center;justify-content:center;
-  padding:2.5rem 2rem;background:linear-gradient(180deg,#f7fafc,#eef2f7);
-  min-height:100vh;min-height:100dvh;box-sizing:border-box;
+.signin__sphere {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #00a4e4 0%, #36ac91 48%, #6cb33f 100%);
+  box-shadow:
+    0 0 0 4px rgba(255, 255, 255, 0.14),
+    0 0 42px rgba(0, 164, 228, 0.45),
+    inset 0 -8px 18px rgba(0, 0, 0, 0.14);
+  display: grid;
+  place-items: center;
+  animation: siPulse 4.5s ease-in-out infinite;
 }
-.signin__card{
-  width:100%;max-width:400px;background:#fff;border-radius:18px;
-  padding:1.75rem 1.85rem 1.6rem;border:1px solid var(--line);
-  box-shadow:0 16px 48px rgba(29,45,92,.08);
+.signin__sphereText {
+  font-family: "Roboto Slab", Georgia, serif;
+  font-weight: 700;
+  font-size: clamp(0.85rem, 2vw, 1.15rem);
+  color: #fff;
+  letter-spacing: 0.08em;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
-.signin__title{margin:0 0 .35rem;font-size:1.55rem;font-weight:700;color:var(--navy-deep)}
-.signin__lede{margin:0 0 1.35rem;color:var(--muted);font-size:.92rem}
-.signin__error{margin-bottom:1rem;padding:.75rem .9rem;border-left:4px solid #e31837;border-radius:8px;background:#fdecee;color:#9b1027;font-size:.88rem}
-.signin__field{margin-bottom:1.05rem}
-.signin__label{display:block;margin-bottom:.35rem;font-weight:700;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mid)}
-.signin__input,.signin__field input{
-  display:block;width:100%;padding:.75rem .9rem;border:1.5px solid #c9d3e0;border-radius:10px;
-  background:#f8fafc;color:var(--navy-deep);font:inherit;font-size:.95rem;box-sizing:border-box;
+@@keyframes siPulse {
+  0%, 100% { box-shadow: 0 0 0 4px rgba(255,255,255,.14), 0 0 36px rgba(0,164,228,.4), inset 0 -8px 18px rgba(0,0,0,.14); }
+  50% { box-shadow: 0 0 0 6px rgba(255,255,255,.2), 0 0 54px rgba(0,164,228,.55), inset 0 -8px 18px rgba(0,0,0,.14); }
 }
-.signin__input:focus,.signin__field input:focus{outline:none;border-color:var(--blue);box-shadow:0 0 0 4px rgba(0,164,228,.2);background:#fff}
-.signin__submit{
-  width:100%;margin-top:.25rem;padding:.85rem 1rem;border:none;border-radius:10px;
-  background:linear-gradient(135deg,var(--navy-deep),var(--mid));color:#fff;
-  font:inherit;font-weight:600;font-size:.95rem;cursor:pointer;
+
+/* ===== RIGHT: form ===== */
+.signin__panel {
+  flex: 1 1 50%;
+  width: 50%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 2rem;
+  background: linear-gradient(180deg, #f7fafc 0%, #eef2f7 100%);
+  box-sizing: border-box;
 }
-.signin__submit:hover{filter:brightness(1.08)}
-.signin__note{margin:1.25rem 0 0;font-size:.8rem;color:var(--muted)}
-.signin__back{display:inline-block;margin-top:.85rem;color:var(--mid);font-weight:600;font-size:.88rem;text-decoration:none}
-.signin__back:hover{color:var(--navy-deep);text-decoration:underline}
-@@media(max-width:960px){
-  .signin{flex-direction:column}
-  .signin__brand{flex:0 0 auto;min-height:300px}
-  .signin__frame{width:56px}
-  .signin__orbitStage{width:min(240px,62vw);height:min(240px,62vw)}
-  .signin__panel{min-height:auto;padding:1.75rem 1.25rem 2rem}
+.signin__card {
+  width: 100%;
+  max-width: 400px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 1.75rem 1.85rem 1.6rem;
+  border: 1px solid var(--line);
+  box-shadow: 0 16px 48px rgba(29, 45, 92, 0.08);
 }
-@@media(prefers-reduced-motion:reduce){.signin__orbit,.signin__sphere{animation:none!important}}
+.signin__title { margin: 0 0 0.35rem; font-size: 1.55rem; font-weight: 700; color: var(--navy-deep); }
+.signin__lede { margin: 0 0 1.35rem; color: var(--muted); font-size: 0.92rem; }
+.signin__error {
+  margin-bottom: 1rem; padding: 0.75rem 0.9rem;
+  border-left: 4px solid #e31837; border-radius: 8px;
+  background: #fdecee; color: #9b1027; font-size: 0.88rem;
+}
+.signin__field { margin-bottom: 1.05rem; }
+.signin__label {
+  display: block; margin-bottom: 0.35rem; font-weight: 700;
+  font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--mid);
+}
+.signin__input, .signin__field input {
+  display: block; width: 100%; padding: 0.75rem 0.9rem;
+  border: 1.5px solid #c9d3e0; border-radius: 10px;
+  background: #f8fafc; color: var(--navy-deep);
+  font: inherit; font-size: 0.95rem; box-sizing: border-box;
+}
+.signin__input:focus, .signin__field input:focus {
+  outline: none; border-color: var(--blue);
+  box-shadow: 0 0 0 4px rgba(0, 164, 228, 0.2); background: #fff;
+}
+.signin__submit {
+  width: 100%; margin-top: 0.25rem; padding: 0.85rem 1rem;
+  border: none; border-radius: 10px;
+  background: linear-gradient(135deg, var(--navy-deep), var(--mid));
+  color: #fff; font: inherit; font-weight: 600; font-size: 0.95rem; cursor: pointer;
+}
+.signin__submit:hover { filter: brightness(1.08); }
+.signin__note { margin: 1.25rem 0 0; font-size: 0.8rem; color: var(--muted); }
+.signin__back {
+  display: inline-block; margin-top: 0.85rem;
+  color: var(--mid); font-weight: 600; font-size: 0.88rem; text-decoration: none;
+}
+.signin__back:hover { color: var(--navy-deep); text-decoration: underline; }
+
+@@media (max-width: 900px) {
+  .signin { flex-direction: column !important; }
+  .signin__brand {
+    flex: 0 0 auto; width: 100%; min-width: 0; min-height: 280px;
+  }
+  .signin__orbitStage { width: min(260px, 70vw); height: min(260px, 70vw); }
+  .signin__panel { width: 100%; min-height: auto; padding: 1.75rem 1.25rem 2rem; }
+}
+@@media (prefers-reduced-motion: reduce) {
+  .signin__orbit, .signin__sphere { animation: none !important; }
+}
 </style>
 
 <div class="signin">
+    @* LEFT — old orbital design + green triangle lattice *@
     <aside class="signin__brand">
-        <div class="signin__frame" aria-hidden="true">
-            <div class="signin__frame-rings">
-                <span class="fr fr1"></span><span class="fr fr2"></span><span class="fr fr3"></span>
-                <span class="fr fr4"></span><span class="fr fr5"></span><span class="fr fr6"></span>
-            </div>
-            <div class="signin__frame-lattice"></div>
+        <div class="signin__rings" aria-hidden="true">
+            <span class="r1"></span><span class="r2"></span><span class="r3"></span>
+            <span class="r4"></span><span class="r5"></span>
         </div>
+        <div class="signin__lattice" aria-hidden="true"></div>
 
         <div class="signin__orbitStage">
             <div class="signin__orbits" aria-hidden="true">
@@ -161,11 +279,14 @@
                 <div class="signin__orbit signin__orbit--9"><span class="signin__planet"></span></div>
             </div>
             <div class="signin__core">
-                <div class="signin__sphere"><span class="signin__sphereText">TRU</span></div>
+                <div class="signin__sphere">
+                    <span class="signin__sphereText">TRU</span>
+                </div>
             </div>
         </div>
     </aside>
 
+    @* RIGHT — form card *@
     <main class="signin__panel">
         <div class="signin__card">
             <h1 class="signin__title">Sign in</h1>
