@@ -5,43 +5,54 @@
 <PageTitle>Market trends | TRU</PageTitle>
 
 <style>
-.mt{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c;width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;
-min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
-.mt h1{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.35rem}
-.mt .sub{margin:0;color:#5f6b85;font-size:.86rem}
-.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.5rem;flex:0 0 auto}
-.mt-kpi{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.7rem .85rem;box-shadow:0 3px 12px rgba(29,45,92,.05);cursor:pointer}
-.mt-kpi:hover{border-color:#00a4e4}
-.mt-kpi span{display:block;font-size:.65rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85}
-.mt-kpi strong{font-size:1.25rem;color:#1d2d5c}
-.mt-kpi small{font-size:.76rem;color:#6cb33f}
-.mt-grid{display:grid;grid-template-columns:1.35fr 1fr;gap:.5rem;flex:1 1 auto;min-height:0}
-.mt-panel{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:.9rem 1rem;box-shadow:0 3px 12px rgba(29,45,92,.05);display:flex;flex-direction:column;min-height:0;height:100%}
-.mt-panel h2{margin:0 0 .1rem;font-size:1rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
-.mt-panel p.lead{margin:0 0 .55rem;font-size:.8rem;color:#5f6b85}
-.mt-toolbar{display:flex;gap:.45rem;margin-bottom:.5rem;flex-wrap:wrap;flex:0 0 auto}
-.mt-toolbar input{flex:1;min-width:140px;padding:.42rem .65rem;border:1px solid #e2e8f0;border-radius:9px;font-family:inherit}
-.mt-toolbar button{border:none;cursor:pointer;padding:.42rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
-.mt-table-wrap{flex:1 1 auto;overflow:auto;min-height:0}
-.mt table{width:100%;border-collapse:collapse;font-size:.84rem}
-.mt th{text-align:left;padding:.4rem .35rem;font-size:.65rem;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85;border-bottom:2px solid #e2e8f0;position:sticky;top:0;background:#fff}
-.mt td{padding:.42rem .35rem;border-bottom:1px solid #eef1f5}
+.mt{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c;width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;display:flex;flex-direction:column;gap:.5rem}
+.mt h1{margin:0;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem}
+.mt .sub{margin:0;color:#5f6b85;font-size:.84rem}
+.mt-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.45rem}
+.mt-kpi{background:#fff;border:1px solid #e2e8f0;border-radius:12px;padding:.65rem .8rem;box-shadow:0 2px 10px rgba(29,45,92,.04);cursor:pointer;text-align:left;font-family:inherit;color:inherit}
+.mt-kpi:hover,.mt-kpi.on{border-color:#00a4e4;box-shadow:0 0 0 2px rgba(0,164,228,.15)}
+.mt-kpi span{display:block;font-size:.62rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85}
+.mt-kpi strong{font-size:1.2rem;color:#1d2d5c}
+.mt-kpi small{font-size:.74rem;color:#6cb33f}
+.mt-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:.5rem;align-items:start}
+.mt-panel{background:#fff;border:1px solid #e2e8f0;border-radius:14px;padding:.85rem 1rem;box-shadow:0 2px 10px rgba(29,45,92,.04)}
+.mt-panel h2{margin:0 0 .1rem;font-size:.95rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
+.mt-panel p.lead{margin:0 0 .5rem;font-size:.78rem;color:#5f6b85}
+.mt-toolbar{display:flex;gap:.4rem;margin-bottom:.45rem;flex-wrap:wrap}
+.mt-toolbar input{flex:1;min-width:120px;padding:.4rem .6rem;border:1px solid #e2e8f0;border-radius:9px;font-family:inherit}
+.mt-toolbar button{border:none;cursor:pointer;padding:.4rem .85rem;border-radius:9px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
+.mt-table-wrap{max-height:min(420px,50vh);overflow:auto}
+.mt table{width:100%;border-collapse:collapse;font-size:.82rem}
+.mt th{text-align:left;padding:.35rem;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;color:#5f6b85;border-bottom:2px solid #e2e8f0;position:sticky;top:0;background:#fff}
+.mt td{padding:.38rem .35rem;border-bottom:1px solid #eef1f5}
 .mt tr{cursor:pointer}.mt tr:hover,.mt tr.is-on{background:#eef6fb}
 .mt .up{color:#2d6a2d;font-weight:600}.mt .down{color:#e31837;font-weight:600}
-.mt-bars{display:flex;align-items:flex-end;gap:6px;height:110px;margin:.4rem 0 .3rem;flex:0 0 auto}
-.mt-bars div{flex:1;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#00a4e4,#07649d);min-height:8px;position:relative}
-.mt-bars div span{position:absolute;bottom:-1.15rem;left:50%;transform:translateX(-50%);font-size:.62rem;color:#5f6b85;white-space:nowrap}
-.mt-detail-head{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.4rem}
-.mt-detail-head strong{font-size:1.4rem}
-.mt-trade{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.5rem}
-.mt-trade input{padding:.38rem .5rem;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit}
-.mt-trade button{border:none;cursor:pointer;padding:.45rem;border-radius:8px;font-weight:700;font-family:inherit}
+.mt-bars{display:flex;align-items:flex-end;gap:5px;height:100px;margin:.35rem 0 .25rem}
+.mt-bars button{flex:1;border:none;padding:0;cursor:pointer;border-radius:5px 5px 0 0;background:linear-gradient(180deg,#00a4e4,#07649d);min-height:8px;position:relative;font-family:inherit}
+.mt-bars button span{position:absolute;bottom:-1.1rem;left:50%;transform:translateX(-50%);font-size:.6rem;color:#5f6b85;white-space:nowrap}
+.mt-bars button.is-on{filter:brightness(1.15);box-shadow:0 0 0 2px rgba(0,164,228,.35)}
+.mt-skills{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:1.1rem}
+.mt-skill{
+  background:#f4f7fb;border-radius:10px;padding:.55rem .7rem;font-size:.8rem;border:1px solid transparent;
+  cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:border-color .12s,background .12s;
+}
+.mt-skill:hover,.mt-skill.on{border-color:#00a4e4;background:#e8f4fc}
+.mt-skill strong{display:block;font-size:1rem;color:#1d2d5c;margin-top:.15rem}
+.mt-skill em{display:block;font-style:normal;font-size:.72rem;color:#5f6b85;margin-top:.2rem}
+.mt-detail-head{display:flex;justify-content:space-between;gap:.5rem;margin-bottom:.35rem}
+.mt-detail-head strong{font-size:1.3rem}
+.mt-trade{display:grid;grid-template-columns:1fr 1fr;gap:.35rem;margin-top:.45rem}
+.mt-trade input{padding:.35rem .5rem;border:1px solid #e2e8f0;border-radius:8px;font-family:inherit}
+.mt-trade button{border:none;cursor:pointer;padding:.42rem;border-radius:8px;font-weight:700;font-family:inherit}
 .mt-buy{background:#6cb33f;color:#fff}.mt-sell{background:#e31837;color:#fff}
-.mt-note{font-size:.74rem;color:#5f6b85;margin-top:.4rem}
-.mt-empty-fill{display:grid;grid-template-columns:1fr 1fr;gap:.4rem;margin-top:.3rem;flex:1 1 auto}
-.mt-empty-fill div{background:#f4f7fb;border-radius:10px;padding:.55rem .7rem;font-size:.8rem}
-.mt-empty-fill strong{display:block;font-size:1.05rem;color:#1d2d5c}
-@@media(max-width:960px){.mt-grid,.mt-kpis{grid-template-columns:1fr 1fr}.mt{min-height:auto}}
+.mt-note{font-size:.72rem;color:#5f6b85;margin-top:.35rem}
+.mt-actions{display:flex;gap:.35rem;flex-wrap:wrap;margin-top:.55rem}
+.mt-actions a,.mt-actions button{
+  border:none;cursor:pointer;padding:.4rem .75rem;border-radius:9px;font-weight:600;font-size:.78rem;
+  font-family:inherit;background:#e7f0f5;color:#1d2d5c;text-decoration:none;display:inline-flex;align-items:center;
+}
+.mt-actions .pri{background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff}
+@@media(max-width:960px){.mt-grid,.mt-kpis{grid-template-columns:1fr 1fr}}
 @@media(max-width:560px){.mt-kpis{grid-template-columns:1fr}}
 </style>
 
@@ -52,10 +63,10 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
     </div>
 
     <div class="mt-kpis">
-        <div class="mt-kpi" @onclick='() => Select("CRWD")'><span>Cyber demand</span><strong>118</strong><small>▲ 6% QoQ</small></div>
-        <div class="mt-kpi" @onclick='() => Select("NVDA")'><span>AI governance</span><strong>+34%</strong><small>YoY CPE topics</small></div>
-        <div class="mt-kpi" @onclick='() => Select("OKTA")'><span>Privacy interest</span><strong>High</strong><small>▲ study groups</small></div>
-        <div class="mt-kpi" @onclick='() => Select("PANW")'><span>Vendor risk</span><strong>+12%</strong><small>ticket volume</small></div>
+        <button type="button" class="mt-kpi @(selected?.Symbol=="CRWD"?"on":null)" @onclick='() => Select("CRWD")'><span>Cyber demand</span><strong>118</strong><small>▲ 6% QoQ</small></button>
+        <button type="button" class="mt-kpi @(selected?.Symbol=="NVDA"?"on":null)" @onclick='() => Select("NVDA")'><span>AI governance</span><strong>+34%</strong><small>YoY CPE topics</small></button>
+        <button type="button" class="mt-kpi @(selected?.Symbol=="OKTA"?"on":null)" @onclick='() => Select("OKTA")'><span>Privacy interest</span><strong>High</strong><small>▲ study groups</small></button>
+        <button type="button" class="mt-kpi @(selected?.Symbol=="PANW"?"on":null)" @onclick='() => Select("PANW")'><span>Vendor risk</span><strong>+12%</strong><small>ticket volume</small></button>
     </div>
 
     <div class="mt-grid">
@@ -89,21 +100,34 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
             @if (selected is null)
             {
                 <h2>Market overview</h2>
-                <p class="lead">Select a symbol — or use the KPIs above</p>
+                <p class="lead">Skill demand · click a bar or card for detail</p>
                 <div class="mt-bars">
-                    @foreach (var b in skillBars)
+                    @for (var i = 0; i < skillBars.Length; i++)
                     {
-                        <div style="height:@b.H%"><span>@b.Label</span></div>
+                        var ii = i;
+                        <button type="button" class="@(skillFocus==skillBars[i].Label?"is-on":null)" style="height:@skillBars[i].H%" @onclick="() => FocusSkill(skillBars[ii].Label)">
+                            <span>@skillBars[i].Label</span>
+                        </button>
                     }
                 </div>
-                <p class="lead" style="margin-top:1.2rem">Skill demand (chapter questions)</p>
-                <div class="mt-empty-fill">
-                    <div><span>Audit</span><strong>High</strong></div>
-                    <div><span>Security</span><strong>Very high</strong></div>
-                    <div><span>AI</span><strong>Rising</strong></div>
-                    <div><span>Risk</span><strong>Steady</strong></div>
-                    <div><span>Privacy</span><strong>High</strong></div>
-                    <div><span>Cloud</span><strong>High</strong></div>
+                <div class="mt-skills">
+                    @foreach (var sk in skills)
+                    {
+                        <button type="button" class="mt-skill @(skillFocus==sk.Name?"on":null)" @onclick="() => FocusSkill(sk.Name)">
+                            <span>@sk.Name</span>
+                            <strong>@sk.Level</strong>
+                            <em>@sk.Note</em>
+                        </button>
+                    }
+                </div>
+                @if (!string.IsNullOrEmpty(skillMsg))
+                {
+                    <p class="mt-note" style="margin-top:.65rem;padding:.5rem .65rem;background:#e8f4fc;border-radius:8px;color:#1d2d5c">@skillMsg</p>
+                }
+                <div class="mt-actions">
+                    <button type="button" class="pri" @onclick='() => Select("CRWD")'>Open cyber sample</button>
+                    <a href="analytics">Analytics</a>
+                    <a href="knowledge-base">Knowledge base</a>
                 </div>
             }
             else
@@ -121,7 +145,7 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
                 <div class="mt-bars">
                     @foreach (var h in selected.Spark)
                     {
-                        <div style="height:@h%"></div>
+                        <button type="button" style="height:@h%" title="Sample"></button>
                     }
                 </div>
                 <p class="lead">Paper trade (educational)</p>
@@ -132,13 +156,17 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
                     <button type="button" class="mt-sell" @onclick="Sell">Sell</button>
                 </div>
                 <p class="mt-note">@(string.IsNullOrEmpty(tradeMsg) ? "Simulated only — not real brokerage." : tradeMsg)</p>
+                <div class="mt-actions">
+                    <button type="button" @onclick="() => selected = null">Back to overview</button>
+                    <a href="escalations">Related tickets</a>
+                </div>
             }
         </div>
     </div>
 </section>
 
 @code {
-    private string search = "", tradeMsg = "";
+    private string search = "", tradeMsg = "", skillFocus = "", skillMsg = "";
     private int qty = 10;
     private double limit = 0;
     private Stock? selected;
@@ -146,11 +174,21 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
     private readonly Random rng = new();
     private record Stock(string Symbol, string Name, double Price, double Change, string Sector, int[] Spark);
     private record Bar(string Label, int H);
+    private record Skill(string Name, string Level, string Note);
     private List<Stock> stocks = new();
     private readonly Bar[] skillBars =
     {
         new("Audit", 55), new("Security", 88), new("AI", 95),
         new("Risk", 70), new("Privacy", 62), new("Cloud", 58)
+    };
+    private readonly Skill[] skills =
+    {
+        new("Audit", "High", "Member questions +12%"),
+        new("Security", "Very high", "Top CPE topic"),
+        new("AI", "Rising", "Governance workshops"),
+        new("Risk", "Steady", "Vendor reviews up"),
+        new("Privacy", "High", "Study group demand"),
+        new("Cloud", "High", "Controls mapping"),
     };
     private IEnumerable<Stock> Filtered =>
         string.IsNullOrWhiteSpace(search) ? stocks
@@ -194,7 +232,13 @@ min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
     {
         selected = stocks.FirstOrDefault(s => s.Symbol == symbol);
         if (selected != null) limit = Math.Round(selected.Price, 2);
-        tradeMsg = "";
+        tradeMsg = ""; skillMsg = "";
+    }
+    private void FocusSkill(string name)
+    {
+        skillFocus = name;
+        var sk = skills.FirstOrDefault(s => s.Name == name);
+        skillMsg = sk is null ? $"{name} selected." : $"{sk.Name}: {sk.Level} — {sk.Note}. Open related stocks from the watchlist or KPIs.";
     }
     private void Refresh() { Seed(); if (selected != null) Select(selected.Symbol); }
     private void Buy() { if (selected is null) return; tradeMsg = $"Paper BUY {qty} {selected.Symbol} @ ${(limit > 0 ? limit : selected.Price):0.00}"; }
