@@ -12,28 +12,23 @@
 <style>
 html,body{margin:0!important;padding:0!important}
 .signin{--ink:#24436b;--pale:#eaf4fb;--teal:#239f9a;--muted:#71839a;--line:#dfe9f1;display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(380px,.95fr)!important;width:100%!important;min-height:100vh!important;min-height:100dvh!important;margin:0!important;background:#fff;font-family:"Roboto",system-ui,sans-serif;color:var(--ink)}
-.signin__brand{position:relative;display:flex!important;align-items:center!important;justify-content:center!important;min-height:100vh!important;min-height:100dvh!important;overflow:hidden!important;background:linear-gradient(145deg,#f4f9fd,#e8f3fa)!important}
-.signin__brand:before,.signin__brand:after{content:"";position:absolute;border-radius:50%;border:1px solid rgba(35,159,154,.18);pointer-events:none}.signin__brand:before{width:min(60vw,520px);aspect-ratio:1}.signin__brand:after{width:min(46vw,400px);aspect-ratio:1;border-color:rgba(36,67,107,.10)}
-.signin__lattice,.signin__orbits{display:none!important}.signin__orbitStage{position:relative;z-index:2;width:auto!important;height:auto!important;display:grid;place-items:center}.signin__core{width:auto!important;height:auto!important;min-width:0!important;min-height:0!important}
-.signin__sphere{width:clamp(118px,15vw,178px)!important;height:clamp(118px,15vw,178px)!important;border-radius:30px!important;background:#fff!important;border:1px solid #d9e9f4;box-shadow:0 18px 50px rgba(36,67,107,.10)!important;display:grid;place-items:center;animation:none!important}
-.signin__sphereText{font-family:"Roboto",system-ui,sans-serif!important;font-size:clamp(2.2rem,4vw,3.25rem)!important;font-weight:800!important;letter-spacing:.08em!important;color:var(--ink)!important;text-shadow:none!important}
+.signin__brand{position:relative;display:flex!important;align-items:center!important;justify-content:center!important;min-height:100vh!important;min-height:100dvh!important;overflow:hidden!important;background:linear-gradient(145deg,#f7fbfe 0%,#eaf5fb 55%,#f8fcff 100%)!important}
 .signin__panel{display:flex!important;align-items:center!important;justify-content:center!important;min-height:100vh!important;min-height:100dvh!important;padding:2.5rem 2rem;background:#fff!important;box-sizing:border-box}
 .signin__card{width:100%;max-width:390px;background:#fff;border-radius:18px;padding:2.1rem 2rem;border:1px solid var(--line);box-shadow:0 14px 40px rgba(36,67,107,.07)}
-.signin__title{margin:0 0 .4rem;font-size:1.8rem;font-weight:700;color:var(--ink)}.signin__lede{margin:0 0 1.5rem;color:var(--muted);font-size:.92rem}
+.signin__title{margin:0 0 .4rem;font-size:1.8rem;font-weight:700;color:var(--ink)}
+.signin__lede{margin:0 0 1.5rem;color:var(--muted);font-size:.92rem}
 .signin__error{margin-bottom:1rem;padding:.75rem .9rem;border-left:4px solid var(--teal);border-radius:8px;background:var(--pale);color:var(--ink);font-size:.88rem}
-.signin__field{margin-bottom:1.05rem}.signin__label{display:block;margin-bottom:.4rem;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#52728f}
+.signin__field{margin-bottom:1.05rem}
+.signin__label{display:block;margin-bottom:.4rem;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:#52728f}
 .signin__input,.signin__field input{display:block;width:100%;padding:.8rem .9rem;border:1px solid #d5e3ed;border-radius:10px;background:#f5f9fc;color:var(--ink);font:inherit;font-size:.95rem;box-sizing:border-box}
 .signin__input:focus,.signin__field input:focus{outline:none;border-color:var(--teal);box-shadow:0 0 0 3px rgba(35,159,154,.13);background:#fff}
-.signin__submit{width:100%;margin-top:.3rem;padding:.85rem 1rem;border:0;border-radius:10px;background:var(--ink);color:#fff;font:inherit;font-weight:700;font-size:.95rem;cursor:pointer;transition:background .2s,transform .2s}.signin__submit:hover{background:var(--teal);transform:translateY(-1px)}
-.signin__note{margin:1.2rem 0 0;font-size:.8rem;line-height:1.6;color:#8494a8}.signin__back{display:inline-block;margin-top:1rem;color:var(--teal);font-weight:700;font-size:.88rem;text-decoration:none}.signin__back:hover{color:var(--ink);text-decoration:underline}
-@@media(max-width:900px){.signin{grid-template-columns:1fr!important}.signin__brand{min-height:230px!important}.signin__brand:before{width:220px}.signin__brand:after{width:170px}.signin__sphere{width:100px!important;height:100px!important}.signin__panel{min-height:auto!important;padding:1.5rem 1.1rem 2rem}.signin__card{padding:1.6rem 1.3rem}}
-@@media(prefers-reduced-motion:reduce){.signin__submit{transition:none}}
+.signin__submit{width:100%;margin-top:.3rem;padding:.85rem 1rem;border:0;border-radius:10px;background:var(--ink);color:#fff;font:inherit;font-weight:700;font-size:.95rem;cursor:pointer}
+.signin__submit:hover{background:var(--teal)}
+.signin__note{margin:1.2rem 0 0;font-size:.8rem;line-height:1.6;color:#8494a8}
+.signin__back{display:inline-block;margin-top:1rem;color:var(--teal);font-weight:700;font-size:.88rem;text-decoration:none}
+.signin__back:hover{color:var(--ink);text-decoration:underline}
 
-/* TRU orbital identity: 9 visible orbits and a centered illustrated logo */
-.signin__brand{background:linear-gradient(145deg,#f7fbfe 0%,#eaf5fb 55%,#f8fcff 100%)!important}
-.signin__brand:before,.signin__brand:after{display:none!important}
-.signin__lattice{display:none!important}
-.signin__orbitStage{position:relative!important;display:grid!important;place-items:center!important;width:min(72vw,610px)!important;height:min(72vw,610px)!important;max-height:78vh!important;max-height:78dvh!important;isolation:isolate}
+.signin__orbitStage{position:relative!important;display:grid!important;place-items:center!important;width:min(72vw,610px)!important;height:min(72vw,610px)!important;max-height:78vh!important;isolation:isolate}
 .signin__orbitStage:before{content:"";position:absolute;inset:20%;border-radius:50%;background:radial-gradient(circle,rgba(35,159,154,.10),rgba(234,244,251,.02) 65%,transparent 72%);z-index:-1}
 .signin__orbits{position:absolute!important;inset:0!important;display:block!important;pointer-events:none}
 .signin__orbit{position:absolute!important;left:50%!important;top:50%!important;border:1px solid rgba(36,67,107,.16)!important;border-radius:50%!important;transform:translate(-50%,-50%) rotate(-18deg)!important;animation:tru-orbit-breathe 8s ease-in-out infinite alternate}
@@ -46,8 +41,8 @@ html,body{margin:0!important;padding:0!important}
 .signin__orbit:nth-child(7){width:74%;height:74%;animation-delay:-3.5s}
 .signin__orbit:nth-child(8){width:83%;height:83%;animation-delay:-4s}
 .signin__orbit:nth-child(9){width:92%;height:92%;animation-delay:-4.5s}
-.signin__core{position:relative!important;z-index:5!important;width:clamp(145px,19vw,205px)!important;height:clamp(145px,19vw,205px)!important;min-width:0!important;min-height:0!important;display:grid;place-items:center}
-.signin__sphere{width:100%!important;height:100%!important;border-radius:50%!important;background:#fff!important;border:7px solid rgba(255,255,255,.96)!important;box-shadow:0 12px 34px rgba(36,67,107,.13),0 0 0 1px #dcecf4!important;display:grid!important;place-items:center!important;animation:none!important;overflow:hidden}
+.signin__core{position:relative!important;z-index:5!important;width:clamp(145px,19vw,205px)!important;height:clamp(145px,19vw,205px)!important;display:grid;place-items:center}
+.signin__sphere{width:100%!important;height:100%!important;border-radius:50%!important;background:#fff!important;border:7px solid rgba(255,255,255,.96)!important;box-shadow:0 12px 34px rgba(36,67,107,.13),0 0 0 1px #dcecf4!important;display:grid!important;place-items:center!important;overflow:hidden}
 .signin__logoSvg{width:100%;height:100%;display:block}
 .signin__planet{position:absolute;left:50%;top:50%;width:100%;height:100%;pointer-events:none;transform:translate(-50%,-50%);animation:tru-planet-spin var(--orbit-duration,24s) linear infinite;z-index:4}
 .signin__planet:after{content:"";position:absolute;left:50%;top:4%;width:clamp(6px,.8vw,10px);height:clamp(6px,.8vw,10px);border-radius:50%;background:var(--planet-color,#239f9a);box-shadow:0 0 0 4px rgba(35,159,154,.10),0 2px 7px rgba(36,67,107,.16);transform:translateX(-50%)}
@@ -60,11 +55,21 @@ html,body{margin:0!important;padding:0!important}
 .signin__planet:nth-of-type(8){--orbit-duration:49s;--planet-color:#5b9bd5;transform:translate(-50%,-50%) rotate(256deg)}
 .signin__planet:nth-of-type(9){--orbit-duration:54s;--planet-color:#80b8d8;transform:translate(-50%,-50%) rotate(296deg)}
 .signin__planet:nth-of-type(10){--orbit-duration:59s;--planet-color:#239f9a;transform:translate(-50%,-50%) rotate(326deg)}
-@keyframes tru-orbit-breathe{from{opacity:.48}to{opacity:1}}
-@keyframes tru-planet-spin{from{rotate:0deg}to{rotate:360deg}}
-@media(max-width:900px){.signin__orbitStage{width:min(80vw,360px)!important;height:min(80vw,360px)!important;max-height:none!important}.signin__core{width:130px!important;height:130px!important}.signin__brand{min-height:280px!important}}
-@media(prefers-reduced-motion:reduce){.signin__orbit,.signin__planet{animation:none!important}}
 
+@@keyframes tru-orbit-breathe{from{opacity:.48}to{opacity:1}}
+@@keyframes tru-planet-spin{from{transform:translate(-50%,-50%) rotate(0deg)}to{transform:translate(-50%,-50%) rotate(360deg)}}
+@@media(max-width:900px){
+  .signin{grid-template-columns:1fr!important}
+  .signin__brand{min-height:280px!important}
+  .signin__orbitStage{width:min(80vw,360px)!important;height:min(80vw,360px)!important;max-height:none!important}
+  .signin__core{width:130px!important;height:130px!important}
+  .signin__panel{min-height:auto!important;padding:1.5rem 1.1rem 2rem}
+  .signin__card{padding:1.6rem 1.3rem}
+}
+@@media(prefers-reduced-motion:reduce){
+  .signin__orbit,.signin__planet{animation:none!important}
+  .signin__submit{transition:none}
+}
 </style>
 
 <div class="signin">
@@ -106,33 +111,27 @@ html,body{margin:0!important;padding:0!important}
         <div class="signin__card">
             <h1 class="signin__title">Sign in</h1>
             <p class="signin__lede">Use the email and password for your TRU account.</p>
-
             @if (ErrorMessage is not null)
             {
                 <div class="signin__error" role="alert">@ErrorMessage</div>
             }
-
             @if (Input is not null)
             {
                 <EditForm Model="Input" method="post" OnValidSubmit="HandleSignInAsync" FormName="isa-sign-in" class="signin__form">
                     <DataAnnotationsValidator />
                     <div class="signin__field">
                         <label class="signin__label" for="signin-email">Email address</label>
-                        <InputText id="signin-email" class="signin__input" @bind-Value="Input.Email"
-                                   type="text" inputmode="email" autocomplete="username"
-                                   autocapitalize="none" spellcheck="false" />
+                        <InputText id="signin-email" class="signin__input" @bind-Value="Input.Email" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
                         <ValidationMessage For="() => Input.Email" />
                     </div>
                     <div class="signin__field">
                         <label class="signin__label" for="signin-password">Password</label>
-                        <InputText id="signin-password" class="signin__input" @bind-Value="Input.Password"
-                                   type="password" autocomplete="current-password" />
+                        <InputText id="signin-password" class="signin__input" @bind-Value="Input.Password" type="password" autocomplete="current-password" />
                         <ValidationMessage For="() => Input.Password" />
                     </div>
                     <button type="submit" class="signin__submit">Sign in</button>
                 </EditForm>
             }
-
             <p class="signin__note">TRU is a prototype. Test accounts are set up by the project team.</p>
             <a class="signin__back" href="/" data-enhance-nav="false">&larr; Back to TRU home</a>
         </div>
@@ -141,12 +140,8 @@ html,body{margin:0!important;padding:0!important}
 
 @code {
     [CascadingParameter] private HttpContext? HttpContext { get; set; }
-
-    [SupplyParameterFromForm(FormName = "isa-sign-in")]
-    private SignInInput? Input { get; set; }
-
+    [SupplyParameterFromForm(FormName = "isa-sign-in")] private SignInInput? Input { get; set; }
     protected override void OnInitialized() => Input ??= new();
-
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
     private string? ErrorMessage { get; set; }
 
@@ -180,9 +175,7 @@ html,body{margin:0!important;padding:0!important}
 
     private sealed class SignInInput
     {
-        [Required(ErrorMessage = "Enter your email address.")]
-        public string Email { get; set; } = string.Empty;
-        [Required(ErrorMessage = "Enter your password.")]
-        public string Password { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Enter your email address.")] public string Email { get; set; } = string.Empty;
+        [Required(ErrorMessage = "Enter your password.")] public string Password { get; set; } = string.Empty;
     }
 }
