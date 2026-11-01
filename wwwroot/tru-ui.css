@@ -1,0 +1,21 @@
+/* Link in App.razor: <link rel="stylesheet" href="tru-ui.css" /> */
+html, body { margin: 0; padding: 0; }
+.sidebar {
+  display: flex !important;
+  flex-direction: column !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+}
+.main, .content { max-width: none !important; }
+/* Modern primary / secondary buttons across pages */
+button.btn-primary, .es-btn, .st-btn--primary, .si__submit,
+a.landing__btn--primary {
+  border-radius: 12px !important;
+  font-weight: 700 !important;
+  box-shadow: 0 6px 16px rgba(29, 45, 92, 0.2) !important;
+  transition: filter 0.15s ease, transform 0.12s ease !important;
+}
+button.btn-primary:hover, .es-btn:hover, .st-btn--primary:hover {
+  filter: brightness(1.06);
+  transform: translateY(-1px);
+}
