@@ -4,31 +4,56 @@
 <PageTitle>Escalations & Tickets | TRU</PageTitle>
 
 <style>
-.es{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--red:#e31837;--orange:#e57524;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
-width:100%;max-width:none;margin:0;padding:.55rem .85rem .85rem;box-sizing:border-box}
-.es-hero{border-radius:16px;padding:1.1rem 1.25rem;color:#fff;margin-bottom:.65rem;display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;
-background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);box-shadow:0 10px 28px rgba(29,45,92,.14)}
+.es{
+  --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;--red:#e31837;--orange:#e57524;
+  font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+  width:100%!important;max-width:none!important;margin:0!important;
+  padding:10px!important;box-sizing:border-box;
+  display:flex!important;flex-direction:column!important;gap:10px!important;
+  flex:1 1 auto!important;
+  min-height:calc(100vh - 20px)!important;
+  min-height:calc(100dvh - 20px)!important;
+}
+.es-hero{
+  flex:0 0 auto;
+  border-radius:16px;padding:1.1rem 1.25rem;color:#fff;
+  display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;
+  background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);
+  box-shadow:0 10px 28px rgba(29,45,92,.14);
+}
 .es-hero h1{margin:.1rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.45rem}
 .es-hero p{margin:0;opacity:.92;font-size:.85rem}
 .es-btn{border:none;cursor:pointer;padding:.5rem 1rem;border-radius:10px;font-weight:600;font-family:inherit;background:#fff;color:var(--navy)}
 .es-btn:hover{filter:brightness(1.03)}
-.es-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.55rem;margin-bottom:.65rem}
+.es-kpis{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
 .es-kpi{background:#fff;border-radius:12px;padding:.85rem 1rem;border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit}
 .es-kpi:hover{border-color:var(--blue)}
 .es-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.2)}
 .es-kpi .l{font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 .es-kpi .v{font-size:1.35rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
 .es-kpi .t{font-size:.76rem;color:var(--muted)}
-.es-grid{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(260px,1fr);gap:.65rem;align-items:start}
-.es-card{background:#fff;border-radius:12px;padding:.95rem 1.05rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.04)}
+.es-detail{flex:0 0 auto;background:#e8f4fc;border-radius:10px;padding:.6rem .9rem;font-size:.84rem;border:1px solid #c5e0f5}
+.es-grid{
+  flex:1 1 auto!important;
+  display:grid!important;
+  grid-template-columns:minmax(0,1.45fr) minmax(260px,1fr);
+  gap:10px;
+  align-items:stretch!important;
+  min-height:0;
+}
+.es-card{
+  background:#fff;border-radius:12px;padding:.95rem 1.05rem;
+  border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.04);
+  display:flex;flex-direction:column;min-height:0;height:100%;
+}
 .es-card h2{margin:0 0 .15rem;font-size:.95rem}
 .es-card .sub{margin:0 0 .5rem;font-size:.78rem;color:var(--muted)}
-.es-filters{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem}
+.es-filters{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:.5rem;flex:0 0 auto}
 .es-filters button{border:1px solid var(--line);background:#fff;border-radius:999px;padding:.3rem .7rem;font-weight:600;font-size:.78rem;cursor:pointer;font-family:inherit;color:var(--navy)}
 .es-filters button.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.es-table-wrap{flex:1 1 auto;min-height:120px;overflow:auto}
 .es-table{width:100%;border-collapse:collapse;font-size:.86rem}
-.es-table th{text-align:left;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.4rem .35rem;border-bottom:1px solid var(--line)}
+.es-table th{text-align:left;font-size:.62rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);padding:.4rem .35rem;border-bottom:1px solid var(--line);position:sticky;top:0;background:#fff}
 .es-table td{padding:.45rem .35rem;border-bottom:1px solid var(--line);vertical-align:middle}
 .es-table tbody tr:last-child td{border-bottom:none}
 .es-badge{display:inline-block;padding:.12rem .4rem;border-radius:999px;font-size:.68rem;font-weight:700}
@@ -46,7 +71,8 @@ background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);box-shadow:0 10px
 .es-prio-row .fill{height:100%;border-radius:99px}
 .es-act{padding:.4rem .55rem;background:var(--light);border-radius:8px;margin-bottom:.3rem;font-size:.8rem}
 .es-act strong{display:block}
-.es-side{display:flex;flex-direction:column;gap:.55rem}
+.es-side{display:flex;flex-direction:column;gap:10px;min-height:0;height:100%}
+.es-side .es-card:last-child{flex:1 1 auto}
 .es-modal-bg{position:fixed;inset:0;background:rgba(15,23,42,.45);display:grid;place-items:center;z-index:80;padding:1rem}
 .es-modal{background:#fff;border-radius:16px;padding:1.2rem;width:min(460px,100%);box-shadow:0 24px 60px rgba(0,0,0,.25)}
 .es-modal h2{margin:0 0 .75rem;font-size:1.05rem}
@@ -57,8 +83,11 @@ background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);box-shadow:0 10px
 .es-modal .save{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
 .es-modal .cancel{background:var(--light);color:var(--navy)}
 .es-toast{position:fixed;bottom:1rem;right:1rem;background:var(--navy);color:#fff;padding:.65rem .9rem;border-radius:10px;font-weight:600;z-index:90}
-.es-detail{background:#e8f4fc;border-radius:10px;padding:.6rem .9rem;margin-bottom:.55rem;font-size:.84rem;border:1px solid #c5e0f5}
-@@media(max-width:900px){.es-kpis{grid-template-columns:1fr 1fr}.es-grid{grid-template-columns:1fr}.es{padding:.5rem}}
+@@media(max-width:900px){
+  .es{min-height:0!important}
+  .es-kpis{grid-template-columns:1fr 1fr}
+  .es-grid{grid-template-columns:1fr}
+}
 </style>
 
 <section class="es">
@@ -102,32 +131,34 @@ background:linear-gradient(120deg,#e31837,#1d2d5c 55%,#07649d);box-shadow:0 10px
                 <button type="button" class="@(filter=="Escalated"?"on":null)" @onclick="FilterEscalated">Escalated</button>
                 <button type="button" class="@(filter=="Closed"?"on":null)" @onclick="FilterClosed">Closed</button>
             </div>
-            <table class="es-table">
-                <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
-                <tbody>
-                @foreach (var t in Visible)
-                {
-                    <tr>
-                        <td><strong>@t.Id</strong></td>
-                        <td>@t.Subject</td>
-                        <td><span class="es-badge @StatusClass(t.Status)">@t.Status</span></td>
-                        <td>@t.Priority</td>
-                        <td class="es-actions">
-                            @if (t.Status != "Closed")
-                            {
-                                <button type="button" @onclick="() => MarkProgress(t)">Progress</button>
-                                <button type="button" @onclick="() => MarkEscalated(t)">Escalate</button>
-                                <button type="button" @onclick="() => MarkClosed(t)">Close</button>
-                            }
-                            else
-                            {
-                                <button type="button" @onclick="() => MarkOpen(t)">Reopen</button>
-                            }
-                        </td>
-                    </tr>
-                }
-                </tbody>
-            </table>
+            <div class="es-table-wrap">
+                <table class="es-table">
+                    <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
+                    <tbody>
+                    @foreach (var t in Visible)
+                    {
+                        <tr>
+                            <td><strong>@t.Id</strong></td>
+                            <td>@t.Subject</td>
+                            <td><span class="es-badge @StatusClass(t.Status)">@t.Status</span></td>
+                            <td>@t.Priority</td>
+                            <td class="es-actions">
+                                @if (t.Status != "Closed")
+                                {
+                                    <button type="button" @onclick="() => MarkProgress(t)">Progress</button>
+                                    <button type="button" @onclick="() => MarkEscalated(t)">Escalate</button>
+                                    <button type="button" @onclick="() => MarkClosed(t)">Close</button>
+                                }
+                                else
+                                {
+                                    <button type="button" @onclick="() => MarkOpen(t)">Reopen</button>
+                                }
+                            </td>
+                        </tr>
+                    }
+                    </tbody>
+                </table>
+            </div>
         </article>
         <div class="es-side">
             <article class="es-card">
