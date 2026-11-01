@@ -5,60 +5,25 @@
 <PageTitle>TRU</PageTitle>
 
 <style>
-.hm{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
-width:100%!important;max-width:none!important;margin:0!important;
-padding:.45rem .7rem .5rem!important;box-sizing:border-box;
-min-height:calc(100vh - .15rem);display:flex;flex-direction:column;gap:.4rem}
-.hm a{text-decoration:none!important}
-
-/* TOP: time + weather always visible */
-.hm-strip{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:.4rem}
-.hm-widget{border-radius:14px;padding:.85rem 1rem;color:#fff;min-height:78px;display:flex;flex-direction:column;gap:.05rem;
-box-shadow:0 8px 22px rgba(29,45,92,.12);cursor:pointer;border:none;text-align:left;font-family:inherit;width:100%;
-transition:transform .12s,box-shadow .12s}
-.hm-widget:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(29,45,92,.16)}
-.hm-widget--clock{background:linear-gradient(135deg,#1d2d5c,#07649d,#00a4e4)}
-.hm-widget--weather{background:linear-gradient(135deg,#36ac91,#00a4e4,#6cb33f)}
-.hm-widget__l{font-size:.62rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;opacity:.9}
-.hm-widget__v{font-size:1.55rem;font-weight:300;font-family:"Roboto Slab",Georgia,serif;line-height:1.15}
-.hm-widget__m{font-size:.78rem;opacity:.92}
-
-.hm-media{flex:1 1 auto;display:flex;flex-direction:column;gap:.4rem;min-height:0}
-.hm-slides,.hm-vid{flex:1 1 0;min-height:180px;margin:0;padding:0;width:100%}
-
-.hm-slides{position:relative;border-radius:14px;overflow:hidden;box-shadow:0 8px 22px rgba(29,45,92,.12);background:#0b1220;
-touch-action:pan-y;user-select:none}
-.hm-slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease;background-size:cover;background-position:center}
-.hm-slide.is-on{opacity:1;z-index:1}
-.hm-slide__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(13,22,40,.55),rgba(13,22,40,.08) 55%,transparent);pointer-events:none}
-.hm-slide__copy{position:absolute;left:1.1rem;bottom:1rem;right:1.1rem;z-index:2;color:#fff;max-width:36rem;pointer-events:none}
-.hm-slide__copy h2{margin:0 0 .15rem;font-size:1.1rem;font-weight:600;text-shadow:0 2px 8px rgba(0,0,0,.45)}
-.hm-slide__copy p{margin:0;font-size:.86rem;opacity:.95}
-.hm-slide__nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:44px;height:44px;border-radius:50%;border:none;cursor:pointer;
-background:rgba(255,255,255,.96);color:var(--navy);font-size:1.4rem;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.2);display:grid;place-items:center}
-.hm-slide__nav:hover{background:#fff;transform:translateY(-50%) scale(1.05)}
-.hm-slide__nav.prev{left:10px}.hm-slide__nav.next{right:10px}
-.hm-slide__dots{position:absolute;bottom:10px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:6px}
-.hm-slide__dot{width:8px;height:8px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.45);cursor:pointer}
-.hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
-
-.hm-vid__frame{position:relative;width:100%;height:100%;min-height:180px;border-radius:14px;overflow:hidden;background:#0b1220;box-shadow:0 8px 22px rgba(29,45,92,.12)}
-.hm-vid__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-
-/* Modals */
-.hm-wx-bg{position:fixed;inset:0;background:rgba(19,31,66,.45);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
-.hm-wx-modal{background:#fff;border-radius:16px;padding:1.25rem 1.4rem;max-width:420px;width:100%;box-shadow:0 20px 50px rgba(19,31,66,.25)}
-.hm-wx-modal h3{margin:0 0 .75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400;font-size:1.15rem;color:var(--navy)}
-.hm-wx-modal input{width:100%;box-sizing:border-box;padding:.5rem .7rem;border:1px solid var(--line);border-radius:9px;font:inherit;margin-bottom:.5rem}
-.hm-wx-modal button{border:none;cursor:pointer;padding:.45rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;margin-right:.35rem;margin-bottom:.35rem;
-background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
-.hm-wx-modal button.ghost{background:var(--light);color:var(--navy)}
-.hm-wx-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0 .5rem}
-.hm-wx-grid div{background:var(--light);border-radius:10px;padding:.65rem .75rem;font-size:.86rem}
-.hm-wx-grid strong{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem}
-
-@@media(max-width:900px){.hm-strip{grid-template-columns:1fr}.hm-slides,.hm-vid{min-height:160px}.hm{min-height:auto}}
+.hm{--ink:#24436b;--blue:#eaf4fb;--teal:#239f9a;--muted:#71839a;--line:#dfe9f1;font-family:"Roboto",system-ui,sans-serif;color:var(--ink);width:100%!important;max-width:none!important;margin:0!important;padding:.75rem 1rem 1rem!important;box-sizing:border-box;min-height:calc(100vh - .15rem);display:flex;flex-direction:column;gap:.8rem;background:#f8fbfd}
+.hm a{text-decoration:none!important}.hm-strip{flex:0 0 auto;display:grid;grid-template-columns:1fr 1fr;gap:.75rem}
+.hm-widget{border-radius:12px;padding:.75rem 1rem;color:var(--ink);min-height:74px;display:flex;flex-direction:column;gap:.05rem;background:#fff;border:1px solid var(--line);box-shadow:0 3px 12px rgba(36,67,107,.04);cursor:pointer;text-align:left;font-family:inherit;width:100%;transition:border-color .2s,transform .2s}
+.hm-widget:hover{transform:translateY(-1px);border-color:var(--teal)}.hm-widget--clock,.hm-widget--weather{background:#fff}.hm-widget__l{font-size:.65rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--teal)}.hm-widget__v{font-size:1.35rem;font-weight:600;line-height:1.25;color:var(--ink)}.hm-widget__m{font-size:.78rem;color:var(--muted)}
+.hm-media{flex:0 0 auto;display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.85fr);align-items:stretch;gap:.85rem;min-height:0}
+.hm-slides{position:relative;height:clamp(250px,34vh,360px);min-height:250px;margin:0;padding:0;width:100%;border-radius:14px;overflow:hidden;background:#eaf4fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(36,67,107,.06);touch-action:pan-y;user-select:none}
+.hm-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .8s ease,visibility .8s ease;background-size:cover;background-position:center}.hm-slide.is-on{opacity:1;visibility:visible;z-index:1}
+.hm-slide__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(20,48,76,.52),rgba(20,48,76,.12) 72%,rgba(20,48,76,.03));pointer-events:none}
+.hm-slide__copy{position:absolute;left:1.2rem;bottom:1.25rem;right:1.2rem;z-index:2;color:#fff;max-width:36rem;pointer-events:none}.hm-slide__copy h2{margin:0 0 .3rem;font-size:clamp(1.1rem,1.8vw,1.5rem);font-weight:700;color:#fff;text-shadow:0 1px 5px rgba(0,0,0,.2)}.hm-slide__copy p{margin:0;font-size:.88rem;opacity:.96}
+.hm-slide__nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:36px;height:36px;border-radius:50%;border:1px solid rgba(36,67,107,.08);cursor:pointer;background:rgba(255,255,255,.94);color:var(--ink);font-size:1.2rem;font-weight:700;box-shadow:0 2px 8px rgba(20,48,76,.12);display:grid;place-items:center;transition:background .2s}
+.hm-slide__nav:hover{background:#fff;transform:translateY(-50%) scale(1.04)}.hm-slide__nav.prev{left:10px}.hm-slide__nav.next{right:10px}.hm-slide__dots{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:6px}
+.hm-slide__dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.6);cursor:pointer;transition:width .25s,background .25s}.hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
+.hm-vid{width:100%;height:clamp(250px,34vh,360px);min-height:250px;margin:0;padding:0}.hm-vid__frame{position:relative;width:100%;height:100%;min-height:250px;border-radius:14px;overflow:hidden;background:#eaf4fb;border:1px solid var(--line);box-shadow:0 4px 16px rgba(36,67,107,.06)}.hm-vid__frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.hm-wx-bg{position:fixed;inset:0;background:rgba(36,67,107,.24);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}.hm-wx-modal{background:#fff;border:1px solid var(--line);border-radius:16px;padding:1.25rem 1.4rem;max-width:420px;width:100%;box-shadow:0 16px 40px rgba(36,67,107,.14)}
+.hm-wx-modal h3{margin:0 0 .75rem;font-family:"Roboto",system-ui,sans-serif;font-weight:700;font-size:1.15rem;color:var(--ink)}.hm-wx-modal input{width:100%;box-sizing:border-box;padding:.6rem .7rem;border:1px solid var(--line);border-radius:9px;font:inherit;margin-bottom:.5rem}.hm-wx-modal button{border:0;cursor:pointer;padding:.5rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;margin-right:.35rem;margin-bottom:.35rem;background:var(--ink);color:#fff}.hm-wx-modal button.ghost{background:var(--blue);color:var(--ink)}
+.hm-wx-grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem;margin:.75rem 0 .5rem}.hm-wx-grid div{background:#f3f8fc;border-radius:10px;padding:.65rem .75rem;font-size:.86rem}.hm-wx-grid strong{display:block;font-size:.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em;margin-bottom:.15rem}
+@@media(max-width:900px){.hm-media{grid-template-columns:1fr}.hm-slides{height:280px}.hm-vid{height:240px;min-height:240px}.hm-vid__frame{min-height:240px}.hm{min-height:auto}}
+@@media(max-width:600px){.hm{padding:.5rem!important}.hm-strip{grid-template-columns:1fr}.hm-slides{height:245px;min-height:245px}.hm-vid{height:220px;min-height:220px}.hm-vid__frame{min-height:220px}.hm-slide__copy{left:.9rem;right:.9rem;bottom:1rem}}
+@@media(prefers-reduced-motion:reduce){.hm-slide,.hm-slide__dot,.hm-widget{transition:none!important}}
 </style>
 
 <div class="hm">
@@ -187,8 +152,8 @@ background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
         videoIndex = rng.Next(0, Videos.Length);
         Tick(null);
         clockTimer = new System.Threading.Timer(Tick, null, 1000, 1000);
-        slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 4500, 4500);
-        videoTimer = new System.Threading.Timer(_ => { videoIndex = (videoIndex + 1) % Videos.Length; _ = InvokeAsync(StateHasChanged); }, null, 90000, 90000);
+        slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 6000, 6000);
+        videoTimer = new System.Threading.Timer(_ => { videoIndex = (videoIndex + 1) % Videos.Length; _ = InvokeAsync(StateHasChanged); }, null, 180000, 180000);
     }
 
     private void Tick(object? _)
