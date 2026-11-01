@@ -72,10 +72,9 @@ article.content, .content {
 
 .top-row { display: none !important; }
 
-/* Kill every page-root forced viewport stretch */
 .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl,
 .isa-page, .contact-page, .settings-page, .translator-page, .market-page,
-.page-root, .ct, .st, .dd {
+.page-root, .st, .dd {
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
@@ -87,6 +86,24 @@ article.content, .content {
   box-sizing: border-box !important;
 }
 
+/* Contact page only: fill viewport so SiteFooter pins to bottom */
+.ct {
+  width: 100% !important;
+  max-width: none !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+.ct > .sf,
+.ct > footer {
+  margin-top: auto !important;
+  flex: 0 0 auto !important;
+}
+
 .container, .container-fluid {
   max-width: none !important;
   width: 100% !important;
@@ -94,45 +111,6 @@ article.content, .content {
   padding-left: 0 !important;
   padding-right: 0 !important;
 }
-
-.isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-card-grid,
-.isa-article-grid, .isa-hero-strip, .dd-hero, .dd-stats, .dd-grid,
-.pg-hero, .pg-stats, .pg-grid, .ct-hero, .ct-grid, .st-body,
-.gov-grid, .an-grid, .ev-grid, .es-grid, .mt-grid, .rl-main, .wx-now {
-  min-width: 0;
-  gap: var(--tru-section-gap);
-}
-
-.isa-stat-grid > *, .isa-content-grid > *, .isa-card-grid > *,
-.isa-article-grid > *, .dd-stats > *, .dd-grid > *,
-.pg-stats > *, .pg-grid > *, .ct-grid > *, .st-body > *,
-.gov-grid > *, .an-grid > *, .ev-grid > *, .es-grid > *, .mt-grid > * {
-  min-width: 0;
-  max-width: 100%;
-}
-
-.isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-hero-strip,
-.dd-hero, .dd-stats, .dd-grid, .pg-hero, .pg-stats, .pg-grid,
-.ct-hero, .ct-grid {
-  margin-bottom: var(--tru-section-gap) !important;
-}
-
-.isa-panel, .isa-stat-card, .isa-card, .pg-card, .ct-card, .st-card,
-.dd-card, .mt-panel, .rl-card, .wx-card, .gov-card, .an-card,
-.ev-card, .es-card {
-  min-width: 0;
-  max-width: 100%;
-  border-radius: 12px;
-}
-
-.ct { min-height: 0 !important; display: block !important; }
-.ct-hero h1 { color: #fff !important; font-weight: 600 !important; line-height: 1.25 !important; }
-.ct-grid {
-  display: grid !important;
-  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 1fr) !important;
-  align-items: start !important;
-}
-.ct-card { height: auto !important; min-height: 0 !important; }
 
 .table-responsive { max-width: 100%; overflow-x: auto; }
 img, video, canvas, svg { max-width: 100%; }
@@ -157,21 +135,8 @@ img, video, canvas, svg { max-width: 100%; }
     min-height: 0 !important;
     margin: 0 !important;
   }
-  .ct-grid, .st-body, .dd-grid, .pg-grid, .isa-content-grid,
-  .gov-grid, .an-grid, .ev-grid, .es-grid, .mt-grid, .wx-now {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
 }
 
 @media (max-width: 560px) {
   :root { --tru-page-gutter: 8px; --tru-section-gap: 8px; }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after {
-    scroll-behavior: auto !important;
-    animation-duration: .01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: .01ms !important;
-  }
 }
