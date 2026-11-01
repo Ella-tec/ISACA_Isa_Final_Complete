@@ -46,7 +46,6 @@ html, body {
   background: linear-gradient(175deg,#0a1224 0%,#1d2d5c 48%,#12233f 100%) !important;
 }
 
-/* CRITICAL: do NOT force min-height 100vh — that creates empty bottom gaps */
 .main {
   display: block !important;
   width: calc(100% - var(--tru-sidebar-width)) !important;
@@ -73,10 +72,10 @@ article.content, .content {
 
 .top-row { display: none !important; }
 
-/* Page roots: full width, tight gutters, no forced height */
-.hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an,
+/* Kill every page-root forced viewport stretch */
+.hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl,
 .isa-page, .contact-page, .settings-page, .translator-page, .market-page,
-.page-root, .ct, .st, .pg, .rl, .wx, .dd {
+.page-root, .ct, .st, .dd {
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
@@ -86,13 +85,6 @@ article.content, .content {
   margin: 0 !important;
   padding: var(--tru-page-gutter) !important;
   box-sizing: border-box !important;
-}
-
-/* Kill common empty stretch patterns */
-.main, article.content, .content,
-.hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an,
-.rl, .wx, .ct, .st, .pg, .dd, .isa-page {
-  min-height: 0 !important;
 }
 
 .container, .container-fluid {
@@ -133,25 +125,14 @@ article.content, .content {
   border-radius: 12px;
 }
 
-/* Contact: no forced full-viewport empty column */
-.ct {
-  min-height: 0 !important;
-  display: block !important;
-}
-.ct-hero h1 {
-  color: #fff !important;
-  font-weight: 600 !important;
-  line-height: 1.25 !important;
-}
+.ct { min-height: 0 !important; display: block !important; }
+.ct-hero h1 { color: #fff !important; font-weight: 600 !important; line-height: 1.25 !important; }
 .ct-grid {
   display: grid !important;
   grid-template-columns: minmax(0, 1.1fr) minmax(260px, 1fr) !important;
   align-items: start !important;
 }
-.ct-card {
-  height: auto !important;
-  min-height: 0 !important;
-}
+.ct-card { height: auto !important; min-height: 0 !important; }
 
 .table-responsive { max-width: 100%; overflow-x: auto; }
 img, video, canvas, svg { max-width: 100%; }

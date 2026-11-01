@@ -6,39 +6,43 @@
 
 <style>
 .wx{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:.5rem .85rem .65rem;box-sizing:border-box;
-min-height:calc(100vh - .25rem);display:flex;flex-direction:column;gap:.5rem}
-.wx-hero{flex:0 0 auto;border-radius:14px;padding:1rem 1.2rem;color:#fff;
-background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 8px 24px rgba(29,45,92,.12)}
-.wx-hero h1{margin:.1rem 0 .2rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
-.wx-hero p{margin:0;opacity:.92;font-size:.88rem}
-.wx-search{flex:0 0 auto;display:flex;gap:.45rem;flex-wrap:wrap}
-.wx-search input{flex:1;min-width:160px;padding:.5rem .75rem;border-radius:9px;border:1px solid var(--line);font-family:inherit}
-.wx-search button{border:none;cursor:pointer;padding:.5rem 1rem;border-radius:9px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
-.wx-now{flex:1 1 auto;display:grid;grid-template-columns:1.2fr 1fr;gap:.5rem;min-height:0}
-.wx-card{background:#fff;border-radius:14px;padding:1rem;border:1px solid var(--line);box-shadow:0 4px 14px rgba(29,45,92,.05);display:flex;flex-direction:column}
-.wx-temp{font-size:2.75rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;line-height:1}
-.wx-meta{color:var(--muted);font-size:.88rem;margin-top:.3rem}
-.wx-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.4rem;margin-top:.75rem}
-.wx-kpi{background:var(--light);border-radius:11px;padding:.6rem;text-align:center}
-.wx-kpi b{display:block;font-size:1.05rem}
-.wx-kpi span{font-size:.65rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
-.wx-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.4rem;flex:0 0 auto}
-.wx-day{background:#fff;border-radius:11px;padding:.6rem .35rem;border:1px solid var(--line);text-align:center;cursor:pointer}
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:8px;box-sizing:border-box;
+display:flex;flex-direction:column;gap:8px;min-height:0}
+.wx-hero{border-radius:12px;padding:.85rem 1.1rem;color:#fff;
+background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91)}
+.wx-hero h1{margin:.08rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.35rem}
+.wx-hero p{margin:0;opacity:.92;font-size:.86rem}
+.wx-search{display:flex;gap:.4rem;flex-wrap:wrap}
+.wx-search input{flex:1;min-width:160px;padding:.45rem .7rem;border-radius:9px;border:1px solid var(--line);font-family:inherit}
+.wx-search button{border:none;cursor:pointer;padding:.45rem .9rem;border-radius:9px;font-weight:600;font-family:inherit;background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.wx-now{display:grid;grid-template-columns:1.15fr 1fr;gap:8px}
+.wx-card{background:#fff;border-radius:12px;padding:.85rem;border:1px solid var(--line)}
+.wx-temp{font-size:2.5rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;line-height:1}
+.wx-meta{color:var(--muted);font-size:.86rem;margin-top:.25rem}
+.wx-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.35rem;margin-top:.65rem}
+.wx-kpi{background:var(--light);border-radius:10px;padding:.5rem;text-align:center}
+.wx-kpi b{display:block;font-size:1rem}
+.wx-kpi span{font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.wx-days{display:grid;grid-template-columns:repeat(7,1fr);gap:.35rem}
+.wx-day{background:#fff;border-radius:10px;padding:.55rem .3rem;border:1px solid var(--line);text-align:center;cursor:pointer}
 .wx-day:hover,.wx-day.on{border-color:var(--blue)}
-.wx-day .d{font-size:.7rem;font-weight:700;color:var(--muted)}
-.wx-day .t{font-size:1rem;font-weight:600;margin:.2rem 0}
-.wx-day .c{font-size:.72rem;color:var(--muted)}
-.wx-bars{display:flex;align-items:flex-end;gap:3px;height:110px;margin-top:.55rem;flex:1 1 auto}
+.wx-day .d{font-size:.68rem;font-weight:700;color:var(--muted)}
+.wx-day .t{font-size:.95rem;font-weight:600;margin:.15rem 0}
+.wx-day .c{font-size:.7rem;color:var(--muted)}
+.wx-bars{display:flex;align-items:flex-end;gap:3px;height:100px;margin-top:.45rem}
 .wx-bar{flex:1;background:linear-gradient(180deg,var(--blue),var(--mid));border-radius:4px 4px 2px 2px;min-height:6px;cursor:pointer;border:none;padding:0}
-.wx-alert{background:#fff8e8;border:1px solid #f0d78c;border-radius:11px;padding:.65rem .85rem;margin-top:.65rem;font-size:.84rem}
-.wx-detail{flex:0 0 auto;background:#fff;border-radius:12px;padding:.75rem 1rem;border:1px solid var(--line)}
-@@media(max-width:800px){.wx-now{grid-template-columns:1fr}.wx-days{grid-template-columns:repeat(4,1fr)}.wx{min-height:auto}}
+.wx-alert{background:#fff8e8;border:1px solid #f0d78c;border-radius:10px;padding:.55rem .75rem;margin-top:.55rem;font-size:.82rem}
+.wx-detail{background:#fff;border-radius:10px;padding:.65rem .85rem;border:1px solid var(--line);font-size:.88rem}
+.wx-extra{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.wx-extra .wx-card h3{margin:0 0 .35rem;font-size:.9rem}
+.wx-extra ul{margin:0;padding-left:1.1rem;font-size:.82rem;line-height:1.45;color:var(--muted)}
+.wx-extra a{color:var(--mid);font-weight:600;text-decoration:none;font-size:.82rem}
+@@media(max-width:800px){.wx-now,.wx-extra{grid-template-columns:1fr}.wx-days{grid-template-columns:repeat(4,1fr)}}
 </style>
 
 <section class="wx">
     <header class="wx-hero">
-        <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Local conditions</div>
+        <div style="font-size:.6rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Local conditions</div>
         <h1>Weather</h1>
         <p>@location · updated @timeText</p>
     </header>
@@ -61,13 +65,13 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 8px 
             {
                 <div class="wx-alert"><strong>Alert:</strong> @alert</div>
             }
-            <div style="margin-top:auto;padding-top:.75rem;font-size:.84rem;color:var(--muted)">
+            <div style="margin-top:.65rem;font-size:.82rem;color:var(--muted)">
                 Chapter tip: outdoor CPE events work best above 50°F with wind under 15 mph.
             </div>
         </article>
         <article class="wx-card">
-            <h2 style="margin:0 0 .25rem;font-size:.95rem">Temperature trend (24h sample)</h2>
-            <p style="margin:0;font-size:.78rem;color:var(--muted)">Click a bar for hour detail</p>
+            <h2 style="margin:0 0 .2rem;font-size:.92rem">Temperature trend (24h sample)</h2>
+            <p style="margin:0;font-size:.76rem;color:var(--muted)">Click a bar for hour detail</p>
             <div class="wx-bars">
                 @for (var i = 0; i < hours.Length; i++)
                 {
@@ -75,11 +79,11 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 8px 
                     <button type="button" class="wx-bar" style="height:@hours[i]%" @onclick="() => HourDetail(ii)" title="Hour +@i"></button>
                 }
             </div>
-            <p style="margin:.5rem 0 0;font-size:.84rem;color:var(--muted)">@hourText</p>
+            <p style="margin:.4rem 0 0;font-size:.82rem;color:var(--muted)">@hourText</p>
         </article>
     </div>
 
-    <div style="font-size:.95rem;font-weight:600">7-day forecast</div>
+    <div style="font-size:.9rem;font-weight:600">7-day forecast</div>
     <div class="wx-days">
         @for (var i = 0; i < forecast.Length; i++)
         {
@@ -96,9 +100,37 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 8px 
     {
         <div class="wx-detail">
             <strong>@forecast[dayIndex].Day</strong> — High @forecast[dayIndex].High°F / Low @forecast[dayIndex].Low°F · @forecast[dayIndex].Cond
-            <div style="color:var(--muted);font-size:.84rem;margin-top:.2rem">Use this day for outdoor networking when lows stay above 50°F.</div>
+            <div style="color:var(--muted);font-size:.82rem;margin-top:.15rem">Use this day for outdoor networking when lows stay above 50°F.</div>
         </div>
     }
+
+    <div class="wx-extra">
+        <article class="wx-card">
+            <h3>Event weather checklist</h3>
+            <ul>
+                <li>Confirm indoor backup if rain &gt; 40%</li>
+                <li>Wind &gt; 15 mph → secure outdoor signage</li>
+                <li>Heat index &gt; 90°F → extra water stations</li>
+            </ul>
+        </article>
+        <article class="wx-card">
+            <h3>Chapter cities</h3>
+            <ul>
+                <li><a href="#" @onclick:preventDefault @onclick='() => QuickCity("Kansas City")'>Kansas City</a></li>
+                <li><a href="#" @onclick:preventDefault @onclick='() => QuickCity("Chicago")'>Chicago</a></li>
+                <li><a href="#" @onclick:preventDefault @onclick='() => QuickCity("Dallas")'>Dallas</a></li>
+                <li><a href="#" @onclick:preventDefault @onclick='() => QuickCity("Atlanta")'>Atlanta</a></li>
+            </ul>
+        </article>
+        <article class="wx-card">
+            <h3>Related tools</h3>
+            <ul>
+                <li><a href="events">Events &amp; calendar</a></li>
+                <li><a href="">Home time &amp; weather</a></li>
+                <li><a href="contact">Contact support</a></li>
+            </ul>
+        </article>
+    </div>
 </section>
 
 @code {
@@ -131,6 +163,16 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#36ac91);box-shadow:0 8px 
     {
         if (string.IsNullOrWhiteSpace(locationQuery)) return;
         location = locationQuery.Trim();
+        ApplySample();
+    }
+    private void QuickCity(string city)
+    {
+        locationQuery = city;
+        location = city;
+        ApplySample();
+    }
+    private void ApplySample()
+    {
         temp = 60 + rng.Next(0, 25);
         condition = rng.Next(0, 3) switch { 0 => "Sunny", 1 => "Partly cloudy", _ => "Cloudy" };
         humidity = 35 + rng.Next(0, 40);
