@@ -1,19 +1,13 @@
-/* TRU platform — authoritative edge-to-edge layout (loaded last). */
+/* TRU platform final — loaded last */
 
 :root {
   --tru-sidebar-width: 252px;
   --tru-page-gutter: 10px;
-  --tru-section-gap: 10px;
   --tru-canvas: #eef2f7;
-  --tru-navy: #1d2d5c;
-  --tru-blue: #00a4e4;
 }
 
 html, body {
   width: 100% !important;
-  min-width: 320px;
-  min-height: 0 !important;
-  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   background: var(--tru-canvas) !important;
@@ -21,14 +15,7 @@ html, body {
 }
 *, *::before, *::after { box-sizing: border-box; }
 
-.page {
-  display: block !important;
-  width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
-  margin: 0 !important;
-  padding: 0 !important;
-}
+.page { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
 
 .sidebar {
   position: fixed !important;
@@ -41,8 +28,8 @@ html, body {
   height: 100dvh !important;
   overflow-x: hidden !important;
   overflow-y: auto !important;
-  padding: 0 !important;
   margin: 0 !important;
+  padding: 0 !important;
   background: linear-gradient(175deg,#0a1224 0%,#1d2d5c 48%,#12233f 100%) !important;
 }
 
@@ -50,43 +37,60 @@ html, body {
   display: block !important;
   width: calc(100% - var(--tru-sidebar-width)) !important;
   min-width: 0 !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  height: auto !important;
   margin: 0 0 0 var(--tru-sidebar-width) !important;
   padding: 0 !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
   background: var(--tru-canvas) !important;
 }
 
 article.content, .content {
   display: block !important;
   width: 100% !important;
-  min-width: 0 !important;
-  max-width: none !important;
-  min-height: 0 !important;
-  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
-  overflow: visible !important;
 }
 
 .top-row { display: none !important; }
 
+/* All workspace pages fill the column — no empty canvas strip under content */
 .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl,
-.isa-page, .contact-page, .settings-page, .translator-page, .market-page,
-.page-root, .st, .dd {
+.isa-page, .settings-page, .translator-page, .market-page, .page-root, .st, .dd {
   width: 100% !important;
   max-width: none !important;
-  min-width: 0 !important;
-  min-height: 0 !important;
-  height: auto !important;
-  max-height: none !important;
   margin: 0 !important;
-  padding: var(--tru-page-gutter) !important;
+  padding: 10px !important;
   box-sizing: border-box !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
 }
 
-/* Contact page only: fill viewport so SiteFooter pins to bottom */
+.an > *:last-child,
+.ev > *:last-child,
+.kb > *:last-child,
+.es > *:last-child,
+.gov > *:last-child,
+.tr > *:last-child,
+.ch > *:last-child,
+.mt > *:last-child,
+.rl > *:last-child,
+.wx > *:last-child,
+.dev > *:last-child,
+.pg > *:last-child,
+.pipe > *:last-child,
+.st > *:last-child,
+.dd > *:last-child,
+.translator-page > *:last-child,
+.market-page > *:last-child,
+.settings-page > *:last-child,
+.isa-page > *:last-child {
+  flex: 1 1 auto !important;
+}
+
+/* Contact: footer on the bottom edge */
 .ct {
   width: 100% !important;
   max-width: none !important;
@@ -112,9 +116,6 @@ article.content, .content {
   padding-right: 0 !important;
 }
 
-.table-responsive { max-width: 100%; overflow-x: auto; }
-img, video, canvas, svg { max-width: 100%; }
-
 @media (max-width: 1100px) {
   :root { --tru-sidebar-width: 236px; }
 }
@@ -122,21 +123,18 @@ img, video, canvas, svg { max-width: 100%; }
 @media (max-width: 800px) {
   .sidebar {
     position: relative !important;
-    inset: auto !important;
     width: 100% !important;
     min-width: 0 !important;
     max-width: none !important;
     height: auto !important;
     max-height: 220px !important;
-    overflow-y: auto !important;
   }
   .main {
     width: 100% !important;
-    min-height: 0 !important;
     margin: 0 !important;
+    min-height: 0 !important;
   }
-}
-
-@media (max-width: 560px) {
-  :root { --tru-page-gutter: 8px; --tru-section-gap: 8px; }
+  .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl, .ct {
+    min-height: 0 !important;
+  }
 }

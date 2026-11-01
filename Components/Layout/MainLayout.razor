@@ -2,16 +2,18 @@
 @inject NavigationManager Navigation
 
 <style>
-html, body {
+html {
   margin: 0 !important;
   padding: 0 !important;
-  height: auto !important;
-  min-height: 100% !important;
+  height: 100% !important;
   background: #eef2f7 !important;
 }
 body {
-  min-height: 100vh;
-  min-height: 100dvh;
+  margin: 0 !important;
+  padding: 0 !important;
+  min-height: 100% !important;
+  height: auto !important;
+  background: #eef2f7 !important;
   overflow-x: clip !important;
 }
 
@@ -34,13 +36,13 @@ body {
   width: 100% !important;
 }
 
-/* Main grows with content only — no forced empty viewport gap */
 .main {
   position: relative !important;
   margin-left: 252px !important;
   width: calc(100% - 252px) !important;
   max-width: none !important;
-  min-height: 0 !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
   height: auto !important;
   display: block !important;
   margin-top: 0 !important; margin-right: 0 !important; margin-bottom: 0 !important;
@@ -59,21 +61,62 @@ body {
   max-width: none !important;
   width: 100% !important;
   box-sizing: border-box !important;
-  min-height: 0 !important;
+  min-height: 100% !important;
 }
 
-/* Compact all known page roots — no bottom empty padding */
-.hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev,
+/*
+  Workspace pages fill the main column.
+  Last major block expands so you never see a large empty canvas band.
+*/
+.hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg,
 .isa-page, .contact-page, .settings-page, .translator-page, .market-page,
-.page-root, .container, .container-fluid, .ct, .st, .pg {
+.page-root, .st, .dd {
   max-width: none !important;
   width: 100% !important;
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-  margin-bottom: 0 !important;
-  padding-bottom: 0.65rem !important;
+  margin: 0 !important;
+  padding: 10px !important;
   box-sizing: border-box !important;
-  min-height: 0 !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+  gap: 10px !important;
+}
+
+/* Contact keeps its own footer pin */
+.ct {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 10px !important;
+  box-sizing: border-box !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Stretch the last content block so remaining space is inside a card, not empty canvas */
+.an > *:last-child,
+.ev > *:last-child,
+.kb > *:last-child,
+.es > *:last-child,
+.gov > *:last-child,
+.tr > *:last-child,
+.ch > *:last-child,
+.mt > *:last-child,
+.rl > *:last-child,
+.wx > *:last-child,
+.dev > *:last-child,
+.pg > *:last-child,
+.pipe > *:last-child,
+.st > *:last-child,
+.dd > *:last-child,
+.isa-page > *:last-child,
+.translator-page > *:last-child,
+.market-page > *:last-child,
+.settings-page > *:last-child {
+  flex: 1 1 auto !important;
 }
 
 .isa-widget { position: relative !important; z-index: 2147483000 !important; --isa-rail-w: 0px; }
@@ -120,7 +163,10 @@ body {
     position: relative !important; width: 100% !important; min-width: 0 !important; max-width: none !important;
     height: auto !important; max-height: 48vh !important; overflow-y: auto !important;
   }
-  .main { margin-left: 0 !important; width: 100% !important; }
+  .main { margin-left: 0 !important; width: 100% !important; min-height: 0 !important; }
+  .hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg, .ct {
+    min-height: 0 !important;
+  }
 }
 </style>
 
