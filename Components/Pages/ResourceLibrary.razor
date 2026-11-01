@@ -5,13 +5,14 @@
 <PageTitle>Resource Library | TRU</PageTitle>
 
 <style>
-.rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
-width:100%!important;max-width:none!important;margin:0!important;padding:10px!important;box-sizing:border-box;
-min-height:calc(100vh - 20px)!important;min-height:calc(100dvh - 20px)!important;
-display:flex!important;flex-direction:column!important;gap:10px!important;flex:1 1 auto!important}
-.rl-hero{flex:0 0 auto;border-radius:12px;padding:.85rem 1.1rem;color:#fff;
-background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
+.rl{
+  --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
+  font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+  width:100%!important;max-width:none!important;margin:0!important;padding:10px!important;box-sizing:border-box;
+  min-height:calc(100vh - 20px)!important;min-height:calc(100dvh - 20px)!important;
+  display:flex!important;flex-direction:column!important;gap:10px!important;flex:1 1 auto!important;
+}
+.rl-hero{flex:0 0 auto;border-radius:12px;padding:.85rem 1.1rem;color:#fff;background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
 .rl-hero h1{margin:.05rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem}
 .rl-hero p{margin:0;opacity:.92;font-size:.84rem}
 .rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.15fr;gap:10px}
@@ -36,28 +37,69 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
 .rl-tabs{display:flex;flex-wrap:wrap;gap:.25rem}
 .rl-tab{border:none;cursor:pointer;padding:.32rem .7rem;border-radius:999px;font-weight:600;font-size:.78rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
 .rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
-.rl-body{flex:1 1 auto!important;display:grid!important;grid-template-columns:1.4fr 1fr;gap:10px;min-height:0;align-items:stretch!important}
-.rl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;align-content:start;overflow:auto;min-height:0;height:100%}
-.rl-card{background:#fff;border-radius:12px;padding:.85rem;border:1px solid var(--line);display:flex;flex-direction:column;gap:.35rem;cursor:pointer;min-height:160px}
-.rl-card:hover,.rl-card.sel{border-color:var(--blue);box-shadow:0 4px 14px rgba(0,164,228,.12)}
-.rl-card .badge{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.68rem}
-.rl-card h3{margin:0;font-size:.88rem}
-.rl-card p{margin:0;font-size:.78rem;color:var(--muted);line-height:1.35;flex:1}
-.rl-card .actions{display:flex;flex-wrap:wrap;gap:.25rem}
-.rl-card a,.rl-card button{padding:.32rem .6rem;border-radius:7px;font-weight:600;font-size:.74rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-body{
+  flex:1 1 auto!important;display:grid!important;grid-template-columns:1.45fr 1fr;gap:12px;
+  min-height:0;align-items:stretch!important;
+}
+.rl-stage{
+  min-height:0;height:100%;display:flex;flex-direction:column;gap:8px;
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:10px 12px;
+  box-shadow:0 4px 14px rgba(29,45,92,.05);
+}
+.rl-stage-bar{flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;gap:.5rem}
+.rl-stage-bar strong{font-size:.9rem}
+.rl-stage-bar span{font-size:.78rem;color:var(--muted)}
+.rl-nav{display:flex;gap:.35rem}
+.rl-nav button{
+  border:1px solid var(--line);background:#f7fafc;color:var(--navy);
+  width:36px;height:36px;border-radius:10px;cursor:pointer;font-size:1.05rem;font-weight:700;
+}
+.rl-nav button:hover{border-color:var(--blue);background:#eef6fb}
+.rl-track{
+  flex:1 1 auto;min-height:280px;height:100%;
+  display:flex;gap:12px;overflow-x:auto;overflow-y:hidden;
+  scroll-snap-type:x mandatory;scroll-behavior:smooth;
+  padding:4px 2px 10px;align-items:stretch;
+}
+.rl-track::-webkit-scrollbar{height:8px}
+.rl-track::-webkit-scrollbar-thumb{background:#c5d0e0;border-radius:999px}
+.rl-card{
+  scroll-snap-align:start;
+  flex:0 0 min(280px,78%);width:min(280px,78%);
+  background:#fff;border-radius:14px;padding:1rem;
+  border:1px solid var(--line);display:flex;flex-direction:column;gap:.4rem;cursor:pointer;
+  min-height:100%;box-shadow:0 2px 10px rgba(29,45,92,.04);
+  transition:transform .2s ease, box-shadow .2s ease, border-color .2s ease;
+}
+.rl-card:hover{transform:translateY(-3px);border-color:var(--blue);box-shadow:0 10px 24px rgba(0,164,228,.14)}
+.rl-card.sel{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,164,228,.25)}
+.rl-card .badge{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.75rem}
+.rl-card h3{margin:0;font-size:.95rem}
+.rl-card p{margin:0;font-size:.82rem;color:var(--muted);line-height:1.4;flex:1}
+.rl-card .actions{display:flex;flex-wrap:wrap;gap:.3rem;margin-top:auto}
+.rl-card a,.rl-card button{padding:.38rem .7rem;border-radius:8px;font-weight:600;font-size:.76rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
 .rl-link{background:var(--light);color:var(--mid)!important}
 .rl-fav{background:#fff8e8;color:#a85a12!important}
-.rl-detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;min-height:0;height:100%;overflow:auto}
-.rl-detail h2{margin:0 0 .35rem;font-size:1.05rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
+.rl-detail{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:1rem 1.1rem;
+  display:flex;flex-direction:column;min-height:0;height:100%;overflow:auto;
+}
+.rl-detail h2{margin:0 0 .35rem;font-size:1.08rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
 .rl-detail .meta{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
-.rl-detail .body{font-size:.86rem;line-height:1.5;flex:1 1 auto;white-space:pre-wrap}
-.rl-detail .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.5rem;border-top:1px solid var(--line)}
-.rl-detail .actions button,.rl-detail .actions a{padding:.4rem .75rem;border-radius:8px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-detail .body{font-size:.88rem;line-height:1.55;flex:1 1 auto;white-space:pre-wrap}
+.rl-detail .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.55rem;border-top:1px solid var(--line)}
+.rl-detail .actions button,.rl-detail .actions a{padding:.42rem .8rem;border-radius:8px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-empty{color:var(--muted);font-size:.88rem;padding:1rem 0;text-align:center}
 .rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.6rem .9rem;border-radius:10px;font-weight:600;z-index:100}
-@@media(max-width:1100px){.rl-top{grid-template-columns:1fr 1fr}.rl-chart{grid-column:1/-1}.rl-cats{grid-template-columns:repeat(3,1fr)}.rl-body{grid-template-columns:1fr}}
-@@media(max-width:700px){.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:0!important}}
+@@media(max-width:1100px){
+  .rl-top{grid-template-columns:1fr 1fr}.rl-chart{grid-column:1/-1}
+  .rl-cats{grid-template-columns:repeat(3,1fr)}.rl-body{grid-template-columns:1fr}
+}
+@@media(max-width:700px){
+  .rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:0!important}
+  .rl-card{flex-basis:85%;width:85%}
+}
 </style>
 
 <section class="rl">
@@ -107,27 +149,39 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
     </div>
 
     <div class="rl-body">
-        <div class="rl-grid">
-            @if (!Filtered.Any())
-            {
-                <div class="rl-empty" style="grid-column:1/-1">No resources match in @tab.</div>
-            }
-            else
-            {
-                @foreach (var r in Filtered)
+        <div class="rl-stage">
+            <div class="rl-stage-bar">
+                <div>
+                    <strong>@tab resources</strong>
+                    <span> · swipe or use arrows</span>
+                </div>
+                <div class="rl-nav">
+                    <button type="button" @onclick="ScrollLeft" title="Previous">‹</button>
+                    <button type="button" @onclick="ScrollRight" title="Next">›</button>
+                </div>
+            </div>
+            <div class="rl-track" @ref="trackRef">
+                @if (!Filtered.Any())
                 {
-                    <article class="rl-card @(selected?.Title==r.Title?"sel":null)" @onclick="() => Select(r)">
-                        <div class="badge" style="background:@r.Color">@r.Icon</div>
-                        <h3>@r.Title</h3>
-                        <p>@r.Description</p>
-                        <div class="actions" @onclick:stopPropagation="true">
-                            <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
-                            <button type="button" class="rl-link" @onclick="() => Select(r)">Preview</button>
-                            <button type="button" class="rl-fav" @onclick="() => ToggleFav(r)">@(favs.Contains(r.Title)?"★ Fav":"☆ Fav")</button>
-                        </div>
-                    </article>
+                    <div class="rl-empty" style="min-width:100%">No resources match in @tab.</div>
                 }
-            }
+                else
+                {
+                    @foreach (var r in Filtered)
+                    {
+                        <article class="rl-card @(selected?.Title==r.Title?"sel":null)" @onclick="() => Select(r)">
+                            <div class="badge" style="background:@r.Color">@r.Icon</div>
+                            <h3>@r.Title</h3>
+                            <p>@r.Description</p>
+                            <div class="actions" @onclick:stopPropagation="true">
+                                <button type="button" class="rl-dl" @onclick="() => Download(r)">Download</button>
+                                <button type="button" class="rl-link" @onclick="() => Select(r)">Preview</button>
+                                <button type="button" class="rl-fav" @onclick="() => ToggleFav(r)">@(favs.Contains(r.Title)?"★ Fav":"☆ Fav")</button>
+                            </div>
+                        </article>
+                    }
+                }
+            </div>
         </div>
 
         <aside class="rl-detail">
@@ -138,7 +192,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
                 <div class="body rl-empty">
                     Tips
                     · Use category cards or tabs to switch sets.
-                    · Search filters titles and descriptions.
+                    · Slide cards with arrows or swipe.
                     · Download saves a text pack and counts in the KPI.
                     · Favorite marks items for this session.
                 </div>
@@ -174,6 +228,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
     private int downloads;
     private Res? selected;
     private readonly HashSet<string> favs = new();
+    private ElementReference trackRef;
 
     private record TabInfo(string Name, string Icon);
     private static readonly TabInfo[] Tabs =
@@ -280,5 +335,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
         }
         catch { }
     }
+    private async Task ScrollLeft() => await JS.InvokeVoidAsync("eval", "(document.querySelector('.rl-track')||{}).scrollBy({left:-300,behavior:'smooth'})");
+    private async Task ScrollRight() => await JS.InvokeVoidAsync("eval", "(document.querySelector('.rl-track')||{}).scrollBy({left:300,behavior:'smooth'})");
     private static string EscapeJs(string s) => s.Replace("\\", "\\\\").Replace("`", "\\`").Replace("$", "\\$");
 }
