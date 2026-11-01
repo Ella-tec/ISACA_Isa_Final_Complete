@@ -1,17 +1,11 @@
 @inherits LayoutComponentBase
 
-@* ============================================================
-   AuthLayout.razor
+@* Bare layout for sign-in — no sidebar, no chat *@
 
-   Bare layout for the sign-in screen (Components/Pages/SignIn.razor):
-   no sidebar and no chat bubble, because people sign in before they
-   chat.
-   ============================================================ *@
+<style>
+#blazor-error-ui {
+  display: none !important;
+}
+</style>
 
 @Body
-
-<div id="blazor-error-ui" data-nosnippet>
-    An unhandled error has occurred.
-    <a href="." class="reload">Reload</a>
-    <span class="dismiss">&#x1F5D9;</span>
-</div>

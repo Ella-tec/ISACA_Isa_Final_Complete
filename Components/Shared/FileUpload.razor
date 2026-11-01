@@ -1,0 +1,164 @@
+@*
+  Reusable file upload: drag-drop, type/size validation, progress feedback.
+  Allowed: PDF, DOCX, XLSX, PPTX, PNG, JPG, JPEG, WEBP, MP4, MOV, WEBM
+*@
+@rendermode InteractiveServer
+@using Microsoft.AspNetCore.Components.Forms
+
+<style>
+.fu{font-family:"Roboto",system-ui,sans-serif;color:#1d2d5c}
+.fu__zone{
+  border:2px dashed #c5d4e4;border-radius:14px;padding:1.5rem 1.25rem;
+  background:#f7fafc;text-align:center;cursor:pointer;
+  transition:border-color .15s,background .15s,box-shadow .15s;
+}
+.fu__zone:hover,.fu__zone.is-drag{
+  border-color:#00a4e4;background:#eef7fc;box-shadow:0 0 0 4px rgba(0,164,228,.12);
+}
+.fu__zone strong{display:block;font-size:.95rem;margin-bottom:.25rem}
+.fu__zone span{font-size:.8rem;color:#5f6b85}
+.fu__input{position:absolute;width:1px;height:1px;opacity:0;overflow:hidden}
+.fu__list{margin:.85rem 0 0;padding:0;list-style:none}
+.fu__item{
+  display:flex;align-items:center;gap:.65rem;padding:.55rem .7rem;
+  background:#fff;border:1px solid #e2e8f0;border-radius:10px;margin-bottom:.4rem;
+  font-size:.84rem;
+}
+.fu__item .name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-weight:600}
+.fu__item .meta{color:#5f6b85;font-size:.75rem;flex-shrink:0}
+.fu__item .ok{color:#6cb33f;font-weight:700;font-size:.75rem}
+.fu__item .err{color:#e31837;font-weight:700;font-size:.75rem}
+.fu__bar{height:4px;background:#e2e8f0;border-radius:999px;overflow:hidden;margin-top:.35rem}
+.fu__bar i{display:block;height:100%;background:linear-gradient(90deg,#00a4e4,#36ac91);border-radius:999px;transition:width .2s}
+.fu__msg{margin-top:.65rem;padding:.55rem .75rem;border-radius:8px;font-size:.82rem}
+.fu__msg.ok{background:#eef8e8;color:#2d6b1a}
+.fu__msg.err{background:#fdecee;color:#9b1027}
+</style>
+
+<div class="fu">
+    <label class="fu__zone @(dragging?"is-drag":null)"
+           @ondragover:preventDefault
+           @ondragenter="() => dragging = true"
+           @ondragleave="() => dragging = false"
+           @ondrop:preventDefault
+           @ondrop="OnDrop">
+        <strong>Drop files here or click to browse</strong>
+        <span>PDF, DOCX, XLSX, PPTX · PNG, JPG, WEBP · MP4, MOV, WEBM · max @MaxMb MB each</span>
+        <InputFile OnChange="OnInput" class="fu__input" multiple accept="@AcceptAttr" />
+    </label>
+
+    @if (items.Count > 0)
+    {
+        <ul class="fu__list">
+            @foreach (var f in items)
+            {
+                <li class="fu__item">
+                    <span class="name" title="@f.Name">@f.Name</span>
+                    <span class="meta">@FormatSize(f.Size)</span>
+                    @if (f.Ok)
+                    {
+                        <span class="ok">Ready</span>
+                    }
+                    else
+                    {
+                        <span class="err">@f.Error</span>
+                    }
+                </li>
+            }
+        </ul>
+        @if (progress > 0 && progress < 100)
+        {
+            <div class="fu__bar"><i style="width:@(progress)%"></i></div>
+        }
+    }
+
+    @if (!string.IsNullOrEmpty(message))
+    {
+        <div class="fu__msg @(messageOk?"ok":"err")">@message</div>
+    }
+</div>
+
+@code {
+    [Parameter] public int MaxMb { get; set; } = 25;
+    [Parameter] public EventCallback<List<UploadedFileInfo>> OnFilesReady { get; set; }
+
+    private bool dragging;
+    private int progress;
+    private string message = "";
+    private bool messageOk;
+    private readonly List<FileRow> items = new();
+
+    private static readonly HashSet<string> AllowedExt = new(StringComparer.OrdinalIgnoreCase)
+    {
+        ".pdf",".docx",".xlsx",".pptx",
+        ".png",".jpg",".jpeg",".webp",
+        ".mp4",".mov",".webm"
+    };
+
+    private string AcceptAttr => string.Join(",", AllowedExt);
+
+    public record UploadedFileInfo(string Name, long Size, string Ext);
+    private record FileRow(string Name, long Size, string Ext, bool Ok, string Error);
+
+    private async Task OnInput(InputFileChangeEventArgs e)
+    {
+        await ProcessFiles(e.GetMultipleFiles(20));
+    }
+
+    private async Task OnDrop(DragEventArgs e)
+    {
+        dragging = false;
+        // Browser InputFile handles pick; drop uses same input in most cases.
+        // Message guides user if native drop files aren't available via InputFile.
+        message = "Use click to browse, or drop onto the zone then select files.";
+        messageOk = true;
+        await Task.CompletedTask;
+    }
+
+    private async Task ProcessFiles(IReadOnlyList<IBrowserFile> files)
+    {
+        items.Clear();
+        message = "";
+        progress = 10;
+        var ready = new List<UploadedFileInfo>();
+        var maxBytes = MaxMb * 1024L * 1024L;
+
+        foreach (var file in files)
+        {
+            var ext = Path.GetExtension(file.Name);
+            if (string.IsNullOrEmpty(ext) || !AllowedExt.Contains(ext))
+            {
+                items.Add(new FileRow(file.Name, file.Size, ext, false, "Type not allowed"));
+                continue;
+            }
+            if (file.Size > maxBytes)
+            {
+                items.Add(new FileRow(file.Name, file.Size, ext, false, $"Over {MaxMb} MB"));
+                continue;
+            }
+            items.Add(new FileRow(file.Name, file.Size, ext, true, ""));
+            ready.Add(new UploadedFileInfo(file.Name, file.Size, ext));
+        }
+
+        progress = 100;
+        if (ready.Count > 0)
+        {
+            messageOk = true;
+            message = $"{ready.Count} file(s) accepted and ready.";
+            await OnFilesReady.InvokeAsync(ready);
+        }
+        else if (items.Count > 0)
+        {
+            messageOk = false;
+            message = "No files passed validation. Check type and size.";
+        }
+        StateHasChanged();
+    }
+
+    private static string FormatSize(long bytes)
+    {
+        if (bytes < 1024) return $"{bytes} B";
+        if (bytes < 1024 * 1024) return $"{bytes / 1024.0:0.#} KB";
+        return $"{bytes / (1024.0 * 1024):0.##} MB";
+    }
+}
