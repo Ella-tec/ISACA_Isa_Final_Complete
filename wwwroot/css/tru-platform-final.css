@@ -1,4 +1,4 @@
-/* TRU platform final — loaded last */
+/* TRU platform final — loaded last. All workspace pages fill the viewport. */
 :root {
   --tru-sidebar-width: 252px;
   --tru-canvas: #eef2f7;
@@ -54,7 +54,10 @@ article.content, .content {
 }
 .top-row { display: none !important; }
 
-/* All pages fill height */
+/*
+  ALL workspace page roots — same treatment as Market Trends.
+  Fill the viewport; stretch main content blocks so no empty canvas band.
+*/
 .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl, .st, .dd,
 .isa-page, .settings-page, .translator-page, .market-page, .page-root, .ct {
   flex: 1 1 auto !important;
@@ -66,13 +69,19 @@ article.content, .content {
   padding: 10px !important;
   box-sizing: border-box !important;
   gap: 10px !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
 }
 
+/* Main grids / bodies grow to fill leftover height */
 .ev-grid, .es-grid, .st-body, .wx-now, .pg-grid, .kb-grid,
-.an-grid, .gov-grid, .mt-grid, .rl-main, .dd-grid {
+.an-grid, .gov-grid, .mt-grid, .rl-main, .dd-grid, .ch-grid, .tr-main,
+.hm-vid, .wx-bottom, .pipe-grid {
   flex: 1 1 auto !important;
+  min-height: 0 !important;
 }
 
+/* Contact: footer on the bottom edge only */
 .ct { padding: 10px 10px 0 !important; }
 .ct > .sf, .ct > footer.sf {
   margin-top: auto !important;
@@ -94,4 +103,7 @@ article.content, .content {
     max-height: 220px !important;
   }
   .main { width: 100% !important; margin: 0 !important; }
+  .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl, .st, .dd, .ct {
+    min-height: 0 !important;
+  }
 }
