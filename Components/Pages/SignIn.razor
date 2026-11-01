@@ -12,7 +12,7 @@
 <style>
 html,body{margin:0!important;padding:0!important}
 .signin{
-  --ink:#0e1a2e;--teal:#36ac91;--blue:#00a4e4;--green:#6cb33f;--muted:#8b9bb4;--line:rgba(255,255,255,.12);
+  --ink:#0e1a2e;--teal:#36ac91;--blue:#00a4e4;--green:#6cb33f;--muted:#8b9bb4;
   display:grid!important;grid-template-columns:minmax(0,1.1fr) minmax(360px,.9fr)!important;
   width:100%!important;min-height:100vh!important;min-height:100dvh!important;margin:0!important;
   font-family:"Roboto",system-ui,sans-serif;color:#e8eef6;
@@ -21,89 +21,92 @@ html,body{margin:0!important;padding:0!important}
   position:relative;display:flex!important;align-items:center!important;justify-content:center!important;
   min-height:100vh!important;min-height:100dvh!important;overflow:hidden!important;
   background:
-    radial-gradient(ellipse 80% 60% at 50% 45%, rgba(0,164,228,.12), transparent 55%),
-    radial-gradient(ellipse 50% 40% at 70% 80%, rgba(108,179,63,.08), transparent 50%),
-    linear-gradient(160deg,#050a14 0%,#0a1424 40%,#0d1b30 100%)!important;
+    radial-gradient(ellipse 70% 50% at 50% 48%, rgba(0,164,228,.1), transparent 55%),
+    linear-gradient(160deg,#050a14 0%,#0a1424 45%,#0d1b30 100%)!important;
 }
-/* stars */
 .signin__brand:before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.7;
+  content:"";position:absolute;inset:0;pointer-events:none;opacity:.65;
   background-image:
-    radial-gradient(1.5px 1.5px at 12% 18%, #fff, transparent),
-    radial-gradient(1px 1px at 28% 72%, rgba(255,255,255,.8), transparent),
-    radial-gradient(1.5px 1.5px at 48% 22%, #fff, transparent),
-    radial-gradient(1px 1px at 62% 58%, rgba(255,255,255,.7), transparent),
-    radial-gradient(1.5px 1.5px at 78% 14%, #fff, transparent),
-    radial-gradient(1px 1px at 88% 68%, rgba(255,255,255,.75), transparent),
-    radial-gradient(1px 1px at 18% 42%, rgba(255,255,255,.6), transparent),
-    radial-gradient(1.5px 1.5px at 55% 88%, #fff, transparent),
-    radial-gradient(1px 1px at 35% 8%, rgba(255,255,255,.7), transparent),
-    radial-gradient(1px 1px at 92% 40%, rgba(255,255,255,.65), transparent);
-  background-size:100% 100%;
+    radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),
+    radial-gradient(1px 1px at 28% 72%,rgba(255,255,255,.8),transparent),
+    radial-gradient(1.5px 1.5px at 48% 22%,#fff,transparent),
+    radial-gradient(1px 1px at 62% 58%,rgba(255,255,255,.7),transparent),
+    radial-gradient(1.5px 1.5px at 78% 14%,#fff,transparent),
+    radial-gradient(1px 1px at 88% 68%,rgba(255,255,255,.75),transparent),
+    radial-gradient(1px 1px at 18% 42%,rgba(255,255,255,.6),transparent),
+    radial-gradient(1.5px 1.5px at 55% 88%,#fff,transparent);
 }
+/* One planet per orbit — each ring is its own line */
 .signin__orbitStage{
-  position:relative;z-index:2;width:min(70vw,480px);height:min(70vw,480px);
+  position:relative;z-index:2;width:min(72vw,520px);height:min(72vw,520px);
   display:grid;place-items:center;
 }
-.signin__orbits{position:absolute;inset:0;pointer-events:none}
 .signin__orbit{
   position:absolute;left:50%;top:50%;border-radius:50%;
-  border:1px solid rgba(0,164,228,.18);
+  border:1px solid rgba(0,164,228,.22);
   transform:translate(-50%,-50%);
+  pointer-events:none;
 }
-.signin__orbit:nth-child(1){width:22%;height:22%}
-.signin__orbit:nth-child(2){width:34%;height:34%;border-color:rgba(54,172,145,.2)}
-.signin__orbit:nth-child(3){width:46%;height:46%}
-.signin__orbit:nth-child(4){width:58%;height:58%;border-color:rgba(108,179,63,.16)}
-.signin__orbit:nth-child(5){width:70%;height:70%}
-.signin__orbit:nth-child(6){width:82%;height:82%;border-color:rgba(0,164,228,.14)}
-.signin__orbit:nth-child(7){width:94%;height:94%;border-color:rgba(255,255,255,.1)}
-.signin__orbit:nth-child(8){width:106%;height:106%;border-color:rgba(255,255,255,.07)}
-.signin__orbit:nth-child(9){width:118%;height:118%;border-color:rgba(255,255,255,.05)}
+/* 9 distinct orbit sizes */
+.signin__orbit.o1{width:24%;height:24%}
+.signin__orbit.o2{width:34%;height:34%;border-color:rgba(54,172,145,.25)}
+.signin__orbit.o3{width:44%;height:44%}
+.signin__orbit.o4{width:54%;height:54%;border-color:rgba(108,179,63,.2)}
+.signin__orbit.o5{width:64%;height:64%}
+.signin__orbit.o6{width:74%;height:74%;border-color:rgba(0,164,228,.18)}
+.signin__orbit.o7{width:84%;height:84%;border-color:rgba(255,255,255,.12)}
+.signin__orbit.o8{width:94%;height:94%;border-color:rgba(255,255,255,.1)}
+.signin__orbit.o9{width:104%;height:104%;border-color:rgba(255,255,255,.08)}
+
+/* Each planet locked to its own orbit radius via top offset */
 .signin__planet{
-  position:absolute;left:50%;top:50%;width:100%;height:100%;
-  transform:translate(-50%,-50%);
-  animation:tru-spin var(--d,28s) linear infinite;
+  position:absolute;left:50%;top:50%;
+  width:0;height:0;
+  animation:tru-spin var(--d,30s) linear infinite;
   pointer-events:none;z-index:3;
 }
 .signin__planet:after{
-  content:"";position:absolute;left:50%;top:3%;
-  width:var(--s,8px);height:var(--s,8px);margin-left:calc(var(--s,8px)/-2);
+  content:"";position:absolute;left:0;top:0;
+  width:var(--s,9px);height:var(--s,9px);
+  margin-left:calc(var(--s,9px)/-2);margin-top:calc(var(--s,9px)/-2);
   border-radius:50%;background:var(--c,#00a4e4);
-  box-shadow:0 0 10px var(--c,#00a4e4),0 0 2px #fff;
+  box-shadow:0 0 12px var(--c,#00a4e4),0 0 3px #fff;
+  /* place on orbit: transform translateY by negative radius */
+  transform:translateY(var(--r,-60px));
 }
-.signin__planet:nth-of-type(2){--d:16s;--c:#6cb33f;--s:7px;transform:translate(-50%,-50%) rotate(20deg)}
-.signin__planet:nth-of-type(3){--d:22s;--c:#00a4e4;--s:9px;transform:translate(-50%,-50%) rotate(55deg)}
-.signin__planet:nth-of-type(4){--d:28s;--c:#fbb034;--s:8px;transform:translate(-50%,-50%) rotate(100deg)}
-.signin__planet:nth-of-type(5){--d:34s;--c:#36ac91;--s:10px;transform:translate(-50%,-50%) rotate(140deg)}
-.signin__planet:nth-of-type(6){--d:40s;--c:#6558b1;--s:7px;transform:translate(-50%,-50%) rotate(180deg)}
-.signin__planet:nth-of-type(7){--d:48s;--c:#e57524;--s:8px;transform:translate(-50%,-50%) rotate(220deg)}
-.signin__planet:nth-of-type(8){--d:56s;--c:#00a4e4;--s:6px;transform:translate(-50%,-50%) rotate(265deg)}
-.signin__planet:nth-of-type(9){--d:64s;--c:#6cb33f;--s:9px;transform:translate(-50%,-50%) rotate(305deg)}
-.signin__planet:nth-of-type(10){--d:72s;--c:#e8eef6;--s:5px;transform:translate(-50%,-50%) rotate(340deg)}
-.signin__core{position:relative;z-index:5;width:clamp(110px,18vw,150px);height:clamp(110px,18vw,150px);display:grid;place-items:center}
+/* planet 1 → orbit 1, etc. */
+.signin__planet.p1{--d:18s;--c:#6cb33f;--s:8px;--r:-62px}
+.signin__planet.p2{--d:22s;--c:#00a4e4;--s:9px;--r:-88px}
+.signin__planet.p3{--d:26s;--c:#fbb034;--s:8px;--r:-114px}
+.signin__planet.p4{--d:30s;--c:#e57524;--s:10px;--r:-140px}
+.signin__planet.p5{--d:36s;--c:#36ac91;--s:9px;--r:-166px}
+.signin__planet.p6{--d:42s;--c:#6558b1;--s:8px;--r:-192px}
+.signin__planet.p7{--d:48s;--c:#00a4e4;--s:7px;--r:-218px}
+.signin__planet.p8{--d:56s;--c:#6cb33f;--s:9px;--r:-244px}
+.signin__planet.p9{--d:64s;--c:#e8eef6;--s:6px;--r:-270px}
+
+.signin__core{position:relative;z-index:5;width:clamp(100px,16vw,140px);height:clamp(100px,16vw,140px);display:grid;place-items:center}
 .signin__sun{
   width:100%;height:100%;border-radius:50%;
   background:
-    radial-gradient(circle at 35% 30%, rgba(255,255,255,.5), transparent 35%),
-    linear-gradient(145deg,#00a4e4 0%,#36ac91 45%,#6cb33f 100%);
+    radial-gradient(circle at 35% 30%,rgba(255,255,255,.45),transparent 40%),
+    linear-gradient(145deg,#00a4e4 0%,#36ac91 48%,#6cb33f 100%);
   box-shadow:
-    0 0 0 6px rgba(0,164,228,.15),
-    0 0 0 14px rgba(0,164,228,.06),
-    0 0 40px rgba(0,164,228,.45),
-    0 0 80px rgba(54,172,145,.25),
-    inset -8px -10px 20px rgba(0,40,60,.25);
+    0 0 0 5px rgba(0,164,228,.18),
+    0 0 0 12px rgba(0,164,228,.07),
+    0 0 36px rgba(0,164,228,.45),
+    0 0 70px rgba(54,172,145,.22);
   display:grid;place-items:center;
   animation:tru-pulse 5s ease-in-out infinite;
 }
 .signin__sun span{
-  font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:clamp(1.1rem,2.5vw,1.5rem);
-  color:#fff;letter-spacing:.12em;text-shadow:0 2px 8px rgba(0,0,0,.3);
+  font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:clamp(1rem,2.2vw,1.35rem);
+  color:#fff;letter-spacing:.1em;text-shadow:0 2px 8px rgba(0,0,0,.3);
 }
-@@keyframes tru-spin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+@@keyframes tru-spin{to{transform:rotate(360deg)}}
 @@keyframes tru-pulse{
-  0%,100%{box-shadow:0 0 0 6px rgba(0,164,228,.15),0 0 0 14px rgba(0,164,228,.06),0 0 40px rgba(0,164,228,.4),0 0 80px rgba(54,172,145,.2),inset -8px -10px 20px rgba(0,40,60,.25)}
-  50%{box-shadow:0 0 0 8px rgba(0,164,228,.2),0 0 0 20px rgba(0,164,228,.08),0 0 56px rgba(0,164,228,.55),0 0 100px rgba(54,172,145,.3),inset -8px -10px 20px rgba(0,40,60,.25)}
+  0%,100%{box-shadow:0 0 0 5px rgba(0,164,228,.18),0 0 0 12px rgba(0,164,228,.07),0 0 36px rgba(0,164,228,.4),0 0 70px rgba(54,172,145,.2)}
+  50%{box-shadow:0 0 0 7px rgba(0,164,228,.22),0 0 0 18px rgba(0,164,228,.1),0 0 50px rgba(0,164,228,.55),0 0 90px rgba(54,172,145,.28)}
 }
 
 .signin__panel{
@@ -113,10 +116,10 @@ html,body{margin:0!important;padding:0!important}
 }
 .signin__card{
   width:100%;max-width:400px;
-  background:rgba(255,255,255,.92);backdrop-filter:blur(12px);
+  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
   border-radius:20px;padding:2rem 1.9rem 1.7rem;
   border:1px solid rgba(29,45,92,.08);
-  box-shadow:0 20px 50px rgba(14,26,46,.1),0 1px 0 rgba(255,255,255,.8) inset;
+  box-shadow:0 20px 50px rgba(14,26,46,.1);
   color:#0e1a2e;
 }
 .signin__title{margin:0 0 .35rem;font-size:1.7rem;font-weight:700;color:#0e1a2e}
@@ -142,8 +145,11 @@ html,body{margin:0!important;padding:0!important}
 
 @@media(max-width:900px){
   .signin{grid-template-columns:1fr!important}
-  .signin__brand{min-height:300px!important}
-  .signin__orbitStage{width:min(70vw,320px);height:min(70vw,320px)}
+  .signin__brand{min-height:280px!important}
+  .signin__orbitStage{width:min(70vw,300px);height:min(70vw,300px)}
+  .signin__planet.p1{--r:-36px}.signin__planet.p2{--r:-51px}.signin__planet.p3{--r:-66px}
+  .signin__planet.p4{--r:-81px}.signin__planet.p5{--r:-96px}.signin__planet.p6{--r:-111px}
+  .signin__planet.p7{--r:-126px}.signin__planet.p8{--r:-141px}.signin__planet.p9{--r:-156px}
   .signin__panel{min-height:auto!important;padding:1.5rem 1.1rem 2rem}
 }
 @@media(prefers-reduced-motion:reduce){
@@ -153,21 +159,26 @@ html,body{margin:0!important;padding:0!important}
 
 <div class="signin">
     <aside class="signin__brand">
-        <div class="signin__orbitStage">
-            <div class="signin__orbits" aria-hidden="true">
-                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
-                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
-                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
-            </div>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
-            <span class="signin__planet" aria-hidden="true"></span>
+        <div class="signin__orbitStage" aria-label="TRU sun with one planet per orbit">
+            <span class="signin__orbit o1"></span>
+            <span class="signin__orbit o2"></span>
+            <span class="signin__orbit o3"></span>
+            <span class="signin__orbit o4"></span>
+            <span class="signin__orbit o5"></span>
+            <span class="signin__orbit o6"></span>
+            <span class="signin__orbit o7"></span>
+            <span class="signin__orbit o8"></span>
+            <span class="signin__orbit o9"></span>
+            @* One planet on each orbit line *@
+            <span class="signin__planet p1" aria-hidden="true"></span>
+            <span class="signin__planet p2" aria-hidden="true"></span>
+            <span class="signin__planet p3" aria-hidden="true"></span>
+            <span class="signin__planet p4" aria-hidden="true"></span>
+            <span class="signin__planet p5" aria-hidden="true"></span>
+            <span class="signin__planet p6" aria-hidden="true"></span>
+            <span class="signin__planet p7" aria-hidden="true"></span>
+            <span class="signin__planet p8" aria-hidden="true"></span>
+            <span class="signin__planet p9" aria-hidden="true"></span>
             <div class="signin__core">
                 <div class="signin__sun" role="img" aria-label="TRU"><span>TRU</span></div>
             </div>
