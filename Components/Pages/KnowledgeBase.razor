@@ -1,38 +1,129 @@
 @page "/knowledge-base"
 @rendermode InteractiveServer
 
-<PageTitle>Knowledge base | Isa</PageTitle>
+<PageTitle>Knowledge base | TRU</PageTitle>
 
 <style>
-.kb{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);max-width:1100px;margin:0 auto;padding-bottom:1.5rem}
-.kb-hero{border-radius:18px;padding:1.5rem 1.6rem;color:#fff;margin-bottom:.85rem;
-background:linear-gradient(115deg,#07649d,#00a4e4 60%,#1d2d5c);box-shadow:0 12px 36px rgba(29,45,92,.16)}
-.kb-hero h1{margin:.15rem 0 .3rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.7rem}
-.kb-hero p{margin:0;opacity:.92;max-width:48ch}
-.kb-tools{display:flex;gap:.5rem;margin-bottom:.85rem;flex-wrap:wrap}
-.kb-tools input,.kb-tools select{padding:.55rem .8rem;border-radius:10px;border:1px solid var(--line);font-family:inherit}
-.kb-tools input{flex:1;min-width:180px}
-.kb-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:.65rem;margin-bottom:.85rem}
-.kb-kpi{background:#fff;border-radius:14px;padding:1.1rem;border:1px solid var(--line);cursor:pointer;text-align:left;font-family:inherit;color:inherit;transition:border-color .12s,transform .12s}
-.kb-kpi:hover{border-color:var(--blue);transform:translateY(-2px)}
-.kb-kpi.on{border-color:var(--mid);box-shadow:0 0 0 2px rgba(7,100,157,.22)}
-.kb-kpi .l{font-size:.6rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
-.kb-kpi .v{font-size:1.5rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
-.kb-detail{background:#e8f4fc;border-radius:12px;padding:.75rem 1rem;margin-bottom:.85rem;font-size:.88rem;border:1px solid #c5e0f5}
-.kb-list{background:#fff;border-radius:14px;border:1px solid var(--line);overflow:hidden}
-.kb-item{padding:1rem 1.1rem;border-bottom:1px solid var(--line);cursor:pointer;transition:background .12s}
-.kb-item:hover{background:var(--light)}
+.kb{
+  --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--green:#6cb33f;
+  --light:#e8f0f6;--muted:#5f6b85;--line:#e2e8f0;
+  font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+  width:100%;max-width:none;margin:0;padding:.5rem .75rem .55rem;box-sizing:border-box;
+  display:flex;flex-direction:column;gap:.5rem;
+}
+.kb-hero{
+  border-radius:14px;padding:1rem 1.2rem;color:#fff;
+  background:linear-gradient(115deg,#07649d 0%,#00a4e4 55%,#1d2d5c 100%);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:.75rem;flex-wrap:wrap;
+}
+.kb-hero h1{margin:.1rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.4rem}
+.kb-hero p{margin:0;opacity:.92;font-size:.84rem;max-width:52ch}
+.kb-hero__meta{display:flex;gap:.35rem;flex-wrap:wrap}
+.kb-hero__meta span{
+  background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.2);
+  border-radius:999px;padding:.28rem .65rem;font-size:.72rem;font-weight:600;
+}
+.kb-tools{
+  display:flex;gap:.4rem;flex-wrap:wrap;align-items:center;
+  background:#fff;border:1px solid var(--line);border-radius:12px;padding:.45rem .55rem;
+}
+.kb-tools input{
+  flex:1;min-width:160px;padding:.45rem .7rem;border-radius:9px;border:1px solid var(--line);
+  font:inherit;background:#f7fafc;
+}
+.kb-tools select{
+  padding:.45rem .65rem;border-radius:9px;border:1px solid var(--line);font:inherit;background:#f7fafc;font-weight:600;
+}
+.kb-chips{display:flex;gap:.3rem;flex-wrap:wrap}
+.kb-chip{
+  border:1px solid var(--line);background:#fff;border-radius:999px;padding:.28rem .65rem;
+  font-size:.74rem;font-weight:600;cursor:pointer;font-family:inherit;color:var(--navy);
+}
+.kb-chip.on{background:var(--navy);color:#fff;border-color:var(--navy)}
+.kb-chip:hover{border-color:var(--blue)}
+
+.kb-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:.4rem}
+.kb-kpi{
+  background:#fff;border-radius:12px;padding:.7rem .85rem;border:1px solid var(--line);
+  cursor:pointer;text-align:left;font-family:inherit;color:inherit;
+}
+.kb-kpi:hover,.kb-kpi.on{border-color:var(--blue);box-shadow:0 0 0 2px rgba(0,164,228,.12)}
+.kb-kpi .l{font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.kb-kpi .v{font-size:1.3rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300}
+.kb-kpi .t{font-size:.74rem;color:var(--muted)}
+
+.kb-grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(260px,1fr);gap:.5rem;align-items:start}
+.kb-panel{
+  background:#fff;border-radius:12px;border:1px solid var(--line);
+  box-shadow:0 2px 10px rgba(29,45,92,.04);overflow:hidden;
+}
+.kb-panel__h{
+  padding:.65rem .9rem;border-bottom:1px solid var(--line);background:#f7fafc;
+  display:flex;justify-content:space-between;align-items:center;gap:.5rem;
+}
+.kb-panel__h h2{margin:0;font-size:.92rem;font-weight:700}
+.kb-panel__h span{font-size:.74rem;color:var(--muted)}
+.kb-item{
+  padding:.7rem .9rem;border-bottom:1px solid var(--line);cursor:pointer;
+  display:grid;grid-template-columns:1fr auto;gap:.5rem;align-items:start;
+}
 .kb-item:last-child{border-bottom:0}
-.kb-item strong{display:block}
-.kb-item span{font-size:.82rem;color:var(--muted)}
+.kb-item:hover,.kb-item.on{background:#eef6fb}
+.kb-item strong{display:block;font-size:.9rem}
+.kb-item .sum{font-size:.78rem;color:var(--muted);margin-top:.15rem}
+.kb-tag{
+  display:inline-block;margin-top:.3rem;padding:.12rem .4rem;border-radius:6px;
+  font-size:.65rem;font-weight:700;background:var(--light);color:var(--mid);
+}
+.kb-open{
+  border:none;cursor:pointer;padding:.3rem .6rem;border-radius:8px;
+  background:var(--navy);color:#fff;font-size:.72rem;font-weight:700;font-family:inherit;white-space:nowrap;
+}
+.kb-open:hover{background:var(--mid)}
+
+.kb-detail{padding:.85rem .95rem}
+.kb-detail h3{margin:0 0 .35rem;font-size:1.05rem}
+.kb-detail .meta{font-size:.78rem;color:var(--muted);margin-bottom:.55rem}
+.kb-detail p{margin:0 0 .65rem;font-size:.88rem;line-height:1.5}
+.kb-detail .actions{display:flex;gap:.35rem;flex-wrap:wrap}
+.kb-detail .actions button,.kb-detail .actions a{
+  border:none;cursor:pointer;padding:.4rem .75rem;border-radius:9px;
+  font-weight:600;font-size:.78rem;font-family:inherit;text-decoration:none;
+  background:var(--light);color:var(--navy);display:inline-flex;align-items:center;
+}
+.kb-detail .actions .pri{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
+.kb-empty{padding:1.2rem .95rem;text-align:center;color:var(--muted);font-size:.88rem}
+
+.kb-side-list{padding:.5rem .65rem}
+.kb-side-item{
+  padding:.45rem .5rem;border-radius:9px;cursor:pointer;font-size:.82rem;margin-bottom:.2rem;
+}
+.kb-side-item:hover{background:var(--light)}
+.kb-side-item strong{display:block;font-size:.84rem}
+.kb-side-item span{font-size:.72rem;color:var(--muted)}
+
+@@media(max-width:900px){
+  .kb-grid{grid-template-columns:1fr}
+  .kb-kpis{grid-template-columns:1fr 1fr}
+}
+@@media(max-width:560px){
+  .kb-kpis{grid-template-columns:1fr}
+  .kb{padding:.4rem}
+}
 </style>
 
 <section class="kb">
     <header class="kb-hero">
-        <div style="font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Resources</div>
-        <h1>Knowledge base</h1>
-        <p>Approved guidance, chapter articles and support content. Search and filter by topic. KPI cards are clickable.</p>
+        <div>
+            <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Resources</div>
+            <h1>Knowledge base</h1>
+            <p>Approved chapter guidance. Search, filter, open articles — every card and row works.</p>
+        </div>
+        <div class="kb-hero__meta">
+            <span>@articles.Count articles</span>
+            <span>@catCount categories</span>
+            <span>@Filtered.Count() matching</span>
+        </div>
     </header>
 
     <div class="kb-tools">
@@ -45,51 +136,142 @@ background:linear-gradient(115deg,#07649d,#00a4e4 60%,#1d2d5c);box-shadow:0 12px
             <option>Security</option>
             <option>Education</option>
         </select>
+        <div class="kb-chips">
+            <button type="button" class="kb-chip @(category=="All categories"?"on":null)" @onclick='() => category = "All categories"'>All</button>
+            <button type="button" class="kb-chip @(category=="Governance"?"on":null)" @onclick='() => category = "Governance"'>Governance</button>
+            <button type="button" class="kb-chip @(category=="Education"?"on":null)" @onclick='() => category = "Education"'>Education</button>
+            <button type="button" class="kb-chip @(category=="Events"?"on":null)" @onclick='() => category = "Events"'>Events</button>
+            <button type="button" class="kb-chip @(category=="Security"?"on":null)" @onclick='() => category = "Security"'>Security</button>
+            <button type="button" class="kb-chip @(category=="Membership"?"on":null)" @onclick='() => category = "Membership"'>Membership</button>
+        </div>
     </div>
 
     <div class="kb-kpis">
         <button type="button" class="kb-kpi @(focus=="a"?"on":null)" @onclick='() => SetFocus("a")'>
-            <div class="l">Articles</div><div class="v">@articles.Count</div>
+            <div class="l">Articles</div><div class="v">@articles.Count</div><div class="t">In library</div>
         </button>
         <button type="button" class="kb-kpi @(focus=="c"?"on":null)" @onclick='() => SetFocus("c")'>
-            <div class="l">Categories</div><div class="v">@catCount</div>
+            <div class="l">Categories</div><div class="v">@catCount</div><div class="t">Topics</div>
         </button>
         <button type="button" class="kb-kpi @(focus=="m"?"on":null)" @onclick='() => SetFocus("m")'>
-            <div class="l">Matching</div><div class="v">@Filtered.Count()</div>
+            <div class="l">Matching</div><div class="v">@Filtered.Count()</div><div class="t">Current filter</div>
+        </button>
+        <button type="button" class="kb-kpi @(focus=="r"?"on":null)" @onclick='() => SetFocus("r")'>
+            <div class="l">Reviewed</div><div class="v">@reviewed</div><div class="t">This session</div>
         </button>
     </div>
 
-    @if (!string.IsNullOrEmpty(detail))
+    @if (!string.IsNullOrEmpty(banner))
     {
-        <div class="kb-detail">@detail</div>
+        <div style="background:#e8f4fc;border:1px solid #c5e0f5;border-radius:10px;padding:.55rem .8rem;font-size:.84rem">@banner</div>
     }
 
-    <div class="kb-list">
-        @foreach (var a in Filtered)
-        {
-            <div class="kb-item" @onclick="() => Open(a)">
-                <strong>@a.Title</strong>
-                <span>@a.Category · @a.Summary</span>
+    <div class="kb-grid">
+        <div class="kb-panel">
+            <div class="kb-panel__h">
+                <h2>Articles</h2>
+                <span>@Filtered.Count() shown</span>
             </div>
-        }
+            @if (!Filtered.Any())
+            {
+                <div class="kb-empty">No articles match. Clear search or pick All categories.</div>
+            }
+            else
+            {
+                @foreach (var a in Filtered)
+                {
+                    <div class="kb-item @(selected?.Title==a.Title?"on":null)" @onclick="() => Open(a)">
+                        <div>
+                            <strong>@a.Title</strong>
+                            <div class="sum">@a.Summary</div>
+                            <span class="kb-tag">@a.Category</span>
+                        </div>
+                        <button type="button" class="kb-open" @onclick:stopPropagation="true" @onclick="() => Open(a)">Open</button>
+                    </div>
+                }
+            }
+        </div>
+
+        <div class="kb-panel">
+            @if (selected is null)
+            {
+                <div class="kb-panel__h"><h2>Quick topics</h2><span>Click to filter</span></div>
+                <div class="kb-side-list">
+                    @foreach (var g in articles.GroupBy(x => x.Category))
+                    {
+                        <div class="kb-side-item" @onclick="() => category = g.Key">
+                            <strong>@g.Key</strong>
+                            <span>@g.Count() article@(g.Count()==1?"":"s")</span>
+                        </div>
+                    }
+                    <div class="kb-side-item" @onclick='() => category = "All categories"'>
+                        <strong>Show all</strong>
+                        <span>Reset filters</span>
+                    </div>
+                </div>
+                <div class="kb-detail" style="border-top:1px solid var(--line)">
+                    <p style="margin:0;font-size:.84rem;color:var(--muted)">Select an article on the left to read guidance, mark reviewed, or open related tools.</p>
+                    <div class="actions" style="margin-top:.55rem">
+                        <a class="pri" href="governance">Governance</a>
+                        <a href="content-health">Content health</a>
+                        <a href="escalations">Escalations</a>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="kb-panel__h"><h2>Article detail</h2><span>@selected.Category</span></div>
+                <div class="kb-detail">
+                    <h3>@selected.Title</h3>
+                    <div class="meta">Category · @selected.Category · Approved chapter guidance</div>
+                    <p>@selected.Body</p>
+                    <div class="actions">
+                        <button type="button" class="pri" @onclick="MarkReviewed">Mark reviewed</button>
+                        <button type="button" @onclick="() => selected = null">Close</button>
+                        <a href="content-health">Content health</a>
+                        <a href="governance">Policies</a>
+                    </div>
+                </div>
+            }
+        </div>
     </div>
 </section>
 
 @code {
-    private sealed class Art { public string Title { get; set; } = ""; public string Category { get; set; } = ""; public string Summary { get; set; } = ""; }
+    private sealed class Art
+    {
+        public string Title { get; set; } = "";
+        public string Category { get; set; } = "";
+        public string Summary { get; set; } = "";
+        public string Body { get; set; } = "";
+    }
+
     private readonly List<Art> articles = new()
     {
-        new() { Title = "Chapter meeting checklist", Category = "Governance", Summary = "Board agenda and quorum reminders" },
-        new() { Title = "CPE reporting guide", Category = "Education", Summary = "How members claim credits" },
-        new() { Title = "Event registration playbook", Category = "Events", Summary = "Capacity, waitlists, and CPE codes" },
-        new() { Title = "New member onboarding", Category = "Membership", Summary = "First 30 days checklist" },
-        new() { Title = "Incident response contacts", Category = "Security", Summary = "Severity and escalation paths" },
-        new() { Title = "Vendor risk questionnaire", Category = "Governance", Summary = "Third-party due diligence" },
-        new() { Title = "Study group facilitator tips", Category = "Education", Summary = "CISA/CISM circles" },
-        new() { Title = "Hybrid event AV checklist", Category = "Events", Summary = "Room and streaming setup" },
+        new() { Title = "Chapter meeting checklist", Category = "Governance", Summary = "Board agenda and quorum reminders",
+            Body = "Use this checklist before each board meeting: confirm quorum, circulate agenda 5 days prior, record motions, and store minutes in the chapter archive within 7 days." },
+        new() { Title = "CPE reporting guide", Category = "Education", Summary = "How members claim credits",
+            Body = "Members claim CPE in the ISACA portal within 12 months of the activity. Chapter events should publish CPE codes within 48 hours and retain attendance for audit." },
+        new() { Title = "Event registration playbook", Category = "Events", Summary = "Capacity, waitlists, and CPE codes",
+            Body = "Set capacity early, enable waitlists at 90% fill, and assign CPE codes before promotion. Hybrid events need a separate virtual capacity and AV check 24 hours prior." },
+        new() { Title = "New member onboarding", Category = "Membership", Summary = "First 30 days checklist",
+            Body = "Welcome email day 1, invite to next chapter meeting, assign a buddy if available, and share certification pathway links. Track first engagement within 30 days." },
+        new() { Title = "Incident response contacts", Category = "Security", Summary = "Severity and escalation paths",
+            Body = "Severity 1: contact chapter security officer and ISACA support immediately. Severity 2–3: log ticket in Escalations within one business day and update the board summary." },
+        new() { Title = "Vendor risk questionnaire", Category = "Governance", Summary = "Third-party due diligence",
+            Body = "Issue the questionnaire before contract renewal. Require SOC 2 or equivalent for systems holding member data. Escalate incomplete responses to the board risk lead." },
+        new() { Title = "Study group facilitator tips", Category = "Education", Summary = "CISA/CISM circles",
+            Body = "Keep groups to 8–12 members, publish a 12-week plan, rotate presenters, and ban sharing of exam dumps. Point members to official ISACA practice materials only." },
+        new() { Title = "Hybrid event AV checklist", Category = "Events", Summary = "Room and streaming setup",
+            Body = "Test camera, mic, and stream key 90 minutes before doors. Confirm recording consent language on slides. Have a backup hotspot and a second host account ready." },
     };
-    private string search = "", category = "All categories", focus = "a", detail = "";
+
+    private string search = "", category = "All categories", focus = "a", banner = "";
+    private Art? selected;
+    private int reviewed;
+
     private int catCount => articles.Select(a => a.Category).Distinct().Count();
+
     private IEnumerable<Art> Filtered
     {
         get
@@ -99,20 +281,35 @@ background:linear-gradient(115deg,#07649d,#00a4e4 60%,#1d2d5c);box-shadow:0 12px
             if (!string.IsNullOrWhiteSpace(search))
                 q = q.Where(a => a.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
                     || a.Summary.Contains(search, StringComparison.OrdinalIgnoreCase)
-                    || a.Category.Contains(search, StringComparison.OrdinalIgnoreCase));
+                    || a.Category.Contains(search, StringComparison.OrdinalIgnoreCase)
+                    || a.Body.Contains(search, StringComparison.OrdinalIgnoreCase));
             return q;
         }
     }
+
     private void SetFocus(string f)
     {
         focus = f;
-        detail = f switch
+        banner = f switch
         {
-            "a" => $"Knowledge base has {articles.Count} articles across membership, events, governance, security, and education.",
-            "c" => $"{catCount} categories in use. Filter with the dropdown to narrow results.",
-            "m" => $"{Filtered.Count()} articles match your current search and category filters.",
+            "a" => $"Library has {articles.Count} approved articles across membership, events, governance, security, and education.",
+            "c" => $"{catCount} categories in use. Use chips or the dropdown to filter.",
+            "m" => $"{Filtered.Count()} articles match your current search and category.",
+            "r" => $"You marked {reviewed} article(s) reviewed this session.",
             _ => ""
         };
     }
-    private void Open(Art a) => detail = $"Opened: {a.Title} ({a.Category}) — {a.Summary}";
+
+    private void Open(Art a)
+    {
+        selected = a;
+        banner = $"Opened: {a.Title}";
+    }
+
+    private void MarkReviewed()
+    {
+        if (selected is null) return;
+        reviewed++;
+        banner = $"Marked reviewed: {selected.Title} ({reviewed} this session)";
+    }
 }
