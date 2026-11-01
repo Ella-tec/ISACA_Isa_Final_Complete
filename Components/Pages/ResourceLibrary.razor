@@ -6,13 +6,15 @@
 
 <style>
 .rl{--navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
-font-family:"Roboto",system-ui,sans-serif;color:var(--navy);width:100%;max-width:none;margin:0;padding:.45rem .8rem .55rem;box-sizing:border-box;
-min-height:calc(100vh - .2rem);display:flex;flex-direction:column;gap:.45rem}
+font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
+width:100%!important;max-width:none!important;margin:0!important;padding:10px!important;box-sizing:border-box;
+min-height:calc(100vh - 20px)!important;min-height:calc(100dvh - 20px)!important;
+display:flex!important;flex-direction:column!important;gap:10px!important;flex:1 1 auto!important}
 .rl-hero{flex:0 0 auto;border-radius:12px;padding:.85rem 1.1rem;color:#fff;
 background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
 .rl-hero h1{margin:.05rem 0 .15rem;font-family:"Roboto Slab",Georgia,serif;font-weight:300;font-size:1.3rem}
 .rl-hero p{margin:0;opacity:.92;font-size:.84rem}
-.rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.15fr;gap:.4rem}
+.rl-top{flex:0 0 auto;display:grid;grid-template-columns:repeat(4,1fr) 1.15fr;gap:10px}
 .rl-kpi{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.55rem .7rem}
 .rl-kpi span{display:block;font-size:.58rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
 .rl-kpi strong{font-size:1.15rem;color:var(--navy)}
@@ -23,7 +25,7 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
 .rl-bar{flex:1;height:7px;background:var(--light);border-radius:999px;overflow:hidden}
 .rl-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,#00a4e4,#36ac91)}
 .rl-bar-row b{width:24px;text-align:right;font-size:.68rem}
-.rl-cats{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:.4rem}
+.rl-cats{flex:0 0 auto;display:grid;grid-template-columns:repeat(5,1fr);gap:10px}
 .rl-cat{background:#fff;border:1px solid var(--line);border-radius:11px;padding:.65rem .7rem;text-align:center;cursor:pointer}
 .rl-cat:hover,.rl-cat.on{border-color:var(--blue);box-shadow:0 4px 12px rgba(0,164,228,.12)}
 .rl-cat .ico{width:34px;height:34px;margin:0 auto .3rem;border-radius:9px;display:grid;place-items:center;font-size:1rem;background:var(--light)}
@@ -34,28 +36,28 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
 .rl-tabs{display:flex;flex-wrap:wrap;gap:.25rem}
 .rl-tab{border:none;cursor:pointer;padding:.32rem .7rem;border-radius:999px;font-weight:600;font-size:.78rem;font-family:inherit;background:#fff;color:var(--navy);border:1px solid var(--line)}
 .rl-tab.on{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff;border-color:transparent}
-.rl-body{flex:1 1 auto;display:grid;grid-template-columns:1.4fr 1fr;gap:.45rem;min-height:0}
-.rl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.4rem;align-content:start;overflow:auto;min-height:0}
-.rl-card{background:#fff;border-radius:11px;padding:.7rem;border:1px solid var(--line);display:flex;flex-direction:column;gap:.28rem;cursor:pointer;min-height:140px}
+.rl-body{flex:1 1 auto!important;display:grid!important;grid-template-columns:1.4fr 1fr;gap:10px;min-height:0;align-items:stretch!important}
+.rl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:10px;align-content:start;overflow:auto;min-height:0;height:100%}
+.rl-card{background:#fff;border-radius:12px;padding:.85rem;border:1px solid var(--line);display:flex;flex-direction:column;gap:.35rem;cursor:pointer;min-height:160px}
 .rl-card:hover,.rl-card.sel{border-color:var(--blue);box-shadow:0 4px 14px rgba(0,164,228,.12)}
 .rl-card .badge{width:32px;height:32px;border-radius:8px;display:grid;place-items:center;font-weight:800;color:#fff;font-size:.68rem}
-.rl-card h3{margin:0;font-size:.84rem}
-.rl-card p{margin:0;font-size:.76rem;color:var(--muted);line-height:1.3;flex:1}
+.rl-card h3{margin:0;font-size:.88rem}
+.rl-card p{margin:0;font-size:.78rem;color:var(--muted);line-height:1.35;flex:1}
 .rl-card .actions{display:flex;flex-wrap:wrap;gap:.25rem}
-.rl-card a,.rl-card button{padding:.3rem .55rem;border-radius:7px;font-weight:600;font-size:.72rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
+.rl-card a,.rl-card button{padding:.32rem .6rem;border-radius:7px;font-weight:600;font-size:.74rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-dl{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff!important}
 .rl-link{background:var(--light);color:var(--mid)!important}
 .rl-fav{background:#fff8e8;color:#a85a12!important}
-.rl-detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:.9rem 1rem;display:flex;flex-direction:column;min-height:0;overflow:auto}
+.rl-detail{background:#fff;border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;display:flex;flex-direction:column;min-height:0;height:100%;overflow:auto}
 .rl-detail h2{margin:0 0 .35rem;font-size:1.05rem;font-family:"Roboto Slab",Georgia,serif;font-weight:400}
 .rl-detail .meta{font-size:.78rem;color:var(--muted);margin-bottom:.5rem}
 .rl-detail .body{font-size:.86rem;line-height:1.5;flex:1 1 auto;white-space:pre-wrap}
-.rl-detail .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem;padding-top:.5rem;border-top:1px solid var(--line)}
+.rl-detail .actions{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:auto;padding-top:.5rem;border-top:1px solid var(--line)}
 .rl-detail .actions button,.rl-detail .actions a{padding:.4rem .75rem;border-radius:8px;font-weight:600;font-size:.8rem;border:none;cursor:pointer;font-family:inherit;text-decoration:none}
 .rl-empty{color:var(--muted);font-size:.88rem;padding:1rem 0;text-align:center}
 .rl-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.6rem .9rem;border-radius:10px;font-weight:600;z-index:100}
 @@media(max-width:1100px){.rl-top{grid-template-columns:1fr 1fr}.rl-chart{grid-column:1/-1}.rl-cats{grid-template-columns:repeat(3,1fr)}.rl-body{grid-template-columns:1fr}}
-@@media(max-width:700px){.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:auto}}
+@@media(max-width:700px){.rl-cats{grid-template-columns:1fr 1fr}.rl{min-height:0!important}}
 </style>
 
 <section class="rl">
@@ -224,90 +226,59 @@ background:linear-gradient(120deg,#00a4e4,#07649d 40%,#1d2d5c)}
             R("Learning","Cybersecurity Fundamentals","Starter pack for member onboarding sessions.","CY","linear-gradient(135deg,#e31837,#07649d)","https://www.isaca.org","Cyber-Fundamentals.txt",G("Cyber Fundamentals — 60-minute session outline with discussion prompts.")),
             R("Learning","Governance & Risk Management","Board-ready GRC talking points.","GR","linear-gradient(135deg,#6558b1,#00a4e4)","","GRC-Learning.txt",G("GRC Learning — board slides outline and case discussion.")),
             R("Learning","Audit & Assurance","Audit committee briefing outline.","AU","linear-gradient(135deg,#1d2d5c,#6cb33f)","","Audit-Assurance.txt",G("Audit & Assurance — committee briefing structure and sample questions.")),
-            R("Learning","Privacy & Data Protection","DSAR and retention workshop outline.","PR","linear-gradient(135deg,#36ac91,#1d2d5c)","","Privacy-Learning.txt",G("Privacy workshop — DSAR flow, retention matrix, and tabletop.")),
-            R("Learning","AI Governance","Model risk discussion guide for chapters.","AIG","linear-gradient(135deg,#e57524,#6558b1)","","AI-Governance-Learning.txt",G("AI Governance — model risk, human oversight, and policy hooks.")),
-            R("Learning","Emerging Technologies","Cloud, identity, and automation themes.","ET","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Emerging-Tech.txt",G("Emerging Tech — cloud, identity, automation discussion cards.")),
-            R("Learning","Member Mentoring Guide","Pair experienced members with newcomers.","MG","linear-gradient(135deg,#6cb33f,#07649d)","","Mentoring-Guide.txt",G("Mentoring — pairing tips, 90-day goals, and check-in agenda.")),
-            R("Learning","Tabletop Exercise Pack","Scenario cards for risk and IR practice.","TT","linear-gradient(135deg,#e31837,#6558b1)","","Tabletop-Pack.txt",G("Tabletop — three scenarios, injects, and debrief questions.")),
+            R("Learning","Privacy & Data Protection","DSAR and retention basics for chapters.","PR","linear-gradient(135deg,#07649d,#e57524)","","Privacy-Learning.txt",G("Privacy Learning — DSAR flow, retention schedule, and member notice samples.")),
+            R("Learning","Cloud Security Basics","Shared responsibility and control mapping.","CL","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Cloud-Security-Basics.txt",G("Cloud Security — shared responsibility, logging, and identity controls.")),
+            R("Learning","AI Risk Awareness","Educational briefing on AI risk for members.","AR","linear-gradient(135deg,#e57524,#6558b1)","","AI-Risk-Awareness.txt",G("AI Risk Awareness — use cases, limits, and chapter discussion questions.")),
+            R("Learning","Member Orientation Deck","First-meeting orientation script.","MO","linear-gradient(135deg,#36ac91,#1d2d5c)","","Member-Orientation.txt",G("Member Orientation — welcome, benefits, CPE, and volunteer paths.")),
+            R("Learning","Board Briefing Template","One-page monthly board brief structure.","BB","linear-gradient(135deg,#1d2d5c,#00a4e4)","","Board-Briefing-Template.txt",G("Board Briefing — metrics, risks, decisions needed, and follow-ups.")),
 
-            R("Templates","Meeting Agenda Template","Standard board and committee agenda.","TA","linear-gradient(135deg,#1d2d5c,#07649d)","","Meeting-Agenda-Template.txt",G("Agenda Template\n1. Call to order\n2. Minutes\n3. Officer reports\n4. Old business\n5. New business\n6. Adjourn")),
-            R("Templates","Event Planning Template","Milestones, owners, and budget lines.","TE","linear-gradient(135deg,#6cb33f,#07649d)","","Event-Planning-Template.txt",G("Event Template — milestones, owners, budget lines, and risk notes.")),
-            R("Templates","Budget Tracking Template","Simple monthly chapter budget tracker.","TB","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Budget-Tracking-Template.txt",G("Budget Tracker — income, expense categories, and variance notes.")),
-            R("Templates","Risk Assessment Template","Likelihood/impact grid for chapter risks.","TR","linear-gradient(135deg,#e57524,#1d2d5c)","","Risk-Assessment-Template.txt",G("Risk Template — likelihood × impact grid and treatment owners.")),
-            R("Templates","Project Planning Template","Initiative charter and milestone plan.","TP","linear-gradient(135deg,#6558b1,#07649d)","","Project-Planning-Template.txt",G("Project Charter — goal, scope, milestones, risks, success metrics.")),
-            R("Templates","Speaker Invite Email","Ready-to-send invitation for CPE speakers.","TS","linear-gradient(135deg,#36ac91,#1d2d5c)","","Speaker-Invite.txt",G("Speaker Invite — subject line, body, logistics, and CPE note.")),
-            R("Templates","Volunteer Role Description","Standard role blurbs for recruitment.","VR","linear-gradient(135deg,#07649d,#6cb33f)","","Volunteer-Role-Description.txt",G("Role Description — duties, time commitment, and skills.")),
-            R("Templates","Post-Event Survey","Quick feedback form for attendees.","SV","linear-gradient(135deg,#00a4e4,#6558b1)","","Post-Event-Survey.txt",G("Survey — rating, CPE usefulness, topic ideas, open comments.")),
+            R("Templates","Meeting Agenda","Standard chapter meeting agenda template.","TA","linear-gradient(135deg,#07649d,#36ac91)","","Meeting-Agenda.txt",G("Meeting Agenda — call to order, reports, votes, and open floor.")),
+            R("Templates","Meeting Minutes","Minutes capture template with action log.","TM","linear-gradient(135deg,#1d2d5c,#6cb33f)","","Meeting-Minutes.txt",G("Meeting Minutes — attendance, motions, actions, and owners.")),
+            R("Templates","Volunteer Role Description","Template for role clarity and expectations.","TV","linear-gradient(135deg,#6558b1,#07649d)","","Volunteer-Role.txt",G("Volunteer Role — purpose, time commitment, skills, and support.")),
+            R("Templates","Event Budget Sheet","Simple budget lines for chapter events.","TB","linear-gradient(135deg,#e57524,#1d2d5c)","","Event-Budget.txt",G("Event Budget — revenue, venue, food, AV, contingency.")),
+            R("Templates","Speaker Invite Email","Outreach email for CPE speakers.","TS","linear-gradient(135deg,#00a4e4,#1d2d5c)","","Speaker-Invite.txt",G("Speaker Invite — topic, audience, format, and logistics ask.")),
+            R("Templates","Sponsorship One-Pager","Benefits summary for local partners.","TP","linear-gradient(135deg,#6cb33f,#07649d)","","Sponsorship-One-Pager.txt",G("Sponsorship One-Pager — tiers, exposure, and contact.")),
+            R("Templates","Risk Register Sample","Starter risk log for chapter operations.","TR","linear-gradient(135deg,#e31837,#1d2d5c)","","Risk-Register.txt",G("Risk Register — id, owner, likelihood, impact, treatment.")),
+            R("Templates","Policy Change Request","Form for proposing policy updates.","TC","linear-gradient(135deg,#36ac91,#6558b1)","","Policy-Change-Request.txt",G("Policy Change Request — summary, rationale, impact, approvers.")),
         };
     }
 
-    private IEnumerable<Res> Filtered
-    {
-        get
-        {
-            var q = All.Where(r => r.Category == tab);
-            if (!string.IsNullOrWhiteSpace(search))
-                q = q.Where(r => r.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
-                              || r.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
-            return q;
-        }
-    }
+    private IEnumerable<Res> Filtered => All
+        .Where(r => r.Category == tab)
+        .Where(r => string.IsNullOrWhiteSpace(search)
+            || r.Title.Contains(search, StringComparison.OrdinalIgnoreCase)
+            || r.Description.Contains(search, StringComparison.OrdinalIgnoreCase));
 
     private IEnumerable<CatCount> CategoryCounts
     {
         get
         {
-            var max = Math.Max(1, Tabs.Max(t => All.Count(r => r.Category == t.Name)));
+            var total = Math.Max(1, All.Count);
             return Tabs.Select(t =>
             {
                 var c = All.Count(r => r.Category == t.Name);
-                return new CatCount(t.Name, c, (int)(c * 100.0 / max));
+                return new CatCount(t.Name, c, (int)Math.Round(100.0 * c / total));
             });
         }
     }
 
-    private void SelectTab(string name)
-    {
-        tab = name;
-        search = string.Empty;
-        selected = null;
-    }
-
+    private void SelectTab(string name) { tab = name; selected = null; }
     private void Select(Res r) => selected = r;
-
     private void ToggleFav(Res r)
     {
         if (!favs.Add(r.Title)) favs.Remove(r.Title);
-        toast = favs.Contains(r.Title) ? $"★ Favorited: {r.Title}" : $"Removed favorite: {r.Title}";
-        _ = ClearToast();
+        toast = favs.Contains(r.Title) ? $"Favorited · {r.Title}" : $"Removed favorite · {r.Title}";
     }
-
     private async Task Download(Res r)
     {
         downloads++;
-        selected = r;
-        toast = $"Downloading {r.FileName}…";
-        StateHasChanged();
+        toast = $"Downloaded · {r.FileName}";
         try
         {
-            var text = r.Body;
-            await JS.InvokeVoidAsync("eval", $"(() => {{ const b=new Blob([`{EscapeJs(text)}`],{{type:'text/plain'}}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='{EscapeJs(r.FileName)}'; a.click(); URL.revokeObjectURL(a.href); }})()");
-            toast = $"Saved: {r.FileName}";
+            await JS.InvokeVoidAsync("eval",
+                $"(() => {{ const b=new Blob([`{EscapeJs(r.Body)}`],{{type:'text/plain'}}); const a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='{EscapeJs(r.FileName)}'; a.click(); URL.revokeObjectURL(a.href); }})()");
         }
-        catch
-        {
-            toast = $"Ready: {r.Title} (preview in panel)";
-        }
-        await ClearToast();
+        catch { }
     }
-
-    private static string EscapeJs(string s) =>
-        s.Replace("\\", "\\\\").Replace("`", "\\`").Replace("$", "\\$");
-
-    private async Task ClearToast()
-    {
-        await Task.Delay(2800);
-        toast = "";
-        StateHasChanged();
-    }
+    private static string EscapeJs(string s) => s.Replace("\\", "\\\\").Replace("`", "\\`").Replace("$", "\\$");
 }
