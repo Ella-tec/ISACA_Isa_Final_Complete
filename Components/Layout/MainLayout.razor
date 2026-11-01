@@ -5,7 +5,8 @@
 html, body {
   margin: 0 !important;
   padding: 0 !important;
-  height: 100% !important;
+  height: auto !important;
+  min-height: 100% !important;
   background: #eef2f7 !important;
 }
 body {
@@ -33,20 +34,18 @@ body {
   width: 100% !important;
 }
 
+/* Main grows with content only — no forced empty viewport gap */
 .main {
   position: relative !important;
   margin-left: 252px !important;
   width: calc(100% - 252px) !important;
   max-width: none !important;
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
+  min-height: 0 !important;
+  height: auto !important;
   display: block !important;
   margin-top: 0 !important; margin-right: 0 !important; margin-bottom: 0 !important;
   padding: 0 !important;
-  background:
-    radial-gradient(1200px 600px at 100% -10%, rgba(0,164,228,.05), transparent 55%),
-    radial-gradient(900px 500px at -5% 100%, rgba(54,172,145,.04), transparent 50%),
-    #eef2f7 !important;
+  background: #eef2f7 !important;
   box-sizing: border-box !important;
 }
 
@@ -60,16 +59,21 @@ body {
   max-width: none !important;
   width: 100% !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
 }
 
-.hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
-.contact-page, .an, .settings-page, .translator-page, .market-page,
-.page-root, .container, .container-fluid, .ct, .st, .pg, .rl, .wx {
+/* Compact all known page roots — no bottom empty padding */
+.hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev,
+.isa-page, .contact-page, .settings-page, .translator-page, .market-page,
+.page-root, .container, .container-fluid, .ct, .st, .pg {
   max-width: none !important;
   width: 100% !important;
   margin-left: 0 !important;
   margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  padding-bottom: 0.65rem !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
 }
 
 .isa-widget { position: relative !important; z-index: 2147483000 !important; --isa-rail-w: 0px; }
