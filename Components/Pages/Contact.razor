@@ -8,13 +8,14 @@
   --navy:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--green:#6cb33f;--teal:#36ac91;--light:#e7f0f5;--muted:#5f6b85;--line:#e2e8f0;
   font-family:"Roboto",system-ui,sans-serif;color:var(--navy);
   width:100%!important;max-width:none!important;margin:0!important;
-  /* no bottom padding so footer sits on the edge */
   padding:10px 10px 0!important;
   box-sizing:border-box;
-  min-height:100vh!important;
-  min-height:100dvh!important;
+  /* Grow inside the flex main column */
+  flex:1 1 auto!important;
   display:flex!important;
   flex-direction:column!important;
+  min-height:0!important;
+  height:100%!important;
   gap:10px;
 }
 .ct-hero{
@@ -51,14 +52,13 @@
 .ct-btn:hover{filter:brightness(1.06)}
 .ct-ok{background:#e8f6e8;color:#2d6a2d;padding:.5rem .75rem;border-radius:9px;font-size:.85rem;margin-bottom:.5rem}
 
-/* Footer hard-pinned to the bottom — no gap under it */
 .ct > .sf,
 .ct > footer.sf{
-  margin:auto 0 0!important;
+  margin-top:auto!important;
+  margin-bottom:0!important;
   flex:0 0 auto!important;
   width:100%!important;
   border-radius:14px 14px 0 0!important;
-  padding-bottom:1.15rem!important;
 }
 
 @@media(max-width:900px){

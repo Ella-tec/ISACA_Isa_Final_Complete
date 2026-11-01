@@ -1,11 +1,8 @@
-/* TRU platform final — loaded last */
-
+/* TRU platform final */
 :root {
   --tru-sidebar-width: 252px;
-  --tru-page-gutter: 10px;
   --tru-canvas: #eef2f7;
 }
-
 html, body {
   width: 100% !important;
   margin: 0 !important;
@@ -14,9 +11,7 @@ html, body {
   overflow-x: hidden !important;
 }
 *, *::before, *::after { box-sizing: border-box; }
-
-.page { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-
+.page { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; min-height: 100vh !important; min-height: 100dvh !important; }
 .sidebar {
   position: fixed !important;
   inset: 0 auto 0 0 !important;
@@ -26,34 +21,30 @@ html, body {
   max-width: var(--tru-sidebar-width) !important;
   height: 100vh !important;
   height: 100dvh !important;
-  overflow-x: hidden !important;
-  overflow-y: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   background: linear-gradient(175deg,#0a1224 0%,#1d2d5c 48%,#12233f 100%) !important;
 }
-
 .main {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
   width: calc(100% - var(--tru-sidebar-width)) !important;
-  min-width: 0 !important;
   margin: 0 0 0 var(--tru-sidebar-width) !important;
   padding: 0 !important;
   min-height: 100vh !important;
   min-height: 100dvh !important;
   background: var(--tru-canvas) !important;
 }
-
 article.content, .content {
-  display: block !important;
+  display: flex !important;
+  flex-direction: column !important;
+  flex: 1 1 auto !important;
   width: 100% !important;
   margin: 0 !important;
   padding: 0 !important;
 }
-
 .top-row { display: none !important; }
 
-/* All workspace pages fill the column — no empty canvas strip under content */
 .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl,
 .isa-page, .settings-page, .translator-page, .market-page, .page-root, .st, .dd {
   width: 100% !important;
@@ -61,65 +52,30 @@ article.content, .content {
   margin: 0 !important;
   padding: 10px !important;
   box-sizing: border-box !important;
-  min-height: calc(100vh - 20px) !important;
-  min-height: calc(100dvh - 20px) !important;
+}
+
+/* Contact fills flex column; footer pinned */
+.ct {
+  flex: 1 1 auto !important;
   display: flex !important;
   flex-direction: column !important;
-  gap: 10px !important;
-}
-
-.an > *:last-child,
-.ev > *:last-child,
-.kb > *:last-child,
-.es > *:last-child,
-.gov > *:last-child,
-.tr > *:last-child,
-.ch > *:last-child,
-.mt > *:last-child,
-.rl > *:last-child,
-.wx > *:last-child,
-.dev > *:last-child,
-.pg > *:last-child,
-.pipe > *:last-child,
-.st > *:last-child,
-.dd > *:last-child,
-.translator-page > *:last-child,
-.market-page > *:last-child,
-.settings-page > *:last-child,
-.isa-page > *:last-child {
-  flex: 1 1 auto !important;
-}
-
-/* Contact: footer on the bottom edge */
-.ct {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  padding: 10px !important;
+  padding: 10px 10px 0 !important;
   box-sizing: border-box !important;
-  min-height: calc(100vh - 20px) !important;
-  min-height: calc(100dvh - 20px) !important;
-  display: flex !important;
-  flex-direction: column !important;
 }
 .ct > .sf,
-.ct > footer {
+.ct > footer.sf {
   margin-top: auto !important;
+  margin-bottom: 0 !important;
   flex: 0 0 auto !important;
-}
-
-.container, .container-fluid {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding-left: 0 !important;
-  padding-right: 0 !important;
+  border-radius: 14px 14px 0 0 !important;
 }
 
 @media (max-width: 1100px) {
   :root { --tru-sidebar-width: 236px; }
 }
-
 @media (max-width: 800px) {
   .sidebar {
     position: relative !important;
@@ -129,12 +85,5 @@ article.content, .content {
     height: auto !important;
     max-height: 220px !important;
   }
-  .main {
-    width: 100% !important;
-    margin: 0 !important;
-    min-height: 0 !important;
-  }
-  .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl, .ct {
-    min-height: 0 !important;
-  }
+  .main { width: 100% !important; margin: 0 !important; }
 }
