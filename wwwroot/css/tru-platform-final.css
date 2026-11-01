@@ -1,36 +1,35 @@
-/* TRU platform layout — single authoritative layer.
-   This file is loaded last. It replaces the conflicting no-gap,
-   compact-layout, layout-polish and no-stretch overrides. */
+/* TRU platform — authoritative edge-to-edge layout (loaded last). */
 
 :root {
-  --tru-sidebar-width: 216px;
-  --tru-page-gutter: clamp(12px, 1.05vw, 18px);
-  --tru-section-gap: 12px;
+  --tru-sidebar-width: 252px;
+  --tru-page-gutter: 10px;
+  --tru-section-gap: 10px;
   --tru-canvas: #eef2f7;
   --tru-navy: #1d2d5c;
   --tru-blue: #00a4e4;
 }
 
 html, body {
-  width: 100%;
+  width: 100% !important;
   min-width: 320px;
-  min-height: 100%;
+  min-height: 0 !important;
+  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
   background: var(--tru-canvas) !important;
-  overflow-x: hidden;
+  overflow-x: hidden !important;
 }
 *, *::before, *::after { box-sizing: border-box; }
 
-/* Shared application frame */
 .page {
-  display: flex !important;
+  display: block !important;
   width: 100% !important;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 0 !important;
+  height: auto !important;
   margin: 0 !important;
   padding: 0 !important;
 }
+
 .sidebar {
   position: fixed !important;
   inset: 0 auto 0 0 !important;
@@ -46,18 +45,20 @@ html, body {
   margin: 0 !important;
   background: linear-gradient(175deg,#0a1224 0%,#1d2d5c 48%,#12233f 100%) !important;
 }
+
+/* CRITICAL: do NOT force min-height 100vh — that creates empty bottom gaps */
 .main {
   display: block !important;
   width: calc(100% - var(--tru-sidebar-width)) !important;
   min-width: 0 !important;
   max-width: none !important;
-  min-height: 100vh;
-  min-height: 100dvh;
+  min-height: 0 !important;
   height: auto !important;
   margin: 0 0 0 var(--tru-sidebar-width) !important;
   padding: 0 !important;
   background: var(--tru-canvas) !important;
 }
+
 article.content, .content {
   display: block !important;
   width: 100% !important;
@@ -69,15 +70,17 @@ article.content, .content {
   padding: 0 !important;
   overflow: visible !important;
 }
+
 .top-row { display: none !important; }
 
-/* All page roots use the same horizontal alignment and gutters. */
-.hm, .mt, .isa-page, .gov, .esc, .tr, .ch, .kb, .ev, .dev, .pipe,
-.contact-page, .an, .settings-page, .translator-page, .market-page,
+/* Page roots: full width, tight gutters, no forced height */
+.hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an,
+.isa-page, .contact-page, .settings-page, .translator-page, .market-page,
 .page-root, .ct, .st, .pg, .rl, .wx, .dd {
   width: 100% !important;
   max-width: none !important;
   min-width: 0 !important;
+  min-height: 0 !important;
   height: auto !important;
   max-height: none !important;
   margin: 0 !important;
@@ -85,7 +88,21 @@ article.content, .content {
   box-sizing: border-box !important;
 }
 
-/* Predictable spacing and safe grid sizing across all workspace pages. */
+/* Kill common empty stretch patterns */
+.main, article.content, .content,
+.hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an,
+.rl, .wx, .ct, .st, .pg, .dd, .isa-page {
+  min-height: 0 !important;
+}
+
+.container, .container-fluid {
+  max-width: none !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 .isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-card-grid,
 .isa-article-grid, .isa-hero-strip, .dd-hero, .dd-stats, .dd-grid,
 .pg-hero, .pg-stats, .pg-grid, .ct-hero, .ct-grid, .st-body,
@@ -93,10 +110,7 @@ article.content, .content {
   min-width: 0;
   gap: var(--tru-section-gap);
 }
-.isa-stat-grid, .isa-content-grid, .isa-card-grid, .isa-article-grid,
-.dd-stats, .dd-grid, .pg-stats, .pg-grid {
-  grid-template-columns: repeat( auto-fit, minmax(min(100%, 240px), 1fr) );
-}
+
 .isa-stat-grid > *, .isa-content-grid > *, .isa-card-grid > *,
 .isa-article-grid > *, .dd-stats > *, .dd-grid > *,
 .pg-stats > *, .pg-grid > *, .ct-grid > *, .st-body > *,
@@ -104,25 +118,25 @@ article.content, .content {
   min-width: 0;
   max-width: 100%;
 }
+
 .isa-page-heading, .isa-stat-grid, .isa-content-grid, .isa-hero-strip,
 .dd-hero, .dd-stats, .dd-grid, .pg-hero, .pg-stats, .pg-grid,
 .ct-hero, .ct-grid {
   margin-bottom: var(--tru-section-gap) !important;
 }
+
 .isa-panel, .isa-stat-card, .isa-card, .pg-card, .ct-card, .st-card,
 .dd-card, .mt-panel, .rl-card, .wx-card, .gov-card, .an-card,
 .ev-card, .es-card {
   min-width: 0;
   max-width: 100%;
-  border-radius: 14px;
+  border-radius: 12px;
 }
 
-/* Contact: equal-height columns, readable hero title, footer at viewport bottom. */
+/* Contact: no forced full-viewport empty column */
 .ct {
-  min-height: 100vh !important;
-  min-height: 100dvh !important;
-  display: flex !important;
-  flex-direction: column !important;
+  min-height: 0 !important;
+  display: block !important;
 }
 .ct-hero h1 {
   color: #fff !important;
@@ -131,28 +145,22 @@ article.content, .content {
 }
 .ct-grid {
   display: grid !important;
-  grid-template-columns: minmax(0, 1.1fr) minmax(280px, 1fr) !important;
-  align-items: stretch !important;
-  flex: 1 0 auto !important;
+  grid-template-columns: minmax(0, 1.1fr) minmax(260px, 1fr) !important;
+  align-items: start !important;
 }
 .ct-card {
-  height: 100% !important;
+  height: auto !important;
   min-height: 0 !important;
 }
-.ct > .sf {
-  width: 100% !important;
-  margin-top: auto !important;
-  flex: 0 0 auto !important;
-}
 
-/* Keep wide tables and data panels inside the available content width. */
 .table-responsive { max-width: 100%; overflow-x: auto; }
-.table-responsive table { min-width: 540px; }
 img, video, canvas, svg { max-width: 100%; }
 
-/* Small screens: content becomes full width; sidebar becomes a compact top rail. */
+@media (max-width: 1100px) {
+  :root { --tru-sidebar-width: 236px; }
+}
+
 @media (max-width: 800px) {
-  .page { display: block !important; }
   .sidebar {
     position: relative !important;
     inset: auto !important;
@@ -173,18 +181,11 @@ img, video, canvas, svg { max-width: 100%; }
     grid-template-columns: minmax(0, 1fr) !important;
   }
 }
+
 @media (max-width: 560px) {
-  :root { --tru-page-gutter: 10px; --tru-section-gap: 10px; }
-  .ct-grid { grid-template-columns: minmax(0, 1fr) !important; }
-  .ct-card, .st-card, .dd-card, .pg-card, .isa-panel { padding: .9rem !important; }
-  .isa-stat-grid, .isa-stat-grid--three, .dd-stats, .pg-stats,
-  .gov-kpis, .an-kpis, .ev-stats, .es-kpis, .kb-kpis, .mt-kpis,
-  .rl-top, .rl-cats, .wx-days {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
+  :root { --tru-page-gutter: 8px; --tru-section-gap: 8px; }
 }
 
-/* Respect reduced-motion settings. */
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after {
     scroll-behavior: auto !important;

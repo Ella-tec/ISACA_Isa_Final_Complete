@@ -1,9 +1,10 @@
-/* Elegant global frame for every page */
+/* Compact edge-to-edge helpers */
 html, body {
   margin: 0 !important;
   padding: 0 !important;
   background: #eef2f7 !important;
-  font-family: "Roboto", system-ui, -apple-system, sans-serif !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 .page, .main, .content, article.content {
@@ -11,46 +12,28 @@ html, body {
   padding: 0 !important;
   max-width: none !important;
   width: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 .main {
-  min-height: 100vh !important;
-  background:
-    radial-gradient(1200px 600px at 100% -10%, rgba(0,164,228,.06), transparent 55%),
-    radial-gradient(900px 500px at -5% 100%, rgba(54,172,145,.05), transparent 50%),
-    #eef2f7 !important;
+  background: #eef2f7 !important;
 }
 
-article.content {
-  min-height: 100vh !important;
-}
-
-/* Page roots */
-.pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .ch, .mt, .dev, .pipe,
+.pg, .ct, .tr, .st, .hm, .an, .ev, .kb, .gov, .esc, .es, .ch, .mt, .dev, .pipe,
 .rl, .wx, .isa-page, .settings-page, .translator-page, .market-page, .page-root {
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  padding: 0.65rem 1rem 0.85rem !important;
+  padding: 10px !important;
   box-sizing: border-box !important;
-}
-
-/* Soft cards everywhere */
-.isa-panel, .isa-stat-card, .isa-card,
-.pg-card, .ct-card, .st-card, .rl-card, .wx-card, .mt-panel, .rl-kpi, .rl-chart, .rl-cat {
-  border-radius: 14px !important;
-  box-shadow: 0 4px 16px rgba(29, 45, 92, 0.05) !important;
-  border-color: #e4ebf3 !important;
-}
-
-.isa-stat-grid, .isa-content-grid, .isa-hero-strip, .isa-page-heading {
-  margin-bottom: 0.65rem !important;
+  min-height: 0 !important;
 }
 
 .container, .container-fluid {
   max-width: none !important;
   width: 100% !important;
   margin: 0 !important;
-  padding-left: 0.75rem !important;
-  padding-right: 0.75rem !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
 }

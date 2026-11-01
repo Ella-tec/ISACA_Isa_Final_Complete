@@ -1,8 +1,9 @@
-/* No-gap + polish helpers */
+/* No forced viewport height — empty stretch creates visible gaps */
 html, body {
   margin: 0 !important;
   padding: 0 !important;
-  height: 100% !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 .page, .main, .content, article.content {
@@ -10,10 +11,8 @@ html, body {
   padding: 0 !important;
   max-width: none !important;
   width: 100% !important;
-}
-
-.main {
-  min-height: 100vh !important;
+  min-height: 0 !important;
+  height: auto !important;
 }
 
 article.content > section,
@@ -21,4 +20,5 @@ article.content > div {
   width: 100% !important;
   max-width: none !important;
   box-sizing: border-box !important;
+  min-height: 0 !important;
 }
