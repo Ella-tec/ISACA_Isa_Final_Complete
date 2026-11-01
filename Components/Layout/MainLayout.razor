@@ -71,33 +71,36 @@ body {
   min-height: 0 !important;
 }
 
-/* Default pages */
-.hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg,
-.isa-page, .settings-page, .translator-page, .market-page, .page-root, .st, .dd {
-  max-width: none !important;
-  width: 100% !important;
-  margin: 0 !important;
-  padding: 10px !important;
-  box-sizing: border-box !important;
-}
-
-/* Contact: fill the flex main column, footer at bottom */
-.ct {
+/* Every workspace page fills the column — no empty canvas under content */
+.hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg, .st, .dd,
+.isa-page, .settings-page, .translator-page, .market-page, .page-root, .ct {
   flex: 1 1 auto !important;
   display: flex !important;
   flex-direction: column !important;
   width: 100% !important;
   max-width: none !important;
   margin: 0 !important;
-  padding: 10px 10px 0 !important;
+  padding: 10px !important;
   box-sizing: border-box !important;
-  min-height: 100% !important;
+  min-height: 0 !important;
+  gap: 10px !important;
 }
+
+/* Stretch the main content grid/block so leftover height is inside cards */
+.ev-grid, .es-grid, .st-body, .wx-now, .pg-grid, .kb-grid,
+.an-grid, .gov-grid, .mt-grid, .rl-main, .dd-grid, .ch-grid, .tr-main {
+  flex: 1 1 auto !important;
+  min-height: 0 !important;
+}
+
+/* Contact footer flush bottom */
+.ct { padding: 10px 10px 0 !important; }
 .ct > .sf,
 .ct > footer.sf {
   margin-top: auto !important;
   margin-bottom: 0 !important;
   flex: 0 0 auto !important;
+  border-radius: 14px 14px 0 0 !important;
 }
 
 .isa-widget { position: relative !important; z-index: 2147483000 !important; --isa-rail-w: 0px; }
