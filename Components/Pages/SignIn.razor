@@ -28,11 +28,79 @@ html,body{margin:0!important;padding:0!important}
 .signin__note{margin:1.2rem 0 0;font-size:.8rem;line-height:1.6;color:#8494a8}.signin__back{display:inline-block;margin-top:1rem;color:var(--teal);font-weight:700;font-size:.88rem;text-decoration:none}.signin__back:hover{color:var(--ink);text-decoration:underline}
 @@media(max-width:900px){.signin{grid-template-columns:1fr!important}.signin__brand{min-height:230px!important}.signin__brand:before{width:220px}.signin__brand:after{width:170px}.signin__sphere{width:100px!important;height:100px!important}.signin__panel{min-height:auto!important;padding:1.5rem 1.1rem 2rem}.signin__card{padding:1.6rem 1.3rem}}
 @@media(prefers-reduced-motion:reduce){.signin__submit{transition:none}}
+
+/* TRU orbital identity: 9 visible orbits and a centered illustrated logo */
+.signin__brand{background:linear-gradient(145deg,#f7fbfe 0%,#eaf5fb 55%,#f8fcff 100%)!important}
+.signin__brand:before,.signin__brand:after{display:none!important}
+.signin__lattice{display:none!important}
+.signin__orbitStage{position:relative!important;display:grid!important;place-items:center!important;width:min(72vw,610px)!important;height:min(72vw,610px)!important;max-height:78vh!important;max-height:78dvh!important;isolation:isolate}
+.signin__orbitStage:before{content:"";position:absolute;inset:20%;border-radius:50%;background:radial-gradient(circle,rgba(35,159,154,.10),rgba(234,244,251,.02) 65%,transparent 72%);z-index:-1}
+.signin__orbits{position:absolute!important;inset:0!important;display:block!important;pointer-events:none}
+.signin__orbit{position:absolute!important;left:50%!important;top:50%!important;border:1px solid rgba(36,67,107,.16)!important;border-radius:50%!important;transform:translate(-50%,-50%) rotate(-18deg)!important;animation:tru-orbit-breathe 8s ease-in-out infinite alternate}
+.signin__orbit:nth-child(1){width:20%;height:20%;animation-delay:-.5s}
+.signin__orbit:nth-child(2){width:29%;height:29%;animation-delay:-1s}
+.signin__orbit:nth-child(3){width:38%;height:38%;animation-delay:-1.5s}
+.signin__orbit:nth-child(4){width:47%;height:47%;animation-delay:-2s}
+.signin__orbit:nth-child(5){width:56%;height:56%;animation-delay:-2.5s}
+.signin__orbit:nth-child(6){width:65%;height:65%;animation-delay:-3s}
+.signin__orbit:nth-child(7){width:74%;height:74%;animation-delay:-3.5s}
+.signin__orbit:nth-child(8){width:83%;height:83%;animation-delay:-4s}
+.signin__orbit:nth-child(9){width:92%;height:92%;animation-delay:-4.5s}
+.signin__core{position:relative!important;z-index:5!important;width:clamp(145px,19vw,205px)!important;height:clamp(145px,19vw,205px)!important;min-width:0!important;min-height:0!important;display:grid;place-items:center}
+.signin__sphere{width:100%!important;height:100%!important;border-radius:50%!important;background:#fff!important;border:7px solid rgba(255,255,255,.96)!important;box-shadow:0 12px 34px rgba(36,67,107,.13),0 0 0 1px #dcecf4!important;display:grid!important;place-items:center!important;animation:none!important;overflow:hidden}
+.signin__logoSvg{width:100%;height:100%;display:block}
+.signin__planet{position:absolute;left:50%;top:50%;width:100%;height:100%;pointer-events:none;transform:translate(-50%,-50%);animation:tru-planet-spin var(--orbit-duration,24s) linear infinite;z-index:4}
+.signin__planet:after{content:"";position:absolute;left:50%;top:4%;width:clamp(6px,.8vw,10px);height:clamp(6px,.8vw,10px);border-radius:50%;background:var(--planet-color,#239f9a);box-shadow:0 0 0 4px rgba(35,159,154,.10),0 2px 7px rgba(36,67,107,.16);transform:translateX(-50%)}
+.signin__planet:nth-of-type(2){--orbit-duration:18s;--planet-color:#239f9a;transform:translate(-50%,-50%) rotate(16deg)}
+.signin__planet:nth-of-type(3){--orbit-duration:23s;--planet-color:#5b9bd5;transform:translate(-50%,-50%) rotate(56deg)}
+.signin__planet:nth-of-type(4){--orbit-duration:29s;--planet-color:#6bbf8a;transform:translate(-50%,-50%) rotate(96deg)}
+.signin__planet:nth-of-type(5){--orbit-duration:34s;--planet-color:#80b8d8;transform:translate(-50%,-50%) rotate(136deg)}
+.signin__planet:nth-of-type(6){--orbit-duration:39s;--planet-color:#239f9a;transform:translate(-50%,-50%) rotate(176deg)}
+.signin__planet:nth-of-type(7){--orbit-duration:44s;--planet-color:#6bbf8a;transform:translate(-50%,-50%) rotate(216deg)}
+.signin__planet:nth-of-type(8){--orbit-duration:49s;--planet-color:#5b9bd5;transform:translate(-50%,-50%) rotate(256deg)}
+.signin__planet:nth-of-type(9){--orbit-duration:54s;--planet-color:#80b8d8;transform:translate(-50%,-50%) rotate(296deg)}
+.signin__planet:nth-of-type(10){--orbit-duration:59s;--planet-color:#239f9a;transform:translate(-50%,-50%) rotate(326deg)}
+@keyframes tru-orbit-breathe{from{opacity:.48}to{opacity:1}}
+@keyframes tru-planet-spin{from{rotate:0deg}to{rotate:360deg}}
+@media(max-width:900px){.signin__orbitStage{width:min(80vw,360px)!important;height:min(80vw,360px)!important;max-height:none!important}.signin__core{width:130px!important;height:130px!important}.signin__brand{min-height:280px!important}}
+@media(prefers-reduced-motion:reduce){.signin__orbit,.signin__planet{animation:none!important}}
+
 </style>
 
 <div class="signin">
     <aside class="signin__brand">
-        <div class="signin__orbitStage"><div class="signin__core"><div class="signin__sphere" role="img" aria-label="TRU logo"><span class="signin__sphereText">TRU</span></div></div></div></aside>
+        <div class="signin__orbitStage" aria-label="TRU logo surrounded by nine orbiting planets">
+            <div class="signin__orbits" aria-hidden="true">
+                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
+                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
+                <span class="signin__orbit"></span><span class="signin__orbit"></span><span class="signin__orbit"></span>
+            </div>
+            <span class="signin__planet" aria-hidden="true"></span><span class="signin__planet" aria-hidden="true"></span>
+            <span class="signin__planet" aria-hidden="true"></span><span class="signin__planet" aria-hidden="true"></span>
+            <span class="signin__planet" aria-hidden="true"></span><span class="signin__planet" aria-hidden="true"></span>
+            <span class="signin__planet" aria-hidden="true"></span><span class="signin__planet" aria-hidden="true"></span>
+            <span class="signin__planet" aria-hidden="true"></span>
+            <div class="signin__core">
+                <div class="signin__sphere" role="img" aria-label="TRU logo">
+                    <svg class="signin__logoSvg" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg" aria-labelledby="truLogoTitle">
+                        <title id="truLogoTitle">TRU logo</title>
+                        <defs>
+                            <linearGradient id="truLogoGreen" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#20a957"/><stop offset=".55" stop-color="#48c94e"/><stop offset="1" stop-color="#b5e96c"/></linearGradient>
+                            <linearGradient id="truLogoBlue" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#087ac1"/><stop offset=".55" stop-color="#00b8d9"/><stop offset="1" stop-color="#35d5c4"/></linearGradient>
+                        </defs>
+                        <circle cx="100" cy="100" r="96" fill="#fff"/>
+                        <ellipse cx="86" cy="100" rx="57" ry="77" transform="rotate(24 86 100)" fill="url(#truLogoBlue)"/>
+                        <ellipse cx="115" cy="100" rx="57" ry="77" transform="rotate(-24 115 100)" fill="url(#truLogoGreen)"/>
+                        <ellipse cx="100" cy="100" rx="49" ry="69" transform="rotate(10 100 100)" fill="#0e8c9c" opacity=".72"/>
+                        <ellipse cx="100" cy="100" rx="44" ry="62" fill="url(#truLogoGreen)" stroke="#dff7e6" stroke-width="3"/>
+                        <path d="M54 71 C70 43 110 34 135 56" fill="none" stroke="#fff" stroke-width="6" stroke-linecap="round" opacity=".9"/>
+                        <path d="M63 139 C91 166 128 145 142 119" fill="none" stroke="#d8fff0" stroke-width="5" stroke-linecap="round" opacity=".8"/>
+                        <text x="100" y="111" text-anchor="middle" font-family="Georgia,serif" font-size="37" font-weight="bold" letter-spacing="2" fill="#fff" stroke="#0e827e" stroke-width=".8" paint-order="stroke">TRU</text>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </aside>
 
     <main class="signin__panel">
         <div class="signin__card">
