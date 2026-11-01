@@ -30,21 +30,22 @@ min-height:0;display:flex;flex-direction:column;gap:.65rem}
 .st-toggle i{position:absolute;top:3px;left:3px;width:18px;height:18px;border-radius:50%;background:#fff;transition:left .15s}
 .st-toggle.on i{left:21px}
 .st-actions{display:flex;justify-content:flex-end;gap:.4rem;margin-top:auto;padding-top:.55rem}
-.st-btn{border:none;border-radius:9px;padding:.45rem .95rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit}
+.st-btn{border:none;border-radius:9px;padding:.45rem .95rem;font-weight:600;font-size:.82rem;cursor:pointer;font-family:inherit;text-decoration:none;display:inline-flex;align-items:center}
 .st-btn--primary{background:var(--navy);color:#fff}
 .st-btn--ghost{background:var(--light);color:var(--navy)}
 .st-side h3{margin:0 0 .4rem;font-size:.9rem}
 .st-side p{margin:0 0 .5rem;font-size:.82rem;color:var(--muted);line-height:1.4}
 .st-side ul{margin:0;padding-left:1.1rem;font-size:.84rem;line-height:1.55}
 .st-toast{position:fixed;bottom:1.25rem;right:1.25rem;background:var(--navy);color:#fff;padding:.6rem .85rem;border-radius:11px;z-index:50}
-@@media(max-width:900px){.st-body{grid-template-columns:1fr}.st-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.st{min-height:0}} @@media(max-width:560px){.st-grid{grid-template-columns:1fr}.st{padding:.5rem}.st-hero{padding:.85rem 1rem}}
+@@media(max-width:900px){.st-body{grid-template-columns:1fr}.st-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.st{min-height:0}}
+@@media(max-width:560px){.st-grid{grid-template-columns:1fr}.st{padding:.5rem}.st-hero{padding:.85rem 1rem}}
 </style>
 
 <section class="st">
     <header class="st-hero">
         <p style="margin:0;font-size:.62rem;font-weight:700;letter-spacing:.12em;opacity:.88">ACCOUNT</p>
         <h1>Settings</h1>
-        <p>Profile, notifications, and workspace preferences for your chapter.</p>
+        <p>Profile, notifications, uploads, and workspace preferences for your chapter.</p>
     </header>
 
     <div class="st-tabs">
@@ -52,6 +53,7 @@ min-height:0;display:flex;flex-direction:column;gap:.65rem}
         <button type="button" class="st-tab @(tab==1?"on":null)" @onclick="() => tab=1">Preferences</button>
         <button type="button" class="st-tab @(tab==2?"on":null)" @onclick="() => tab=2">Notifications</button>
         <button type="button" class="st-tab @(tab==3?"on":null)" @onclick="() => tab=3">Security</button>
+        <button type="button" class="st-tab @(tab==4?"on":null)" @onclick="() => tab=4">Uploads</button>
     </div>
 
     <div class="st-body">
@@ -91,12 +93,18 @@ min-height:0;display:flex;flex-direction:column;gap:.65rem}
                 <div class="st-row"><span>Weekly chapter digest</span><button type="button" class="st-toggle @(nDigest?"on":null)" @onclick="() => nDigest=!nDigest"><i></i></button></div>
                 <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save notifications</button></div>
             }
-            else
+            else if (tab == 3)
             {
                 <h2>Security</h2>
                 <div class="st-row"><span>Require sign-in for workspace tools</span><button type="button" class="st-toggle @(reqAuth?"on":null)" @onclick="() => reqAuth=!reqAuth"><i></i></button></div>
                 <div class="st-row"><span>Session timeout (idle)</span><span style="color:var(--muted);font-size:.85rem">30 minutes</span></div>
                 <div class="st-actions"><button type="button" class="st-btn st-btn--primary" @onclick="Save">Save security</button></div>
+            }
+            else
+            {
+                <h2>Uploads</h2>
+                <p style="margin:0 0 .75rem;font-size:.86rem;color:var(--muted)">Upload chapter documents, images, or short videos. Files are validated by type and size.</p>
+                <FileUpload MaxMb="25" OnFilesReady="OnFilesReady" />
             }
         </article>
 
@@ -106,7 +114,7 @@ min-height:0;display:flex;flex-direction:column;gap:.65rem}
             <ul>
                 <li>Profile language also drives Translator defaults.</li>
                 <li>Escalation alerts appear in Escalations &amp; Tickets.</li>
-                <li>Compact sidebar reduces padding on smaller screens.</li>
+                <li>Uploads accept PDF, Office docs, images, and small videos.</li>
                 <li>Session timeout protects shared chapter devices.</li>
             </ul>
             <div class="st-actions">
@@ -143,5 +151,10 @@ min-height:0;display:flex;flex-direction:column;gap:.65rem}
     private void Save()
     {
         toast = "Settings saved · " + DateTime.Now.ToString("t");
+    }
+
+    private void OnFilesReady(List<FileUpload.UploadedFileInfo> files)
+    {
+        toast = $"{files.Count} file(s) ready · " + DateTime.Now.ToString("t");
     }
 }
