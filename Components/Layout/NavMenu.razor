@@ -4,109 +4,90 @@
 .nv{
   box-sizing:border-box;width:100%;height:100%;min-height:100%;
   display:flex;flex-direction:column;
-  padding:.6rem .55rem .65rem;margin:0;
+  padding:.55rem .5rem .6rem;margin:0;
   background:transparent;color:#e8eef6;
   font-family:"Roboto",system-ui,sans-serif;
 }
 .nv a{text-decoration:none!important;color:inherit;max-width:100%;display:flex!important}
-
 .nv__brand{
   flex:0 0 auto;display:flex;align-items:center;gap:.5rem;
-  padding:.2rem .35rem .65rem;margin-bottom:.15rem;
+  padding:.2rem .35rem .6rem;margin-bottom:.1rem;
   border-bottom:1px solid rgba(255,255,255,.08);
 }
-.nv__brand .tru-logo{width:38px;height:38px;flex-shrink:0;filter:drop-shadow(0 4px 10px rgba(0,164,228,.35))}
-.nv__brand strong{display:block;font-size:1rem;font-weight:700;line-height:1.1;color:#fff;letter-spacing:.02em}
-.nv__brand small{font-size:.58rem;opacity:.55;letter-spacing:.1em;text-transform:uppercase}
-
-.nv__body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;padding-bottom:.15rem}
-.nv__foot{
-  flex:0 0 auto;
-  margin-top:auto;
-  padding-top:.4rem;
-  border-top:1px solid rgba(255,255,255,.1);
-}
-
+.nv__brand .tru-logo{width:38px;height:38px;flex-shrink:0;filter:drop-shadow(0 0 12px rgba(0,164,228,.45))}
+.nv__brand strong{display:block;font-size:1rem;font-weight:700;line-height:1.1;color:#fff}
+.nv__brand small{font-size:.55rem;opacity:.55;letter-spacing:.1em;text-transform:uppercase}
+.nv__body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
+.nv__foot{flex:0 0 auto;margin-top:auto;padding-top:.35rem;border-top:1px solid rgba(255,255,255,.1)}
 .nv__sec{
-  display:block;font-size:.55rem;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(200,212,230,.4);
-  padding:.5rem .5rem .15rem;
+  display:block;font-size:.52rem;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(200,212,230,.4);padding:.45rem .45rem .12rem;
 }
-
 .nv__item{
-  display:flex!important;align-items:center;gap:.5rem;box-sizing:border-box;
-  width:100%!important;
-  padding:.48rem .7rem!important;margin:.05rem 0!important;
-  border-radius:11px!important;
-  font-size:.8rem!important;font-weight:600!important;line-height:1.25!important;
-  color:#b4c2d8!important;background:transparent!important;
-  border:1px solid transparent!important;
-  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  transition:background .15s,color .15s,box-shadow .15s,border-color .15s;
+  display:flex!important;align-items:center;gap:.55rem;box-sizing:border-box;
+  width:100%!important;padding:.45rem .65rem!important;margin:.04rem 0!important;
+  border-radius:11px!important;font-size:.78rem!important;font-weight:600!important;
+  line-height:1.25!important;color:#b4c2d8!important;background:transparent!important;
+  border:1px solid transparent!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
+  transition:background .15s,color .15s,box-shadow .15s;
 }
-.nv__item:hover{
-  background:rgba(255,255,255,.08)!important;color:#fff!important;
-  border-color:rgba(255,255,255,.06)!important;
-}
+.nv__item:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
 .nv__item.active{
-  background:linear-gradient(135deg,#07649d,#00a4e4)!important;
-  color:#fff!important;border-color:transparent!important;
-  box-shadow:0 6px 16px rgba(0,164,228,.3)!important;
+  background:linear-gradient(135deg,rgba(7,100,157,.55),rgba(0,164,228,.35))!important;
+  color:#fff!important;
+  box-shadow:0 0 0 1px rgba(0,164,228,.35),0 0 18px rgba(0,164,228,.25)!important;
 }
-.nv__ico{
-  width:1.25rem;height:1.25rem;border-radius:7px;
-  display:grid;place-items:center;flex-shrink:0;
-  font-size:.65rem;font-weight:700;
-  background:var(--accent-bg,rgba(0,164,228,.18));
-  color:var(--accent,#00a4e4);
+/* Planet dots */
+.nv__planet{
+  width:11px;height:11px;border-radius:50%;flex-shrink:0;
+  background:var(--p,#00a4e4);
+  box-shadow:0 0 8px var(--p,#00a4e4),inset -1px -1px 2px rgba(0,0,0,.25);
 }
-.nv__item.active .nv__ico{background:rgba(255,255,255,.22)!important;color:#fff!important}
-
+.nv__item.active .nv__planet{
+  box-shadow:0 0 12px var(--p,#00a4e4),0 0 4px #fff,inset -1px -1px 2px rgba(0,0,0,.2);
+}
 .nv__signout{
   display:flex!important;align-items:center;justify-content:center;gap:.4rem;
-  margin:.35rem 0 0;padding:.5rem .7rem;border-radius:11px;
-  background:linear-gradient(135deg,#0d1a14,#1a3a28);
-  color:#fff!important;font-weight:700;font-size:.8rem;
-  border:1px solid rgba(108,179,63,.4);width:100%;box-sizing:border-box;
-  box-shadow:0 4px 12px rgba(0,0,0,.15);
-  transition:filter .15s,box-shadow .15s;
+  margin:.3rem 0 0;padding:.48rem .65rem;border-radius:11px;
+  background:linear-gradient(135deg,#0d1a14,#1a3a28);color:#fff!important;
+  font-weight:700;font-size:.78rem;border:1px solid rgba(108,179,63,.4);width:100%;box-sizing:border-box;
 }
-.nv__signout:hover{filter:brightness(1.12);box-shadow:0 6px 16px rgba(108,179,63,.2)}
+.nv__signout:hover{filter:brightness(1.1)}
 .nv__signout::before{
-  content:"";width:7px;height:7px;border-radius:50%;
-  background:#6cb33f;box-shadow:0 0 8px #6cb33f;flex-shrink:0;
+  content:"";width:7px;height:7px;border-radius:50%;background:#6cb33f;
+  box-shadow:0 0 8px #6cb33f;flex-shrink:0;
 }
 </style>
 
 <nav class="nv" aria-label="TRU workspace">
     <div class="nv__brand">
         <TruLogo />
-        <div><strong>TRU</strong><small>Ask</small></div>
+        <div><strong>TRU</strong><small>Universe</small></div>
     </div>
 
     <div class="nv__body">
         <div class="nv__sec">Workspace</div>
-        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="" Match="NavLinkMatch.All"><span class="nv__ico">⌂</span> Home / TRU Ask</NavLink>
-        <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="analytics"><span class="nv__ico">▦</span> Analytics</NavLink>
-        <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="events"><span class="nv__ico">▭</span> Events &amp; Calendar</NavLink>
-        <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="knowledge-base"><span class="nv__ico">☰</span> Knowledge base</NavLink>
-        <NavLink class="nv__item" style="--accent:#e31837;--accent-bg:rgba(227,24,55,.18)" href="escalations"><span class="nv__ico">△</span> Escalations &amp; Tickets</NavLink>
-        <NavLink class="nv__item" style="--accent:#1d2d5c;--accent-bg:rgba(255,255,255,.12)" href="governance"><span class="nv__ico">◈</span> Governance &amp; Policies</NavLink>
-        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="translator"><span class="nv__ico">文</span> Translator</NavLink>
-        <NavLink class="nv__item" style="--accent:#6cb33f;--accent-bg:rgba(108,179,63,.2)" href="content-health"><span class="nv__ico">◎</span> Content health</NavLink>
-        <NavLink class="nv__item" style="--accent:#e57524;--accent-bg:rgba(229,117,36,.2)" href="market-trends"><span class="nv__ico">↗</span> Market trends</NavLink>
-        <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="resource-library"><span class="nv__ico">▣</span> Resource Library</NavLink>
-        <NavLink class="nv__item" style="--accent:#fbb034;--accent-bg:rgba(251,176,52,.2)" href="weather"><span class="nv__ico">☀</span> Weather</NavLink>
+        <NavLink class="nv__item" style="--p:#00a4e4" href="" Match="NavLinkMatch.All"><span class="nv__planet"></span> Home / TRU Ask</NavLink>
+        <NavLink class="nv__item" style="--p:#07649d" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
+        <NavLink class="nv__item" style="--p:#36ac91" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
+        <NavLink class="nv__item" style="--p:#6558b1" href="knowledge-base"><span class="nv__planet"></span> Knowledge base</NavLink>
+        <NavLink class="nv__item" style="--p:#e31837" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
+        <NavLink class="nv__item" style="--p:#1d2d5c" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
+        <NavLink class="nv__item" style="--p:#00a4e4" href="translator"><span class="nv__planet"></span> Translator</NavLink>
+        <NavLink class="nv__item" style="--p:#6cb33f" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
+        <NavLink class="nv__item" style="--p:#e57524" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
+        <NavLink class="nv__item" style="--p:#07649d" href="resource-library"><span class="nv__planet"></span> Resource Library</NavLink>
+        <NavLink class="nv__item" style="--p:#fbb034" href="weather"><span class="nv__planet"></span> Weather</NavLink>
 
         <div class="nv__sec">Developer</div>
-        <NavLink class="nv__item" style="--accent:#36ac91;--accent-bg:rgba(54,172,145,.2)" href="developer-dashboard"><span class="nv__ico">&lt;/&gt;</span> Developer dashboard</NavLink>
-        <NavLink class="nv__item" style="--accent:#00a4e4;--accent-bg:rgba(0,164,228,.18)" href="pipeline-monitor"><span class="nv__ico">→</span> Pipeline monitor</NavLink>
+        <NavLink class="nv__item" style="--p:#36ac91" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
+        <NavLink class="nv__item" style="--p:#00a4e4" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
     </div>
 
     <div class="nv__foot">
         <div class="nv__sec">Account</div>
-        <NavLink class="nv__item" style="--accent:#6558b1;--accent-bg:rgba(101,88,177,.2)" href="contact"><span class="nv__ico">✉</span> Contact</NavLink>
-        <NavLink class="nv__item" style="--accent:#07649d;--accent-bg:rgba(7,100,157,.2)" href="settings"><span class="nv__ico">⚙</span> Settings</NavLink>
+        <NavLink class="nv__item" style="--p:#6558b1" href="contact"><span class="nv__planet"></span> Contact</NavLink>
+        <NavLink class="nv__item" style="--p:#8b9bb4" href="settings"><span class="nv__planet"></span> Settings</NavLink>
         <a class="nv__signout" href="sign-in">Sign out</a>
     </div>
 </nav>
