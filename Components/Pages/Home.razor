@@ -50,13 +50,14 @@
 .hm-slide__dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.55);cursor:pointer}
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
 
-/* Full-size video under slides — 16:9, edge to edge */
+/* Full-size video – no black side bars, edge-to-edge */
 .hm-vid{width:100%;flex:0 0 auto}
 .hm-vid__frame{
   position:relative;width:100%;
   aspect-ratio:16/9;
-  max-height:min(480px,48vh);
-  border-radius:16px;overflow:hidden;background:#000;
+  max-height:min(520px,55vh);
+  border-radius:16px;overflow:hidden;
+  background:#0c1a30; /* match slide background instead of pure black */
 }
 .hm-vid__frame iframe{
   position:absolute;inset:0;
@@ -191,7 +192,7 @@
         new("wi2be8nt6lw","Digital trust"),
     };
     private string CurrentEmbed =>
-        $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1";
+        $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1";
     private string CurrentTitle => Videos[videoIndex].Title;
 
     protected override void OnInitialized()
