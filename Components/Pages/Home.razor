@@ -50,19 +50,26 @@
 .hm-slide__dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.55);cursor:pointer}
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
 
-/* Full-size video – no black side bars, edge-to-edge */
+/* Video: scale iframe slightly to crop black side bars */
 .hm-vid{width:100%;flex:0 0 auto}
 .hm-vid__frame{
   position:relative;width:100%;
   aspect-ratio:16/9;
   max-height:min(520px,55vh);
-  border-radius:16px;overflow:hidden;
-  background:#0c1a30; /* match slide background instead of pure black */
+  border-radius:16px;
+  overflow:hidden;
+  background:#0c1a30;
 }
 .hm-vid__frame iframe{
-  position:absolute;inset:0;
-  width:100%;height:100%;
-  border:0;display:block;
+  position:absolute;
+  top:50%;
+  left:50%;
+  width:100%;
+  height:100%;
+  border:0;
+  display:block;
+  transform:translate(-50%,-50%) scale(1.12);
+  transform-origin:center center;
 }
 
 .hm-wx-bg{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
