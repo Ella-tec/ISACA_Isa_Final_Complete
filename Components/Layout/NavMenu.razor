@@ -1,93 +1,110 @@
 @rendermode InteractiveServer
 
 <style>
-.nv{
-  box-sizing:border-box;width:100%;height:100%;min-height:100%;
-  display:flex;flex-direction:column;
-  padding:.55rem .5rem .6rem;margin:0;
-  background:transparent;color:#e8eef6;
-  font-family:"Roboto",system-ui,sans-serif;
+.nv {
+  --isa-green: #79c653;
+  --isa-mint: #b7f0ce;
+  box-sizing: border-box;
+  width: 100%; height: 100%; min-height: 100%;
+  display: flex; flex-direction: column;
+  padding: .8rem .7rem .75rem; margin: 0;
+  color: #e8f3ed;
+  font-family: "DM Sans", system-ui, sans-serif;
 }
-.nv a{text-decoration:none!important;color:inherit;max-width:100%;display:flex!important}
-.nv__brand{
-  flex:0 0 auto;display:flex;align-items:center;gap:.5rem;
-  padding:.2rem .35rem .6rem;margin-bottom:.1rem;
-  border-bottom:1px solid rgba(255,255,255,.08);
+.nv a { text-decoration: none !important; color: inherit; max-width: 100%; display: flex !important; }
+.nv__brand {
+  flex: 0 0 auto; display: flex; align-items: center; gap: .75rem;
+  padding: .35rem .45rem 1rem; margin-bottom: .45rem;
+  border-bottom: 1px solid rgba(220,255,235,.12);
 }
-.nv__brand .tru-logo{width:38px;height:38px;flex-shrink:0;filter:drop-shadow(0 0 12px rgba(0,164,228,.45))}
-.nv__brand strong{display:block;font-size:1rem;font-weight:700;line-height:1.1;color:#fff}
-.nv__brand small{font-size:.55rem;opacity:.55;letter-spacing:.1em;text-transform:uppercase}
-.nv__body{flex:1 1 auto;min-height:0;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch}
-.nv__foot{flex:0 0 auto;margin-top:auto;padding-top:.35rem;border-top:1px solid rgba(255,255,255,.1)}
-.nv__sec{
-  display:block;font-size:.52rem;font-weight:700;letter-spacing:.14em;
-  text-transform:uppercase;color:rgba(200,212,230,.4);padding:.45rem .45rem .12rem;
+.nv__brand .tru-logo {
+  width: 42px; height: 42px; flex-shrink: 0;
+  filter: drop-shadow(0 5px 14px rgba(121,198,83,.28));
 }
-.nv__item{
-  display:flex!important;align-items:center;gap:.55rem;box-sizing:border-box;
-  width:100%!important;padding:.45rem .65rem!important;margin:.04rem 0!important;
-  border-radius:11px!important;font-size:.78rem!important;font-weight:600!important;
-  line-height:1.25!important;color:#b4c2d8!important;background:transparent!important;
-  border:1px solid transparent!important;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;
-  transition:background .15s,color .15s,box-shadow .15s;
+.nv__brand strong { display: block; font-size: 1.18rem; font-weight: 800; letter-spacing: -.045em; line-height: 1.1; color: #fff; }
+.nv__brand small { display: block; margin-top: .2rem; font-size: .57rem; font-weight: 700; opacity: .62; letter-spacing: .13em; text-transform: uppercase; }
+.nv__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: .15rem .05rem; }
+.nv__body::-webkit-scrollbar { width: 4px; }
+.nv__body::-webkit-scrollbar-thumb { background: rgba(190,230,205,.22); border-radius: 99px; }
+.nv__foot { flex: 0 0 auto; margin-top: auto; padding-top: .65rem; border-top: 1px solid rgba(220,255,235,.12); }
+.nv__sec {
+  display: block; font-size: .58rem; font-weight: 800; letter-spacing: .16em;
+  text-transform: uppercase; color: rgba(197,224,207,.52); padding: .7rem .65rem .35rem;
 }
-.nv__item:hover{background:rgba(255,255,255,.07)!important;color:#fff!important}
-.nv__item.active{
-  background:linear-gradient(135deg,rgba(7,100,157,.55),rgba(0,164,228,.35))!important;
-  color:#fff!important;
-  box-shadow:0 0 0 1px rgba(0,164,228,.35),0 0 18px rgba(0,164,228,.25)!important;
+.nv__item {
+  position: relative; display: flex !important; align-items: center; gap: .7rem;
+  box-sizing: border-box; width: 100% !important;
+  padding: .62rem .72rem !important; margin: .12rem 0 !important;
+  border-radius: 12px !important; font-size: .79rem !important; font-weight: 600 !important;
+  line-height: 1.25 !important; color: #bdcec4 !important;
+  background: transparent !important; border: 1px solid transparent !important;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  transition: background .2s ease, color .2s ease, border-color .2s ease, transform .2s ease;
 }
-/* Planet dots */
-.nv__planet{
-  width:11px;height:11px;border-radius:50%;flex-shrink:0;
-  background:var(--p,#00a4e4);
-  box-shadow:0 0 8px var(--p,#00a4e4),inset -1px -1px 2px rgba(0,0,0,.25);
+.nv__item:hover {
+  background: rgba(255,255,255,.065) !important; color: #fff !important;
+  transform: translateX(2px);
 }
-.nv__item.active .nv__planet{
-  box-shadow:0 0 12px var(--p,#00a4e4),0 0 4px #fff,inset -1px -1px 2px rgba(0,0,0,.2);
+.nv__item.active {
+  color: #f5fff7 !important;
+  background: linear-gradient(105deg, rgba(121,198,83,.22), rgba(121,198,83,.075)) !important;
+  border-color: rgba(151,220,119,.2) !important;
+  box-shadow: inset 3px 0 0 var(--isa-green), 0 8px 24px rgba(0,0,0,.12) !important;
 }
-.nv__signout{
-  display:flex!important;align-items:center;justify-content:center;gap:.4rem;
-  margin:.3rem 0 0;padding:.48rem .65rem;border-radius:11px;
-  background:linear-gradient(135deg,#0d1a14,#1a3a28);color:#fff!important;
-  font-weight:700;font-size:.78rem;border:1px solid rgba(108,179,63,.4);width:100%;box-sizing:border-box;
+.nv__planet {
+  width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  background: var(--p, #79c653);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--p, #79c653) 15%, transparent), 0 0 9px color-mix(in srgb, var(--p, #79c653) 45%, transparent);
 }
-.nv__signout:hover{filter:brightness(1.1)}
-.nv__signout::before{
-  content:"";width:7px;height:7px;border-radius:50%;background:#6cb33f;
-  box-shadow:0 0 8px #6cb33f;flex-shrink:0;
+.nv__item.active .nv__planet { background: #b7f0a0; box-shadow: 0 0 0 4px rgba(183,240,160,.12), 0 0 13px rgba(183,240,160,.8); }
+.nv__signout {
+  display: flex !important; align-items: center; justify-content: center; gap: .5rem;
+  margin: .45rem 0 0; padding: .65rem .75rem; border-radius: 12px;
+  background: rgba(255,255,255,.045); color: #e3eee7 !important;
+  font-weight: 700; font-size: .78rem; border: 1px solid rgba(220,255,235,.12);
+  width: 100%; box-sizing: border-box; transition: .2s ease;
+}
+.nv__signout:hover { background: rgba(121,198,83,.12); border-color: rgba(121,198,83,.35); color: #fff !important; }
+.nv__signout::before {
+  content: ""; width: 7px; height: 7px; border-radius: 50%;
+  background: #8bd46a; box-shadow: 0 0 9px #8bd46a; flex-shrink: 0;
+}
+@media (max-width: 800px) {
+  .nv { padding: .65rem; }
+  .nv__brand { padding-bottom: .7rem; }
+  .nv__item { padding: .58rem .65rem !important; }
 }
 </style>
 
-<nav class="nv" aria-label="TRU workspace">
+<nav class="nv" aria-label="Isa workspace">
     <div class="nv__brand">
         <TruLogo />
-        <div><strong>TRU</strong><small>Universe</small></div>
+        <div><strong>Isa</strong><small>ISACA chapter support</small></div>
     </div>
 
     <div class="nv__body">
         <div class="nv__sec">Workspace</div>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="" Match="NavLinkMatch.All"><span class="nv__planet"></span> Home / TRU Ask</NavLink>
-        <NavLink class="nv__item" style="--p:#07649d" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
-        <NavLink class="nv__item" style="--p:#36ac91" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
-        <NavLink class="nv__item" style="--p:#6558b1" href="knowledge-base"><span class="nv__planet"></span> Knowledge base</NavLink>
-        <NavLink class="nv__item" style="--p:#e31837" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
-        <NavLink class="nv__item" style="--p:#1d2d5c" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="translator"><span class="nv__planet"></span> Translator</NavLink>
-        <NavLink class="nv__item" style="--p:#6cb33f" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
-        <NavLink class="nv__item" style="--p:#e57524" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
-        <NavLink class="nv__item" style="--p:#07649d" href="resource-library"><span class="nv__planet"></span> Resource Library</NavLink>
-        <NavLink class="nv__item" style="--p:#fbb034" href="weather"><span class="nv__planet"></span> Weather</NavLink>
+        <NavLink class="nv__item" style="--p:#8bd46a" href="" Match="NavLinkMatch.All"><span class="nv__planet"></span> Home / Isa Ask</NavLink>
+        <NavLink class="nv__item" style="--p:#62b8e8" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
+        <NavLink class="nv__item" style="--p:#5bd1ad" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
+        <NavLink class="nv__item" style="--p:#a99cf4" href="knowledge-base"><span class="nv__planet"></span> Knowledge base</NavLink>
+        <NavLink class="nv__item" style="--p:#f08b82" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
+        <NavLink class="nv__item" style="--p:#91a8c8" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
+        <NavLink class="nv__item" style="--p:#61c9cf" href="translator"><span class="nv__planet"></span> Translator</NavLink>
+        <NavLink class="nv__item" style="--p:#8bd46a" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
+        <NavLink class="nv__item" style="--p:#efb36e" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
+        <NavLink class="nv__item" style="--p:#75b5e6" href="resource-library"><span class="nv__planet"></span> Resource library</NavLink>
+        <NavLink class="nv__item" style="--p:#f3cf76" href="weather"><span class="nv__planet"></span> Weather</NavLink>
 
         <div class="nv__sec">Developer</div>
-        <NavLink class="nv__item" style="--p:#36ac91" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
+        <NavLink class="nv__item" style="--p:#5bd1ad" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
+        <NavLink class="nv__item" style="--p:#61c9cf" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
     </div>
 
     <div class="nv__foot">
         <div class="nv__sec">Account</div>
-        <NavLink class="nv__item" style="--p:#6558b1" href="contact"><span class="nv__planet"></span> Contact</NavLink>
-        <NavLink class="nv__item" style="--p:#8b9bb4" href="settings"><span class="nv__planet"></span> Settings</NavLink>
+        <NavLink class="nv__item" style="--p:#a99cf4" href="contact"><span class="nv__planet"></span> Contact</NavLink>
+        <NavLink class="nv__item" style="--p:#91a8c8" href="settings"><span class="nv__planet"></span> Settings</NavLink>
         <a class="nv__signout" href="sign-in">Sign out</a>
     </div>
 </nav>
