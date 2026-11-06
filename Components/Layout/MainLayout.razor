@@ -71,7 +71,7 @@ body {
   min-height: 0 !important;
 }
 
-/* Every workspace page fills the column — no empty canvas under content */
+/* Every workspace page fills the column */
 .hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg, .st, .dd,
 .isa-page, .settings-page, .translator-page, .market-page, .page-root, .ct {
   flex: 1 1 auto !important;
@@ -82,13 +82,15 @@ body {
   margin: 0 !important;
   padding: 10px !important;
   box-sizing: border-box !important;
-  min-height: 0 !important;
   gap: 10px !important;
+  min-height: calc(100vh - 20px) !important;
+  min-height: calc(100dvh - 20px) !important;
 }
 
-/* Stretch the main content grid/block so leftover height is inside cards */
+/* Stretch main content blocks so leftover height is inside cards */
 .ev-grid, .es-grid, .st-body, .wx-now, .pg-grid, .kb-grid,
-.an-grid, .gov-grid, .mt-grid, .rl-main, .dd-grid, .ch-grid, .tr-main {
+.an-grid, .gov-grid, .mt-grid, .rl-main, .rl-body, .rl-stage, .dd-grid, .ch-grid, .tr-main,
+.tr-grid, .hm-vid, .wx-bottom, .pipe-grid {
   flex: 1 1 auto !important;
   min-height: 0 !important;
 }
@@ -148,6 +150,9 @@ body {
     height: auto !important; max-height: 48vh !important; overflow-y: auto !important;
   }
   .main { margin-left: 0 !important; width: 100% !important; }
+  .hm, .mt, .es, .tr, .gov, .kb, .an, .ev, .ch, .wx, .rl, .pipe, .dev, .pg, .st, .dd, .ct {
+    min-height: 0 !important;
+  }
 }
 </style>
 
