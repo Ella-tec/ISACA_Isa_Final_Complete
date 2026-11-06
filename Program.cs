@@ -12,7 +12,7 @@ using OrchestratorService =
 var builder = WebApplication.CreateBuilder(args);
 
 // ============================================================
-// TRU PLATFORM SERVICES
+// PETAL PLATFORM SERVICES
 // ============================================================
 
 builder.Services.AddRazorComponents()
@@ -36,7 +36,7 @@ builder.Services
         CookieAuthenticationDefaults.AuthenticationScheme)
     .AddCookie(options =>
     {
-        options.Cookie.Name = "TRU.SignIn";
+        options.Cookie.Name = "Petal.SignIn";
         options.LoginPath = "/sign-in";
         options.AccessDeniedPath = "/sign-in";
         options.ExpireTimeSpan = TimeSpan.FromHours(8);
