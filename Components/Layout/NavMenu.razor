@@ -40,48 +40,48 @@
 /* Planet dots */
 .nv__planet{
   width:11px;height:11px;border-radius:50%;flex-shrink:0;
-  background:var(--p,#00a4e4);
-  box-shadow:0 0 8px var(--p,#00a4e4),inset -1px -1px 2px rgba(0,0,0,.25);
+  background:var(--p,#7fd3a3);
+  box-shadow:0 0 8px var(--p,#7fd3a3),inset -1px -1px 2px rgba(0,0,0,.25);
 }
 .nv__item.active .nv__planet{
-  box-shadow:0 0 12px var(--p,#00a4e4),0 0 4px #fff,inset -1px -1px 2px rgba(0,0,0,.2);
+  box-shadow:0 0 12px var(--p,#7fd3a3),0 0 4px #fff,inset -1px -1px 2px rgba(0,0,0,.2);
 }
 .nv__signout{
   display:flex!important;align-items:center;justify-content:center;gap:.4rem;
   margin:.3rem 0 0;padding:.48rem .65rem;border-radius:11px;
-  background:linear-gradient(135deg,#0d1a14,#1a3a28);color:#fff!important;
+  background:linear-gradient(135deg,#17324d,#234765);color:#fff!important;
   font-weight:700;font-size:.78rem;border:1px solid rgba(108,179,63,.4);width:100%;box-sizing:border-box;
 }
 .nv__signout:hover{filter:brightness(1.1)}
 .nv__signout::before{
-  content:"";width:7px;height:7px;border-radius:50%;background:#6cb33f;
-  box-shadow:0 0 8px #6cb33f;flex-shrink:0;
+  content:"";width:7px;height:7px;border-radius:50%;background:#2e8b57;
+  box-shadow:0 0 8px #2e8b57;flex-shrink:0;
 }
 </style>
 
-<nav class="nv" aria-label="TRU workspace">
+<nav class="nv" aria-label="Petal workspace">
     <div class="nv__brand">
         <TruLogo />
-        <div><strong>TRU</strong><small>Universe</small></div>
+        <div><strong>PETAL</strong><small>Technologies</small></div>
     </div>
 
     <div class="nv__body">
         <div class="nv__sec">Workspace</div>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="" Match="NavLinkMatch.All"><span class="nv__planet"></span> Home / TRU Ask</NavLink>
-        <NavLink class="nv__item" style="--p:#07649d" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
-        <NavLink class="nv__item" style="--p:#36ac91" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
+        <NavLink class="nv__item" style="--p:#7fd3a3" href="" Match="NavLinkMatch.All"><span class="nv__planet"></span> Home / Petal AI</NavLink>
+        <NavLink class="nv__item" style="--p:#2e8b57" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
+        <NavLink class="nv__item" style="--p:#7fd3a3" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
         <NavLink class="nv__item" style="--p:#6558b1" href="knowledge-base"><span class="nv__planet"></span> Knowledge base</NavLink>
         <NavLink class="nv__item" style="--p:#e31837" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
         <NavLink class="nv__item" style="--p:#1d2d5c" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="translator"><span class="nv__planet"></span> Translator</NavLink>
-        <NavLink class="nv__item" style="--p:#6cb33f" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
+        <NavLink class="nv__item" style="--p:#7fd3a3" href="translator"><span class="nv__planet"></span> Translator</NavLink>
+        <NavLink class="nv__item" style="--p:#2e8b57" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
         <NavLink class="nv__item" style="--p:#e57524" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
-        <NavLink class="nv__item" style="--p:#07649d" href="resource-library"><span class="nv__planet"></span> Resource Library</NavLink>
+        <NavLink class="nv__item" style="--p:#2e8b57" href="resource-library"><span class="nv__planet"></span> Resource Library</NavLink>
         <NavLink class="nv__item" style="--p:#fbb034" href="weather"><span class="nv__planet"></span> Weather</NavLink>
 
         <div class="nv__sec">Developer</div>
-        <NavLink class="nv__item" style="--p:#36ac91" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
-        <NavLink class="nv__item" style="--p:#00a4e4" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
+        <NavLink class="nv__item" style="--p:#7fd3a3" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
+        <NavLink class="nv__item" style="--p:#7fd3a3" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
     </div>
 
     <div class="nv__foot">
