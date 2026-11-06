@@ -1,5 +1,6 @@
 @page "/sign-in"
 @layout AuthLayout
+@rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
@@ -85,7 +86,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 }
 .si-btn:hover { background: #e8eef8 !important; }
 
-/* Small elegant slider controls */
 .si-hero__controls {
   position: absolute; bottom: .85rem; left: 50%; transform: translateX(-50%); z-index: 5;
   display: flex; align-items: center; gap: .28rem;
@@ -105,7 +105,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 }
 .si-hero__dot.is-on { background: #fff; width: 14px; border-radius: 4px; }
 
-/* Compact insights — full width, less height */
 .si-insights {
   width: 100%; max-width: none; margin: 0;
   padding: 1.75rem 1.5rem 2rem; text-align: center; box-sizing: border-box;
@@ -382,6 +381,9 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     {
         Input ??= new();
         StartTimer();
+        // Deep-link support: /sign-in?login=1 opens the modal immediately
+        if (Navigation.Uri.Contains("login=1", StringComparison.OrdinalIgnoreCase))
+            showLogin = true;
     }
 
     private void OpenLogin() => showLogin = true;
