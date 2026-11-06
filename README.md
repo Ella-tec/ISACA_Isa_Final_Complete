@@ -1,21 +1,40 @@
+# Petal Technologies — Petal AI
 
-🧑‍💻 About Me & My Role
+**Knowledge. Intelligence. Connection.**
 
-I am Elias, a full-stack software engineer specializing in localized artificial intelligence architectures, advanced database structures, and high-performance system engineering.
-As the principal developer behind IsaChatApp, my mission is to deliver secure, enterprise-grade application layers that bridge intelligent language models directly into modern web spaces. I prioritize writing optimized codebase configurations that eliminate development bloat, lower processing latency, and ensure maximum maintainability.
+Petal AI is an enterprise knowledge and chapter-support assistant designed to help teams find approved information, understand source material, manage support requests, and route complex questions to people.
 
-🎯 Core Focus Areas
+## Product experience
+- **Petal AI chat:** conversational assistance with source-aware answers.
+- **Knowledge base:** searchable organizational guidance and approved resources.
+- **Human handoff:** escalation queues, staff review, and ticket follow-up.
+- **Analytics and health:** usage, response-time, content-quality, and operational views.
+- **Localization:** translation and multilingual support workflows.
+- **Administration:** settings, access controls, model configuration, and developer monitoring.
 
-• Architecture Design: Constructing modular Blazor Server components engineered specifically for high-concurrency enterprise applications.
-• Zero-JS Philosophy: Maximizing native C# state synchronization over web sockets pipelines, removing the security and maintenance liabilities of client-side scripts.
-• Local Intelligent Systems: Integrating localized, lightweight Large Language Models via API endpoints to build robust offline chat structures.
-• Full-Stack Execution: Unifying advanced backend processing schemas with reactive, lightning-fast interactive interfaces.
+## Technology
+- .NET 10 and ASP.NET Core
+- Blazor Interactive Server components
+- C# services and asynchronous HTTP pipelines
+- Local model integration through Ollama
+- Optional identity integration through Keycloak
 
-📋 Project Contributor Blueprint
+## Run locally
+1. Install the .NET 10 SDK.
+2. Clone this repository.
+3. Review local environment configuration. Do not commit secrets.
+4. From the project directory, run:
 
+```bash
+dotnet restore
+dotnet build
+dotnet run
+```
 
-System Component	Engineering Stack Focus	Architectural Mandate
-Frontend Framework	Blazor Core, HTML5, CSS3	Eliminate client-side scripts while matching modern responsive layouts.
-Backend Processing	C#, .NET 10 SDK, Asynchronous HTTP Pipelines	Handle high-concurrency loops and stream structured data payloads efficiently.
-Localized Intelligence	Ollama API, qwen2.5-coder Instance Engine	Provide lightweight, high-speed text generation completely inside local boundaries.
+## Brand and relationship
+**Petal Technologies** is the proposed sample company identity for this demonstration product. **Petal AI** is the product name.
 
+This is an independent software demonstration for ISACA chapter-support workflows. It is not an official ISACA product and does not imply ISACA endorsement or ownership. ISACA names and marks should only be used where authorized.
+
+## Developer
+Created and maintained as a software engineering project by the repository owner.
