@@ -26,19 +26,18 @@
 .hm-widget__v{font-size:1.35rem;font-weight:600;line-height:1.2}
 .hm-widget__m{font-size:.78rem;opacity:.9}
 
-/* Full-size slides */
 .hm-slides{
   position:relative;width:100%;
-  height:clamp(280px,42vh,460px);
+  height:clamp(300px,44vh,500px);
   border-radius:16px;overflow:hidden;background:#0c1a30;
   flex:0 0 auto;
 }
 .hm-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease;background-size:cover;background-position:center}
 .hm-slide.is-on{opacity:1;visibility:visible;z-index:1}
-.hm-slide__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(10,20,40,.55),rgba(10,20,40,.08) 65%,transparent);pointer-events:none}
-.hm-slide__copy{position:absolute;left:1.35rem;bottom:1.35rem;right:1.35rem;z-index:2;color:#fff;max-width:42rem;pointer-events:none}
-.hm-slide__copy h2{margin:0 0 .25rem;font-size:clamp(1.15rem,2.1vw,1.55rem);font-weight:700;text-shadow:0 2px 10px rgba(0,0,0,.3)}
-.hm-slide__copy p{margin:0;font-size:.9rem;opacity:.96}
+.hm-slide__shade{position:absolute;inset:0;background:linear-gradient(90deg,rgba(8,16,32,.72),rgba(8,16,32,.2) 55%,transparent);pointer-events:none}
+.hm-slide__copy{position:absolute;left:1.35rem;bottom:1.35rem;right:7rem;z-index:2;color:#fff;max-width:44rem;pointer-events:none}
+.hm-slide__copy h2{margin:0 0 .25rem;font-size:clamp(1.15rem,2.1vw,1.6rem);font-weight:700;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.hm-slide__copy p{margin:0;font-size:.9rem;opacity:.96;text-shadow:0 1px 8px rgba(0,0,0,.35)}
 .hm-slide__nav{
   position:absolute;top:50%;transform:translateY(-50%);z-index:4;
   width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
@@ -49,28 +48,33 @@
 .hm-slide__dots{position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:4;display:flex;gap:6px}
 .hm-slide__dot{width:7px;height:7px;border-radius:50%;border:none;padding:0;background:rgba(255,255,255,.55);cursor:pointer}
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:5px}
+.hm-slide__video{
+  position:absolute;right:14px;bottom:14px;z-index:5;
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.45rem .8rem;border-radius:999px;border:none;cursor:pointer;
+  background:rgba(255,255,255,.95);color:#1d2d5c;font-weight:700;font-size:.78rem;
+  font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.15);text-decoration:none;
+}
+.hm-slide__video:hover{background:#fff;color:#07649d}
 
-/* Video: scale iframe slightly to crop black side bars */
 .hm-vid{width:100%;flex:0 0 auto}
 .hm-vid__frame{
-  position:relative;width:100%;
-  aspect-ratio:16/9;
-  max-height:min(520px,55vh);
-  border-radius:16px;
-  overflow:hidden;
-  background:#0c1a30;
+  position:relative;width:100%;aspect-ratio:16/9;max-height:min(520px,55vh);
+  border-radius:16px;overflow:hidden;background:#0c1a30;
 }
 .hm-vid__frame iframe{
-  position:absolute;
-  top:50%;
-  left:50%;
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  transform:translate(-50%,-50%) scale(1.12);
-  transform-origin:center center;
+  position:absolute;top:50%;left:50%;width:100%;height:100%;border:0;display:block;
+  transform:translate(-50%,-50%) scale(1.12);transform-origin:center center;
 }
+.hm-links{
+  flex:0 0 auto;display:flex;flex-wrap:wrap;gap:.45rem;
+}
+.hm-links a{
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.4rem .75rem;border-radius:999px;font-size:.78rem;font-weight:600;
+  background:#fff;border:1px solid var(--line);color:var(--ink);
+}
+.hm-links a:hover{border-color:var(--blue);color:var(--blue)}
 
 .hm-wx-bg{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
 .hm-wx-modal{background:#fff;border-radius:16px;padding:1.2rem 1.35rem;max-width:400px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.15);color:var(--ink)}
@@ -84,9 +88,10 @@
 
 @@media(max-width:700px){
   .hm-strip{grid-template-columns:1fr}
-  .hm-slides{height:220px}
+  .hm-slides{height:240px}
   .hm-vid__frame{max-height:none}
   .hm{padding:8px!important;gap:8px}
+  .hm-slide__copy{right:1rem;bottom:3.2rem}
 }
 </style>
 
@@ -122,6 +127,17 @@
                 <button type="button" class="hm-slide__dot @(i==slideIndex?"is-on":null)" @onclick="() => slideIndex = di"></button>
             }
         </div>
+        <a class="hm-slide__video" href="@CurrentSlideVideo" target="_blank" rel="noopener" title="Open certification resources">▶ Cert path</a>
+    </div>
+
+    <div class="hm-links">
+        <a href="https://www.isaca.org/" target="_blank" rel="noopener">ISACA.org</a>
+        <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Credentialing</a>
+        <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
+        <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
+        <a href="https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals" target="_blank" rel="noopener">Top certifications guide</a>
+        <a href="resource-library">Chapter resource library</a>
+        <a href="knowledge-base">Knowledge base</a>
     </div>
 
     <div class="hm-vid">
@@ -180,16 +196,16 @@
     private string NyTime => DateTime.UtcNow.AddHours(-4).ToString("h:mm tt");
     private string LondonTime => DateTime.UtcNow.AddHours(1).ToString("h:mm tt");
     private string SgTime => DateTime.UtcNow.AddHours(8).ToString("h:mm tt");
-    private record Slide(string Title, string Caption, string ImageUrl);
+    private record Slide(string Title, string Caption, string ImageUrl, string VideoUrl);
     private record YtVideo(string Id, string Title);
     private static readonly Slide[] slides =
     {
-        new("Digital trust leadership","Governance, risk, and cybersecurity for chapters.","https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80"),
-        new("Certification pathways","CISA, CISM, CRISC, CGEIT, CDPSE and more.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80"),
-        new("Chapter excellence","Playbooks and tools for officers and volunteers.","https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80"),
-        new("Cybersecurity awareness","Practical guidance for members and boards.","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80"),
-        new("AI & emerging tech","Layer AI into audit, security, and risk.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"),
-        new("Enterprise & community","Connect chapters with global ISACA resources.","https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"),
+        new("Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE — paths for audit, security, risk, and privacy.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80","https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals"),
+        new("Digital trust leadership","Governance, risk, and cybersecurity for chapters and enterprises.","https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
+        new("Enterprise performance","Advance teams with credentials, CMMI, and ISACA enterprise resources.","https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/enterprise"),
+        new("State of cybersecurity","Trends, challenges, and priorities shaping digital trust.","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/resources"),
+        new("Chapter excellence","Playbooks, CPE events, and tools for officers and volunteers.","https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/"),
+        new("AI & emerging tech","Layer AI into audit, security, risk, and privacy practices.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
     };
     private static readonly YtVideo[] Videos =
     {
@@ -201,6 +217,7 @@
     private string CurrentEmbed =>
         $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1";
     private string CurrentTitle => Videos[videoIndex].Title;
+    private string CurrentSlideVideo => slides[slideIndex].VideoUrl;
 
     protected override void OnInitialized()
     {
