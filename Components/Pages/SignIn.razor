@@ -13,236 +13,381 @@
 <style>
 html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
 .si {
-  --ink: #1a2744; --navy: #0d1b3a; --blue: #0076a8; --teal: #36ac91;
-  --muted: #5a6a84; --line: #e4e9f0;
-  font-family: "Roboto", system-ui, sans-serif; color: var(--ink);
-  min-height: 100vh; background: #f5f7fb;
+  --ink: #1a2744;
+  --navy: #0a1f4d;
+  --navy-deep: #071636;
+  --blue: #0076a8;
+  --muted: #5a6a84;
+  --line: #e4e9f0;
+  font-family: "Roboto", system-ui, sans-serif;
+  color: var(--ink);
+  min-height: 100vh;
+  background: #fff;
 }
 .si a { text-decoration: none; color: inherit; }
 
-/* —— Top bar (logo · search · actions) —— */
+/* Top bar */
 .si-top {
-  background: #fff; border-bottom: 1px solid var(--line);
-  display: flex; align-items: center; justify-content: space-between;
-  gap: 1rem; padding: .7rem 1.5rem; flex-wrap: wrap;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .85rem 1.75rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--line);
 }
 .si-top__brand {
-  display: flex; align-items: center; gap: .6rem;
-  font-weight: 800; font-size: 1.05rem; color: var(--ink); white-space: nowrap;
+  display: flex;
+  align-items: center;
+  gap: .65rem;
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--ink);
 }
 .si-top__brand .logo {
-  width: 40px; height: 40px; border-radius: 50%;
-  background: linear-gradient(145deg, #00a4e4, #36ac91 55%, #6cb33f);
-  color: #fff; display: grid; place-items: center;
-  font-size: .72rem; font-weight: 800; letter-spacing: .04em;
-  box-shadow: 0 4px 14px rgba(0,164,228,.25);
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, #00a4e4, #2a9b8f 55%, #5aaf3a);
+  color: #fff;
+  display: grid;
+  place-items: center;
+  font-size: .7rem;
+  font-weight: 800;
+  letter-spacing: .05em;
 }
 .si-search {
-  flex: 1 1 220px; max-width: 380px; margin: 0 auto;
-  display: flex; align-items: center; gap: .4rem;
-  background: #f0f4f9; border: 1px solid #dce3ee; border-radius: 999px;
-  padding: .45rem .9rem;
+  flex: 1 1 200px;
+  max-width: 340px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: .35rem;
+  background: #f2f5f9;
+  border-radius: 999px;
+  padding: .5rem 1rem;
+  border: 1px solid transparent;
 }
+.si-search:focus-within { border-color: #c5d4e8; background: #fff; }
 .si-search input {
-  flex: 1; border: 0; background: transparent; outline: none;
-  font: inherit; font-size: .9rem; color: var(--ink);
+  flex: 1;
+  border: 0;
+  background: transparent;
+  outline: none;
+  font: inherit;
+  font-size: .9rem;
+  color: var(--ink);
 }
 .si-search button {
-  border: 0; background: transparent; cursor: pointer; color: var(--blue);
-  font-size: 1rem; padding: 0 .15rem; line-height: 1;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 1.05rem;
+  line-height: 1;
+  padding: 0;
 }
-.si-top__actions { display: flex; align-items: center; gap: .85rem; flex-wrap: wrap; }
+.si-top__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
 .si-top__actions a {
-  font-size: .84rem; font-weight: 600; color: #3a4a6b;
+  font-size: .88rem;
+  font-weight: 600;
+  color: #3a4a6b;
 }
 .si-top__actions a:hover { color: var(--blue); }
 .si-top__sign {
-  display: inline-flex; padding: .5rem 1.15rem; border-radius: 8px;
-  background: linear-gradient(135deg, #1d2d5c, #07649d); color: #fff !important;
-  font-weight: 700; font-size: .84rem;
+  display: inline-flex;
+  padding: .5rem 1.2rem;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff !important;
+  font-weight: 700;
+  font-size: .86rem;
 }
-.si-top__sign:hover { filter: brightness(1.08); }
+.si-top__sign:hover { background: #123066; }
 
-/* —— Primary nav —— */
+/* Primary nav */
 .si-nav {
-  background: #fff; border-bottom: 1px solid var(--line);
-  display: flex; justify-content: center; flex-wrap: wrap;
-  gap: .15rem 1.35rem; padding: .55rem 1.25rem;
+  background: #fff;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: .2rem 1.6rem;
+  padding: .65rem 1.25rem .75rem;
+  border-bottom: 1px solid var(--line);
 }
 .si-nav a {
-  font-size: .88rem; font-weight: 600; color: #2c3a56; padding: .35rem 0;
-  border-bottom: 2px solid transparent;
+  font-size: .9rem;
+  font-weight: 600;
+  color: #2c3a56;
+  padding: .25rem 0;
 }
-.si-nav a:hover { color: var(--blue); border-bottom-color: var(--blue); }
+.si-nav a:hover { color: var(--blue); }
 
-/* —— Hero —— */
+/* Hero — solid navy feel like ISACA membership */
 .si-hero {
-  position: relative; width: 100%;
-  min-height: clamp(360px, 52vh, 520px);
-  overflow: hidden; background: var(--navy);
+  position: relative;
+  width: 100%;
+  min-height: clamp(380px, 54vh, 540px);
+  overflow: hidden;
+  background: var(--navy);
 }
 .si-hero__slide {
-  position: absolute; inset: 0; opacity: 0; visibility: hidden;
-  transition: opacity .85s ease;
-  background-size: cover; background-position: center 30%;
-  display: flex; align-items: center;
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .9s ease;
+  background-size: cover;
+  background-position: center 25%;
+  display: flex;
+  align-items: center;
 }
-.si-hero__slide.is-on { opacity: 1; visibility: visible; z-index: 1; }
+.si-hero__slide.is-on {
+  opacity: 1;
+  visibility: visible;
+  z-index: 1;
+}
 .si-hero__shade {
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg,
-    rgba(8, 20, 48, .92) 0%,
-    rgba(8, 20, 48, .72) 42%,
-    rgba(8, 20, 48, .35) 70%,
-    rgba(8, 20, 48, .2) 100%);
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    100deg,
+    rgba(7, 22, 54, .94) 0%,
+    rgba(10, 31, 77, .88) 38%,
+    rgba(10, 31, 77, .55) 62%,
+    rgba(10, 31, 77, .3) 100%
+  );
 }
 .si-hero__inner {
-  position: relative; z-index: 2;
-  max-width: 1120px; width: 100%; margin: 0 auto;
-  padding: 3rem 1.5rem 4rem; color: #fff;
+  position: relative;
+  z-index: 2;
+  max-width: 1120px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 3.25rem 1.75rem 4.25rem;
+  color: #fff;
 }
 .si-hero__crumb {
-  font-size: .78rem; opacity: .75; margin-bottom: .85rem; font-weight: 500;
+  font-size: .8rem;
+  opacity: .7;
+  margin-bottom: 1rem;
+  font-weight: 500;
 }
 .si-hero__inner h1 {
-  margin: 0 0 .7rem; font-size: clamp(1.85rem, 4vw, 2.85rem);
-  font-weight: 700; line-height: 1.12; max-width: 14ch;
-  text-shadow: 0 2px 16px rgba(0,0,0,.25);
+  margin: 0 0 .75rem;
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
+  font-weight: 700;
+  line-height: 1.12;
+  max-width: 14ch;
+  color: #fff;
 }
 .si-hero__inner p {
-  margin: 0 0 1.4rem; font-size: clamp(.95rem, 1.6vw, 1.12rem);
-  opacity: .95; max-width: 36rem; line-height: 1.55;
+  margin: 0 0 1.5rem;
+  font-size: clamp(1rem, 1.5vw, 1.15rem);
+  opacity: .92;
+  max-width: 34rem;
+  line-height: 1.55;
+  color: #e8eef8;
 }
 .si-hero__btns { display: flex; flex-wrap: wrap; gap: .65rem; }
 .si-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: .7rem 1.35rem; border-radius: 6px; font-weight: 700; font-size: .9rem;
-  border: none; cursor: pointer; font-family: inherit; transition: .15s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: .75rem 1.5rem;
+  border-radius: 4px;
+  font-weight: 700;
+  font-size: .9rem;
+  border: none;
+  cursor: pointer;
+  font-family: inherit;
+  letter-spacing: .02em;
 }
 .si-btn--white {
-  background: #fff; color: var(--navy);
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+  background: #fff;
+  color: var(--navy);
 }
-.si-btn--white:hover { background: #e8f2fa; }
+.si-btn--white:hover { background: #e8eef8; }
 .si-btn--outline {
-  background: transparent; color: #fff;
-  border: 1.5px solid rgba(255,255,255,.65);
+  background: transparent;
+  color: #fff;
+  border: 1.5px solid rgba(255,255,255,.55);
 }
-.si-btn--outline:hover { background: rgba(255,255,255,.12); }
+.si-btn--outline:hover { background: rgba(255,255,255,.1); }
+
 .si-hero__controls {
-  position: absolute; bottom: 1.35rem; left: 50%; transform: translateX(-50%);
-  z-index: 5; display: flex; align-items: center; gap: .5rem;
-  background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
-  padding: .35rem .55rem; border-radius: 999px;
+  position: absolute;
+  bottom: 1.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: .45rem;
+  background: rgba(255,255,255,.15);
+  backdrop-filter: blur(10px);
+  padding: .4rem .6rem;
+  border-radius: 999px;
 }
 .si-hero__controls button {
-  width: 34px; height: 34px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,.92); color: var(--navy); font-size: 1rem; font-weight: 700;
-  display: grid; place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: rgba(255,255,255,.9);
+  color: var(--navy);
+  font-size: 1rem;
+  font-weight: 700;
+  display: grid;
+  place-items: center;
 }
-.si-hero__controls button.pause {
-  font-size: .7rem; letter-spacing: -.05em;
-}
-.si-hero__dots { display: flex; gap: 5px; padding: 0 .25rem; }
+.si-hero__controls button.pause { font-size: .65rem; }
+.si-hero__dots { display: flex; gap: 5px; padding: 0 .3rem; }
 .si-hero__dot {
-  width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
-  background: rgba(255,255,255,.45); cursor: pointer;
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: rgba(255,255,255,.4);
+  cursor: pointer;
 }
-.si-hero__dot.is-on { background: #fff; width: 18px; border-radius: 5px; }
+.si-hero__dot.is-on {
+  background: #fff;
+  width: 20px;
+  border-radius: 5px;
+}
 
-/* —— Dark strip under hero —— */
+/* Dark membership-style bar */
 .si-bar {
-  background: #0d1b3a; color: #c5d0e0;
-  text-align: center; padding: .85rem 1rem;
-  font-size: .9rem; font-weight: 500;
+  background: var(--navy-deep);
+  color: #b8c4d8;
+  text-align: center;
+  padding: 1rem 1.25rem;
+  font-size: .95rem;
+  font-weight: 500;
+  letter-spacing: .02em;
 }
-.si-bar a { color: #fff; font-weight: 700; margin-left: .35rem; }
+.si-bar a {
+  color: #fff;
+  font-weight: 700;
+  margin-left: .4rem;
+}
 .si-bar a:hover { text-decoration: underline; }
 
-/* —— Official chips —— */
-.si-chips {
-  max-width: 1120px; margin: 1.25rem auto 0; padding: 0 1.25rem;
-  display: flex; flex-wrap: wrap; gap: .45rem; justify-content: center;
+/* Content + login — clean, centered */
+.si-body {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 2.75rem 1.5rem 3.5rem;
+  text-align: center;
 }
-.si-chips a {
-  font-size: .78rem; font-weight: 600; padding: .4rem .85rem; border-radius: 999px;
-  background: #fff; border: 1px solid var(--line); color: #07649d;
-  box-shadow: 0 1px 3px rgba(0,0,0,.04);
+.si-body h2 {
+  margin: 0 0 .85rem;
+  font-size: clamp(1.45rem, 2.5vw, 1.85rem);
+  font-weight: 700;
+  color: var(--ink);
 }
-.si-chips a:hover { border-color: var(--blue); background: #f0f7fc; }
-
-/* —— Main: features + login —— */
-.si-main {
-  max-width: 1120px; margin: 1.5rem auto 2.5rem; padding: 0 1.25rem;
-  display: grid; grid-template-columns: 1.4fr .85fr; gap: 1.35rem; align-items: start;
+.si-body > p {
+  margin: 0 auto 2rem;
+  max-width: 36rem;
+  font-size: 1.02rem;
+  line-height: 1.65;
+  color: var(--muted);
 }
-.si-features h2 {
-  margin: 0 0 .3rem; font-size: 1.45rem; font-weight: 700; color: var(--ink);
-}
-.si-features > p { margin: 0 0 1.1rem; color: var(--muted); font-size: .92rem; line-height: 1.5; }
-.si-grid { display: grid; grid-template-columns: 1fr 1fr; gap: .85rem; }
-.si-card {
-  background: #fff; border: 1px solid var(--line); border-radius: 14px;
-  padding: 1.1rem 1.15rem; transition: box-shadow .2s, border-color .2s, transform .15s;
-  display: flex; flex-direction: column; gap: .4rem; min-height: 138px;
-}
-.si-card:hover {
-  border-color: #b6d0e8; box-shadow: 0 10px 28px rgba(13,27,58,.09);
-  transform: translateY(-2px);
-}
-.si-card__icon {
-  width: 40px; height: 40px; border-radius: 11px;
-  display: grid; place-items: center; font-size: .8rem; font-weight: 800; color: #fff;
-}
-.si-card h3 { margin: 0; font-size: 1rem; font-weight: 700; }
-.si-card p { margin: 0; font-size: .83rem; color: var(--muted); line-height: 1.45; flex: 1; }
-.si-card__go { font-size: .8rem; font-weight: 700; color: var(--blue); }
 
 .si-login {
-  background: #fff; border: 1px solid var(--line); border-radius: 16px;
-  padding: 1.45rem 1.35rem 1.25rem;
-  box-shadow: 0 14px 40px rgba(13,27,58,.1);
-  position: sticky; top: 1rem;
+  text-align: left;
+  max-width: 400px;
+  margin: 0 auto;
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 1.5rem 1.4rem 1.35rem;
+  box-shadow: 0 8px 28px rgba(10, 31, 77, .06);
 }
-.si-login h2 { margin: 0 0 .25rem; font-size: 1.3rem; font-weight: 700; }
-.si-login > p { margin: 0 0 1rem; font-size: .86rem; color: var(--muted); }
+.si-login h3 {
+  margin: 0 0 .2rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  text-align: center;
+}
+.si-login > p {
+  margin: 0 0 1.1rem;
+  font-size: .86rem;
+  color: var(--muted);
+  text-align: center;
+}
 .si-error {
-  margin-bottom: .85rem; padding: .65rem .8rem; border-left: 4px solid #e31837;
-  border-radius: 8px; background: #fdecee; color: #9b1027; font-size: .85rem;
+  margin-bottom: .85rem;
+  padding: .65rem .8rem;
+  border-left: 4px solid #e31837;
+  border-radius: 8px;
+  background: #fdecee;
+  color: #9b1027;
+  font-size: .85rem;
 }
 .si-field { margin-bottom: .85rem; }
 .si-label {
-  display: block; margin-bottom: .3rem; font-weight: 700; font-size: .68rem;
-  letter-spacing: .08em; text-transform: uppercase; color: #07649d;
+  display: block;
+  margin-bottom: .3rem;
+  font-weight: 700;
+  font-size: .68rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: #07649d;
 }
 .si-input {
-  display: block; width: 100%; padding: .72rem .85rem; border: 1.5px solid #d0dce8;
-  border-radius: 10px; background: #f5f9fc; color: var(--ink); font: inherit; font-size: .95rem;
+  display: block;
+  width: 100%;
+  padding: .72rem .85rem;
+  border: 1.5px solid #d0dce8;
+  border-radius: 8px;
+  background: #f7f9fc;
+  color: var(--ink);
+  font: inherit;
+  font-size: .95rem;
   box-sizing: border-box;
 }
 .si-input:focus {
-  outline: none; border-color: #00a4e4; box-shadow: 0 0 0 4px rgba(0,164,228,.12); background: #fff;
+  outline: none;
+  border-color: #00a4e4;
+  box-shadow: 0 0 0 3px rgba(0,164,228,.12);
+  background: #fff;
 }
 .si-submit {
-  width: 100%; margin-top: .15rem; padding: .82rem 1rem; border: 0; border-radius: 10px;
-  background: linear-gradient(135deg, #1d2d5c, #07649d); color: #fff;
-  font: inherit; font-weight: 700; font-size: .95rem; cursor: pointer;
+  width: 100%;
+  margin-top: .2rem;
+  padding: .8rem 1rem;
+  border: 0;
+  border-radius: 8px;
+  background: var(--navy);
+  color: #fff;
+  font: inherit;
+  font-weight: 700;
+  font-size: .95rem;
+  cursor: pointer;
 }
-.si-submit:hover { filter: brightness(1.06); }
-.si-note { margin: .9rem 0 0; font-size: .76rem; color: #8494a8; line-height: 1.45; }
+.si-submit:hover { background: #123066; }
 
 .si-foot {
-  text-align: center; padding: 1.35rem 1rem; font-size: .78rem; color: var(--muted);
-  border-top: 1px solid var(--line); background: #fff;
+  text-align: center;
+  padding: 1.25rem;
+  font-size: .78rem;
+  color: #8a96ab;
+  border-top: 1px solid var(--line);
 }
-.si-foot a { color: var(--blue); font-weight: 600; }
 
-@@media (max-width: 960px) {
-  .si-main { grid-template-columns: 1fr; }
-  .si-login { position: static; }
-  .si-grid { grid-template-columns: 1fr; }
+@@media (max-width: 720px) {
   .si-search { max-width: none; order: 3; flex-basis: 100%; }
-  .si-nav { gap: .5rem 1rem; }
+  .si-hero__inner { padding: 2.5rem 1.25rem 3.5rem; }
+  .si-nav { gap: .5rem 1.1rem; }
 }
 </style>
 
@@ -253,7 +398,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
             Chapter support
         </a>
         <form class="si-search" @onsubmit="HandleSearch" @onsubmit:preventDefault>
-            <input type="search" @bind="searchQ" placeholder="Search resources, events, articles…" aria-label="Search" />
+            <input type="search" @bind="searchQ" placeholder="Search" aria-label="Search" />
             <button type="submit" title="Search">⌕</button>
         </form>
         <div class="si-top__actions">
@@ -262,14 +407,12 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
         </div>
     </header>
 
-    <nav class="si-nav" aria-label="Workspace">
+    <nav class="si-nav" aria-label="Main">
         <a href="/resource-library">Resource library</a>
         <a href="/knowledge-base">Knowledge base</a>
         <a href="/events">Events</a>
         <a href="/market-trends">Market trends</a>
         <a href="/contact">Contact</a>
-        <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Credentialing</a>
-        <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">Membership</a>
     </nav>
 
     <section class="si-hero" aria-label="Featured">
@@ -284,7 +427,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
                     <p>@h.Caption</p>
                     <div class="si-hero__btns">
                         <a class="si-btn si-btn--white" href="@h.PrimaryHref">@h.PrimaryLabel</a>
-                        <a class="si-btn si-btn--outline" href="@h.SecondaryHref" target="_blank" rel="noopener">@h.SecondaryLabel</a>
                     </div>
                 </div>
             </div>
@@ -304,65 +446,19 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     </section>
 
     <div class="si-bar">
-        Already have an account?
-        <a href="#si-login">Sign in to TRU →</a>
+        ALREADY HAVE AN ACCOUNT?
+        <a href="#si-login">SIGN IN TO TRU →</a>
     </div>
 
-    <div class="si-chips">
-        <a href="https://www.isaca.org/" target="_blank" rel="noopener">ISACA.org</a>
-        <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Credentialing</a>
-        <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">Membership</a>
-        <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
-        <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
-        <a href="https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals" target="_blank" rel="noopener">Top certifications guide</a>
-    </div>
-
-    <div class="si-main">
-        <div class="si-features">
-            <h2>Chapter workspace</h2>
-            <p>Open the tools your chapter uses every day — navigation aligned with professional ISACA structure.</p>
-            <div class="si-grid">
-                <a class="si-card" href="/resource-library">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#07649d,#00a4e4)">RL</div>
-                    <h3>Resource library</h3>
-                    <p>Guides, policies, certification paths, learning packs, and templates.</p>
-                    <span class="si-card__go">Open library →</span>
-                </a>
-                <a class="si-card" href="/knowledge-base">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#6558b1,#a99cf4)">KB</div>
-                    <h3>Knowledge base</h3>
-                    <p>Approved chapter guidance. Search, filter, and open articles.</p>
-                    <span class="si-card__go">Browse articles →</span>
-                </a>
-                <a class="si-card" href="/events">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#1a7a4c,#36ac91)">EV</div>
-                    <h3>Events &amp; calendar</h3>
-                    <p>Chapter activities, webinars, and learning opportunities in one place.</p>
-                    <span class="si-card__go">View events →</span>
-                </a>
-                <a class="si-card" href="/market-trends">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#c47a1a,#efb36e)">MT</div>
-                    <h3>Market trends</h3>
-                    <p>Insights and overview cards for chapter and industry context.</p>
-                    <span class="si-card__go">See trends →</span>
-                </a>
-                <a class="si-card" href="/contact">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#1d2d5c,#5f6b85)">CT</div>
-                    <h3>Contact</h3>
-                    <p>Chapter support, address, and ISACA contact pathways.</p>
-                    <span class="si-card__go">Contact team →</span>
-                </a>
-                <a class="si-card" href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">
-                    <div class="si-card__icon" style="background:linear-gradient(135deg,#00a4e4,#6cb33f)">CR</div>
-                    <h3>Certifications</h3>
-                    <p>CISA, CISM, CRISC, CGEIT, CDPSE and more on ISACA.org.</p>
-                    <span class="si-card__go">Credentialing →</span>
-                </a>
-            </div>
-        </div>
+    <div class="si-body">
+        <h2>Experience chapter support that works</h2>
+        <p>
+            Equip your officers and volunteers with resources, knowledge, events, and tools
+            in one place — built for ISACA chapter operations.
+        </p>
 
         <div class="si-login" id="si-login">
-            <h2>Sign in</h2>
+            <h3>Sign in</h3>
             <p>Use the email and password for your TRU account.</p>
             @if (ErrorMessage is not null)
             {
@@ -385,15 +481,10 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
                     <button type="submit" class="si-submit">Sign in</button>
                 </EditForm>
             }
-            <p class="si-note">TRU is a prototype. Test accounts are set up by the project team.</p>
         </div>
     </div>
 
-    <footer class="si-foot">
-        TRU · ISACA chapter support ·
-        <a href="https://www.isaca.org/" target="_blank" rel="noopener">isaca.org</a> ·
-        <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">membership</a>
-    </footer>
+    <footer class="si-foot">TRU · Chapter support</footer>
 </div>
 
 @code {
@@ -406,33 +497,29 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     private bool paused;
     private System.Threading.Timer? heroTimer;
 
-    private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref, string SecondaryLabel, string SecondaryHref);
+    private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref);
     private static readonly Hero[] heroes =
     {
         new("Home · Chapter support",
-            "Empowering your chapter. Advancing trust in technology.",
+            "Empowering your chapter",
             "Guides, knowledge, events, and tools for ISACA chapter officers and volunteers.",
             "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1800&q=85",
-            "Open resource library", "/resource-library",
-            "ISACA.org", "https://www.isaca.org/"),
+            "Open resource library", "/resource-library"),
         new("Home · Events",
-            "Mark your calendar. Grow your chapter.",
+            "Mark your calendar",
             "Plan webinars, meetups, and CPE sessions with the Events workspace.",
             "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1800&q=85",
-            "View events", "/events",
-            "Membership", "https://www.isaca.org/membership"),
-        new("Home · Credentials",
-            "The leader's path to digital trust credentials",
-            "CISA, CISM, CRISC, CGEIT, CDPSE — explore paths and chapter study resources.",
+            "View events", "/events"),
+        new("Home · Knowledge",
+            "The leader's compass",
+            "Approved chapter guidance and certification paths for your team.",
             "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1800&q=85",
-            "Knowledge base", "/knowledge-base",
-            "Cert guide", "https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals"),
+            "Knowledge base", "/knowledge-base"),
         new("Home · Resources",
-            "Experience the power of chapter resources",
+            "Advance trust in technology",
             "Policies, frameworks, and market context for chapter leaders.",
             "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1800&q=85",
-            "Market trends", "/market-trends",
-            "ISACA resources", "https://www.isaca.org/resources"),
+            "Market trends", "/market-trends"),
     };
 
     protected override void OnInitialized()
@@ -459,8 +546,8 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
         else StartTimer();
     }
 
-    private void PrevHero() { heroIndex = heroIndex == 0 ? heroes.Length - 1 : heroIndex - 1; }
-    private void NextHero() { heroIndex = (heroIndex + 1) % heroes.Length; }
+    private void PrevHero() => heroIndex = heroIndex == 0 ? heroes.Length - 1 : heroIndex - 1;
+    private void NextHero() => heroIndex = (heroIndex + 1) % heroes.Length;
 
     private void HandleSearch()
     {
