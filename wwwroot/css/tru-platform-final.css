@@ -1,4 +1,4 @@
-/* TRU platform final — loaded last. Unified no-gap layout for all workspace pages. */
+/* TRU platform final — loaded last. All workspace pages fill the viewport. */
 :root {
   --tru-sidebar-width: 252px;
   --tru-canvas: #eef2f7;
@@ -54,8 +54,12 @@ article.content, .content {
 }
 .top-row { display: none !important; }
 
+/* ALL workspace page roots */
 .hm, .mt, .es, .tr, .ch, .kb, .ev, .dev, .pipe, .gov, .an, .pg, .wx, .rl, .st, .dd,
-.isa-page, .settings-page, .translator-page, .market-page, .page-root, .ct {
+.isa-page, .settings-page, .translator-page, .market-page, .page-root, .ct,
+section.hm, section.mt, section.es, section.tr, section.ch, section.kb, section.ev,
+section.dev, section.pipe, section.gov, section.an, section.pg, section.wx, section.rl,
+section.st, section.dd, section.ct {
   flex: 1 1 auto !important;
   display: flex !important;
   flex-direction: column !important;
@@ -69,13 +73,15 @@ article.content, .content {
   min-height: calc(100dvh - 20px) !important;
 }
 
+/* Main grids / bodies grow to fill leftover height */
 .ev-grid, .es-grid, .st-body, .wx-now, .pg-grid, .kb-grid,
-.an-grid, .gov-grid, .mt-grid, .rl-main, .rl-body, .rl-stage, .dd-grid, .ch-grid, .tr-main,
-.tr-grid, .hm-vid, .wx-bottom, .pipe-grid {
+.an-grid, .gov-grid, .mt-grid, .rl-main, .rl-body, .rl-stage, .dd-grid, .ch-grid,
+.tr-main, .tr-grid, .hm-vid, .wx-bottom, .pipe-grid, .es-side, .mt-panel {
   flex: 1 1 auto !important;
   min-height: 0 !important;
 }
 
+/* Contact footer on bottom edge */
 .ct { padding: 10px 10px 0 !important; }
 .ct > .sf, .ct > footer.sf {
   margin-top: auto !important;

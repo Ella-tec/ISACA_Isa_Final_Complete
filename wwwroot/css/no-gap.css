@@ -1,24 +1,57 @@
-/* No forced viewport height — empty stretch creates visible gaps */
+/*
+  no-gap.css — supports full-height workspace pages without empty bands.
+  Do NOT force min-height:0 on .page/.main/.content (that creates the gaps).
+*/
 html, body {
   margin: 0 !important;
   padding: 0 !important;
-  min-height: 0 !important;
-  height: auto !important;
+  width: 100% !important;
+  background: #eef2f7 !important;
+  overflow-x: hidden !important;
 }
 
-.page, .main, .content, article.content {
+.page {
   margin: 0 !important;
   padding: 0 !important;
   max-width: none !important;
   width: 100% !important;
-  min-height: 0 !important;
-  height: auto !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
 }
 
+.main {
+  margin-top: 0 !important;
+  margin-right: 0 !important;
+  margin-bottom: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  min-height: 100vh !important;
+  min-height: 100dvh !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+.content, article.content {
+  margin: 0 !important;
+  padding: 0 !important;
+  max-width: none !important;
+  width: 100% !important;
+  flex: 1 1 auto !important;
+  display: flex !important;
+  flex-direction: column !important;
+}
+
+/* Page roots fill remaining height */
 article.content > section,
 article.content > div {
   width: 100% !important;
   max-width: none !important;
   box-sizing: border-box !important;
-  min-height: 0 !important;
+  flex: 1 1 auto !important;
+}
+
+/* Kill leftover blank margin under last cards */
+.main > *:last-child,
+.content > *:last-child {
+  margin-bottom: 0 !important;
 }
