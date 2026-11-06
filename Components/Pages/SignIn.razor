@@ -6,277 +6,354 @@
 @using IsaChatApp.Services
 @inject KeycloakSignInService SignInService
 @inject NavigationManager Navigation
+@implements IDisposable
 
 <PageTitle>Sign in | TRU</PageTitle>
 
 <style>
-html,body{margin:0!important;padding:0!important}
-.signin{
-  --ink:#0e1a2e;--teal:#36ac91;--blue:#00a4e4;--green:#6cb33f;--muted:#8b9bb4;
-  display:grid!important;grid-template-columns:minmax(0,1.05fr) minmax(380px,1fr)!important;
-  width:100%!important;min-height:100vh!important;min-height:100dvh!important;margin:0!important;
-  font-family:"Roboto",system-ui,sans-serif;color:#e8eef6;
+html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+.si {
+  --ink: #1d2d5c; --blue: #00a4e4; --teal: #36ac91; --muted: #5f6b85; --line: #e2e8f0;
+  font-family: "Roboto", system-ui, sans-serif; color: var(--ink);
+  min-height: 100vh; min-height: 100dvh; background: #f7f9fc;
 }
-.signin__brand{
-  position:relative;display:flex!important;align-items:center!important;justify-content:center!important;
-  min-height:100vh!important;min-height:100dvh!important;overflow:hidden!important;
-  background:
-    radial-gradient(ellipse 70% 50% at 50% 48%, rgba(0,164,228,.1), transparent 55%),
-    linear-gradient(160deg,#050a14 0%,#0a1424 45%,#0d1b30 100%)!important;
+.si a { text-decoration: none; color: inherit; }
+
+/* Top nav — ISACA style */
+.si-nav {
+  position: sticky; top: 0; z-index: 50;
+  background: #fff; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .65rem 1.25rem; gap: 1rem; flex-wrap: wrap;
 }
-.signin__brand:before{
-  content:"";position:absolute;inset:0;pointer-events:none;opacity:.65;
-  background-image:
-    radial-gradient(1.5px 1.5px at 12% 18%,#fff,transparent),
-    radial-gradient(1px 1px at 28% 72%,rgba(255,255,255,.8),transparent),
-    radial-gradient(1.5px 1.5px at 48% 22%,#fff,transparent),
-    radial-gradient(1px 1px at 62% 58%,rgba(255,255,255,.7),transparent),
-    radial-gradient(1.5px 1.5px at 78% 14%,#fff,transparent),
-    radial-gradient(1px 1px at 88% 68%,rgba(255,255,255,.75),transparent),
-    radial-gradient(1px 1px at 18% 42%,rgba(255,255,255,.6),transparent),
-    radial-gradient(1.5px 1.5px at 55% 88%,#fff,transparent);
+.si-nav__brand { display: flex; align-items: center; gap: .65rem; font-weight: 800; font-size: 1.15rem; color: var(--ink); }
+.si-nav__brand span { width: 36px; height: 36px; border-radius: 10px;
+  background: linear-gradient(135deg, #00a4e4, #36ac91); color: #fff;
+  display: grid; place-items: center; font-size: .75rem; font-weight: 800; letter-spacing: .04em; }
+.si-nav__links { display: flex; flex-wrap: wrap; gap: .15rem .85rem; align-items: center; }
+.si-nav__links a {
+  font-size: .84rem; font-weight: 600; color: #3a4a6b; padding: .35rem .2rem;
 }
-.signin__orbitStage{
-  position:relative;z-index:2;width:min(72vw,520px);height:min(72vw,520px);
-  display:grid;place-items:center;
+.si-nav__links a:hover { color: var(--blue); }
+.si-nav__cta {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .45rem 1rem; border-radius: 8px; font-weight: 700; font-size: .84rem;
+  background: linear-gradient(135deg, #1d2d5c, #07649d); color: #fff !important;
 }
-.signin__orbit{
-  position:absolute;left:50%;top:50%;border-radius:50%;
-  border:1px solid rgba(0,164,228,.22);
-  transform:translate(-50%,-50%);
-  pointer-events:none;
+.si-nav__cta:hover { filter: brightness(1.08); }
+
+/* Hero slider */
+.si-hero {
+  position: relative; width: 100%; min-height: clamp(320px, 48vh, 480px);
+  overflow: hidden; background: #0a1628;
 }
-.signin__orbit.o1{width:24%;height:24%}
-.signin__orbit.o2{width:34%;height:34%;border-color:rgba(54,172,145,.25)}
-.signin__orbit.o3{width:44%;height:44%}
-.signin__orbit.o4{width:54%;height:54%;border-color:rgba(108,179,63,.2)}
-.signin__orbit.o5{width:64%;height:64%}
-.signin__orbit.o6{width:74%;height:74%;border-color:rgba(0,164,228,.18)}
-.signin__orbit.o7{width:84%;height:84%;border-color:rgba(255,255,255,.12)}
-.signin__orbit.o8{width:94%;height:94%;border-color:rgba(255,255,255,.1)}
-.signin__orbit.o9{width:104%;height:104%;border-color:rgba(255,255,255,.08)}
-.signin__planet{
-  position:absolute;left:50%;top:50%;
-  width:0;height:0;
-  animation:tru-spin var(--d,30s) linear infinite;
-  pointer-events:none;z-index:3;
+.si-hero__slide {
+  position: absolute; inset: 0; opacity: 0; visibility: hidden;
+  transition: opacity .75s ease;
+  background-size: cover; background-position: center;
+  display: flex; align-items: center;
 }
-.signin__planet:after{
-  content:"";position:absolute;left:0;top:0;
-  width:var(--s,9px);height:var(--s,9px);
-  margin-left:calc(var(--s,9px)/-2);margin-top:calc(var(--s,9px)/-2);
-  border-radius:50%;background:var(--c,#00a4e4);
-  box-shadow:0 0 12px var(--c,#00a4e4),0 0 3px #fff;
-  transform:translateY(var(--r,-60px));
+.si-hero__slide.is-on { opacity: 1; visibility: visible; z-index: 1; }
+.si-hero__shade {
+  position: absolute; inset: 0;
+  background: linear-gradient(100deg, rgba(8,18,36,.88) 0%, rgba(8,18,36,.45) 55%, rgba(8,18,36,.25) 100%);
 }
-.signin__planet.p1{--d:18s;--c:#6cb33f;--s:8px;--r:-62px}
-.signin__planet.p2{--d:22s;--c:#00a4e4;--s:9px;--r:-88px}
-.signin__planet.p3{--d:26s;--c:#fbb034;--s:8px;--r:-114px}
-.signin__planet.p4{--d:30s;--c:#e57524;--s:10px;--r:-140px}
-.signin__planet.p5{--d:36s;--c:#36ac91;--s:9px;--r:-166px}
-.signin__planet.p6{--d:42s;--c:#6558b1;--s:8px;--r:-192px}
-.signin__planet.p7{--d:48s;--c:#00a4e4;--s:7px;--r:-218px}
-.signin__planet.p8{--d:56s;--c:#6cb33f;--s:9px;--r:-244px}
-.signin__planet.p9{--d:64s;--c:#e8eef6;--s:6px;--r:-270px}
-.signin__core{position:relative;z-index:5;width:clamp(100px,16vw,140px);height:clamp(100px,16vw,140px);display:grid;place-items:center}
-.signin__sun{
-  width:100%;height:100%;border-radius:50%;
-  background:
-    radial-gradient(circle at 35% 30%,rgba(255,255,255,.45),transparent 40%),
-    linear-gradient(145deg,#00a4e4 0%,#36ac91 48%,#6cb33f 100%);
-  box-shadow:
-    0 0 0 5px rgba(0,164,228,.18),
-    0 0 0 12px rgba(0,164,228,.07),
-    0 0 36px rgba(0,164,228,.45),
-    0 0 70px rgba(54,172,145,.22);
-  display:grid;place-items:center;
-  animation:tru-pulse 5s ease-in-out infinite;
+.si-hero__inner {
+  position: relative; z-index: 2; max-width: 1100px; width: 100%;
+  margin: 0 auto; padding: 2.5rem 1.5rem;
+  color: #fff;
 }
-.signin__sun span{
-  font-family:"Roboto Slab",Georgia,serif;font-weight:700;font-size:clamp(1rem,2.2vw,1.35rem);
-  color:#fff;letter-spacing:.1em;text-shadow:0 2px 8px rgba(0,0,0,.3);
+.si-hero__inner h1 {
+  margin: 0 0 .6rem; font-size: clamp(1.6rem, 3.5vw, 2.6rem); font-weight: 700;
+  line-height: 1.15; max-width: 16ch;
 }
-@@keyframes tru-spin{to{transform:rotate(360deg)}}
-@@keyframes tru-pulse{
-  0%,100%{box-shadow:0 0 0 5px rgba(0,164,228,.18),0 0 0 12px rgba(0,164,228,.07),0 0 36px rgba(0,164,228,.4),0 0 70px rgba(54,172,145,.2)}
-  50%{box-shadow:0 0 0 7px rgba(0,164,228,.22),0 0 0 18px rgba(0,164,228,.1),0 0 50px rgba(0,164,228,.55),0 0 90px rgba(54,172,145,.28)}
+.si-hero__inner p {
+  margin: 0 0 1.25rem; font-size: clamp(.95rem, 1.5vw, 1.1rem);
+  opacity: .95; max-width: 38rem; line-height: 1.5;
+}
+.si-hero__btns { display: flex; flex-wrap: wrap; gap: .6rem; }
+.si-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: .65rem 1.2rem; border-radius: 8px; font-weight: 700; font-size: .9rem;
+  border: none; cursor: pointer; font-family: inherit;
+}
+.si-btn--primary { background: #fff; color: var(--ink); }
+.si-btn--primary:hover { background: #e8f4fc; }
+.si-btn--ghost { background: transparent; color: #fff; border: 1.5px solid rgba(255,255,255,.55); }
+.si-btn--ghost:hover { background: rgba(255,255,255,.1); }
+.si-hero__nav {
+  position: absolute; bottom: 1.1rem; left: 50%; transform: translateX(-50%);
+  z-index: 4; display: flex; align-items: center; gap: .55rem;
+}
+.si-hero__nav button {
+  width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.9); color: var(--ink); font-size: 1.1rem; font-weight: 700;
+  display: grid; place-items: center;
+}
+.si-hero__dots { display: flex; gap: 6px; }
+.si-hero__dot {
+  width: 8px; height: 8px; border-radius: 50%; border: none; padding: 0;
+  background: rgba(255,255,255,.45); cursor: pointer;
+}
+.si-hero__dot.is-on { background: #fff; width: 20px; border-radius: 6px; }
+
+/* Main grid: features + login */
+.si-main {
+  max-width: 1100px; margin: 0 auto; padding: 1.5rem 1.25rem 2.5rem;
+  display: grid; grid-template-columns: 1.35fr .9fr; gap: 1.25rem; align-items: start;
+}
+.si-features h2 {
+  margin: 0 0 .35rem; font-size: 1.35rem; font-weight: 700; color: var(--ink);
+}
+.si-features > p { margin: 0 0 1rem; color: var(--muted); font-size: .92rem; }
+.si-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: .75rem;
+}
+.si-card {
+  background: #fff; border: 1px solid var(--line); border-radius: 14px;
+  padding: 1rem 1.05rem; transition: box-shadow .2s, border-color .2s;
+  display: flex; flex-direction: column; gap: .35rem; min-height: 120px;
+}
+.si-card:hover { border-color: #b8d4ea; box-shadow: 0 8px 24px rgba(29,45,92,.08); }
+.si-card__icon {
+  width: 36px; height: 36px; border-radius: 10px;
+  display: grid; place-items: center; font-size: .85rem; font-weight: 800; color: #fff;
+}
+.si-card h3 { margin: 0; font-size: .98rem; font-weight: 700; }
+.si-card p { margin: 0; font-size: .82rem; color: var(--muted); line-height: 1.45; flex: 1; }
+.si-card__go {
+  font-size: .78rem; font-weight: 700; color: var(--blue); margin-top: .25rem;
 }
 
-.signin__panel{
-  display:flex!important;align-items:flex-start!important;justify-content:center!important;
-  min-height:100vh!important;min-height:100dvh!important;padding:1.5rem 1.4rem 2rem;
-  background:linear-gradient(180deg,#f4f8fc,#eef3f8)!important;box-sizing:border-box;
-  overflow-y:auto;
+/* Login card */
+.si-login {
+  background: #fff; border: 1px solid var(--line); border-radius: 16px;
+  padding: 1.35rem 1.3rem 1.2rem;
+  box-shadow: 0 12px 36px rgba(29,45,92,.08);
+  position: sticky; top: 72px;
 }
-.signin__stack{width:100%;max-width:440px;display:flex;flex-direction:column;gap:1rem}
-.signin__card{
-  width:100%;
-  background:rgba(255,255,255,.94);backdrop-filter:blur(12px);
-  border-radius:18px;padding:1.6rem 1.5rem 1.35rem;
-  border:1px solid rgba(29,45,92,.08);
-  box-shadow:0 16px 40px rgba(14,26,46,.08);
-  color:#0e1a2e;
+.si-login h2 { margin: 0 0 .25rem; font-size: 1.25rem; font-weight: 700; }
+.si-login > p { margin: 0 0 1rem; font-size: .86rem; color: var(--muted); }
+.si-error {
+  margin-bottom: .85rem; padding: .65rem .8rem; border-left: 4px solid #e31837;
+  border-radius: 8px; background: #fdecee; color: #9b1027; font-size: .85rem;
 }
-.signin__title{margin:0 0 .3rem;font-size:1.55rem;font-weight:700;color:#0e1a2e}
-.signin__lede{margin:0 0 1.15rem;color:#5f6b85;font-size:.9rem}
-.signin__error{margin-bottom:1rem;padding:.75rem .9rem;border-left:4px solid #e31837;border-radius:8px;background:#fdecee;color:#9b1027;font-size:.88rem}
-.signin__field{margin-bottom:1rem}
-.signin__label{display:block;margin-bottom:.35rem;font-weight:700;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:#07649d}
-.signin__input,.signin__field input{
-  display:block;width:100%;padding:.75rem .85rem;border:1.5px solid #d0dce8;border-radius:11px;
-  background:#f5f9fc;color:#0e1a2e;font:inherit;font-size:.95rem;box-sizing:border-box;
+.si-field { margin-bottom: .85rem; }
+.si-label {
+  display: block; margin-bottom: .3rem; font-weight: 700; font-size: .68rem;
+  letter-spacing: .08em; text-transform: uppercase; color: #07649d;
 }
-.signin__input:focus,.signin__field input:focus{outline:none;border-color:#00a4e4;box-shadow:0 0 0 4px rgba(0,164,228,.15);background:#fff}
-.signin__submit{
-  width:100%;margin-top:.25rem;padding:.85rem 1rem;border:0;border-radius:11px;
-  background:linear-gradient(135deg,#1d2d5c,#07649d);color:#fff;
-  font:inherit;font-weight:700;font-size:.95rem;cursor:pointer;
-  box-shadow:0 8px 20px rgba(29,45,92,.2);
+.si-input {
+  display: block; width: 100%; padding: .7rem .8rem; border: 1.5px solid #d0dce8;
+  border-radius: 10px; background: #f5f9fc; color: var(--ink); font: inherit; font-size: .95rem;
+  box-sizing: border-box;
 }
-.signin__submit:hover{filter:brightness(1.08)}
-.signin__note{margin:1rem 0 0;font-size:.78rem;color:#8494a8;line-height:1.5}
-.signin__back{display:inline-block;margin-top:.75rem;color:#36ac91;font-weight:700;font-size:.86rem;text-decoration:none}
-.signin__back:hover{color:#07649d;text-decoration:underline}
+.si-input:focus { outline: none; border-color: var(--blue); box-shadow: 0 0 0 4px rgba(0,164,228,.12); background: #fff; }
+.si-submit {
+  width: 100%; margin-top: .2rem; padding: .8rem 1rem; border: 0; border-radius: 10px;
+  background: linear-gradient(135deg, #1d2d5c, #07649d); color: #fff;
+  font: inherit; font-weight: 700; font-size: .95rem; cursor: pointer;
+}
+.si-submit:hover { filter: brightness(1.06); }
+.si-note { margin: .9rem 0 0; font-size: .76rem; color: #8494a8; line-height: 1.45; }
 
-.signin__sec-title{margin:0 0 .55rem;font-size:.95rem;font-weight:700;color:#0e1a2e}
-.signin__sec-lede{margin:0 0 .75rem;font-size:.8rem;color:#5f6b85;line-height:1.4}
-.signin__certs{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
-.signin__cert{
-  display:flex;flex-direction:column;gap:.15rem;padding:.55rem .65rem;
-  border-radius:11px;border:1px solid #e2e8f0;background:#f8fbfd;
-  text-decoration:none;color:#0e1a2e;transition:.15s ease;
+/* Official links strip */
+.si-strip {
+  max-width: 1100px; margin: 0 auto 1.5rem; padding: 0 1.25rem;
+  display: flex; flex-wrap: wrap; gap: .45rem;
 }
-.signin__cert:hover{border-color:#00a4e4;background:#fff;box-shadow:0 4px 12px rgba(0,164,228,.1)}
-.signin__cert strong{font-size:.82rem}
-.signin__cert span{font-size:.7rem;color:#5f6b85}
-.signin__links{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.65rem}
-.signin__links a{
-  font-size:.74rem;font-weight:600;padding:.3rem .6rem;border-radius:999px;
-  background:#eef4f9;color:#07649d;text-decoration:none;
+.si-strip a {
+  font-size: .78rem; font-weight: 600; padding: .35rem .7rem; border-radius: 999px;
+  background: #fff; border: 1px solid var(--line); color: #07649d;
 }
-.signin__links a:hover{background:#dceaf5}
-.signin__ws{display:flex;flex-wrap:wrap;gap:.35rem}
-.signin__ws a{
-  font-size:.74rem;font-weight:600;padding:.35rem .65rem;border-radius:9px;
-  background:#fff;border:1px solid #e2e8f0;color:#1d2d5c;text-decoration:none;
-}
-.signin__ws a:hover{border-color:#00a4e4;color:#07649d}
+.si-strip a:hover { border-color: var(--blue); }
 
-@@media(max-width:900px){
-  .signin{grid-template-columns:1fr!important}
-  .signin__brand{min-height:240px!important}
-  .signin__orbitStage{width:min(70vw,280px);height:min(70vw,280px)}
-  .signin__planet.p1{--r:-32px}.signin__planet.p2{--r:-46px}.signin__planet.p3{--r:-60px}
-  .signin__planet.p4{--r:-74px}.signin__planet.p5{--r:-88px}.signin__planet.p6{--r:-102px}
-  .signin__planet.p7{--r:-116px}.signin__planet.p8{--r:-130px}.signin__planet.p9{--r:-144px}
-  .signin__panel{min-height:auto!important;padding:1.25rem 1rem 1.75rem}
+.si-foot {
+  text-align: center; padding: 1.25rem; font-size: .78rem; color: var(--muted);
+  border-top: 1px solid var(--line); background: #fff;
 }
-@@media(prefers-reduced-motion:reduce){
-  .signin__planet,.signin__sun{animation:none!important}
+
+@@media (max-width: 900px) {
+  .si-main { grid-template-columns: 1fr; }
+  .si-login { position: static; }
+  .si-grid { grid-template-columns: 1fr; }
+  .si-nav__links { display: none; }
 }
 </style>
 
-<div class="signin">
-    <aside class="signin__brand">
-        <div class="signin__orbitStage" aria-label="TRU sun with one planet per orbit">
-            <span class="signin__orbit o1"></span>
-            <span class="signin__orbit o2"></span>
-            <span class="signin__orbit o3"></span>
-            <span class="signin__orbit o4"></span>
-            <span class="signin__orbit o5"></span>
-            <span class="signin__orbit o6"></span>
-            <span class="signin__orbit o7"></span>
-            <span class="signin__orbit o8"></span>
-            <span class="signin__orbit o9"></span>
-            <span class="signin__planet p1" aria-hidden="true"></span>
-            <span class="signin__planet p2" aria-hidden="true"></span>
-            <span class="signin__planet p3" aria-hidden="true"></span>
-            <span class="signin__planet p4" aria-hidden="true"></span>
-            <span class="signin__planet p5" aria-hidden="true"></span>
-            <span class="signin__planet p6" aria-hidden="true"></span>
-            <span class="signin__planet p7" aria-hidden="true"></span>
-            <span class="signin__planet p8" aria-hidden="true"></span>
-            <span class="signin__planet p9" aria-hidden="true"></span>
-            <div class="signin__core">
-                <div class="signin__sun" role="img" aria-label="TRU"><span>TRU</span></div>
+<div class="si">
+    <header class="si-nav">
+        <a class="si-nav__brand" href="/sign-in"><span>TRU</span> Chapter support</a>
+        <nav class="si-nav__links" aria-label="Workspace">
+            <a href="/resource-library">Resource library</a>
+            <a href="/knowledge-base">Knowledge base</a>
+            <a href="/events">Events</a>
+            <a href="/market-trends">Market trends</a>
+            <a href="/contact">Contact</a>
+        </nav>
+        <a class="si-nav__cta" href="#si-login">Sign in</a>
+    </header>
+
+    <section class="si-hero" aria-label="Featured">
+        @for (var i = 0; i < heroes.Length; i++)
+        {
+            var h = heroes[i];
+            <div class="si-hero__slide @(i == heroIndex ? "is-on" : null)" style="background-image:url('@h.Image')">
+                <div class="si-hero__shade"></div>
+                <div class="si-hero__inner">
+                    <h1>@h.Title</h1>
+                    <p>@h.Caption</p>
+                    <div class="si-hero__btns">
+                        <a class="si-btn si-btn--primary" href="@h.PrimaryHref">@h.PrimaryLabel</a>
+                        <a class="si-btn si-btn--ghost" href="@h.SecondaryHref" target="_blank" rel="noopener">@h.SecondaryLabel</a>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="si-hero__nav">
+            <button type="button" @onclick="PrevHero" aria-label="Previous">‹</button>
+            <div class="si-hero__dots">
+                @for (var i = 0; i < heroes.Length; i++)
+                {
+                    var di = i;
+                    <button type="button" class="si-hero__dot @(i == heroIndex ? "is-on" : null)" @onclick="() => heroIndex = di"></button>
+                }
+            </div>
+            <button type="button" @onclick="NextHero" aria-label="Next">›</button>
+        </div>
+    </section>
+
+    <div class="si-strip">
+        <a href="https://www.isaca.org/" target="_blank" rel="noopener">ISACA.org</a>
+        <a href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">Credentialing</a>
+        <a href="https://www.isaca.org/membership" target="_blank" rel="noopener">Membership</a>
+        <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
+        <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
+        <a href="https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals" target="_blank" rel="noopener">Top certifications guide</a>
+    </div>
+
+    <div class="si-main">
+        <div class="si-features">
+            <h2>Chapter workspace</h2>
+            <p>Open the tools your chapter uses every day — same structure as professional ISACA navigation.</p>
+            <div class="si-grid">
+                <a class="si-card" href="/resource-library">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#07649d,#00a4e4)">RL</div>
+                    <h3>Resource library</h3>
+                    <p>Guides, policies, certification paths, learning packs, and templates.</p>
+                    <span class="si-card__go">Open library →</span>
+                </a>
+                <a class="si-card" href="/knowledge-base">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#6558b1,#a99cf4)">KB</div>
+                    <h3>Knowledge base</h3>
+                    <p>Approved chapter guidance. Search, filter, and open articles.</p>
+                    <span class="si-card__go">Browse articles →</span>
+                </a>
+                <a class="si-card" href="/events">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#1a7a4c,#36ac91)">EV</div>
+                    <h3>Events &amp; calendar</h3>
+                    <p>Chapter activities, webinars, and learning opportunities in one place.</p>
+                    <span class="si-card__go">View events →</span>
+                </a>
+                <a class="si-card" href="/market-trends">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#c47a1a,#efb36e)">MT</div>
+                    <h3>Market trends</h3>
+                    <p>Insights and overview cards for chapter and industry context.</p>
+                    <span class="si-card__go">See trends →</span>
+                </a>
+                <a class="si-card" href="/contact">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#1d2d5c,#5f6b85)">CT</div>
+                    <h3>Contact</h3>
+                    <p>Chapter support, address, and ISACA contact pathways.</p>
+                    <span class="si-card__go">Contact team →</span>
+                </a>
+                <a class="si-card" href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">
+                    <div class="si-card__icon" style="background:linear-gradient(135deg,#00a4e4,#6cb33f)">CR</div>
+                    <h3>Certifications</h3>
+                    <p>CISA, CISM, CRISC, CGEIT, CDPSE and more on ISACA.org.</p>
+                    <span class="si-card__go">Credentialing →</span>
+                </a>
             </div>
         </div>
-    </aside>
 
-    <main class="signin__panel">
-        <div class="signin__stack">
-            <div class="signin__card">
-                <h1 class="signin__title">Sign in</h1>
-                <p class="signin__lede">Use the email and password for your TRU account.</p>
-                @if (ErrorMessage is not null)
-                {
-                    <div class="signin__error" role="alert">@ErrorMessage</div>
-                }
-                @if (Input is not null)
-                {
-                    <EditForm Model="Input" method="post" OnValidSubmit="HandleSignInAsync" FormName="isa-sign-in">
-                        <DataAnnotationsValidator />
-                        <div class="signin__field">
-                            <label class="signin__label" for="signin-email">Email address</label>
-                            <InputText id="signin-email" class="signin__input" @bind-Value="Input.Email" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
-                            <ValidationMessage For="() => Input.Email" />
-                        </div>
-                        <div class="signin__field">
-                            <label class="signin__label" for="signin-password">Password</label>
-                            <InputText id="signin-password" class="signin__input" @bind-Value="Input.Password" type="password" autocomplete="current-password" />
-                            <ValidationMessage For="() => Input.Password" />
-                        </div>
-                        <button type="submit" class="signin__submit">Sign in</button>
-                    </EditForm>
-                }
-                <p class="signin__note">TRU is a prototype. Test accounts are set up by the project team.</p>
-                <a class="signin__back" href="/" data-enhance-nav="false">&larr; Back to TRU home</a>
-            </div>
-
-            <div class="signin__card">
-                <h2 class="signin__sec-title">Certifications for professionals</h2>
-                <p class="signin__sec-lede">Explore ISACA credential paths. Links open official pages and the Train O Track certification guide.</p>
-                <div class="signin__certs">
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing/cisa" target="_blank" rel="noopener"><strong>CISA</strong><span>Audit &amp; assurance</span></a>
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing/cism" target="_blank" rel="noopener"><strong>CISM</strong><span>Security management</span></a>
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing/crisc" target="_blank" rel="noopener"><strong>CRISC</strong><span>IT risk &amp; control</span></a>
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing/cgeit" target="_blank" rel="noopener"><strong>CGEIT</strong><span>Enterprise IT governance</span></a>
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing/cdpse" target="_blank" rel="noopener"><strong>CDPSE</strong><span>Privacy engineering</span></a>
-                    <a class="signin__cert" href="https://www.isaca.org/credentialing" target="_blank" rel="noopener"><strong>More paths</strong><span>AAIA · AISM · CCOA</span></a>
-                </div>
-                <div class="signin__links">
-                    <a href="https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals" target="_blank" rel="noopener">Top certifications guide</a>
-                    <a href="https://www.isaca.org/" target="_blank" rel="noopener">ISACA.org</a>
-                    <a href="https://www.isaca.org/enterprise" target="_blank" rel="noopener">Enterprise</a>
-                    <a href="https://www.isaca.org/resources" target="_blank" rel="noopener">Resources</a>
-                </div>
-            </div>
-
-            <div class="signin__card">
-                <h2 class="signin__sec-title">Chapter workspace</h2>
-                <p class="signin__sec-lede">Quick entry after you sign in — chapter tools in one place.</p>
-                <div class="signin__ws">
-                    <a href="/">Home</a>
-                    <a href="/resource-library">Resource library</a>
-                    <a href="/knowledge-base">Knowledge base</a>
-                    <a href="/events">Events</a>
-                    <a href="/governance">Governance</a>
-                    <a href="/translator">Translator</a>
-                    <a href="/market-trends">Market trends</a>
-                    <a href="/contact">Contact</a>
-                    <a href="/settings">Settings</a>
-                </div>
-            </div>
+        <div class="si-login" id="si-login">
+            <h2>Sign in</h2>
+            <p>Use the email and password for your TRU account.</p>
+            @if (ErrorMessage is not null)
+            {
+                <div class="si-error" role="alert">@ErrorMessage</div>
+            }
+            @if (Input is not null)
+            {
+                <EditForm Model="Input" method="post" OnValidSubmit="HandleSignInAsync" FormName="isa-sign-in">
+                    <DataAnnotationsValidator />
+                    <div class="si-field">
+                        <label class="si-label" for="signin-email">Email address</label>
+                        <InputText id="signin-email" class="si-input" @bind-Value="Input.Email" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
+                        <ValidationMessage For="() => Input.Email" />
+                    </div>
+                    <div class="si-field">
+                        <label class="si-label" for="signin-password">Password</label>
+                        <InputText id="signin-password" class="si-input" @bind-Value="Input.Password" type="password" autocomplete="current-password" />
+                        <ValidationMessage For="() => Input.Password" />
+                    </div>
+                    <button type="submit" class="si-submit">Sign in</button>
+                </EditForm>
+            }
+            <p class="si-note">TRU is a prototype. Test accounts are set up by the project team.</p>
         </div>
-    </main>
+    </div>
+
+    <footer class="si-foot">
+        TRU · ISACA chapter support · <a href="https://www.isaca.org/" target="_blank" rel="noopener">isaca.org</a>
+    </footer>
 </div>
 
 @code {
     [CascadingParameter] private HttpContext? HttpContext { get; set; }
     [SupplyParameterFromForm(FormName = "isa-sign-in")] private SignInInput? Input { get; set; }
-    protected override void OnInitialized() => Input ??= new();
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
     private string? ErrorMessage { get; set; }
+    private int heroIndex;
+    private System.Threading.Timer? heroTimer;
+
+    private record Hero(string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref, string SecondaryLabel, string SecondaryHref);
+    private static readonly Hero[] heroes =
+    {
+        new("Empowering your chapter. Advancing trust in technology.",
+            "Guides, knowledge, events, and tools for ISACA chapter officers and volunteers.",
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80",
+            "Open resource library", "/resource-library",
+            "ISACA.org", "https://www.isaca.org/"),
+        new("Mark your calendar. Grow your chapter.",
+            "Plan webinars, meetups, and CPE sessions with the Events workspace.",
+            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=80",
+            "View events", "/events",
+            "Membership", "https://www.isaca.org/membership"),
+        new("Top ISACA certifications for professionals",
+            "CISA, CISM, CRISC, CGEIT, CDPSE — explore credential paths and chapter study resources.",
+            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80",
+            "Knowledge base", "/knowledge-base",
+            "Cert guide", "https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals"),
+        new("Resources that support digital trust",
+            "Policies, frameworks, and market context for chapter leaders.",
+            "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80",
+            "Market trends", "/market-trends",
+            "ISACA resources", "https://www.isaca.org/resources"),
+    };
+
+    protected override void OnInitialized()
+    {
+        Input ??= new();
+        heroTimer = new System.Threading.Timer(_ =>
+        {
+            heroIndex = (heroIndex + 1) % heroes.Length;
+            _ = InvokeAsync(StateHasChanged);
+        }, null, 7000, 7000);
+    }
+
+    private void PrevHero() => heroIndex = heroIndex == 0 ? heroes.Length - 1 : heroIndex - 1;
+    private void NextHero() => heroIndex = (heroIndex + 1) % heroes.Length;
 
     private async Task HandleSignInAsync()
     {
@@ -305,6 +382,8 @@ html,body{margin:0!important;padding:0!important}
     private string SafeReturnUrl =>
         !string.IsNullOrEmpty(ReturnUrl) && ReturnUrl.StartsWith('/') && !ReturnUrl.StartsWith("//") && !ReturnUrl.StartsWith("/\\")
             ? ReturnUrl : "/";
+
+    public void Dispose() => heroTimer?.Dispose();
 
     private sealed class SignInInput
     {
