@@ -6,15 +6,18 @@ publish/
 # Runtime files from isa-run.ps1 / start-isa.bat
 *.log
 isa.pid
+*.pid
 
 # Old backup copies of files
 *.bak
 *.bak2
+*.backup
 
-# Visual Studio local settings
+# Visual Studio / VS Code local settings
 .vs/
+.vscode/settings.json
 
-# Local databases (rebuilt by content/build_content_db.py / created at runtime)
+# Local databases (rebuilt by content tools / created at runtime)
 data/*.db
 data/*.db-wal
 data/*.db-shm
@@ -25,8 +28,19 @@ data/stale-*.old
 /IsaChatApp/
 /Web/
 
-# Real API keys and secrets. Copy dev-keys.example.json to dev-keys.json, or enter them on the Dev Dashboard (Models, RAG, access & ticketing).
+# Real API keys and secrets. Copy dev-keys.example.json to dev-keys.json,
+# or enter them on the Dev Dashboard (Models, RAG, access & ticketing).
 dev-keys.json
+
+# Zip packages and accidental large binaries (keep source, not delivery blobs)
+*.zip
+TRU-Windows-App.zip
+image.png
 
 # Zip made to send the Keycloak folder to a teammate
 keycloak.zip
+
+# OS / editor noise
+.DS_Store
+Thumbs.db
+*~
