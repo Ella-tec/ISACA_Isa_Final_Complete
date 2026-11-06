@@ -1,21 +1,76 @@
+# TRU / IsaChatApp
 
-🧑‍💻 About Me & My Role
+**Trusted Resource & Unified Support** — a Blazor Server platform for knowledge, chat, analytics, governance, compliance, and onboarding, built for ISACA-related workflows.
 
-I am Elias, a full-stack software engineer specializing in localized artificial intelligence architectures, advanced database structures, and high-performance system engineering.
-As the principal developer behind IsaChatApp, my mission is to deliver secure, enterprise-grade application layers that bridge intelligent language models directly into modern web spaces. I prioritize writing optimized codebase configurations that eliminate development bloat, lower processing latency, and ensure maximum maintainability.
+## Stack
 
-🎯 Core Focus Areas
+| Layer | Technology |
+|-------|------------|
+| Frontend | Blazor Server (.NET 10), HTML5, CSS3 |
+| Backend | C#, ASP.NET Core, Cookie auth |
+| Data | SQLite (content, events, onboarding, notebooks) |
+| Auth | Keycloak (optional) + cookie sign-in |
+| AI pipeline | Orchestrator with staged RAG / compliance / translation stages |
 
-• Architecture Design: Constructing modular Blazor Server components engineered specifically for high-concurrency enterprise applications.
-• Zero-JS Philosophy: Maximizing native C# state synchronization over web sockets pipelines, removing the security and maintenance liabilities of client-side scripts.
-• Local Intelligent Systems: Integrating localized, lightweight Large Language Models via API endpoints to build robust offline chat structures.
-• Full-Stack Execution: Unifying advanced backend processing schemas with reactive, lightning-fast interactive interfaces.
+## Quick start
 
-📋 Project Contributor Blueprint
+### Prerequisites
+- [.NET 10 SDK](https://dotnet.microsoft.com/download)
+- (Optional) Keycloak if you want full SSO
 
+### Run locally
 
-System Component	Engineering Stack Focus	Architectural Mandate
-Frontend Framework	Blazor Core, HTML5, CSS3	Eliminate client-side scripts while matching modern responsive layouts.
-Backend Processing	C#, .NET 10 SDK, Asynchronous HTTP Pipelines	Handle high-concurrency loops and stream structured data payloads efficiently.
-Localized Intelligence	Ollama API, qwen2.5-coder Instance Engine	Provide lightweight, high-speed text generation completely inside local boundaries.
+```bash
+# From the repo root
+dotnet restore TRU-ChatApp.csproj
+dotnet run --project TRU-ChatApp.csproj
+```
 
+Or use the helper scripts:
+
+- `START_LOCAL.bat` / `start-TRU.bat` — start the app
+- `check-prereqs.ps1` — verify tools
+
+Then open the URL shown in the console (usually `https://localhost:5xxx` or `http://localhost:5xxx`).
+
+Sign-in page: `/sign-in`
+
+## Project layout
+
+```
+Components/
+  App.razor          # Root HTML shell
+  Routes.razor       # Router + default MainLayout
+  Layout/            # MainLayout, NavMenu, ChatWidget, Auth/Landing layouts
+  Pages/             # Feature pages (Home, SignIn, Analytics, KnowledgeBase, …)
+Services/
+  Orchestrator/      # Multi-stage AI pipeline
+  Onboarding/        # Journey, progress, notebook, handoff
+wwwroot/             # Static CSS, images, logos, bootstrap
+content/             # Source content for the knowledge base
+data/                # Runtime SQLite DBs (gitignored)
+keycloak/            # Local Keycloak config (optional)
+```
+
+## Configuration
+
+- `appsettings.json` — DB paths, Keycloak authority, access-control flags
+- `dev-keys.example.json` → copy to `dev-keys.json` (gitignored) for API keys
+- Developer Dashboard page can also hold keys at runtime
+
+## Branding
+
+See `BRAND_GUIDELINES.md` and the CSS under `wwwroot/css/` and `wwwroot/lib-dist/css/`.
+
+Primary colors lean on deep navy + teal/green accents (ISACA-inspired).
+
+## Notes
+
+- Large binary `TRU-Windows-App.zip` is a packaged build; prefer source + `dotnet publish` for development.
+- Several historical layout-fix branches exist; `main` is the integration line.
+- Build CI: `.github/workflows/dotnet-build.yml` (Windows + .NET 10).
+
+---
+
+Principal developer: **Elias**  
+Focus: modular Blazor components, local/LLM-friendly pipelines, maintainable enterprise UI.
