@@ -12,7 +12,6 @@
 @inject IsaChatApp.Services.Onboarding.ProgressService Progress
 
 <style>
-/* Scoped to this component via unique prefix — always loads */
 .truask * { box-sizing: border-box; }
 .truask {
   font-family: "Segoe UI", "DM Sans", system-ui, sans-serif;
@@ -51,8 +50,6 @@
   overflow: hidden;
   z-index: 2147483001;
 }
-
-/* Compact header */
 .truask-hd {
   flex: 0 0 auto;
   background: linear-gradient(135deg, #0b2a4a 0%, #0078d4 100%);
@@ -77,28 +74,36 @@
   display: block; font-size: 11px; font-weight: 600; opacity: .88;
   white-space: nowrap; letter-spacing: .02em;
 }
-.truask-x {
-  width: 28px; height: 28px; border: none; border-radius: 4px;
+.truask-hd-actions {
+  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
+}
+.truask-icon-btn {
+  width: 26px; height: 26px; border: none; border-radius: 4px;
   background: rgba(255,255,255,.12); color: #fff;
-  font-size: 16px; cursor: pointer; line-height: 1;
+  cursor: pointer; display: grid; place-items: center; padding: 0;
+}
+.truask-icon-btn:hover { background: rgba(255,255,255,.22); }
+.truask-icon-btn svg { width: 12px; height: 12px; }
+.truask-x {
+  width: 26px; height: 26px; border: none; border-radius: 4px;
+  background: rgba(255,255,255,.12); color: #fff;
+  font-size: 15px; cursor: pointer; line-height: 1;
   display: grid; place-items: center; flex-shrink: 0;
 }
 .truask-x:hover { background: rgba(255,255,255,.22); }
 .truask-greet {
   margin: 10px 0 0; font-size: 14px; font-weight: 600; line-height: 1.35;
+  min-height: 2.6em;
 }
 .truask-greet small {
   display: block; margin-top: 2px; font-size: 12px; font-weight: 400; opacity: .9;
+  transition: opacity .25s ease;
 }
-
-/* Body */
 .truask-body {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
   padding: 12px 14px; background: var(--bg);
   display: flex; flex-direction: column; gap: 10px;
 }
-
-/* Ask bar */
 .truask-bar {
   display: flex; align-items: center; gap: 6px;
   background: #fff; border: 1px solid var(--line);
@@ -110,8 +115,6 @@
   font: inherit; font-size: 13px; color: var(--ink); min-width: 0; padding: 6px 0;
 }
 .truask-bar input::placeholder { color: #a19f9d; }
-
-/* Hide native file picker text */
 .truask-attach {
   position: relative; width: 28px; height: 28px;
   border-radius: 4px; border: none; background: transparent;
@@ -131,7 +134,6 @@
 }
 .truask-send:hover:not(:disabled) { background: #106ebe; }
 .truask-send:disabled { opacity: .4; cursor: not-allowed; }
-
 .truask-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .truask-chip {
   display: inline-flex; align-items: center; gap: 4px;
@@ -142,13 +144,10 @@
   border: none; background: none; cursor: pointer; color: var(--muted);
   font-size: 14px; line-height: 1; padding: 0;
 }
-
 .truask-label {
   margin: 2px 0 0; font-size: 11px; font-weight: 600;
   color: var(--muted); text-transform: uppercase; letter-spacing: .04em;
 }
-
-/* Premium topic cards */
 .truask-topics {
   display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
 }
@@ -172,8 +171,6 @@
 .truask-topic strong {
   font-size: 12px; font-weight: 600; line-height: 1.3;
 }
-
-/* Messages */
 .truask-msgs { display: flex; flex-direction: column; gap: 8px; }
 .truask-msg {
   max-width: 88%; padding: 8px 12px; border-radius: 8px;
@@ -188,8 +185,6 @@
 .truask-msg-who {
   font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 2px;
 }
-
-/* Footer — tight */
 .truask-ft {
   flex: 0 0 auto;
   display: flex; align-items: center; justify-content: space-between;
@@ -231,11 +226,18 @@ else
                         <span>Learn · Ask · Grow</span>
                     </div>
                 </div>
-                <button type="button" class="truask-x" @onclick="Collapse" aria-label="Close">×</button>
+                <div class="truask-hd-actions">
+                    <button type="button" class="truask-icon-btn" @onclick="StartNewConversation" title="New conversation" aria-label="New conversation">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M23 4v6h-6"/><path d="M20.49 15a9 9 0 11-2.12-9.36L23 10"/>
+                        </svg>
+                    </button>
+                    <button type="button" class="truask-x" @onclick="Collapse" aria-label="Close">×</button>
+                </div>
             </div>
             <p class="truask-greet">
                 Hi, Chapter Leader
-                <small>How can TRU help you today?</small>
+                <small>@CurrentPrompt</small>
             </p>
         </div>
 
@@ -338,9 +340,20 @@ else
     private string DraftText = "";
     private string SessionId = Guid.NewGuid().ToString("N");
     private readonly List<ChatEntry> Messages = new();
-
-    /// <summary>Archived sessions kept in memory for this page visit (optional history).</summary>
     private readonly List<ChatSession> SessionHistory = new();
+
+    private static readonly string[] Prompts =
+    {
+        "How can TRU help you today?",
+        "Ask about chapter policies or forms.",
+        "Need CPE events or calendar help?",
+        "Search approved guidance anytime.",
+        "Escalate a ticket or reach support.",
+        "Explore certifications and resources."
+    };
+    private int promptIndex;
+    private string CurrentPrompt => Prompts[promptIndex % Prompts.Length];
+    private System.Threading.Timer? promptTimer;
 
     private sealed class PendingFile
     {
@@ -374,33 +387,61 @@ else
         await InvokeAsync(StateHasChanged);
     }
 
-    private void Expand() => IsExpanded = true;
+    private void Expand()
+    {
+        IsExpanded = true;
+        StartPromptRotation();
+    }
 
-    /// <summary>
-    /// Close ends the current chat session (like ChatGPT / Copilot).
-    /// Reopen starts a clean welcome screen with popular topics — not the old thread.
-    /// Prior messages are archived in SessionHistory for this page visit.
-    /// </summary>
     private void Collapse()
     {
-        if (Messages.Count > 0)
-        {
-            SessionHistory.Insert(0, new ChatSession(
-                SessionId,
-                DateTime.UtcNow,
-                Messages.ToList()));
+        ArchiveCurrentSession();
+        ResetConversationState();
+        StopPromptRotation();
+        IsExpanded = false;
+    }
 
-            if (SessionHistory.Count > MaxStoredSessions)
-                SessionHistory.RemoveRange(MaxStoredSessions, SessionHistory.Count - MaxStoredSessions);
-        }
+    /// <summary>Small refresh icon: start a new conversation without closing the panel.</summary>
+    private void StartNewConversation()
+    {
+        ArchiveCurrentSession();
+        ResetConversationState();
+        promptIndex = 0;
+        StartPromptRotation();
+    }
 
-        // Start a brand-new session
+    private void ArchiveCurrentSession()
+    {
+        if (Messages.Count == 0) return;
+        SessionHistory.Insert(0, new ChatSession(SessionId, DateTime.UtcNow, Messages.ToList()));
+        if (SessionHistory.Count > MaxStoredSessions)
+            SessionHistory.RemoveRange(MaxStoredSessions, SessionHistory.Count - MaxStoredSessions);
+    }
+
+    private void ResetConversationState()
+    {
         SessionId = Guid.NewGuid().ToString("N");
         Messages.Clear();
         DraftText = string.Empty;
         _pendingFiles.Clear();
         IsSending = false;
-        IsExpanded = false;
+    }
+
+    private void StartPromptRotation()
+    {
+        promptTimer?.Dispose();
+        // Continuous rotation every 7 seconds — no pause
+        promptTimer = new System.Threading.Timer(_ =>
+        {
+            promptIndex = (promptIndex + 1) % Prompts.Length;
+            _ = InvokeAsync(StateHasChanged);
+        }, null, 7000, 7000);
+    }
+
+    private void StopPromptRotation()
+    {
+        promptTimer?.Dispose();
+        promptTimer = null;
     }
 
     private void OnDraftInput(ChangeEventArgs e) => DraftText = e.Value?.ToString() ?? "";
@@ -459,7 +500,10 @@ else
         }
     }
 
-    public void Dispose() { }
+    public void Dispose()
+    {
+        StopPromptRotation();
+    }
 
     private sealed record ChatEntry(string Role, string DisplayName, string Text);
     private sealed record ChatSession(string Id, DateTime EndedAtUtc, List<ChatEntry> Messages);
