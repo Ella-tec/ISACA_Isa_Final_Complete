@@ -1,5 +1,6 @@
 @page "/sign-in"
 @layout AuthLayout
+@rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
@@ -307,30 +308,27 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
             {
                 <div class="si-error" role="alert">@ErrorMessage</div>
             }
-            @if (Input is not null)
-            {
-                <EditForm Model="Input" method="post" OnValidSubmit="HandleSignInAsync" FormName="isa-sign-in">
-                    <DataAnnotationsValidator />
-                    <div class="si-field">
-                        <label class="si-label" for="signin-email">Email address</label>
-                        <InputText id="signin-email" class="si-input" @bind-Value="Input.Email" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
-                        <ValidationMessage For="() => Input.Email" />
-                    </div>
-                    <div class="si-field">
-                        <label class="si-label" for="signin-password">Password</label>
-                        <InputText id="signin-password" class="si-input" @bind-Value="Input.Password" type="password" autocomplete="current-password" />
-                        <ValidationMessage For="() => Input.Password" />
-                    </div>
-                    <button type="submit" class="si-submit">Sign in</button>
-                </EditForm>
-            }
+            <EditForm Model="Input" OnValidSubmit="HandleSignInAsync">
+                <DataAnnotationsValidator />
+                <div class="si-field">
+                    <label class="si-label" for="signin-email">Email address</label>
+                    <InputText id="signin-email" class="si-input" @bind-Value="Input!.Email" type="text" inputmode="email" autocomplete="username" autocapitalize="none" spellcheck="false" />
+                    <ValidationMessage For="() => Input!.Email" />
+                </div>
+                <div class="si-field">
+                    <label class="si-label" for="signin-password">Password</label>
+                    <InputText id="signin-password" class="si-input" @bind-Value="Input!.Password" type="password" autocomplete="current-password" />
+                    <ValidationMessage For="() => Input!.Password" />
+                </div>
+                <button type="submit" class="si-submit">Sign in</button>
+            </EditForm>
         </div>
     </div>
 }
 
 @code {
     [CascadingParameter] private HttpContext? HttpContext { get; set; }
-    [SupplyParameterFromForm(FormName = "isa-sign-in")] private SignInInput? Input { get; set; }
+    private SignInInput Input { get; set; } = new();
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
     private string? ErrorMessage { get; set; }
     private string searchQ = "";
@@ -360,13 +358,9 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
             "Market trends", "/market-trends"),
     };
 
-    protected override void OnInitialized()
-    {
-        Input ??= new();
-        StartTimer();
-    }
+    protected override void OnInitialized() => StartTimer();
 
-    private void OpenLogin() => showLogin = true;
+    private void OpenLogin() { showLogin = true; ErrorMessage = null; }
     private void CloseLogin() { showLogin = false; ErrorMessage = null; }
 
     private void StartTimer()
@@ -403,7 +397,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 
     private async Task HandleSignInAsync()
     {
-        if (Input is null) return;
         try
         {
             var result = await SignInService.SignInAsync(Input.Email, Input.Password);
