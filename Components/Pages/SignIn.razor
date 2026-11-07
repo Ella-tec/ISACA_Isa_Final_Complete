@@ -1,6 +1,5 @@
 @page "/sign-in"
 @layout AuthLayout
-@rendermode InteractiveServer
 @using System.ComponentModel.DataAnnotations
 @using Microsoft.AspNetCore.Authentication
 @using Microsoft.AspNetCore.Authentication.Cookies
@@ -12,445 +11,264 @@
 <PageTitle>Sign in | TRU</PageTitle>
 
 <style>
-html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
+html, body { margin: 0 !important; padding: 0 !important; background: #f4f8fc !important; }
 .si {
-  --ink: #152238; --navy: #0a1f4d; --blue: #0076a8; --muted: #5c6b82; --line: #e6ebf2;
-  --soft: #f5f7fb; --radius: 12px;
-  font-family: "Roboto", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
-  color: var(--ink); min-height: 100vh; background: #fff;
-  -webkit-font-smoothing: antialiased;
+  --ink: #0f2744; --navy: #0a2a5c; --blue: #1a6bb5; --green: #2db87a; --muted: #5a6f88; --line: #e2eaf3;
+  font-family: "DM Sans", "Roboto", system-ui, sans-serif; color: var(--ink);
+  min-height: 100vh; background:
+    radial-gradient(ellipse 80% 50% at 10% -10%, rgba(45,184,122,.12), transparent 50%),
+    radial-gradient(ellipse 60% 40% at 100% 0%, rgba(26,107,181,.1), transparent 45%),
+    #f4f8fc;
 }
 .si a { text-decoration: none; color: inherit; }
 
 .si-top {
-  background: #fff;
   display: flex; align-items: center; justify-content: space-between;
-  gap: .5rem; padding: .65rem 1.15rem;
-  border-bottom: 1px solid var(--line);
-  position: sticky; top: 0; z-index: 50;
+  gap: 1rem; padding: .85rem 1.5rem; flex-wrap: wrap;
 }
-.si-top__brand {
-  display: flex; align-items: center; gap: .5rem;
-  font-weight: 700; font-size: 1.02rem; color: var(--navy); letter-spacing: -.02em;
+.si-top__brand { display: flex; align-items: center; gap: .65rem; }
+.si-top__brand .mark {
+  width: 44px; height: 44px; border-radius: 14px;
+  background: linear-gradient(145deg, #1a6bb5 0%, #2db87a 55%, #f0b429 100%);
+  display: grid; place-items: center; color: #fff; font-weight: 800; font-size: .72rem;
+  box-shadow: 0 6px 18px rgba(26,107,181,.25);
 }
-.si-top__brand .logo {
-  width: 30px; height: 30px; border-radius: 8px;
-  background: linear-gradient(145deg, #00a4e4, #2a9b8f 55%, #5aaf3a);
-  color: #fff; display: grid; place-items: center; font-size: .52rem; font-weight: 800;
-  box-shadow: 0 2px 6px rgba(0,164,228,.25);
+.si-top__brand .txt strong { display: block; font-size: 1.2rem; font-weight: 800; letter-spacing: -.03em; line-height: 1.1; }
+.si-top__brand .txt small { display: block; font-size: .72rem; color: var(--muted); font-weight: 600; margin-top: .1rem; }
+.si-top__sign {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .55rem 1.25rem; border-radius: 999px;
+  background: linear-gradient(135deg, #0a2a5c, #1a6bb5); color: #fff;
+  font-weight: 700; font-size: .88rem; border: 0; cursor: pointer; font-family: inherit;
+  box-shadow: 0 6px 16px rgba(10,42,92,.22);
 }
-.si-top__actions { display: flex; align-items: center; gap: .1rem; }
-.si-icon {
-  width: 40px; height: 40px; border: 0; background: transparent; cursor: pointer;
-  color: #4a5568; border-radius: 50%;
-  display: grid; place-items: center; padding: 0;
-  transition: background .15s ease, color .15s ease;
-}
-.si-icon:hover { background: var(--soft); color: var(--navy); }
-.si-icon svg { width: 21px; height: 21px; stroke: currentColor; fill: none; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
-.si-icon.is-active { background: var(--soft); }
-
-.si-drawer-bg {
-  position: fixed; inset: 0; z-index: 80;
-  background: rgba(10, 20, 40, .32); backdrop-filter: blur(3px);
-}
-.si-drawer {
-  position: fixed; top: 0; right: 0; bottom: 0; z-index: 90;
-  width: min(100%, 380px); background: #fff;
-  display: flex; flex-direction: column;
-  box-shadow: -10px 0 36px rgba(10, 31, 77, .14);
-  animation: siIn .2s ease;
-}
-@@keyframes siIn { from { transform: translateX(16px); opacity: .5; } to { transform: none; opacity: 1; } }
-.si-drawer__head {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .65rem 1rem; border-bottom: 1px solid var(--line);
-}
-.si-drawer__search {
-  margin: 1rem 1.1rem .35rem;
-  display: flex; align-items: center; gap: .4rem;
-  background: var(--soft); border-radius: 999px; padding: .55rem 1rem;
-}
-.si-drawer__search input {
-  flex: 1; border: 0; background: transparent; outline: none;
-  font: inherit; font-size: .92rem; color: var(--ink);
-}
-.si-drawer__search button { border: 0; background: transparent; cursor: pointer; color: var(--muted); padding: 0; display: grid; place-items: center; }
-.si-drawer__search button svg { width: 18px; height: 18px; }
-.si-drawer__list { flex: 1; overflow-y: auto; padding: .25rem 0; }
-.si-drawer__list a, .si-drawer__list .si-drawer__item {
-  display: flex; align-items: center; justify-content: space-between;
-  padding: .95rem 1.25rem; font-size: 1rem; font-weight: 500; color: #2c3a56;
-  border: 0; background: transparent; width: 100%; text-align: left; cursor: pointer;
-  font-family: inherit; transition: background .12s ease;
-}
-.si-drawer__list a:hover, .si-drawer__list .si-drawer__item:hover { background: var(--soft); color: var(--navy); }
-.si-drawer__list .chev { color: #a0aab8; font-size: 1.05rem; font-weight: 400; }
-.si-drawer__foot {
-  padding: 1rem 1.25rem 1.3rem; border-top: 1px solid var(--line);
-  font-size: .86rem; color: var(--muted);
-}
-.si-drawer__foot a { color: #0b2a6b; font-weight: 600; }
-.si-drawer__copy { margin-top: .45rem; font-size: .72rem; color: #9aa3b2; }
-
-.si-nav {
-  display: none; background: #fff; justify-content: center; flex-wrap: wrap;
-  gap: .1rem 1.5rem; padding: .48rem 1rem; border-bottom: 1px solid var(--line);
-}
-.si-nav a { font-size: .84rem; font-weight: 600; color: #2c3a56; padding: .2rem 0; }
-.si-nav a:hover { color: var(--blue); }
-@@media (min-width: 900px) {
-  .si-nav { display: flex; }
-  .si-icon.menu-only { display: none; }
-}
+.si-top__sign:hover { filter: brightness(1.08); }
 
 .si-hero {
-  position: relative; width: 100%;
-  min-height: clamp(280px, 42vh, 420px);
-  overflow: hidden; background: var(--navy);
+  max-width: 720px; margin: 0 auto; padding: 2rem 1.25rem 1.5rem; text-align: center;
 }
-.si-hero__slide {
-  position: absolute; inset: 0; opacity: 0; visibility: hidden;
-  transition: opacity .7s ease;
-  background-size: cover; background-position: center 28%;
-  display: flex; align-items: center;
+.si-hero__logo {
+  width: 72px; height: 72px; margin: 0 auto 1rem; border-radius: 22px;
+  background: linear-gradient(145deg, #1a6bb5 0%, #2db87a 50%, #f0b429 100%);
+  display: grid; place-items: center; color: #fff; font-weight: 800; font-size: 1.1rem;
+  box-shadow: 0 12px 32px rgba(26,107,181,.28);
 }
-.si-hero__slide.is-on { opacity: 1; visibility: visible; z-index: 1; }
-.si-hero__shade {
-  position: absolute; inset: 0;
-  background: linear-gradient(105deg, rgba(7,18,42,.94) 0%, rgba(10,31,77,.78) 45%, rgba(10,31,77,.28) 100%);
+.si-hero h1 {
+  margin: 0 0 .35rem; font-size: clamp(1.75rem, 4vw, 2.4rem); font-weight: 800;
+  letter-spacing: -.03em; color: var(--ink);
 }
-.si-hero__inner {
-  position: relative; z-index: 2; max-width: 1080px; width: 100%; margin: 0 auto;
-  padding: 2rem 1.35rem 3rem; color: #fff;
+.si-hero .tag {
+  margin: 0 0 .75rem; font-size: 1.05rem; font-weight: 700; color: var(--blue);
+  letter-spacing: .02em;
 }
-.si-hero__crumb {
-  font-size: .72rem; opacity: .72; margin-bottom: .5rem;
-  letter-spacing: .03em; font-weight: 500;
+.si-hero p {
+  margin: 0 auto 1.5rem; max-width: 28rem; font-size: .98rem; line-height: 1.55; color: var(--muted);
 }
-.si-hero__inner h1 {
-  margin: 0 0 .5rem; font-size: clamp(1.55rem, 3.6vw, 2.35rem); font-weight: 700;
-  line-height: 1.12; max-width: 16ch; color: #fff; letter-spacing: -.02em;
+.si-hero__actions { display: flex; flex-wrap: wrap; gap: .65rem; justify-content: center; }
+.si-btn-primary {
+  display: inline-flex; align-items: center; gap: .4rem;
+  padding: .75rem 1.6rem; border-radius: 999px; border: 0; cursor: pointer;
+  background: linear-gradient(135deg, #0a2a5c, #1a6bb5); color: #fff;
+  font: inherit; font-weight: 700; font-size: .95rem;
+  box-shadow: 0 8px 22px rgba(10,42,92,.25);
 }
-.si-hero__inner p {
-  margin: 0 0 1.15rem; font-size: clamp(.9rem, 1.35vw, 1.02rem); opacity: .94;
-  max-width: 28rem; line-height: 1.5; color: #e8eef8; font-weight: 400;
+.si-btn-primary:hover { filter: brightness(1.06); }
+.si-btn-ghost {
+  display: inline-flex; align-items: center;
+  padding: .72rem 1.4rem; border-radius: 999px;
+  border: 1.5px solid var(--line); background: #fff; color: var(--ink);
+  font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer;
 }
-.si-btn {
-  display: inline-flex; align-items: center; justify-content: center;
-  padding: .62rem 1.25rem; border-radius: 999px; font-weight: 700; font-size: .88rem;
-  border: none; cursor: pointer; font-family: inherit;
-  background: #fff !important; color: #0a1f4d !important;
-  box-shadow: 0 4px 16px rgba(0,0,0,.15);
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.si-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,0,0,.18); }
+.si-btn-ghost:hover { border-color: #b8d0e8; background: #f7fafc; }
 
-.si-hero__controls {
-  position: absolute; bottom: .85rem; left: 50%; transform: translateX(-50%); z-index: 5;
-  display: flex; align-items: center; gap: .18rem;
-  background: rgba(255,255,255,.16); backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: .18rem .32rem; border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
-  box-shadow: 0 4px 16px rgba(0,0,0,.12);
+.si-pillars {
+  max-width: 900px; margin: 0 auto 2rem; padding: 0 1.25rem;
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: .85rem;
 }
-.si-hero__controls button {
-  width: 22px; height: 22px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,.92); color: var(--navy); font-size: .7rem; font-weight: 700;
-  display: grid; place-items: center; line-height: 1; padding: 0;
-  transition: background .15s ease, transform .15s ease;
+.si-pillar {
+  background: #fff; border: 1px solid var(--line); border-radius: 16px;
+  padding: 1.15rem 1rem; text-align: center;
+  box-shadow: 0 4px 16px rgba(15,39,68,.04);
 }
-.si-hero__controls button:hover { background: #fff; transform: scale(1.08); }
-.si-hero__controls button.pause { font-size: .45rem; letter-spacing: -.4px; }
-.si-hero__dots { display: flex; gap: 3px; padding: 0 .14rem; align-items: center; }
-.si-hero__dot {
-  width: 5px; height: 5px; border-radius: 50%; border: none; padding: 0;
-  background: rgba(255,255,255,.42); cursor: pointer;
-  transition: width .2s ease, background .2s ease;
+.si-pillar .ico {
+  width: 42px; height: 42px; margin: 0 auto .65rem; border-radius: 12px;
+  display: grid; place-items: center; font-size: 1.15rem;
 }
-.si-hero__dot.is-on { background: #fff; width: 13px; border-radius: 3px; }
+.si-pillar h3 { margin: 0 0 .3rem; font-size: .95rem; font-weight: 700; }
+.si-pillar p { margin: 0; font-size: .8rem; color: var(--muted); line-height: 1.4; }
 
 .si-insights {
-  width: 100%; margin: 0; padding: 2.25rem 1.35rem 2.5rem;
-  text-align: center; box-sizing: border-box; background: #fafbfd;
+  max-width: 1100px; margin: 0 auto; padding: 0 1.25rem 2.5rem; text-align: center;
 }
 .si-insights h2 {
-  margin: 0 0 .4rem; font-size: clamp(1.2rem, 2.2vw, 1.55rem);
-  font-weight: 700; color: var(--ink); letter-spacing: -.02em;
+  margin: 0 0 .4rem; font-size: 1.25rem; font-weight: 800; color: var(--ink);
 }
-.si-insights > p {
-  margin: 0 auto 1.5rem; max-width: 34rem;
-  font-size: .9rem; line-height: 1.55; color: var(--muted);
-}
+.si-insights > p { margin: 0 auto 1.15rem; max-width: 36rem; font-size: .9rem; color: var(--muted); }
 .si-cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  gap: 1rem; text-align: left;
-  max-width: 1120px; margin: 0 auto;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .75rem; text-align: left;
 }
 .si-card {
-  background: #fff; border-radius: var(--radius); overflow: hidden;
-  border: 1px solid #e8edf4;
-  transition: transform .18s ease, box-shadow .18s ease;
-  display: flex; flex-direction: column;
+  background: #fff; border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+  transition: transform .15s, box-shadow .15s;
 }
-.si-card:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 28px rgba(10,31,77,.1);
-  border-color: #dce4ef;
+.si-card:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(15,39,68,.08); }
+.si-card__img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: #d8e2ee; }
+.si-card__body { padding: .6rem .7rem .75rem; }
+.si-card__type { font-size: .65rem; font-weight: 700; color: var(--blue); margin: 0 0 .15rem; text-transform: uppercase; letter-spacing: .04em; }
+.si-card h3 { margin: 0 0 .2rem; font-size: .84rem; font-weight: 700; line-height: 1.25; }
+.si-card p { margin: 0; font-size: .74rem; line-height: 1.4; color: var(--muted); }
+
+.si-features {
+  max-width: 900px; margin: 0 auto 2rem; padding: 0 1.25rem;
+  display: flex; flex-wrap: wrap; gap: .55rem; justify-content: center;
 }
-.si-card__img {
-  width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: #d8e2ee;
-}
-.si-card__body { padding: .85rem .9rem 1rem; flex: 1; display: flex; flex-direction: column; }
-.si-card__type {
-  font-size: .65rem; font-weight: 700; color: var(--blue);
-  margin: 0 0 .3rem; letter-spacing: .06em; text-transform: uppercase;
-}
-.si-card h3 {
-  margin: 0 0 .3rem; font-size: .92rem; font-weight: 700;
-  line-height: 1.3; color: var(--ink); letter-spacing: -.01em;
-}
-.si-card p {
-  margin: 0; font-size: .8rem; line-height: 1.45; color: var(--muted);
-  flex: 1;
+.si-features span {
+  display: inline-flex; align-items: center; gap: .35rem;
+  padding: .4rem .85rem; border-radius: 999px; background: #fff;
+  border: 1px solid var(--line); font-size: .78rem; font-weight: 600; color: var(--ink);
 }
 
 .si-foot {
-  text-align: center; padding: 1rem 1rem 1.25rem;
-  font-size: .72rem; color: #8a96ab;
-  border-top: 1px solid var(--line); background: #fff;
+  text-align: center; padding: 1rem; font-size: .75rem; color: #8a9bb0;
+  border-top: 1px solid var(--line); background: rgba(255,255,255,.6);
 }
 
 .si-modal-bg {
   position: fixed; inset: 0; z-index: 1000;
-  background: rgba(7, 18, 42, .55); backdrop-filter: blur(5px);
+  background: rgba(10, 30, 60, .5); backdrop-filter: blur(5px);
   display: flex; align-items: center; justify-content: center; padding: 1.25rem;
-  animation: siFade .18s ease;
 }
-@@keyframes siFade { from { opacity: 0; } to { opacity: 1; } }
 .si-modal {
-  width: 100%; max-width: 370px; background: #fff; border-radius: 16px;
-  padding: 1.5rem 1.35rem 1.35rem;
-  box-shadow: 0 24px 56px rgba(7,22,54,.28); position: relative;
-  animation: siUp .22s ease;
+  width: 100%; max-width: 380px; background: #fff; border-radius: 18px;
+  padding: 1.5rem 1.35rem 1.3rem; box-shadow: 0 24px 60px rgba(10,30,60,.28); position: relative;
 }
-@@keyframes siUp { from { transform: translateY(10px); opacity: .7; } to { transform: none; opacity: 1; } }
 .si-modal__close {
-  position: absolute; top: .6rem; right: .7rem;
-  width: 32px; height: 32px; border: 0; border-radius: 50%;
-  background: var(--soft); color: var(--ink); font-size: 1.15rem; cursor: pointer;
+  position: absolute; top: .65rem; right: .75rem;
+  width: 30px; height: 30px; border: 0; border-radius: 50%;
+  background: #f0f4f9; color: var(--ink); font-size: 1.15rem; cursor: pointer;
   display: grid; place-items: center; line-height: 1;
-  transition: background .12s ease;
 }
-.si-modal__close:hover { background: #e4e9f0; }
-.si-modal h3 { margin: .15rem 0 .25rem; font-size: 1.2rem; font-weight: 700; text-align: center; letter-spacing: -.02em; }
-.si-modal > p { margin: 0 0 1.1rem; font-size: .84rem; color: var(--muted); text-align: center; line-height: 1.4; }
+.si-modal h3 { margin: 0 0 .2rem; font-size: 1.2rem; font-weight: 800; text-align: center; }
+.si-modal > p { margin: 0 0 1rem; font-size: .84rem; color: var(--muted); text-align: center; }
 .si-error {
-  margin-bottom: .85rem; padding: .6rem .75rem; border-left: 3px solid #e31837;
-  border-radius: 8px; background: #fdecee; color: #9b1027; font-size: .82rem; line-height: 1.4;
+  margin-bottom: .75rem; padding: .55rem .7rem; border-left: 4px solid #e31837;
+  border-radius: 8px; background: #fdecee; color: #9b1027; font-size: .82rem;
 }
-.si-field { margin-bottom: .85rem; }
+.si-field { margin-bottom: .75rem; }
 .si-label {
-  display: block; margin-bottom: .28rem; font-weight: 700; font-size: .65rem;
-  letter-spacing: .08em; text-transform: uppercase; color: #07649d;
+  display: block; margin-bottom: .25rem; font-weight: 700; font-size: .65rem;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--blue);
 }
 .si-input {
   display: block; width: 100%; padding: .7rem .85rem; border: 1.5px solid #d0dce8;
-  border-radius: 10px; background: var(--soft); color: var(--ink); font: inherit; font-size: .92rem;
-  box-sizing: border-box; transition: border-color .15s ease, box-shadow .15s ease, background .15s ease;
+  border-radius: 10px; background: #f7f9fc; color: var(--ink); font: inherit; font-size: .92rem;
+  box-sizing: border-box;
 }
 .si-input:focus {
-  outline: none; border-color: #00a4e4;
-  box-shadow: 0 0 0 3px rgba(0,164,228,.14); background: #fff;
+  outline: none; border-color: #1a6bb5; box-shadow: 0 0 0 3px rgba(26,107,181,.15); background: #fff;
 }
 .si-submit {
-  width: 100%; margin-top: .2rem; padding: .78rem 1rem; border: 0; border-radius: 10px;
-  background: var(--navy); color: #fff; font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer;
-  transition: background .15s ease, transform .12s ease;
+  width: 100%; margin-top: .15rem; padding: .78rem 1rem; border: 0; border-radius: 10px;
+  background: linear-gradient(135deg, #0a2a5c, #1a6bb5); color: #fff;
+  font: inherit; font-weight: 700; font-size: .92rem; cursor: pointer;
 }
-.si-submit:hover { background: #123066; }
-.si-submit:active { transform: scale(.99); }
+.si-submit:hover { filter: brightness(1.06); }
 
-@@media (max-width: 560px) {
-  .si-cards { grid-template-columns: 1fr; max-width: 360px; margin: 0 auto; }
-  .si-hero__inner { padding: 1.75rem 1.15rem 2.75rem; }
-  .si-insights { padding: 1.75rem 1.1rem 2rem; }
+@@media (max-width: 900px) {
+  .si-cards { grid-template-columns: 1fr 1fr; }
+  .si-pillars { grid-template-columns: 1fr; max-width: 360px; }
 }
-@@media (min-width: 561px) and (max-width: 900px) {
-  .si-cards { grid-template-columns: repeat(2, 1fr); }
+@@media (max-width: 520px) {
+  .si-cards { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }
 }
 </style>
 
 <div class="si">
     <header class="si-top">
         <a class="si-top__brand" href="/sign-in">
-            <span class="logo">TRU</span>
-            TRU
+            <span class="mark">TRU</span>
+            <span class="txt"><strong>TRU</strong><small>Learn · Ask · Grow</small></span>
         </a>
-        <div class="si-top__actions">
-            <button type="button" class="si-icon" @onclick="OpenLogin" title="Sign in" aria-label="Sign in">
-                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c0-3.4 2.9-6 6.5-6s6.5 2.6 6.5 6"/></svg>
-            </button>
-            <button type="button" class="si-icon menu-only @(menuOpen ? "is-active" : null)" @onclick="ToggleMenu"
-                    title="@(menuOpen ? "Close menu" : "Open menu")" aria-label="@(menuOpen ? "Close menu" : "Open menu")" aria-expanded="@menuOpen">
-                @if (menuOpen)
-                {
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
-                }
-                else
-                {
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14"/></svg>
-                }
-            </button>
-        </div>
+        <button type="button" class="si-top__sign" @onclick="OpenLogin">Sign in →</button>
     </header>
 
-    <nav class="si-nav" aria-label="Main">
-        <a href="/resource-library">Resource library</a>
-        <a href="/knowledge-base">Knowledge base</a>
-        <a href="/events">Events</a>
-        <a href="/market-trends">Market trends</a>
-        <a href="/contact">Contact</a>
-    </nav>
-
-    @if (menuOpen)
-    {
-        <div class="si-drawer-bg" @onclick="CloseMenu"></div>
-        <aside class="si-drawer" role="dialog" aria-modal="true" aria-label="Menu">
-            <div class="si-drawer__head">
-                <a class="si-top__brand" href="/sign-in" @onclick="CloseMenu">
-                    <span class="logo">TRU</span>
-                    TRU
-                </a>
-                <button type="button" class="si-icon" @onclick="CloseMenu" aria-label="Close menu">
-                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
-                </button>
-            </div>
-            <form class="si-drawer__search" @onsubmit="HandleSearch" @onsubmit:preventDefault>
-                <input type="search" @bind="searchQ" placeholder="Search" aria-label="Search" />
-                <button type="submit" title="Search" aria-label="Search">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
-                </button>
-            </form>
-            <div class="si-drawer__list">
-                <a href="/resource-library" @onclick="CloseMenu">Resource library <span class="chev">›</span></a>
-                <a href="/knowledge-base" @onclick="CloseMenu">Knowledge base <span class="chev">›</span></a>
-                <a href="/events" @onclick="CloseMenu">Events <span class="chev">›</span></a>
-                <a href="/market-trends" @onclick="CloseMenu">Market trends <span class="chev">›</span></a>
-                <a href="/contact" @onclick="CloseMenu">Contact <span class="chev">›</span></a>
-                <button type="button" class="si-drawer__item" @onclick="OpenLoginFromMenu">
-                    Sign in <span class="chev">›</span>
-                </button>
-            </div>
-            <div class="si-drawer__foot">
-                Need help? <a href="/contact" @onclick="CloseMenu">Get support</a>
-                <div class="si-drawer__copy">© @DateTime.Now.Year TRU · Chapter support</div>
-            </div>
-        </aside>
-    }
-
-    <section class="si-hero" aria-label="Featured">
-        @for (var i = 0; i < heroes.Length; i++)
-        {
-            var h = heroes[i];
-            <div class="si-hero__slide @(i == heroIndex ? "is-on" : null)" style="background-image:url('@h.Image')">
-                <div class="si-hero__shade"></div>
-                <div class="si-hero__inner">
-                    <div class="si-hero__crumb">@h.Crumb</div>
-                    <h1>@h.Title</h1>
-                    <p>@h.Caption</p>
-                    <a class="si-btn" href="@h.PrimaryHref">@h.PrimaryLabel</a>
-                </div>
-            </div>
-        }
-        <div class="si-hero__controls">
-            <button type="button" @onclick="PrevHero" aria-label="Previous">‹</button>
-            <button type="button" class="pause" @onclick="TogglePause" aria-label="@(paused ? "Play" : "Pause")">@(paused ? "▶" : "❚❚")</button>
-            <div class="si-hero__dots">
-                @for (var i = 0; i < heroes.Length; i++)
-                {
-                    var di = i;
-                    <button type="button" class="si-hero__dot @(i == heroIndex ? "is-on" : null)" @onclick="() => heroIndex = di"></button>
-                }
-            </div>
-            <button type="button" @onclick="NextHero" aria-label="Next">›</button>
+    <section class="si-hero">
+        <div class="si-hero__logo">TRU</div>
+        <h1>Your Trusted ISACA AI Assistant</h1>
+        <p class="tag">Learn · Ask · Grow</p>
+        <p>Chapter support for officers and volunteers — guidance, resources, and tools in one place.</p>
+        <div class="si-hero__actions">
+            <button type="button" class="si-btn-primary" @onclick="OpenLogin">Sign In →</button>
+            <a class="si-btn-ghost" href="https://www.isaca.org/" target="_blank" rel="noopener">ISACA.org</a>
         </div>
     </section>
 
+    <div class="si-pillars">
+        <div class="si-pillar">
+            <div class="ico" style="background:#e8f4fc;color:#1a6bb5">💬</div>
+            <h3>Ask</h3>
+            <p>Chapter questions answered from approved guidance.</p>
+        </div>
+        <div class="si-pillar">
+            <div class="ico" style="background:#e8f8f0;color:#2db87a">📚</div>
+            <h3>Learn</h3>
+            <p>Resources, certifications, and knowledge base.</p>
+        </div>
+        <div class="si-pillar">
+            <div class="ico" style="background:#fff6e8;color:#d4920a">📊</div>
+            <h3>Grow</h3>
+            <p>Analytics, events, and chapter health insights.</p>
+        </div>
+    </div>
+
+    <div class="si-features">
+        <span>🛡 Trusted &amp; Secure</span>
+        <span>🌐 Multi-Language</span>
+        <span>🚀 Smart AI Assistance</span>
+        <span>📈 Real-Time Insights</span>
+        <span>👥 Expert Support</span>
+    </div>
+
     <section class="si-insights">
-        <h2>Stay ahead with ISACA insights</h2>
-        <p>Explore frameworks, white papers, credentials, and tools for your chapter and career.</p>
+        <h2>ISACA insights &amp; thought leadership</h2>
+        <p>White papers, journal, tools, and credential paths.</p>
         <div class="si-cards">
             <a class="si-card" href="https://www.isaca.org/resources/white-papers/2026/security-debt-the-unseen-risk-undermining-cyber-resilience" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
+                <img class="si-card__img" src="https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=560&q=80" alt="" loading="lazy" />
                 <div class="si-card__body">
                     <div class="si-card__type">White Paper</div>
-                    <h3>Security Debt: The Unseen Risk</h3>
-                    <p>Where security debt comes from and its impact on resilience.</p>
+                    <h3>Security Debt</h3>
+                    <p>Unseen risk undermining cyber resilience.</p>
                 </div>
             </a>
             <a class="si-card" href="https://www.isaca.org/resources/isaca-journal/issues/2026/volume-6" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
+                <img class="si-card__img" src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=560&q=80" alt="" loading="lazy" />
                 <div class="si-card__body">
-                    <div class="si-card__type">ISACA Journal</div>
+                    <div class="si-card__type">Journal</div>
                     <h3>Volume 6, 2026</h3>
-                    <p>Managing risk in emerging tech and more.</p>
-                </div>
-            </a>
-            <a class="si-card" href="https://www.isaca.org/store2/product/WPAIAT" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
-                <div class="si-card__body">
-                    <div class="si-card__type">Tool</div>
-                    <h3>AI Impact Assessment Tool</h3>
-                    <p>Ethical consequences of AI projects.</p>
-                </div>
-            </a>
-            <a class="si-card" href="https://www.isaca.org/resources/white-papers/2025/leveraging-cobit-for-effective-ai-system-governance" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
-                <div class="si-card__body">
-                    <div class="si-card__type">White Paper</div>
-                    <h3>COBIT for AI Governance</h3>
-                    <p>Govern AI systems with the COBIT framework.</p>
+                    <p>Risk in emerging tech and more.</p>
                 </div>
             </a>
             <a class="si-card" href="https://www.isaca.org/credentialing/cisa" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
+                <img class="si-card__img" src="https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=560&q=80" alt="" loading="lazy" />
                 <div class="si-card__body">
                     <div class="si-card__type">Credential</div>
                     <h3>CISA</h3>
-                    <p>Audit and assess information systems.</p>
-                </div>
-            </a>
-            <a class="si-card" href="https://www.isaca.org/credentialing/cism" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
-                <div class="si-card__body">
-                    <div class="si-card__type">Credential</div>
-                    <h3>CISM</h3>
-                    <p>Design enterprise security programs.</p>
-                </div>
-            </a>
-            <a class="si-card" href="https://www.isaca.org/credentialing/crisc" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
-                <div class="si-card__body">
-                    <div class="si-card__type">Credential</div>
-                    <h3>CRISC</h3>
-                    <p>Manage IT risk and implement controls.</p>
+                    <p>Audit &amp; assess information systems.</p>
                 </div>
             </a>
             <a class="si-card" href="https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals" target="_blank" rel="noopener">
-                <img class="si-card__img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=640&q=80" alt="" loading="lazy" />
+                <img class="si-card__img" src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=560&q=80" alt="" loading="lazy" />
                 <div class="si-card__body">
                     <div class="si-card__type">Guide</div>
-                    <h3>Top ISACA certifications</h3>
-                    <p>CISA, CISM, CRISC, CGEIT, CDPSE paths.</p>
+                    <h3>Top certifications</h3>
+                    <p>CISA, CISM, CRISC, CGEIT, CDPSE.</p>
                 </div>
             </a>
         </div>
     </section>
 
-    <footer class="si-foot">TRU · Chapter support</footer>
+    <footer class="si-foot">TRU · Learn · Ask · Grow · Your ISACA partner</footer>
 </div>
 
 @if (showLogin)
@@ -458,7 +276,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     <div class="si-modal-bg" @onclick="CloseLogin">
         <div class="si-modal" @onclick:stopPropagation="true" role="dialog" aria-modal="true" aria-labelledby="si-login-title">
             <button type="button" class="si-modal__close" @onclick="CloseLogin" aria-label="Close">×</button>
-            <h3 id="si-login-title">Sign in</h3>
+            <h3 id="si-login-title">Sign in to TRU</h3>
             <p>Use the email and password for your TRU account.</p>
             @if (ErrorMessage is not null)
             {
@@ -490,80 +308,12 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     [SupplyParameterFromForm(FormName = "isa-sign-in")] private SignInInput? Input { get; set; }
     [SupplyParameterFromQuery] private string? ReturnUrl { get; set; }
     private string? ErrorMessage { get; set; }
-    private string searchQ = "";
-    private int heroIndex;
-    private bool paused;
     private bool showLogin;
-    private bool menuOpen;
-    private System.Threading.Timer? heroTimer;
 
-    private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref);
-    private static readonly Hero[] heroes =
-    {
-        new("Home · Chapter support", "Empowering your chapter",
-            "Guides, knowledge, events, and tools for ISACA chapter officers and volunteers.",
-            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=85",
-            "Open resource library", "/resource-library"),
-        new("Home · Events", "Mark your calendar",
-            "Plan webinars, meetups, and CPE sessions with the Events workspace.",
-            "https://images.unsplash.com/photo-1540575467063-178a50c2df87?auto=format&fit=crop&w=1600&q=85",
-            "View events", "/events"),
-        new("Home · Knowledge", "The leader's compass",
-            "Approved chapter guidance and certification paths for your team.",
-            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=85",
-            "Knowledge base", "/knowledge-base"),
-        new("Home · Resources", "Advance trust in technology",
-            "Policies, frameworks, and market context for chapter leaders.",
-            "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=85",
-            "Market trends", "/market-trends"),
-    };
+    protected override void OnInitialized() => Input ??= new();
 
-    protected override void OnInitialized()
-    {
-        Input ??= new();
-        StartTimer();
-        if (Navigation.Uri.Contains("login=1", StringComparison.OrdinalIgnoreCase))
-            showLogin = true;
-    }
-
-    private void ToggleMenu() => menuOpen = !menuOpen;
-    private void CloseMenu() => menuOpen = false;
-    private void OpenLogin() { menuOpen = false; showLogin = true; }
-    private void OpenLoginFromMenu() { menuOpen = false; showLogin = true; }
+    private void OpenLogin() => showLogin = true;
     private void CloseLogin() { showLogin = false; ErrorMessage = null; }
-
-    private void StartTimer()
-    {
-        heroTimer?.Dispose();
-        if (paused) return;
-        heroTimer = new System.Threading.Timer(_ =>
-        {
-            heroIndex = (heroIndex + 1) % heroes.Length;
-            _ = InvokeAsync(StateHasChanged);
-        }, null, 6500, 6500);
-    }
-
-    private void TogglePause()
-    {
-        paused = !paused;
-        if (paused) heroTimer?.Dispose();
-        else StartTimer();
-    }
-
-    private void PrevHero() => heroIndex = heroIndex == 0 ? heroes.Length - 1 : heroIndex - 1;
-    private void NextHero() => heroIndex = (heroIndex + 1) % heroes.Length;
-
-    private void HandleSearch()
-    {
-        menuOpen = false;
-        if (string.IsNullOrWhiteSpace(searchQ)) return;
-        var q = searchQ.Trim().ToLowerInvariant();
-        if (q.Contains("event") || q.Contains("calendar")) Navigation.NavigateTo("/events");
-        else if (q.Contains("knowledge") || q.Contains("article")) Navigation.NavigateTo("/knowledge-base");
-        else if (q.Contains("market") || q.Contains("trend")) Navigation.NavigateTo("/market-trends");
-        else if (q.Contains("contact")) Navigation.NavigateTo("/contact");
-        else Navigation.NavigateTo("/resource-library");
-    }
 
     private async Task HandleSignInAsync()
     {
@@ -593,7 +343,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
         !string.IsNullOrEmpty(ReturnUrl) && ReturnUrl.StartsWith('/') && !ReturnUrl.StartsWith("//") && !ReturnUrl.StartsWith("/\\")
             ? ReturnUrl : "/";
 
-    public void Dispose() => heroTimer?.Dispose();
+    public void Dispose() { }
 
     private sealed class SignInInput
     {
