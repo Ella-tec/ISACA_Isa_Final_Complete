@@ -1,9 +1,15 @@
 @inherits LayoutComponentBase
 
-@* Sign-in layout: no sidebar, no floating TRU Ask bubble *@
+@* Sign-in layout: no sidebar; TRU Ask bubble available *@
 
 <style>
 #blazor-error-ui { display: none !important; }
 </style>
+
+<ChatWidget @rendermode="InteractiveServer"
+            Hosts="@(new Dictionary<string,string> {
+                ["remote"] = "http://100.89.6.69:11434",
+                ["local"]  = "http://localhost:11434"
+            })" />
 
 @Body
