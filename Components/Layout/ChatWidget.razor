@@ -1,6 +1,4 @@
-@* TRU Ask — compact chat widget *@
-@using System.Net.Http.Json
-@using System.Text.Json.Serialization
+@* TRU Ask — Learn · Ask · Grow style *@
 @using IsaChatApp.Services
 @implements IDisposable
 @inject IJSRuntime JS
@@ -17,7 +15,7 @@
     @if (ActiveDashboardUrl is not null)
     {
         <div class="isa-widget__dashboardHost">
-            <button type="button" class="isa-widget__dashboardClose" @onclick="CloseDashboard" title="Close" aria-label="Close">&times;</button>
+            <button type="button" class="isa-widget__dashboardClose" @onclick="CloseDashboard" aria-label="Close">&times;</button>
             <iframe src="@ActiveDashboardUrl" class="isa-widget__dashboardFrame" title="Dashboard"></iframe>
         </div>
     }
@@ -33,88 +31,98 @@
         <div class="isa-widget__backdrop" @onclick="Collapse"></div>
         <div class="isa-widget__panel is-expanded">
             <div class="isa-widget__header">
-                <div class="isa-widget__identity">
-                    <span class="isa-widget__badge" title="TRU" aria-label="TRU">
-                        <Throbber Spinning="false" />
-                    </span>
-                    <span class="isa-widget__title">TRU Ask</span>
-                </div>
-                <div class="isa-widget__headerLinks">
-                    @if (Messages.Count > 0 && !IsSending)
-                    {
-                        <button type="button" class="isa-widget__headerLink" @onclick="NewConversation" title="New conversation">New</button>
-                    }
-                    <button type="button" class="isa-widget__close" @onclick="Collapse" aria-label="Close">&times;</button>
-                </div>
-            </div>
-
-            <div class="isa-widget__messages" @ref="_messagesEl">
-                @if (Messages.Count == 0 && !IsSending)
-                {
-                    <div class="isa-widget__empty">
-                        <h3>TRU Ask</h3>
-                        <p>Ask about chapter operations, policies, forms, and approved documents.</p>
-                        <div class="isa-widget__suggestions">
-                            <button type="button" class="isa-widget__suggestion" @onclick='() => QuickAsk("Board meetings")'>Board meetings</button>
-                            <button type="button" class="isa-widget__suggestion" @onclick='() => QuickAsk("Educational events")'>Educational events</button>
-                            <button type="button" class="isa-widget__suggestion" @onclick='() => QuickAsk("Yearly paperwork")'>Yearly paperwork</button>
+                <div class="isa-widget__headerTop">
+                    <div class="isa-widget__brand">
+                        <span class="isa-widget__logoMark">TRU</span>
+                        <div class="isa-widget__brandText">
+                            <strong>TRU</strong>
+                            <small>Learn · Ask · Grow</small>
                         </div>
                     </div>
-                }
-                else
-                {
-                    @foreach (var msg in MessagesNewestFirst)
-                    {
-                        <div id="@msg.DomId" class="isa-widget__message isa-widget__message--@msg.Role">
-                            <div class="isa-widget__who">@msg.DisplayName</div>
-                            <div class="isa-widget__text">@msg.Text</div>
-                        </div>
-                    }
-                }
+                    <button type="button" class="isa-widget__close" @onclick="Collapse" aria-label="Close">&times;</button>
+                </div>
+                <p class="isa-widget__greet">Hi, Chapter Leader.</p>
+                <p class="isa-widget__greetSub">How can TRU help you today?</p>
             </div>
 
-            @if (_pendingFiles.Count > 0)
-            {
-                <div class="isa-widget__attachList" aria-label="Attachments">
-                    @foreach (var f in _pendingFiles)
-                    {
-                        <span class="isa-widget__attachChip">
-                            <span class="isa-widget__attachName" title="@f.Name">@f.Name</span>
-                            <span class="isa-widget__attachSize">@FormatSize(f.Size)</span>
-                            <button type="button" class="isa-widget__attachRemove" @onclick="() => RemovePending(f.Id)" aria-label="Remove @f.Name" disabled="@IsSending">×</button>
-                        </span>
-                    }
-                </div>
-            }
-
-            <div class="isa-widget__inputRow">
-                <label class="isa-widget__attachBtn" title="Attach file" aria-label="Attach file">
-                    <InputFile class="isa-widget__fileInput" OnChange="OnInputFiles" multiple
-                               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.gif,.csv,.xlsx,.pptx"
-                               disabled="@IsSending" />
-                    <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
-                    </svg>
-                </label>
-                <div class="isa-widget__inputWrap">
-                    <input class="isa-widget__input"
-                           placeholder="Ask about your chapter..."
-                           aria-label="Ask TRU a question"
+            <div class="isa-widget__body">
+                <div class="isa-widget__askBox">
+                    <label class="isa-widget__attachBtn" title="Attach file" aria-label="Attach file">
+                        <InputFile class="isa-widget__fileInput" OnChange="OnInputFiles" multiple
+                                   accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.gif,.csv,.xlsx,.pptx"
+                                   disabled="@IsSending" />
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                        </svg>
+                    </label>
+                    <input type="text"
+                           placeholder="Ask anything about ISACA..."
+                           aria-label="Ask TRU"
                            value="@DraftText"
                            @oninput="OnDraftInput"
                            @onkeydown="HandleKeyDown"
                            disabled="@IsSending" />
+                    <button type="button" class="isa-widget__askSend" @onclick="Send"
+                            disabled="@(IsSending || (string.IsNullOrWhiteSpace(DraftText) && _pendingFiles.Count == 0))"
+                            aria-label="Send">
+                        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 2L11 13" /><path d="M22 2L15 22L11 13L2 9L22 2Z" />
+                        </svg>
+                    </button>
                 </div>
-                <button type="button" class="isa-widget__send" @onclick="Send" disabled="@(IsSending || (string.IsNullOrWhiteSpace(DraftText) && _pendingFiles.Count == 0))" aria-label="Send">
-                    <svg viewBox="0 0 24 24" class="isa-widget__sendIcon" aria-hidden="true">
-                        <path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
-                    </svg>
-                </button>
+
+                @if (_pendingFiles.Count > 0)
+                {
+                    <div class="isa-widget__attachList">
+                        @foreach (var f in _pendingFiles)
+                        {
+                            <span class="isa-widget__attachChip">
+                                @f.Name
+                                <button type="button" class="isa-widget__attachRemove" @onclick="() => RemovePending(f.Id)" disabled="@IsSending">×</button>
+                            </span>
+                        }
+                    </div>
+                }
+
+                @if (Messages.Count == 0 && !IsSending)
+                {
+                    <p class="isa-widget__sectionLabel">Popular Topics</p>
+                    <div class="isa-widget__topics">
+                        <button type="button" class="isa-widget__topic" @onclick='() => QuickAsk("ISACA guidance for chapter officers")'>
+                            <div class="isa-widget__topicIco">🛡</div>
+                            <span>ISACA Guidance</span>
+                        </button>
+                        <button type="button" class="isa-widget__topic" @onclick='() => QuickAsk("Knowledge base articles")'>
+                            <div class="isa-widget__topicIco">📚</div>
+                            <span>Knowledge Base</span>
+                        </button>
+                        <button type="button" class="isa-widget__topic" @onclick='() => QuickAsk("Chapter analytics overview")'>
+                            <div class="isa-widget__topicIco">📊</div>
+                            <span>Chapter Analytics</span>
+                        </button>
+                        <button type="button" class="isa-widget__topic" @onclick='() => QuickAsk("How do I contact support?")'>
+                            <div class="isa-widget__topicIco">🎧</div>
+                            <span>Support Center</span>
+                        </button>
+                    </div>
+                }
+                else
+                {
+                    <div class="isa-widget__messages">
+                        @foreach (var msg in Messages)
+                        {
+                            <div class="isa-widget__message isa-widget__message--@msg.Role">
+                                <div class="isa-widget__who">@msg.DisplayName</div>
+                                <div>@msg.Text</div>
+                            </div>
+                        }
+                    </div>
+                }
             </div>
 
             <div class="isa-widget__footer">
-                <span>Answers from approved documents.</span>
-                <a href="/contact" class="isa-widget__directSupportLink">Contact Team</a>
+                <span>Answers from approved documents</span>
+                <a href="/contact">Contact Team</a>
             </div>
         </div>
     }
@@ -127,9 +135,7 @@
     private bool IsSending;
     private string DraftText = "";
     private string? ActiveDashboardUrl;
-    private ElementReference _messagesEl;
     private readonly List<ChatEntry> Messages = new();
-    private IEnumerable<ChatEntry> MessagesNewestFirst => Messages.AsEnumerable().Reverse();
 
     private sealed class PendingFile
     {
@@ -141,11 +147,6 @@
     private readonly List<PendingFile> _pendingFiles = new();
     private const long MaxAttachBytes = 8 * 1024 * 1024;
     private const int MaxAttachCount = 5;
-
-    private static string FormatSize(long bytes) =>
-        bytes < 1024 ? $"{bytes} B" :
-        bytes < 1024 * 1024 ? $"{bytes / 1024.0:0.#} KB" :
-        $"{bytes / (1024.0 * 1024):0.##} MB";
 
     private void RemovePending(string id) => _pendingFiles.RemoveAll(f => f.Id == id);
 
@@ -170,7 +171,6 @@
     private void Expand() => IsExpanded = true;
     private void Collapse() => IsExpanded = false;
     private void CloseDashboard() => ActiveDashboardUrl = null;
-    private void NewConversation() { Messages.Clear(); _pendingFiles.Clear(); }
 
     private void OnDraftInput(ChangeEventArgs e) => DraftText = e.Value?.ToString() ?? "";
 
@@ -193,9 +193,8 @@
 
         if (_pendingFiles.Count > 0)
         {
-            var names = string.Join(", ", _pendingFiles.Select(f => $"{f.Name} ({FormatSize(f.Size)})"));
-            var attachNote = $"[Attached: {names}]";
-            text = string.IsNullOrEmpty(text) ? attachNote : text + "\n\n" + attachNote;
+            var names = string.Join(", ", _pendingFiles.Select(f => f.Name));
+            text = string.IsNullOrEmpty(text) ? $"[Attached: {names}]" : text + $"\n\n[Attached: {names}]";
             _pendingFiles.Clear();
         }
 
@@ -219,8 +218,7 @@
             catch
             {
                 Messages.Add(new ChatEntry("ai", "TRU Ask",
-                    "I received your message" + (text.Contains("[Attached:") ? " and attachment note" : "") +
-                    ". Start Ollama or check the pipeline host so full answers can run."));
+                    "I received your message. Start Ollama or check the pipeline host so full answers can run."));
             }
         }
         finally
@@ -232,8 +230,5 @@
 
     public void Dispose() { }
 
-    private sealed record ChatEntry(string Role, string DisplayName, string Text)
-    {
-        public string DomId { get; } = "isa-msg-" + Guid.NewGuid().ToString("N");
-    }
+    private sealed record ChatEntry(string Role, string DisplayName, string Text);
 }
