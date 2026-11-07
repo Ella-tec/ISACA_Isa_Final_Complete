@@ -97,7 +97,6 @@
 }
 .truask-greet small {
   display: block; margin-top: 2px; font-size: 12px; font-weight: 400; opacity: .9;
-  transition: opacity .25s ease;
 }
 .truask-body {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
@@ -173,8 +172,8 @@
 }
 .truask-msgs { display: flex; flex-direction: column; gap: 8px; }
 .truask-msg {
-  max-width: 88%; padding: 8px 12px; border-radius: 8px;
-  font-size: 13px; line-height: 1.4;
+  max-width: 92%; padding: 8px 12px; border-radius: 8px;
+  font-size: 13px; line-height: 1.45; white-space: pre-wrap;
 }
 .truask-msg--you {
   align-self: flex-end; background: #deecf9; color: var(--ink);
@@ -401,7 +400,6 @@ else
         IsExpanded = false;
     }
 
-    /// <summary>Small refresh icon: start a new conversation without closing the panel.</summary>
     private void StartNewConversation()
     {
         ArchiveCurrentSession();
@@ -430,7 +428,6 @@ else
     private void StartPromptRotation()
     {
         promptTimer?.Dispose();
-        // Continuous rotation every 7 seconds — no pause
         promptTimer = new System.Threading.Timer(_ =>
         {
             promptIndex = (promptIndex + 1) % Prompts.Length;
@@ -477,20 +474,30 @@ else
 
         try
         {
-            try
+            // 1) Hidden ISACA knowledge (no UI exposure) — natural answer + follow-up
+            var local = IsacaSampleKnowledge.TryAnswer(text);
+            if (!string.IsNullOrWhiteSpace(local))
             {
-                var ctx = new IsaChatApp.Services.Orchestrator.QueryContext
-                {
-                    Question = text,
-                    TraceId = Guid.NewGuid().ToString("N")
-                };
-                var resp = await Pipeline.RunAsync(ctx);
-                Messages.Add(new ChatEntry("ai", "TRU Ask", resp.Message ?? "No answer produced."));
+                Messages.Add(new ChatEntry("ai", "TRU Ask", local));
             }
-            catch
+            else
             {
-                Messages.Add(new ChatEntry("ai", "TRU Ask",
-                    "I received your message. Start Ollama or check the pipeline host so full answers can run."));
+                // 2) Full orchestrator pipeline when available
+                try
+                {
+                    var ctx = new IsaChatApp.Services.Orchestrator.QueryContext
+                    {
+                        Question = text,
+                        TraceId = Guid.NewGuid().ToString("N")
+                    };
+                    var resp = await Pipeline.RunAsync(ctx);
+                    Messages.Add(new ChatEntry("ai", "TRU Ask", resp.Message ?? "No answer produced."));
+                }
+                catch
+                {
+                    Messages.Add(new ChatEntry("ai", "TRU Ask",
+                        "I can help with ISACA certifications, chapters, CPE, COBIT, and digital trust. Try asking about CISA, membership, or how TRU can help."));
+                }
             }
         }
         finally
