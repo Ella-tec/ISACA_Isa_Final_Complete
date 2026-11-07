@@ -336,7 +336,11 @@ else
     private bool IsExpanded;
     private bool IsSending;
     private string DraftText = "";
+    private string SessionId = Guid.NewGuid().ToString("N");
     private readonly List<ChatEntry> Messages = new();
+
+    /// <summary>Archived sessions kept in memory for this page visit (optional history).</summary>
+    private readonly List<ChatSession> SessionHistory = new();
 
     private sealed class PendingFile
     {
@@ -348,6 +352,7 @@ else
     private readonly List<PendingFile> _pendingFiles = new();
     private const long MaxAttachBytes = 8 * 1024 * 1024;
     private const int MaxAttachCount = 5;
+    private const int MaxStoredSessions = 20;
 
     private void RemovePending(string id) => _pendingFiles.RemoveAll(f => f.Id == id);
 
@@ -370,7 +375,33 @@ else
     }
 
     private void Expand() => IsExpanded = true;
-    private void Collapse() => IsExpanded = false;
+
+    /// <summary>
+    /// Close ends the current chat session (like ChatGPT / Copilot).
+    /// Reopen starts a clean welcome screen with popular topics — not the old thread.
+    /// Prior messages are archived in SessionHistory for this page visit.
+    /// </summary>
+    private void Collapse()
+    {
+        if (Messages.Count > 0)
+        {
+            SessionHistory.Insert(0, new ChatSession(
+                SessionId,
+                DateTime.UtcNow,
+                Messages.ToList()));
+
+            if (SessionHistory.Count > MaxStoredSessions)
+                SessionHistory.RemoveRange(MaxStoredSessions, SessionHistory.Count - MaxStoredSessions);
+        }
+
+        // Start a brand-new session
+        SessionId = Guid.NewGuid().ToString("N");
+        Messages.Clear();
+        DraftText = string.Empty;
+        _pendingFiles.Clear();
+        IsSending = false;
+        IsExpanded = false;
+    }
 
     private void OnDraftInput(ChangeEventArgs e) => DraftText = e.Value?.ToString() ?? "";
 
@@ -431,4 +462,5 @@ else
     public void Dispose() { }
 
     private sealed record ChatEntry(string Role, string DisplayName, string Text);
+    private sealed record ChatSession(string Id, DateTime EndedAtUtc, List<ChatEntry> Messages);
 }
