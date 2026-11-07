@@ -6,31 +6,43 @@
 
 <style>
 .hm{
-  --ink:#1d2d5c;--blue:#00a4e4;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;
+  --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;--soft:#f4f7fb;
   font-family:"Roboto",system-ui,sans-serif;color:var(--ink);
   width:100%!important;max-width:none!important;margin:0!important;
   padding:10px!important;box-sizing:border-box;
   display:flex;flex-direction:column;gap:10px;
 }
 .hm a{text-decoration:none!important}
-
 .hm-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 0 auto}
 .hm-widget{
-  border-radius:14px;padding:.7rem 1rem;color:#fff;min-height:70px;
+  border-radius:14px;padding:.75rem 1rem;color:#fff;min-height:74px;
   display:flex;flex-direction:column;gap:.05rem;cursor:pointer;text-align:left;
   font-family:inherit;border:none;width:100%;
+  transition:transform .15s ease, box-shadow .15s ease;
 }
+.hm-widget:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(29,45,92,.18)}
 .hm-widget--clock{background:linear-gradient(120deg,#07649d,#00a4e4)}
 .hm-widget--weather{background:linear-gradient(120deg,#00a4e4,#36ac91)}
 .hm-widget__l{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
 .hm-widget__v{font-size:1.35rem;font-weight:600;line-height:1.2}
 .hm-widget__m{font-size:.78rem;opacity:.9}
-
+.hm-actions{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;flex:0 0 auto}
+.hm-action{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem .9rem;
+  text-align:left;cursor:pointer;font-family:inherit;color:var(--ink);
+  display:flex;flex-direction:column;gap:.25rem;min-height:96px;
+  transition:border-color .15s, box-shadow .15s, transform .15s;
+}
+.hm-action:hover{border-color:var(--blue);box-shadow:0 8px 22px rgba(29,45,92,.08);transform:translateY(-1px)}
+.hm-action__icon{
+  width:34px;height:34px;border-radius:10px;display:grid;place-items:center;
+  background:linear-gradient(135deg,#e8f4fc,#d6eef8);color:var(--mid);font-size:1rem;font-weight:700;
+}
+.hm-action__t{font-weight:700;font-size:.9rem}
+.hm-action__d{font-size:.75rem;color:var(--muted);line-height:1.35}
 .hm-slides{
-  position:relative;width:100%;
-  height:clamp(300px,44vh,500px);
-  border-radius:16px;overflow:hidden;background:#0c1a30;
-  flex:0 0 auto;
+  position:relative;width:100%;height:clamp(280px,40vh,460px);
+  border-radius:16px;overflow:hidden;background:#0c1a30;flex:0 0 auto;
 }
 .hm-slide{position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease;background-size:cover;background-position:center}
 .hm-slide.is-on{opacity:1;visibility:visible;z-index:1}
@@ -56,17 +68,28 @@
   font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.15);text-decoration:none;
 }
 .hm-slide__video:hover{background:#fff;color:#07649d}
-
+.hm-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;flex:0 0 auto}
+.hm-link{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:.8rem .95rem;
+  display:flex;align-items:center;gap:.75rem;cursor:pointer;text-align:left;
+  font-family:inherit;color:var(--ink);transition:border-color .15s, box-shadow .15s;
+}
+.hm-link:hover{border-color:var(--mid);box-shadow:0 6px 18px rgba(29,45,92,.08)}
+.hm-link__icon{
+  width:40px;height:40px;border-radius:12px;flex:0 0 auto;
+  display:grid;place-items:center;background:var(--soft);color:var(--mid);font-weight:700;font-size:.85rem;
+}
+.hm-link__t{font-weight:700;font-size:.88rem}
+.hm-link__d{font-size:.72rem;color:var(--muted)}
 .hm-vid{width:100%;flex:0 0 auto}
 .hm-vid__frame{
-  position:relative;width:100%;aspect-ratio:16/9;max-height:min(520px,55vh);
+  position:relative;width:100%;aspect-ratio:16/9;max-height:min(480px,50vh);
   border-radius:16px;overflow:hidden;background:#0c1a30;
 }
 .hm-vid__frame iframe{
   position:absolute;top:50%;left:50%;width:100%;height:100%;border:0;display:block;
   transform:translate(-50%,-50%) scale(1.12);transform-origin:center center;
 }
-
 .hm-wx-bg{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
 .hm-wx-modal{background:#fff;border-radius:16px;padding:1.2rem 1.35rem;max-width:400px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.15);color:var(--ink)}
 .hm-wx-modal h3{margin:0 0 .7rem;font-size:1.1rem}
@@ -76,7 +99,10 @@
 .hm-wx-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.65rem 0 .45rem}
 .hm-wx-grid div{background:#f4f7fb;border-radius:10px;padding:.55rem .65rem;font-size:.84rem}
 .hm-wx-grid strong{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;margin-bottom:.1rem}
-
+@@media(max-width:900px){
+  .hm-actions{grid-template-columns:1fr 1fr}
+  .hm-links{grid-template-columns:1fr}
+}
 @@media(max-width:700px){
   .hm-strip{grid-template-columns:1fr}
   .hm-slides{height:240px}
@@ -100,6 +126,49 @@
         </button>
     </div>
 
+    <div class="hm-actions">
+        <button type="button" class="hm-action" @onclick='() => Go("knowledge-base")'>
+            <span class="hm-action__icon">KB</span>
+            <span class="hm-action__t">Knowledge base</span>
+            <span class="hm-action__d">Chapter guidance and approved answers</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("events")'>
+            <span class="hm-action__icon">EV</span>
+            <span class="hm-action__t">Events</span>
+            <span class="hm-action__d">Webinars, CPE, and chapter calendar</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("escalations")'>
+            <span class="hm-action__icon">ES</span>
+            <span class="hm-action__t">Escalations</span>
+            <span class="hm-action__d">Tickets with live SLA timers</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("resource-library")'>
+            <span class="hm-action__icon">RL</span>
+            <span class="hm-action__t">Resource library</span>
+            <span class="hm-action__d">Playbooks, templates, and links</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("market-trends")'>
+            <span class="hm-action__icon">MT</span>
+            <span class="hm-action__t">Market trends</span>
+            <span class="hm-action__d">Digital trust and industry signals</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("contact")'>
+            <span class="hm-action__icon">CT</span>
+            <span class="hm-action__t">Contact</span>
+            <span class="hm-action__d">Reach chapter support</span>
+        </button>
+        <button type="button" class="hm-action" @onclick='() => Go("isaca-resources")'>
+            <span class="hm-action__icon">IS</span>
+            <span class="hm-action__t">ISACA resources</span>
+            <span class="hm-action__d">Official credentials and research</span>
+        </button>
+        <a class="hm-action" href="https://www.isaca.org/credentialing" target="_blank" rel="noopener">
+            <span class="hm-action__icon">★</span>
+            <span class="hm-action__t">Certifications</span>
+            <span class="hm-action__d">CISA · CISM · CRISC on ISACA.org</span>
+        </a>
+    </div>
+
     <div class="hm-slides">
         <button type="button" class="hm-slide__nav prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
         <button type="button" class="hm-slide__nav next" @onclick="NextSlide" aria-label="Next">›</button>
@@ -119,6 +188,21 @@
             }
         </div>
         <a class="hm-slide__video" href="@CurrentSlideVideo" target="_blank" rel="noopener" title="Open certification resources">▶ Cert path</a>
+    </div>
+
+    <div class="hm-links">
+        <button type="button" class="hm-link" @onclick='() => Go("governance")'>
+            <span class="hm-link__icon">GV</span>
+            <span><span class="hm-link__t">Governance</span><br /><span class="hm-link__d">Policies and oversight tools</span></span>
+        </button>
+        <button type="button" class="hm-link" @onclick='() => Go("analytics")'>
+            <span class="hm-link__icon">AN</span>
+            <span><span class="hm-link__t">Analytics</span><br /><span class="hm-link__d">Usage and chapter insights</span></span>
+        </button>
+        <button type="button" class="hm-link" @onclick='() => Go("settings")'>
+            <span class="hm-link__icon">ST</span>
+            <span><span class="hm-link__t">Settings</span><br /><span class="hm-link__d">Preferences and account</span></span>
+        </button>
     </div>
 
     <div class="hm-vid">
@@ -181,7 +265,7 @@
     private record YtVideo(string Id, string Title);
     private static readonly Slide[] slides =
     {
-        new("Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE — paths for audit, security, risk, and privacy.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80","https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals"),
+        new("Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE — paths for audit, security, risk, and privacy.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
         new("Digital trust leadership","Governance, risk, and cybersecurity for chapters and enterprises.","https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
         new("Enterprise performance","Advance teams with credentials, CMMI, and ISACA enterprise resources.","https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/enterprise"),
         new("State of cybersecurity","Trends, challenges, and priorities shaping digital trust.","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/resources"),
@@ -217,7 +301,7 @@
     }
     private void PrevSlide() => slideIndex = slideIndex == 0 ? slides.Length - 1 : slideIndex - 1;
     private void NextSlide() => slideIndex = (slideIndex + 1) % slides.Length;
-    private void Go(string p) { wxOpen = false; clockOpen = false; Nav.NavigateTo(p); }
+    private void Go(string p) { wxOpen = false; clockOpen = false; Nav.NavigateTo(p.StartsWith("/") ? p : "/" + p); }
     private void ApplyWx()
     {
         if (string.IsNullOrWhiteSpace(wxSearch)) return;
