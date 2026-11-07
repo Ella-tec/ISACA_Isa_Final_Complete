@@ -1,27 +1,9 @@
 @inherits LayoutComponentBase
 
-@* Sign-in layout: no sidebar, but Ask AI is available on every page *@
+@* Sign-in layout: no sidebar; TRU Ask available *@
 
 <style>
-#blazor-error-ui {
-  display: none !important;
-}
-
-/* Keep chat above sign-in content */
-.isa-widget { position: relative !important; z-index: 2147483000 !important; }
-.isa-widget__bubble {
-  position: fixed !important; bottom: 24px !important; right: 24px !important;
-  width: 64px !important; height: 64px !important; border: none !important;
-  border-radius: 50% !important; background: transparent !important;
-  cursor: pointer !important; display: grid !important; place-items: center !important;
-  padding: 0 !important; z-index: 2147483001 !important;
-}
-.isa-widget__panel.is-expanded {
-  position: fixed !important; bottom: 24px !important; right: 24px !important;
-  width: min(380px, calc(100vw - 2rem)) !important;
-  height: min(560px, calc(100vh - 3rem)) !important;
-  z-index: 2147483001 !important;
-}
+#blazor-error-ui { display: none !important; }
 </style>
 
 <ChatWidget @rendermode="InteractiveServer"
