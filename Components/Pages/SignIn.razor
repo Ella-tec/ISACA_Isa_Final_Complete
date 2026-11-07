@@ -80,24 +80,30 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 }
 .si-btn:hover { background: #e8eef8 !important; }
 
-.si-hero__controls {
-  position: absolute; bottom: 1rem; left: 50%; transform: translateX(-50%); z-index: 5;
-  display: flex; align-items: center; gap: .28rem;
-  background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
-  padding: .22rem .4rem; border-radius: 999px;
+.si-hero__nav {
+  position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
+  width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.88); color: var(--navy); font-size: 1.15rem; font-weight: 700;
+  display: grid; place-items: center; box-shadow: 0 4px 12px rgba(0,0,0,.12);
+  transition: background .15s ease;
 }
-.si-hero__controls button {
-  width: 24px; height: 24px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,.92); color: var(--navy); font-size: .75rem; font-weight: 700;
-  display: grid; place-items: center; line-height: 1;
+.si-hero__nav:hover { background: #fff; }
+.si-hero__nav.prev { left: 14px; }
+.si-hero__nav.next { right: 14px; }
+/* Home-style dots: small, transparent, elegant pill for active */
+.si-hero__dots {
+  position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; align-items: center; gap: 6px;
+  background: transparent; padding: 0; border: none;
 }
-.si-hero__controls button.pause { font-size: .5rem; }
-.si-hero__dots { display: flex; gap: 4px; padding: 0 .15rem; }
 .si-hero__dot {
-  width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0;
-  background: rgba(255,255,255,.4); cursor: pointer;
+  width: 7px; height: 7px; border-radius: 50%; border: none; padding: 0;
+  background: rgba(255,255,255,.45); cursor: pointer;
+  transition: width .25s ease, border-radius .25s ease, background .25s ease;
 }
-.si-hero__dot.is-on { background: #fff; width: 14px; border-radius: 4px; }
+.si-hero__dot.is-on {
+  background: #fff; width: 18px; border-radius: 999px;
+}
 
 /* Compact insights — less scroll */
 .si-insights {
@@ -212,17 +218,14 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
                 </div>
             </div>
         }
-        <div class="si-hero__controls">
-            <button type="button" @onclick="PrevHero" aria-label="Previous">‹</button>
-            <button type="button" class="pause" @onclick="TogglePause" aria-label="@(paused ? "Play" : "Pause")">@(paused ? "▶" : "❚❚")</button>
-            <div class="si-hero__dots">
-                @for (var i = 0; i < heroes.Length; i++)
-                {
-                    var di = i;
-                    <button type="button" class="si-hero__dot @(i == heroIndex ? "is-on" : null)" @onclick="() => heroIndex = di"></button>
-                }
-            </div>
-            <button type="button" @onclick="NextHero" aria-label="Next">›</button>
+        <button type="button" class="si-hero__nav prev" @onclick="PrevHero" aria-label="Previous">‹</button>
+        <button type="button" class="si-hero__nav next" @onclick="NextHero" aria-label="Next">›</button>
+        <div class="si-hero__dots">
+            @for (var i = 0; i < heroes.Length; i++)
+            {
+                var di = i;
+                <button type="button" class="si-hero__dot @(i == heroIndex ? "is-on" : null)" @onclick="() => heroIndex = di" aria-label="Slide @(i+1)"></button>
+            }
         </div>
     </section>
 
