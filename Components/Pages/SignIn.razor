@@ -14,72 +14,123 @@
 <style>
 html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
 .si {
-  --ink: #1a2744; --navy: #0a1f4d; --blue: #0076a8; --muted: #5a6a84; --line: #e4e9f0;
-  font-family: "Roboto", system-ui, sans-serif; color: var(--ink);
+  --ink: #1a2744; --navy: #0a1f4d; --blue: #0076a8; --muted: #5a6a84; --line: #e8ecf1;
+  font-family: "Roboto", system-ui, -apple-system, sans-serif; color: var(--ink);
   min-height: 100vh; background: #fff;
 }
 .si a { text-decoration: none; color: inherit; }
 
 .si-top {
-  background: #fff; display: flex; align-items: center; justify-content: space-between;
-  gap: .75rem; padding: .55rem 1.25rem; flex-wrap: wrap; border-bottom: 1px solid var(--line);
+  background: #fff;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: .5rem; padding: .7rem 1rem;
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 50;
 }
-.si-top__brand { display: flex; align-items: center; gap: .5rem; font-weight: 700; font-size: .95rem; color: var(--ink); }
+.si-top__brand {
+  display: flex; align-items: center; gap: .55rem;
+  font-weight: 700; font-size: 1.05rem; color: #0b1f4d; letter-spacing: -.02em;
+}
 .si-top__brand .logo {
-  width: 34px; height: 34px; border-radius: 50%;
+  width: 32px; height: 32px; border-radius: 8px;
   background: linear-gradient(145deg, #00a4e4, #2a9b8f 55%, #5aaf3a);
-  color: #fff; display: grid; place-items: center; font-size: .6rem; font-weight: 800;
+  color: #fff; display: grid; place-items: center; font-size: .55rem; font-weight: 800;
 }
-.si-search {
-  flex: 1 1 160px; max-width: 280px; margin: 0 auto;
-  display: flex; align-items: center; gap: .25rem;
-  background: #f2f5f9; border-radius: 999px; padding: .38rem .8rem;
+.si-top__actions { display: flex; align-items: center; gap: .15rem; }
+.si-icon {
+  width: 40px; height: 40px; border: 0; background: transparent; cursor: pointer;
+  color: #4a5568; border-radius: 50%;
+  display: grid; place-items: center; padding: 0;
+  transition: background .15s ease, color .15s ease;
 }
-.si-search input { flex: 1; border: 0; background: transparent; outline: none; font: inherit; font-size: .84rem; color: var(--ink); }
-.si-search button { border: 0; background: transparent; cursor: pointer; color: var(--muted); font-size: .95rem; padding: 0; }
-.si-top__sign {
-  display: inline-flex; padding: .4rem 1rem; border-radius: 7px;
-  background: var(--navy); color: #fff; font-weight: 700; font-size: .82rem;
-  border: 0; cursor: pointer; font-family: inherit;
+.si-icon:hover { background: #f2f5f9; color: var(--navy); }
+.si-icon svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+.si-icon.is-active { background: #f2f5f9; }
+
+.si-drawer-bg {
+  position: fixed; inset: 0; z-index: 80;
+  background: rgba(10, 20, 40, .28); backdrop-filter: blur(2px);
 }
-.si-top__sign:hover { background: #123066; }
+.si-drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 90;
+  width: min(100%, 400px); background: #fff;
+  display: flex; flex-direction: column;
+  box-shadow: -8px 0 32px rgba(10, 31, 77, .12);
+  animation: siSlideIn .22s ease;
+}
+@@keyframes siSlideIn { from { transform: translateX(12px); opacity: .6; } to { transform: none; opacity: 1; } }
+.si-drawer__head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: .7rem 1rem; border-bottom: 1px solid var(--line);
+}
+.si-drawer__search {
+  margin: 1rem 1rem .5rem;
+  display: flex; align-items: center; gap: .4rem;
+  background: #f2f5f9; border-radius: 999px; padding: .55rem .95rem;
+}
+.si-drawer__search input {
+  flex: 1; border: 0; background: transparent; outline: none;
+  font: inherit; font-size: .92rem; color: var(--ink);
+}
+.si-drawer__search button { border: 0; background: transparent; cursor: pointer; color: var(--muted); padding: 0; display: grid; place-items: center; }
+.si-drawer__search button svg { width: 18px; height: 18px; }
+.si-drawer__list { flex: 1; overflow-y: auto; padding: .35rem 0; }
+.si-drawer__list a {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 1rem 1.25rem; font-size: 1.02rem; font-weight: 500; color: #2c3a56;
+  border: 0; background: transparent; width: 100%; text-align: left; cursor: pointer;
+  font-family: inherit;
+}
+.si-drawer__list a:hover { background: #f7f9fc; color: var(--navy); }
+.si-drawer__list a span.chev { color: #9aa3b2; font-size: 1.1rem; }
+.si-drawer__foot {
+  padding: 1rem 1.25rem 1.35rem; border-top: 1px solid var(--line);
+  font-size: .88rem; color: var(--muted);
+}
+.si-drawer__foot a { color: #0b2a6b; font-weight: 600; }
+.si-drawer__copy { margin-top: .55rem; font-size: .75rem; color: #9aa3b2; }
 
 .si-nav {
-  background: #fff; display: flex; justify-content: center; flex-wrap: wrap;
-  gap: .1rem 1.2rem; padding: .45rem 1rem .5rem; border-bottom: 1px solid var(--line);
+  display: none;
+  background: #fff; justify-content: center; flex-wrap: wrap;
+  gap: .15rem 1.4rem; padding: .5rem 1rem; border-bottom: 1px solid var(--line);
 }
-.si-nav a { font-size: .84rem; font-weight: 600; color: #2c3a56; }
+.si-nav a { font-size: .86rem; font-weight: 600; color: #2c3a56; }
 .si-nav a:hover { color: var(--blue); }
+@@media (min-width: 900px) {
+  .si-nav { display: flex; }
+  .si-icon.menu-only { display: none; }
+}
 
 .si-hero {
-  position: relative; width: 100%; min-height: clamp(280px, 38vh, 400px);
+  position: relative; width: 100%; min-height: clamp(260px, 36vh, 380px);
   overflow: hidden; background: var(--navy);
 }
 .si-hero__slide {
-  position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .8s ease;
+  position: absolute; inset: 0; opacity: 0; visibility: hidden; transition: opacity .75s ease;
   background-size: cover; background-position: center 30%; display: flex; align-items: center;
 }
 .si-hero__slide.is-on { opacity: 1; visibility: visible; z-index: 1; }
 .si-hero__shade {
   position: absolute; inset: 0;
-  background: linear-gradient(100deg, rgba(7,22,54,.93) 0%, rgba(10,31,77,.8) 42%, rgba(10,31,77,.35) 100%);
+  background: linear-gradient(100deg, rgba(7,22,54,.92) 0%, rgba(10,31,77,.78) 42%, rgba(10,31,77,.3) 100%);
 }
 .si-hero__inner {
   position: relative; z-index: 2; max-width: 1100px; width: 100%; margin: 0 auto;
-  padding: 2rem 1.35rem 2.75rem; color: #fff;
+  padding: 1.75rem 1.25rem 2.5rem; color: #fff;
 }
-.si-hero__crumb { font-size: .72rem; opacity: .7; margin-bottom: .55rem; }
+.si-hero__crumb { font-size: .7rem; opacity: .7; margin-bottom: .45rem; letter-spacing: .04em; }
 .si-hero__inner h1 {
-  margin: 0 0 .45rem; font-size: clamp(1.55rem, 3.4vw, 2.35rem); font-weight: 700;
+  margin: 0 0 .4rem; font-size: clamp(1.45rem, 3.2vw, 2.2rem); font-weight: 700;
   line-height: 1.12; max-width: 14ch; color: #fff;
 }
 .si-hero__inner p {
-  margin: 0 0 1rem; font-size: clamp(.88rem, 1.3vw, 1rem); opacity: .93;
-  max-width: 30rem; line-height: 1.45; color: #e8eef8;
+  margin: 0 0 .9rem; font-size: clamp(.86rem, 1.25vw, .98rem); opacity: .93;
+  max-width: 28rem; line-height: 1.45; color: #e8eef8;
 }
 .si-btn {
   display: inline-flex; align-items: center; justify-content: center;
-  padding: .58rem 1.15rem; border-radius: 4px; font-weight: 700; font-size: .84rem;
+  padding: .52rem 1.05rem; border-radius: 4px; font-weight: 700; font-size: .82rem;
   border: none; cursor: pointer; font-family: inherit;
   background: #fff !important; color: #0a1f4d !important;
   box-shadow: 0 2px 10px rgba(0,0,0,.12);
@@ -87,51 +138,50 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 .si-btn:hover { background: #e8eef8 !important; }
 
 .si-hero__controls {
-  position: absolute; bottom: .85rem; left: 50%; transform: translateX(-50%); z-index: 5;
-  display: flex; align-items: center; gap: .28rem;
-  background: rgba(255,255,255,.18); backdrop-filter: blur(8px);
-  padding: .22rem .4rem; border-radius: 999px;
+  position: absolute; bottom: .7rem; left: 50%; transform: translateX(-50%); z-index: 5;
+  display: flex; align-items: center; gap: .2rem;
+  background: rgba(255,255,255,.14); backdrop-filter: blur(10px);
+  padding: .16rem .3rem; border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
 }
 .si-hero__controls button {
-  width: 24px; height: 24px; border-radius: 50%; border: none; cursor: pointer;
-  background: rgba(255,255,255,.92); color: var(--navy); font-size: .75rem; font-weight: 700;
-  display: grid; place-items: center; line-height: 1;
+  width: 20px; height: 20px; border-radius: 50%; border: none; cursor: pointer;
+  background: rgba(255,255,255,.88); color: var(--navy); font-size: .65rem; font-weight: 700;
+  display: grid; place-items: center; line-height: 1; padding: 0;
+  transition: background .15s ease, transform .15s ease;
 }
-.si-hero__controls button.pause { font-size: .5rem; }
-.si-hero__dots { display: flex; gap: 4px; padding: 0 .15rem; }
+.si-hero__controls button:hover { background: #fff; transform: scale(1.06); }
+.si-hero__controls button.pause { font-size: .42rem; letter-spacing: -.5px; }
+.si-hero__dots { display: flex; gap: 3px; padding: 0 .12rem; align-items: center; }
 .si-hero__dot {
-  width: 6px; height: 6px; border-radius: 50%; border: none; padding: 0;
-  background: rgba(255,255,255,.4); cursor: pointer;
+  width: 5px; height: 5px; border-radius: 50%; border: none; padding: 0;
+  background: rgba(255,255,255,.4); cursor: pointer; transition: width .2s ease, background .2s ease;
 }
-.si-hero__dot.is-on { background: #fff; width: 14px; border-radius: 4px; }
+.si-hero__dot.is-on { background: #fff; width: 12px; border-radius: 3px; }
 
 .si-insights {
-  width: 100%; max-width: none; margin: 0;
-  padding: 1.75rem 1.5rem 2rem; text-align: center; box-sizing: border-box;
+  width: 100%; margin: 0; padding: 1.6rem 1.25rem 1.85rem; text-align: center; box-sizing: border-box;
 }
 .si-insights h2 {
-  margin: 0 0 .4rem; font-size: clamp(1.2rem, 2.2vw, 1.5rem); font-weight: 700; color: var(--ink);
+  margin: 0 0 .35rem; font-size: clamp(1.15rem, 2.1vw, 1.45rem); font-weight: 700; color: var(--ink);
 }
 .si-insights > p {
-  margin: 0 auto 1.25rem; max-width: 38rem; font-size: .9rem; line-height: 1.5; color: var(--muted);
+  margin: 0 auto 1.15rem; max-width: 36rem; font-size: .88rem; line-height: 1.5; color: var(--muted);
 }
 .si-cards {
-  display: grid; grid-template-columns: repeat(4, 1fr); gap: .9rem; text-align: left;
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: .85rem; text-align: left;
   max-width: 1400px; margin: 0 auto;
 }
 .si-card {
-  background: #fff; border-radius: 8px; overflow: hidden;
-  border: 1px solid #eef1f6;
-  transition: transform .15s ease, box-shadow .15s ease;
+  background: #fff; border-radius: 10px; overflow: hidden;
+  border: 1px solid #eef1f6; transition: transform .15s ease, box-shadow .15s ease;
 }
 .si-card:hover { transform: translateY(-2px); box-shadow: 0 8px 22px rgba(10,31,77,.08); }
-.si-card__img {
-  width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: #d8e2ee;
-}
-.si-card__body { padding: .65rem .75rem .8rem; }
-.si-card__type { font-size: .68rem; font-weight: 600; color: var(--muted); margin: 0 0 .15rem; }
-.si-card h3 { margin: 0 0 .25rem; font-size: .88rem; font-weight: 700; line-height: 1.28; color: var(--ink); }
-.si-card p { margin: 0; font-size: .78rem; line-height: 1.4; color: var(--muted); }
+.si-card__img { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; background: #d8e2ee; }
+.si-card__body { padding: .6rem .7rem .75rem; }
+.si-card__type { font-size: .66rem; font-weight: 600; color: var(--muted); margin: 0 0 .12rem; }
+.si-card h3 { margin: 0 0 .2rem; font-size: .86rem; font-weight: 700; line-height: 1.28; color: var(--ink); }
+.si-card p { margin: 0; font-size: .76rem; line-height: 1.4; color: var(--muted); }
 
 .si-foot {
   text-align: center; padding: .85rem; font-size: .72rem; color: #8a96ab;
@@ -144,13 +194,13 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   display: flex; align-items: center; justify-content: center; padding: 1.25rem;
 }
 .si-modal {
-  width: 100%; max-width: 380px; background: #fff; border-radius: 12px;
+  width: 100%; max-width: 380px; background: #fff; border-radius: 14px;
   padding: 1.35rem 1.25rem 1.2rem; box-shadow: 0 20px 50px rgba(7,22,54,.25); position: relative;
 }
 .si-modal__close {
-  position: absolute; top: .6rem; right: .7rem;
-  width: 28px; height: 28px; border: 0; border-radius: 50%;
-  background: #f0f4f9; color: var(--ink); font-size: 1.1rem; cursor: pointer;
+  position: absolute; top: .55rem; right: .65rem;
+  width: 32px; height: 32px; border: 0; border-radius: 50%;
+  background: #f0f4f9; color: var(--ink); font-size: 1.15rem; cursor: pointer;
   display: grid; place-items: center; line-height: 1;
 }
 .si-modal h3 { margin: 0 0 .2rem; font-size: 1.15rem; font-weight: 700; text-align: center; }
@@ -166,41 +216,45 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 }
 .si-input {
   display: block; width: 100%; padding: .65rem .8rem; border: 1.5px solid #d0dce8;
-  border-radius: 7px; background: #f7f9fc; color: var(--ink); font: inherit; font-size: .9rem;
+  border-radius: 8px; background: #f7f9fc; color: var(--ink); font: inherit; font-size: .9rem;
   box-sizing: border-box;
 }
 .si-input:focus {
   outline: none; border-color: #00a4e4; box-shadow: 0 0 0 3px rgba(0,164,228,.12); background: #fff;
 }
 .si-submit {
-  width: 100%; margin-top: .15rem; padding: .72rem 1rem; border: 0; border-radius: 7px;
+  width: 100%; margin-top: .15rem; padding: .72rem 1rem; border: 0; border-radius: 8px;
   background: var(--navy); color: #fff; font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer;
 }
 .si-submit:hover { background: #123066; }
 
-@@media (max-width: 1100px) {
-  .si-cards { grid-template-columns: repeat(3, 1fr); }
-}
-@@media (max-width: 800px) {
-  .si-cards { grid-template-columns: 1fr 1fr; }
-  .si-search { max-width: none; order: 3; flex-basis: 100%; }
-}
-@@media (max-width: 520px) {
-  .si-cards { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; }
-}
+@@media (max-width: 1100px) { .si-cards { grid-template-columns: repeat(3, 1fr); } }
+@@media (max-width: 800px) { .si-cards { grid-template-columns: 1fr 1fr; } }
+@@media (max-width: 520px) { .si-cards { grid-template-columns: 1fr; max-width: 340px; margin: 0 auto; } }
 </style>
 
 <div class="si">
     <header class="si-top">
         <a class="si-top__brand" href="/sign-in">
             <span class="logo">TRU</span>
-            Chapter support
+            TRU
         </a>
-        <form class="si-search" @onsubmit="HandleSearch" @onsubmit:preventDefault>
-            <input type="search" @bind="searchQ" placeholder="Search" aria-label="Search" />
-            <button type="submit" title="Search">⌕</button>
-        </form>
-        <button type="button" class="si-top__sign" @onclick="OpenLogin">Sign in</button>
+        <div class="si-top__actions">
+            <button type="button" class="si-icon" @onclick="OpenLogin" title="Sign in" aria-label="Sign in">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M5.5 19.5c0-3.4 2.9-6 6.5-6s6.5 2.6 6.5 6"/></svg>
+            </button>
+            <button type="button" class="si-icon menu-only @(menuOpen ? "is-active" : null)" @onclick="ToggleMenu"
+                    title="@(menuOpen ? "Close menu" : "Open menu")" aria-label="@(menuOpen ? "Close menu" : "Open menu")" aria-expanded="@menuOpen">
+                @if (menuOpen)
+                {
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
+                }
+                else
+                {
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 8h14M5 12h14M5 16h14"/></svg>
+                }
+            </button>
+        </div>
     </header>
 
     <nav class="si-nav" aria-label="Main">
@@ -210,6 +264,42 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
         <a href="/market-trends">Market trends</a>
         <a href="/contact">Contact</a>
     </nav>
+
+    @if (menuOpen)
+    {
+        <div class="si-drawer-bg" @onclick="CloseMenu"></div>
+        <aside class="si-drawer" role="dialog" aria-modal="true" aria-label="Menu">
+            <div class="si-drawer__head">
+                <a class="si-top__brand" href="/sign-in" @onclick="CloseMenu">
+                    <span class="logo">TRU</span>
+                    TRU
+                </a>
+                <button type="button" class="si-icon" @onclick="CloseMenu" aria-label="Close menu">
+                    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7l10 10M17 7L7 17"/></svg>
+                </button>
+            </div>
+            <form class="si-drawer__search" @onsubmit="HandleSearch" @onsubmit:preventDefault>
+                <input type="search" @bind="searchQ" placeholder="Search" aria-label="Search" />
+                <button type="submit" title="Search" aria-label="Search">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+                </button>
+            </form>
+            <div class="si-drawer__list">
+                <a href="/resource-library" @onclick="CloseMenu">Resource library <span class="chev">›</span></a>
+                <a href="/knowledge-base" @onclick="CloseMenu">Knowledge base <span class="chev">›</span></a>
+                <a href="/events" @onclick="CloseMenu">Events <span class="chev">›</span></a>
+                <a href="/market-trends" @onclick="CloseMenu">Market trends <span class="chev">›</span></a>
+                <a href="/contact" @onclick="CloseMenu">Contact <span class="chev">›</span></a>
+                <button type="button" style="display:flex;align-items:center;justify-content:space-between;padding:1rem 1.25rem;font-size:1.02rem;font-weight:500;color:#2c3a56;border:0;background:transparent;width:100%;text-align:left;cursor:pointer;font-family:inherit;" @onclick="OpenLoginFromMenu">
+                    Sign in <span class="chev" style="color:#9aa3b2;font-size:1.1rem;">›</span>
+                </button>
+            </div>
+            <div class="si-drawer__foot">
+                Need help? <a href="/contact" @onclick="CloseMenu">Get support</a>
+                <div class="si-drawer__copy">© @DateTime.Now.Year TRU · Chapter support</div>
+            </div>
+        </aside>
+    }
 
     <section class="si-hero" aria-label="Featured">
         @for (var i = 0; i < heroes.Length; i++)
@@ -354,6 +444,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     private int heroIndex;
     private bool paused;
     private bool showLogin;
+    private bool menuOpen;
     private System.Threading.Timer? heroTimer;
 
     private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref);
@@ -381,12 +472,14 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     {
         Input ??= new();
         StartTimer();
-        // Deep-link support: /sign-in?login=1 opens the modal immediately
         if (Navigation.Uri.Contains("login=1", StringComparison.OrdinalIgnoreCase))
             showLogin = true;
     }
 
-    private void OpenLogin() => showLogin = true;
+    private void ToggleMenu() => menuOpen = !menuOpen;
+    private void CloseMenu() => menuOpen = false;
+    private void OpenLogin() { menuOpen = false; showLogin = true; }
+    private void OpenLoginFromMenu() { menuOpen = false; showLogin = true; }
     private void CloseLogin() { showLogin = false; ErrorMessage = null; }
 
     private void StartTimer()
@@ -412,6 +505,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 
     private void HandleSearch()
     {
+        menuOpen = false;
         if (string.IsNullOrWhiteSpace(searchQ)) return;
         var q = searchQ.Trim().ToLowerInvariant();
         if (q.Contains("event") || q.Contains("calendar")) Navigation.NavigateTo("/events");
