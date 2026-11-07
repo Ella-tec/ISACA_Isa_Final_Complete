@@ -1,85 +1,66 @@
 @page "/"
+@attribute [Authorize]
 @rendermode InteractiveServer
 @implements IDisposable
 
-<PageTitle>TRU</PageTitle>
+<PageTitle>Home · TRU</PageTitle>
 
 <style>
 .hm{
   --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;--soft:#f4f7fb;
   font-family:"Roboto",system-ui,sans-serif;color:var(--ink);
-  width:100%!important;max-width:none!important;margin:0!important;
-  padding:10px!important;box-sizing:border-box;
-  display:flex;flex-direction:column;gap:12px;
+  display:flex;flex-direction:column;gap:12px;padding:10px;box-sizing:border-box;
+  width:100%;min-height:0;
 }
-.hm a{text-decoration:none!important}
-.hm-strip{display:grid;grid-template-columns:1fr 1fr;gap:10px;flex:0 0 auto}
-.hm-widget{
-  border-radius:14px;padding:.75rem 1rem;color:#fff;min-height:74px;
-  display:flex;flex-direction:column;gap:.05rem;cursor:pointer;text-align:left;
-  font-family:inherit;border:none;width:100%;
-  transition:transform .15s ease, box-shadow .15s ease;
+.hm-strip{
+  display:grid;grid-template-columns:1fr 1fr;gap:10px;
 }
-.hm-widget:hover{transform:translateY(-1px);box-shadow:0 8px 20px rgba(29,45,92,.18)}
-.hm-widget--clock{background:linear-gradient(120deg,#07649d,#00a4e4)}
-.hm-widget--weather{background:linear-gradient(120deg,#00a4e4,#36ac91)}
-.hm-widget__l{font-size:.62rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;opacity:.9}
-.hm-widget__v{font-size:1.35rem;font-weight:600;line-height:1.2}
-.hm-widget__m{font-size:.78rem;opacity:.9}
-
-/* Hero slider */
+.hm-card{
+  background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem 1rem;
+  box-shadow:0 4px 14px rgba(15,23,42,.05);
+}
+.hm-card h3{margin:0 0 .35rem;font-size:.95rem}
+.hm-card p{margin:0;font-size:.82rem;color:var(--muted);line-height:1.4}
+.hm-card button,.hm-card a.btn{
+  margin-top:.55rem;display:inline-flex;border:0;cursor:pointer;border-radius:9px;
+  padding:.4rem .75rem;font-weight:600;font-size:.8rem;font-family:inherit;
+  background:var(--ink);color:#fff;text-decoration:none;
+}
 .hm-slides{
-  position:relative;width:100%;height:clamp(300px,42vh,480px);
-  border-radius:16px;overflow:hidden;background:#0c1a30;flex:0 0 auto;
+  position:relative;width:100%;height:min(42vh,420px);min-height:260px;
+  border-radius:16px;overflow:hidden;background:#0a1f4d;
 }
 .hm-slide{
-  position:absolute;inset:0;opacity:0;visibility:hidden;
-  transition:opacity .75s ease;
+  position:absolute;inset:0;opacity:0;visibility:hidden;transition:opacity .7s ease;
   background-size:cover;background-position:center;
 }
 .hm-slide.is-on{opacity:1;visibility:visible;z-index:1}
 .hm-slide__shade{
   position:absolute;inset:0;
-  background:linear-gradient(90deg,rgba(8,16,32,.72),rgba(8,16,32,.2) 55%,transparent);
-  pointer-events:none;
+  background:linear-gradient(100deg,rgba(10,31,77,.88) 0%,rgba(10,31,77,.45) 55%,rgba(10,31,77,.2) 100%);
 }
 .hm-slide__copy{
-  position:absolute;left:1.35rem;bottom:1.35rem;right:7rem;z-index:2;
-  color:#fff;max-width:44rem;pointer-events:none;
+  position:absolute;left:1.5rem;right:1.5rem;bottom:3.5rem;z-index:2;color:#fff;max-width:36rem;
 }
-.hm-slide__copy h2{
-  margin:0 0 .25rem;font-size:clamp(1.15rem,2.1vw,1.6rem);font-weight:700;
-  text-shadow:0 2px 12px rgba(0,0,0,.4);
-}
-.hm-slide__copy p{
-  margin:0;font-size:.9rem;opacity:.96;text-shadow:0 1px 8px rgba(0,0,0,.35);
-}
-.hm-slide__nav{
-  position:absolute;top:50%;transform:translateY(-50%);z-index:4;
-  width:40px;height:40px;border-radius:50%;border:none;cursor:pointer;
-  background:rgba(255,255,255,.95);color:var(--ink);font-size:1.25rem;font-weight:700;
-  display:grid;place-items:center;box-shadow:0 4px 14px rgba(0,0,0,.12);
-}
-.hm-slide__nav.prev{left:14px}.hm-slide__nav.next{right:14px}
+.hm-slide__copy h2{margin:0 0 .35rem;font-size:clamp(1.35rem,2.8vw,1.9rem);font-weight:700;line-height:1.15}
+.hm-slide__copy p{margin:0;font-size:.92rem;opacity:.92;line-height:1.45}
 .hm-slide__dots{
-  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:4;
-  display:flex;align-items:center;gap:6px;
+  position:absolute;bottom:14px;left:50%;transform:translateX(-50%);z-index:3;
+  display:flex;gap:6px;align-items:center;
 }
 .hm-slide__dot{
-  width:7px;height:7px;border-radius:50%;border:none;padding:0;
-  background:rgba(255,255,255,.5);cursor:pointer;
-  transition:width .25s ease, border-radius .25s ease, background .25s ease;
+  width:7px;height:7px;border-radius:50%;border:0;padding:0;cursor:pointer;
+  background:rgba(255,255,255,.45);
+  transition:width .25s ease,border-radius .25s ease,background .25s ease;
 }
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:999px}
 .hm-slide__video{
-  position:absolute;right:14px;bottom:14px;z-index:5;
-  display:inline-flex;align-items:center;gap:.4rem;
-  padding:.45rem .8rem;border-radius:999px;border:none;cursor:pointer;
-  background:rgba(255,255,255,.95);color:#1d2d5c;font-weight:700;font-size:.78rem;
-  font-family:inherit;box-shadow:0 4px 14px rgba(0,0,0,.15);text-decoration:none;
+  position:absolute;top:12px;right:12px;z-index:3;
+  display:inline-flex;align-items:center;gap:.35rem;
+  padding:.4rem .7rem;border-radius:999px;font-size:.75rem;font-weight:700;
+  background:rgba(255,255,255,.92);color:var(--ink);text-decoration:none;
 }
 .hm-slide__video:hover{background:#fff;color:#07649d}
-
 /* Full-bleed premium video — no side bars */
 .hm-vid{
   width:100%;
@@ -103,9 +84,15 @@
   height:100%;
   border:0;
   display:block;
-  /* Scale past letterbox so video fills frame cleanly */
-  transform:scale(1.15);
+  /* mild scale — keep volume/controls reachable */
+  transform:scale(1.02);
   transform-origin:center center;
+}
+.hm-vid__hint{
+  margin:.45rem 0 0;
+  font-size:.78rem;
+  color:var(--muted);
+  text-align:center;
 }
 
 .hm-wx-bg{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
@@ -123,34 +110,22 @@
   .hm-slides{height:240px}
   .hm{padding:8px!important;gap:8px}
   .hm-slide__copy{right:1rem;bottom:3.2rem}
-  .hm-vid__frame iframe{transform:scale(1.2)}
+  .hm-vid__frame iframe{transform:scale(1.05)}
 }
 </style>
 
 <div class="hm">
-    <div class="hm-strip">
-        <button type="button" class="hm-widget hm-widget--clock" @onclick="() => clockOpen = true">
-            <span class="hm-widget__l">Local time</span>
-            <span class="hm-widget__v">@timeText</span>
-            <span class="hm-widget__m">@dateText · world clocks</span>
-        </button>
-        <button type="button" class="hm-widget hm-widget--weather" @onclick="() => wxOpen = true">
-            <span class="hm-widget__l">Weather · @wxCity</span>
-            <span class="hm-widget__v">@wxTemp</span>
-            <span class="hm-widget__m">@wxDesc · details</span>
-        </button>
-    </div>
-
     @* Layout: Hero Slider → Full-width Video *@
-    <div class="hm-slides">
-        <button type="button" class="hm-slide__nav prev" @onclick="PrevSlide" aria-label="Previous">‹</button>
-        <button type="button" class="hm-slide__nav next" @onclick="NextSlide" aria-label="Next">›</button>
+    <div class="hm-slides" aria-label="Featured">
         @for (var i = 0; i < slides.Length; i++)
         {
             var s = slides[i];
-            <div class="hm-slide @(i==slideIndex?"is-on":null)" style="background-image:url('@s.ImageUrl')">
+            <div class="hm-slide @(i == slideIndex ? "is-on" : null)" style="background-image:url('@s.ImageUrl')">
                 <div class="hm-slide__shade"></div>
-                <div class="hm-slide__copy"><h2>@s.Title</h2><p>@s.Caption</p></div>
+                <div class="hm-slide__copy">
+                    <h2>@s.Title</h2>
+                    <p>@s.Caption</p>
+                </div>
             </div>
         }
         <div class="hm-slide__dots">
@@ -169,6 +144,7 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
                     referrerpolicy="strict-origin-when-cross-origin"></iframe>
+            <p class="hm-vid__hint">Video starts muted for autoplay — use the player volume control to unmute.</p>
         </div>
     </div>
 </div>
@@ -215,10 +191,8 @@
     private int wxHumidity = 48, wxWind = 9, wxUv = 4;
     private int slideIndex, videoIndex;
     private System.Threading.Timer? clockTimer, slideTimer, videoTimer;
-    private readonly Random rng = new();
-    private string NyTime => DateTime.UtcNow.AddHours(-4).ToString("h:mm tt");
-    private string LondonTime => DateTime.UtcNow.AddHours(1).ToString("h:mm tt");
-    private string SgTime => DateTime.UtcNow.AddHours(8).ToString("h:mm tt");
+    private static readonly Random rng = new();
+
     private record Slide(string Title, string Caption, string ImageUrl, string VideoUrl);
     private record YtVideo(string Id, string Title);
     private static readonly Slide[] slides =
@@ -238,7 +212,7 @@
         new("wi2be8nt6lw","Digital trust"),
     };
     private string CurrentEmbed =>
-        $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=0&fs=1";
+        $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&enablejsapi=1";
     private string CurrentTitle => Videos[videoIndex].Title;
     private string CurrentSlideVideo => slides[slideIndex].VideoUrl;
 
@@ -250,25 +224,26 @@
         slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 6000, 6000);
         videoTimer = new System.Threading.Timer(_ => { videoIndex = (videoIndex + 1) % Videos.Length; _ = InvokeAsync(StateHasChanged); }, null, 180000, 180000);
     }
+
     private void Tick(object? _)
     {
-        var n = DateTime.Now;
-        timeText = n.ToString("h:mm:ss tt");
-        dateText = n.ToString("dddd, MMM d yyyy");
+        var now = DateTime.Now;
+        timeText = now.ToString("h:mm tt");
+        dateText = now.ToString("ddd, MMM d");
         _ = InvokeAsync(StateHasChanged);
     }
-    private void PrevSlide() => slideIndex = slideIndex == 0 ? slides.Length - 1 : slideIndex - 1;
-    private void NextSlide() => slideIndex = (slideIndex + 1) % slides.Length;
-    private void Go(string p) { wxOpen = false; clockOpen = false; Nav.NavigateTo(p.StartsWith("/") ? p : "/" + p); }
+
+    private string NyTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "America/New_York").ToString("h:mm tt");
+    private string LondonTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/London").ToString("h:mm tt");
+    private string SgTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Asia/Singapore").ToString("h:mm tt");
+
     private void ApplyWx()
     {
-        if (string.IsNullOrWhiteSpace(wxSearch)) return;
-        wxCity = wxSearch.Trim();
-        wxTemp = $"{60 + rng.Next(0, 25)}°F";
-        wxDesc = rng.Next(0, 3) switch { 0 => "Sunny", 1 => "Partly cloudy", _ => "Cloudy" };
-        wxHumidity = 35 + rng.Next(0, 40);
-        wxWind = 4 + rng.Next(0, 14);
-        wxUv = 1 + rng.Next(0, 9);
+        if (!string.IsNullOrWhiteSpace(wxSearch)) wxCity = wxSearch.Trim();
+        wxTemp = "70°F"; wxDesc = "Clear"; wxHumidity = 42; wxWind = 7; wxUv = 5;
     }
+
+    private void Go(string path) => Nav.NavigateTo("/" + path.TrimStart('/'));
+
     public void Dispose() { clockTimer?.Dispose(); slideTimer?.Dispose(); videoTimer?.Dispose(); }
 }
