@@ -1,9 +1,12 @@
 @inherits LayoutComponentBase
 
-@* Sign-in layout: no sidebar; TRU Ask bubble available *@
+@* Sign-in layout: no sidebar; one TRU Ask bubble only *@
 
 <style>
 #blazor-error-ui { display: none !important; }
+/* Never show workspace sidebar on auth pages */
+.sidebar, aside.sidebar, .nv, nav.nv { display: none !important; }
+.page, .main { margin: 0 !important; width: 100% !important; }
 </style>
 
 <ChatWidget @rendermode="InteractiveServer"
