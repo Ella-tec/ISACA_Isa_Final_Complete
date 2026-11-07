@@ -5,6 +5,8 @@ using IsaChatApp.Services.Orchestrator;
 using IsaChatApp.Services.Orchestrator.Stages;
 
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Components.Server;
+using Microsoft.AspNetCore.ResponseCompression;
 
 using OrchestratorService =
     IsaChatApp.Services.Orchestrator.Orchestrator;
@@ -17,6 +19,21 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
+
+// Faster Blazor Server circuits — less lag under load
+builder.Services.Configure<CircuitOptions>(options =>
+{
+    options.DisconnectedCircuitRetentionPeriod = TimeSpan.FromMinutes(3);
+    options.JSInteropDefaultCallTimeout = TimeSpan.FromMinutes(1);
+    options.MaxBufferedUnacknowledgedRenderBatches = 10;
+});
+
+builder.Services.AddResponseCompression(options =>
+{
+    options.EnableForHttps = true;
+    options.Providers.Add<BrotliCompressionProvider>();
+    options.Providers.Add<GzipCompressionProvider>();
+});
 
 builder.Services.AddHttpClient();
 
@@ -111,8 +128,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
+app.UseResponseCompression();
+
 app.UseHttpsRedirection();
-app.UseStaticFiles();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    OnPrepareResponse = ctx =>
+    {
+        // Cache static assets 7 days — pages feel much snappier
+        ctx.Context.Response.Headers.CacheControl = "public,max-age=604800";
+    }
+});
 
 app.UseAuthentication();
 app.UseAuthorization();
