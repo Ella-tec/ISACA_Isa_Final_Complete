@@ -25,9 +25,16 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   gap: .75rem; padding: .55rem 1.25rem; flex-wrap: wrap; border-bottom: 1px solid var(--line);
 }
 .si-top__brand {
-  display: flex; align-items: center; gap: .65rem;
+  display: flex; align-items: center; gap: .5rem;
   font-weight: 600; font-size: .95rem; color: #1d2d5c;
   letter-spacing: .01em;
+}
+/* One brand only — never show a second logo mark in the header */
+.si-top__brand .logo,
+.si-top__brand .tru-logo,
+.si-top__brand svg,
+.si-top__brand img {
+  display: none !important;
 }
 .si-top__label { font-weight: 600; color: #1d2d5c; font-size: .95rem; }
 .si-search {
