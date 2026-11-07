@@ -1,5 +1,6 @@
 @page "/escalations"
 @rendermode InteractiveServer
+@implements IDisposable
 
 <PageTitle>Escalations & Tickets | TRU</PageTitle>
 
@@ -37,9 +38,7 @@
   flex:1 1 auto!important;
   display:grid!important;
   grid-template-columns:minmax(0,1.45fr) minmax(260px,1fr);
-  gap:10px;
-  align-items:stretch!important;
-  min-height:0;
+  gap:10px;align-items:stretch!important;min-height:0;
 }
 .es-card{
   background:#fff;border-radius:12px;padding:.95rem 1.05rem;
@@ -61,6 +60,10 @@
 .es-badge.progress{background:#fff4e5;color:#b86e00}
 .es-badge.closed{background:#e8f6e8;color:#2d6a2d}
 .es-badge.escalated{background:#fdecea;color:#a12a2a}
+.es-timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:.8rem}
+.es-timer.ok{color:#2d6a2d}
+.es-timer.warn{color:#b86e00}
+.es-timer.over{color:#a12a2a}
 .es-actions button{margin-right:.2rem;border:1px solid var(--line);background:#fff;border-radius:7px;padding:.25rem .45rem;font-size:.72rem;font-weight:600;cursor:pointer;font-family:inherit}
 .es-actions button:hover{background:var(--light)}
 .es-bars{display:flex;align-items:flex-end;gap:5px;height:88px}
@@ -83,6 +86,7 @@
 .es-modal .save{background:linear-gradient(135deg,var(--navy),var(--mid));color:#fff}
 .es-modal .cancel{background:var(--light);color:var(--navy)}
 .es-toast{position:fixed;bottom:1rem;right:1rem;background:var(--navy);color:#fff;padding:.65rem .9rem;border-radius:10px;font-weight:600;z-index:90}
+.es-legend{font-size:.72rem;color:var(--muted);margin-top:.35rem}
 @@media(max-width:900px){
   .es{min-height:0!important}
   .es-kpis{grid-template-columns:1fr 1fr}
@@ -94,8 +98,8 @@
     <header class="es-hero">
         <div>
             <div style="font-size:.62rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;opacity:.85">Support operations</div>
-            <h1>Escalations &amp; Tickets</h1>
-            <p>Create, track, escalate — metrics fill the workspace.</p>
+            <h1>Escalations & Tickets</h1>
+            <p>Live SLA timers · auto-escalate when overdue · create and track tickets.</p>
         </div>
         <button type="button" class="es-btn" @onclick="OpenCreate">+ Create ticket</button>
     </header>
@@ -111,7 +115,7 @@
             <div class="l">Escalated</div><div class="v">@Count("Escalated")</div><div class="t">Priority</div>
         </button>
         <button type="button" class="es-kpi @(metric=="sla"?"on":null)" @onclick='() => ShowMetric("sla")'>
-            <div class="l">SLA on-track</div><div class="v">@sla%</div><div class="t">Illustrative</div>
+            <div class="l">SLA on-track</div><div class="v">@SlaPercent%</div><div class="t">Live</div>
         </button>
     </div>
 
@@ -123,7 +127,7 @@
     <div class="es-grid">
         <article class="es-card">
             <h2>Ticket queue</h2>
-            <p class="sub">Filter and update status</p>
+            <p class="sub">SLA countdown ticks every second · overdue tickets auto-escalate</p>
             <div class="es-filters">
                 <button type="button" class="@(filter=="All"?"on":null)" @onclick="FilterAll">All</button>
                 <button type="button" class="@(filter=="Open"?"on":null)" @onclick="FilterOpen">Open</button>
@@ -133,7 +137,7 @@
             </div>
             <div class="es-table-wrap">
                 <table class="es-table">
-                    <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
+                    <thead><tr><th>ID</th><th>Subject</th><th>Status</th><th>Priority</th><th>SLA timer</th><th>Actions</th></tr></thead>
                     <tbody>
                     @foreach (var t in Visible)
                     {
@@ -142,6 +146,16 @@
                             <td>@t.Subject</td>
                             <td><span class="es-badge @StatusClass(t.Status)">@t.Status</span></td>
                             <td>@t.Priority</td>
+                            <td>
+                                @if (t.Status == "Closed")
+                                {
+                                    <span class="es-timer ok">—</span>
+                                }
+                                else
+                                {
+                                    <span class="es-timer @TimerClass(t)">@FormatRemaining(t)</span>
+                                }
+                            </td>
                             <td class="es-actions">
                                 @if (t.Status != "Closed")
                                 {
@@ -159,6 +173,7 @@
                     </tbody>
                 </table>
             </div>
+            <p class="es-legend">SLA windows: Urgent 4h · High 24h · Normal 72h from create/reopen. Overdue → Escalated automatically.</p>
         </article>
         <div class="es-side">
             <article class="es-card">
@@ -214,24 +229,66 @@
 @if (!string.IsNullOrEmpty(toast)) { <div class="es-toast">@toast</div> }
 
 @code {
-    private sealed class Ticket { public string Id { get; set; } = ""; public string Subject { get; set; } = ""; public string Status { get; set; } = "Open"; public string Priority { get; set; } = "Normal"; public string Updated { get; set; } = ""; }
-    private readonly List<Ticket> tickets = new()
+    private sealed class Ticket
     {
-        new() { Id = "ISA-1023", Subject = "Portal access for new officer", Status = "In progress", Priority = "High", Updated = "Yesterday" },
-        new() { Id = "ISA-1018", Subject = "CPE credit not reflecting", Status = "Open", Priority = "Normal", Updated = "2 days ago" },
-        new() { Id = "ISA-1005", Subject = "Event registration capacity", Status = "Closed", Priority = "Normal", Updated = "Last week" },
-        new() { Id = "ISA-1028", Subject = "Study group room booking", Status = "Open", Priority = "Urgent", Updated = "Today" },
+        public string Id { get; set; } = "";
+        public string Subject { get; set; } = "";
+        public string Status { get; set; } = "Open";
+        public string Priority { get; set; } = "Normal";
+        public string Updated { get; set; } = "";
+        public DateTime DueAt { get; set; }
+    }
+
+    private static TimeSpan SlaFor(string priority) => priority switch
+    {
+        "Urgent" => TimeSpan.FromHours(4),
+        "High" => TimeSpan.FromHours(24),
+        _ => TimeSpan.FromHours(72)
     };
+
+    private readonly List<Ticket> tickets = new();
     private string filter = "All", metric = "", metricText = "", toast = "", newSubject = "", newPriority = "Normal", newDetails = "";
     private bool showCreate;
-    private int sla = 94;
     private int[] trend = { 40, 55, 35, 70, 60, 85, 50 };
-    private readonly List<(string Title, string When)> activity = new()
+    private readonly List<(string Title, string When)> activity = new();
+    private System.Threading.Timer? _tick;
+    private DateTime _now = DateTime.UtcNow;
+
+    protected override void OnInitialized()
     {
-        ("ISA-1023 moved to In progress", "1h ago"),
-        ("New ticket ISA-1028 created", "3h ago"),
-        ("ISA-1005 closed", "Yesterday"),
-    };
+        var now = DateTime.UtcNow;
+        tickets.AddRange(new[]
+        {
+            new Ticket { Id = "ISA-1023", Subject = "Portal access for new officer", Status = "In progress", Priority = "High", Updated = "Yesterday", DueAt = now.AddHours(18) },
+            new Ticket { Id = "ISA-1018", Subject = "CPE credit not reflecting", Status = "Open", Priority = "Normal", Updated = "2 days ago", DueAt = now.AddHours(40) },
+            new Ticket { Id = "ISA-1005", Subject = "Event registration capacity", Status = "Closed", Priority = "Normal", Updated = "Last week", DueAt = now.AddHours(-10) },
+            new Ticket { Id = "ISA-1028", Subject = "Study group room booking", Status = "Open", Priority = "Urgent", Updated = "Today", DueAt = now.AddMinutes(12) },
+            new Ticket { Id = "ISA-1030", Subject = "Chapter website outage report", Status = "Open", Priority = "Urgent", Updated = "Today", DueAt = now.AddMinutes(-3) },
+        });
+        activity.AddRange(new[]
+        {
+            ("ISA-1023 moved to In progress", "1h ago"),
+            ("New ticket ISA-1028 created", "3h ago"),
+            ("ISA-1005 closed", "Yesterday"),
+        });
+
+        _tick = new System.Threading.Timer(_ =>
+        {
+            _now = DateTime.UtcNow;
+            var changed = false;
+            foreach (var t in tickets.Where(x => x.Status is "Open" or "In progress"))
+            {
+                if (_now >= t.DueAt)
+                {
+                    t.Status = "Escalated";
+                    t.Updated = "Just now";
+                    activity.Insert(0, ($"{t.Id} auto-escalated (SLA breached)", "Just now"));
+                    changed = true;
+                }
+            }
+            _ = InvokeAsync(StateHasChanged);
+        }, null, TimeSpan.Zero, TimeSpan.FromSeconds(1));
+    }
 
     private IEnumerable<Ticket> Visible => filter == "All" ? tickets : tickets.Where(t => t.Status == filter);
     private int Count(string s) => tickets.Count(t => t.Status == s);
@@ -239,7 +296,36 @@
     private int highPct => tickets.Count == 0 ? 0 : (int)(100.0 * tickets.Count(t => t.Priority == "High") / tickets.Count);
     private int normalPct => Math.Max(0, 100 - urgentPct - highPct);
 
+    private int SlaPercent
+    {
+        get
+        {
+            var active = tickets.Where(t => t.Status != "Closed").ToList();
+            if (active.Count == 0) return 100;
+            var onTrack = active.Count(t => t.Status != "Escalated" && _now < t.DueAt);
+            return (int)Math.Round(100.0 * onTrack / active.Count);
+        }
+    }
+
     private static string StatusClass(string s) => s switch { "Open" => "open", "In progress" => "progress", "Escalated" => "escalated", _ => "closed" };
+
+    private string FormatRemaining(Ticket t)
+    {
+        var left = t.DueAt - _now;
+        if (left <= TimeSpan.Zero) return "OVERDUE";
+        if (left.TotalHours >= 24)
+            return $"{(int)left.TotalDays}d {left.Hours:D2}h {left.Minutes:D2}m";
+        return $"{(int)left.TotalHours:D2}:{left.Minutes:D2}:{left.Seconds:D2}";
+    }
+
+    private string TimerClass(Ticket t)
+    {
+        var left = t.DueAt - _now;
+        if (left <= TimeSpan.Zero || t.Status == "Escalated") return "over";
+        if (left.TotalHours < 2) return "warn";
+        return "ok";
+    }
+
     private void FilterAll() => filter = "All";
     private void FilterOpen() => filter = "Open";
     private void FilterProgress() => filter = "In progress";
@@ -247,6 +333,7 @@
     private void FilterClosed() => filter = "Closed";
     private void OpenCreate() => showCreate = true;
     private void CloseCreate() => showCreate = false;
+
     private void ShowMetric(string m)
     {
         metric = m;
@@ -255,22 +342,38 @@
             "open" => $"{Count("Open")} open tickets need triage.",
             "prog" => $"{Count("In progress")} tickets actively worked.",
             "esc" => $"{Count("Escalated")} escalated — review ownership.",
-            "sla" => $"SLA on-track {sla}% (illustrative chapter target).",
+            "sla" => $"SLA on-track {SlaPercent}% of active tickets (live).",
             _ => ""
         };
     }
+
     private void ClickTrend(int i) => metricText = $"Day {i + 1}: relative closed volume {trend[i]}% of peak sample day.";
+
     private void Create()
     {
         if (string.IsNullOrWhiteSpace(newSubject)) return;
         var id = $"ISA-{1000 + tickets.Count + 20}";
-        tickets.Insert(0, new Ticket { Id = id, Subject = newSubject.Trim(), Status = "Open", Priority = newPriority, Updated = "Just now" });
-        activity.Insert(0, ($"Ticket {id} created", "Just now"));
-        newSubject = ""; newDetails = ""; newPriority = "Normal"; showCreate = false; ShowToast($"Created {id}");
+        var due = DateTime.UtcNow + SlaFor(newPriority);
+        tickets.Insert(0, new Ticket { Id = id, Subject = newSubject.Trim(), Status = "Open", Priority = newPriority, Updated = "Just now", DueAt = due });
+        activity.Insert(0, ($"Ticket {id} created (SLA {FormatSlaLabel(newPriority)})", "Just now"));
+        newSubject = ""; newDetails = ""; newPriority = "Normal"; showCreate = false;
+        ShowToast($"Created {id}");
     }
+
+    private static string FormatSlaLabel(string p) => p switch { "Urgent" => "4h", "High" => "24h", _ => "72h" };
+
     private void MarkProgress(Ticket t) { t.Status = "In progress"; t.Updated = "Just now"; ShowToast($"{t.Id} → In progress"); }
-    private void MarkEscalated(Ticket t) { t.Status = "Escalated"; t.Updated = "Just now"; ShowToast($"{t.Id} → Escalated"); }
+    private void MarkEscalated(Ticket t) { t.Status = "Escalated"; t.Updated = "Just now"; activity.Insert(0, ($"{t.Id} escalated manually", "Just now")); ShowToast($"{t.Id} → Escalated"); }
     private void MarkClosed(Ticket t) { t.Status = "Closed"; t.Updated = "Just now"; ShowToast($"{t.Id} → Closed"); }
-    private void MarkOpen(Ticket t) { t.Status = "Open"; t.Updated = "Just now"; ShowToast($"{t.Id} → Open"); }
+    private void MarkOpen(Ticket t)
+    {
+        t.Status = "Open";
+        t.Updated = "Just now";
+        t.DueAt = DateTime.UtcNow + SlaFor(t.Priority);
+        ShowToast($"{t.Id} → Open (SLA reset)");
+    }
+
     private async void ShowToast(string msg) { toast = msg; StateHasChanged(); await Task.Delay(2200); toast = ""; StateHasChanged(); }
+
+    public void Dispose() => _tick?.Dispose();
 }
