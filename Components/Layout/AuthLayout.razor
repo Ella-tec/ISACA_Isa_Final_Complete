@@ -1,18 +1,26 @@
 @inherits LayoutComponentBase
 
-@* Sign-in layout: no sidebar; one TRU Ask bubble only *@
+@* Sign-in: no sidebar. Bubble is fixed bottom-right only (after body so it cannot sit on top). *@
 
 <style>
 #blazor-error-ui { display: none !important; }
-/* Never show workspace sidebar on auth pages */
-.sidebar, aside.sidebar, .nv, nav.nv { display: none !important; }
-.page, .main { margin: 0 !important; width: 100% !important; }
+.sidebar, aside.sidebar, .nv, nav.nv, .page > .sidebar { display: none !important; visibility: hidden !important; height: 0 !important; width: 0 !important; overflow: hidden !important; }
+.page, .main { margin: 0 !important; width: 100% !important; max-width: 100% !important; }
+/* Force bubble off the top of the page */
+.truask-bubble, .isa-widget__bubble, .isa-fab {
+  position: fixed !important;
+  right: 22px !important;
+  bottom: 22px !important;
+  top: auto !important;
+  left: auto !important;
+  z-index: 2147483001 !important;
+}
 </style>
+
+@Body
 
 <ChatWidget @rendermode="InteractiveServer"
             Hosts="@(new Dictionary<string,string> {
                 ["remote"] = "http://100.89.6.69:11434",
                 ["local"]  = "http://localhost:11434"
             })" />
-
-@Body
