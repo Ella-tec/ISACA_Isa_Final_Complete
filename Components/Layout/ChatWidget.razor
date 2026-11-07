@@ -1,1 +1,223 @@
-PLACEHOLDER
+@* ChatWidget - restored with attachments *@
+@using System.Net.Http.Json
+@using System.Text.Json.Serialization
+@using IsaChatApp.Services
+@implements IDisposable
+@inject IJSRuntime JS
+@inject HttpClient Http
+@inject WidgetSettings Settings
+@inject UsageLogService UsageLog
+@inject IsaChatApp.Services.Orchestrator.Orchestrator Pipeline
+@inject KeycloakSignInService SignInService
+@inject IsaChatApp.Services.Onboarding.NotebookService Notebook
+@inject IsaChatApp.Services.Onboarding.JourneyContextService JourneyContexts
+@inject IsaChatApp.Services.Onboarding.ProgressService Progress
+
+<div class="isa-widget @(RailTakesRoom ? "has-rail" : "")">
+    @if (ActiveDashboardUrl is not null)
+    {
+        <div class="isa-widget__dashboardHost">
+            <button type="button" class="isa-widget__dashboardClose" @onclick="CloseDashboard" title="Close dashboard" aria-label="Close dashboard">&times;</button>
+            <iframe src="@ActiveDashboardUrl" class="isa-widget__dashboardFrame" title="Dashboard"></iframe>
+        </div>
+    }
+
+    @if (!IsExpanded)
+    {
+        <button type="button" class="isa-widget__bubble" @onclick="Expand" aria-label="Open TRU Ask">
+            <Throbber Spinning="false" SpinOnHover="true" />
+        </button>
+    }
+    else
+    {
+        <div class="isa-widget__backdrop" @onclick="Collapse"></div>
+        <div class="isa-widget__panel is-expanded @(IsTodayOpen || IsNotebookOpen ? "is-shifted" : "") @(RailTakesRoom ? "has-rail" : "")" style="@ChatPanelStyle">
+            <div class="isa-widget__header">
+                <div class="isa-widget__identity">
+                    <span class="isa-widget__badge" title="TRU" aria-label="TRU">
+                        <Throbber Spinning="false" />
+                    </span>
+                </div>
+                <div class="isa-widget__headerLinks">
+                    @if (Messages.Count > 0 && !IsSending)
+                    {
+                        <button type="button" class="isa-widget__headerLink" @onclick="NewConversation" title="New conversation" aria-label="New conversation">New</button>
+                    }
+                    <button type="button" class="isa-widget__close" @onclick="Collapse" aria-label="Close chat">&times;</button>
+                </div>
+            </div>
+
+            <div class="isa-widget__messages" @ref="_messagesEl">
+                @foreach (var msg in MessagesNewestFirst)
+                {
+                    <div id="@msg.DomId" class="isa-widget__message isa-widget__message--@msg.Role">
+                        <div class="isa-widget__who">@msg.DisplayName</div>
+                        <div class="isa-widget__text">@msg.Text</div>
+                    </div>
+                }
+            </div>
+
+            @if (_pendingFiles.Count > 0)
+            {
+                <div class="isa-widget__attachList" aria-label="Attachments ready to send">
+                    @foreach (var f in _pendingFiles)
+                    {
+                        <span class="isa-widget__attachChip">
+                            <span class="isa-widget__attachName" title="@f.Name">@f.Name</span>
+                            <span class="isa-widget__attachSize">@FormatSize(f.Size)</span>
+                            <button type="button" class="isa-widget__attachRemove" @onclick="() => RemovePending(f.Id)" aria-label="Remove @f.Name" disabled="@IsSending">×</button>
+                        </span>
+                    }
+                </div>
+            }
+
+            <div class="isa-widget__inputRow">
+                <label class="isa-widget__attachBtn" title="Attach a file" aria-label="Attach a file">
+                    <InputFile class="isa-widget__fileInput" OnChange="OnInputFiles" multiple
+                               accept=".pdf,.doc,.docx,.txt,.png,.jpg,.jpeg,.gif,.csv,.xlsx,.pptx"
+                               disabled="@IsSending" />
+                    <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48" />
+                    </svg>
+                </label>
+                <div class="isa-widget__inputWrap">
+                    <span class="isa-widget__inputIcon"><Throbber Spinning="@IsSending" /></span>
+                    <input class="isa-widget__input"
+                           placeholder="Ask about your chapter..."
+                           aria-label="Ask Isa a question"
+                           value="@DraftText"
+                           @oninput="OnDraftInput"
+                           @onkeydown="HandleKeyDown"
+                           disabled="@IsSending" />
+                </div>
+                <button type="button" class="isa-widget__send" @onclick="Send" disabled="@(IsSending || (string.IsNullOrWhiteSpace(DraftText) && _pendingFiles.Count == 0))" aria-label="Send">
+                    <svg viewBox="0 0 24 24" class="isa-widget__sendIcon" aria-hidden="true">
+                        <path d="M9 5 L16 12 L9 19" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="isa-widget__footer">
+                <span class="isa-widget__footerNote">Answers from approved documents.</span>
+                <a href="/contact" class="isa-widget__directSupportLink" title="Contact Team">Contact Team</a>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    [Parameter] public Dictionary<string, string>? Hosts { get; set; }
+
+    private bool IsExpanded;
+    private bool IsSending;
+    private string DraftText = "";
+    private string? ActiveDashboardUrl;
+    private bool IsTodayOpen;
+    private bool IsNotebookOpen;
+    private bool RailTakesRoom => false;
+    private string ChatPanelStyle => "";
+    private ElementReference _messagesEl;
+    private readonly List<ChatEntry> Messages = new();
+    private IEnumerable<ChatEntry> MessagesNewestFirst => Messages.AsEnumerable().Reverse();
+
+    private sealed class PendingFile
+    {
+        public string Id { get; init; } = Guid.NewGuid().ToString("N");
+        public string Name { get; init; } = "";
+        public long Size { get; init; }
+        public byte[]? Bytes { get; init; }
+    }
+    private readonly List<PendingFile> _pendingFiles = new();
+    private const long MaxAttachBytes = 8 * 1024 * 1024;
+    private const int MaxAttachCount = 5;
+
+    private static string FormatSize(long bytes) =>
+        bytes < 1024 ? $"{bytes} B" :
+        bytes < 1024 * 1024 ? $"{bytes / 1024.0:0.#} KB" :
+        $"{bytes / (1024.0 * 1024):0.##} MB";
+
+    private void RemovePending(string id) => _pendingFiles.RemoveAll(f => f.Id == id);
+
+    private async Task OnInputFiles(InputFileChangeEventArgs e)
+    {
+        foreach (var file in e.GetMultipleFiles(MaxAttachCount))
+        {
+            if (_pendingFiles.Count >= MaxAttachCount) break;
+            if (file.Size > MaxAttachBytes) continue;
+            try
+            {
+                await using var stream = file.OpenReadStream(MaxAttachBytes);
+                using var ms = new System.IO.MemoryStream();
+                await stream.CopyToAsync(ms);
+                _pendingFiles.Add(new PendingFile { Name = file.Name, Size = file.Size, Bytes = ms.ToArray() });
+            }
+            catch { }
+        }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private void Expand() => IsExpanded = true;
+    private void Collapse() => IsExpanded = false;
+    private void CloseDashboard() => ActiveDashboardUrl = null;
+    private void NewConversation() { Messages.Clear(); _pendingFiles.Clear(); }
+
+    private void OnDraftInput(ChangeEventArgs e) => DraftText = e.Value?.ToString() ?? "";
+
+    private async Task HandleKeyDown(KeyboardEventArgs e)
+    {
+        if (e.Key == "Enter" && !e.ShiftKey)
+            await Send();
+    }
+
+    private async Task Send()
+    {
+        var text = DraftText.Trim();
+        if ((string.IsNullOrEmpty(text) && _pendingFiles.Count == 0) || IsSending) return;
+
+        if (_pendingFiles.Count > 0)
+        {
+            var names = string.Join(", ", _pendingFiles.Select(f => $"{f.Name} ({FormatSize(f.Size)})"));
+            var attachNote = $"[Attached: {names}]";
+            text = string.IsNullOrEmpty(text) ? attachNote : text + "\n\n" + attachNote;
+            _pendingFiles.Clear();
+        }
+
+        DraftText = string.Empty;
+        Messages.Add(new ChatEntry("you", "You", text));
+        IsSending = true;
+        await InvokeAsync(StateHasChanged);
+
+        try
+        {
+            // Prefer pipeline when available; fall back to a local note if Ollama is down.
+            try
+            {
+                var ctx = new IsaChatApp.Services.Orchestrator.QueryContext
+                {
+                    Question = text,
+                    TraceId = Guid.NewGuid().ToString("N")
+                };
+                var resp = await Pipeline.RunAsync(ctx);
+                Messages.Add(new ChatEntry("ai", "TRU Ask", resp.Message ?? "No answer produced."));
+            }
+            catch
+            {
+                Messages.Add(new ChatEntry("ai", "TRU Ask",
+                    "I received your message" + (text.Contains("[Attached:") ? " and attachment note" : "") +
+                    ". Start Ollama or check the pipeline host so full ISACA answers can run."));
+            }
+        }
+        finally
+        {
+            IsSending = false;
+            await InvokeAsync(StateHasChanged);
+        }
+    }
+
+    public void Dispose() { }
+
+    private sealed record ChatEntry(string Role, string DisplayName, string Text)
+    {
+        public string DomId { get; } = "isa-msg-" + Guid.NewGuid().ToString("N");
+    }
+}
