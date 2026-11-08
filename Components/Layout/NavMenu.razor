@@ -18,11 +18,14 @@
   border-bottom: 1px solid rgba(220,255,235,.12);
 }
 .nv__brand .tru-logo {
-  width: 42px; height: 42px; flex-shrink: 0;
+  width: 44px; height: 44px; flex-shrink: 0;
   filter: drop-shadow(0 5px 14px rgba(121,198,83,.28));
 }
-.nv__brand strong { display: block; font-size: 1.18rem; font-weight: 800; letter-spacing: -.045em; line-height: 1.1; color: #fff; }
-.nv__brand small { display: block; margin-top: .2rem; font-size: .57rem; font-weight: 700; opacity: .62; letter-spacing: .13em; text-transform: uppercase; }
+.nv__brand small {
+  display: block; font-size: .62rem; font-weight: 700; opacity: .85;
+  letter-spacing: .12em; text-transform: uppercase; color: #e8f3ed;
+  line-height: 1.3; max-width: 9.5rem;
+}
 .nv__body { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; -webkit-overflow-scrolling: touch; padding: .15rem .05rem; }
 .nv__body::-webkit-scrollbar { width: 4px; }
 .nv__body::-webkit-scrollbar-thumb { background: rgba(190,230,205,.22); border-radius: 99px; }
@@ -79,7 +82,7 @@
 <nav class="nv" aria-label="TRU workspace">
     <div class="nv__brand">
         <TruLogo />
-        <div><strong>TRU</strong><small>ISACA chapter support</small></div>
+        <div><small>ISACA chapter support</small></div>
     </div>
 
     <div class="nv__body">
@@ -88,23 +91,26 @@
         <NavLink class="nv__item" style="--p:#62b8e8" href="analytics"><span class="nv__planet"></span> Analytics</NavLink>
         <NavLink class="nv__item" style="--p:#5bd1ad" href="events"><span class="nv__planet"></span> Events &amp; Calendar</NavLink>
         <NavLink class="nv__item" style="--p:#a99cf4" href="knowledge-base"><span class="nv__planet"></span> Knowledge base</NavLink>
-        <NavLink class="nv__item" style="--p:#f08b82" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
-        <NavLink class="nv__item" style="--p:#91a8c8" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
-        <NavLink class="nv__item" style="--p:#61c9cf" href="translator"><span class="nv__planet"></span> Translator</NavLink>
-        <NavLink class="nv__item" style="--p:#8bd46a" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
-        <NavLink class="nv__item" style="--p:#efb36e" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
-        <NavLink class="nv__item" style="--p:#75b5e6" href="resource-library"><span class="nv__planet"></span> Resource library</NavLink>
-        <NavLink class="nv__item" style="--p:#f3cf76" href="weather"><span class="nv__planet"></span> Weather</NavLink>
+        <NavLink class="nv__item" style="--p:#f07178" href="escalations"><span class="nv__planet"></span> Escalations &amp; Tickets</NavLink>
+        <NavLink class="nv__item" style="--p:#7aa2f7" href="governance"><span class="nv__planet"></span> Governance &amp; Policies</NavLink>
+        <NavLink class="nv__item" style="--p:#4ecdc4" href="translator"><span class="nv__planet"></span> Translator</NavLink>
+        <NavLink class="nv__item" style="--p:#95d475" href="content-health"><span class="nv__planet"></span> Content health</NavLink>
+        <NavLink class="nv__item" style="--p:#e0af68" href="market-trends"><span class="nv__planet"></span> Market trends</NavLink>
+        <NavLink class="nv__item" style="--p:#7dcfff" href="resource-library"><span class="nv__planet"></span> Resource library</NavLink>
+        <NavLink class="nv__item" style="--p:#ff9e64" href="weather"><span class="nv__planet"></span> Weather</NavLink>
 
         <div class="nv__sec">Developer</div>
-        <NavLink class="nv__item" style="--p:#5bd1ad" href="developer-dashboard"><span class="nv__planet"></span> Developer dashboard</NavLink>
-        <NavLink class="nv__item" style="--p:#61c9cf" href="pipeline-monitor"><span class="nv__planet"></span> Pipeline monitor</NavLink>
+        <NavLink class="nv__item" style="--p:#9ece6a" href="dev"><span class="nv__planet"></span> Developer dashboard</NavLink>
+        <NavLink class="nv__item" style="--p:#7aa2f7" href="pipeline"><span class="nv__planet"></span> Pipeline monitor</NavLink>
+
+        <div class="nv__sec">Account</div>
+        <NavLink class="nv__item" style="--p:#bb9af7" href="contact"><span class="nv__planet"></span> Contact</NavLink>
+        <NavLink class="nv__item" style="--p:#89b4fa" href="settings"><span class="nv__planet"></span> Settings</NavLink>
     </div>
 
     <div class="nv__foot">
-        <div class="nv__sec">Account</div>
-        <NavLink class="nv__item" style="--p:#a99cf4" href="contact"><span class="nv__planet"></span> Contact</NavLink>
-        <NavLink class="nv__item" style="--p:#91a8c8" href="settings"><span class="nv__planet"></span> Settings</NavLink>
-        <a class="nv__signout" href="sign-in">Sign out</a>
+        <form method="post" action="/account/logout">
+            <button type="submit" class="nv__signout">Sign out</button>
+        </form>
     </div>
 </nav>
