@@ -19,7 +19,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   min-height: 100vh; background: #fff;
 }
 .si a { text-decoration: none; color: inherit; }
-
 .si-top {
   background: #fff; display: flex; align-items: center; justify-content: space-between;
   gap: .75rem; padding: .55rem 1.25rem; flex-wrap: wrap; border-bottom: 1px solid var(--line);
@@ -38,7 +37,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   border: 0; cursor: pointer; font-family: inherit;
 }
 .si-top__sign:hover { background: #123066; }
-
 .si-hero {
   position: relative; width: 100%; min-height: clamp(380px, 52vh, 560px);
   overflow: hidden; background: var(--navy);
@@ -73,7 +71,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   box-shadow: 0 2px 10px rgba(0,0,0,.12);
 }
 .si-btn:hover { background: #e8eef8 !important; }
-
 .si-hero__nav {
   position: absolute; top: 50%; transform: translateY(-50%); z-index: 5;
   width: 36px; height: 36px; border-radius: 50%; border: none; cursor: pointer;
@@ -92,7 +89,21 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   transition: width .25s ease, border-radius .25s ease, background .25s ease;
 }
 .si-hero__dot.is-on { background: #fff; width: 18px; border-radius: 999px; }
-
+.si-vid {
+  width: 100%; max-width: min(1680px, 100%); margin: 0 auto;
+  padding: 1rem clamp(0.75rem, 2vw, 1.5rem) 1.25rem; box-sizing: border-box;
+}
+.si-vid__frame {
+  position: relative; width: 100%; aspect-ratio: 16 / 9;
+  border-radius: 16px; overflow: hidden; background: #000;
+  box-shadow: 0 8px 28px rgba(15,23,42,.12);
+}
+.si-vid__frame iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block;
+}
+.si-vid__hint {
+  margin: .45rem 0 0; font-size: .78rem; color: var(--muted); text-align: center;
+}
 .si-insights {
   width: 100%; margin: 0; padding: 1.75rem 1.5rem 2rem; text-align: center; box-sizing: border-box;
 }
@@ -121,7 +132,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 .si-card__type { font-size: .68rem; font-weight: 600; color: var(--muted); margin: 0 0 .15rem; }
 .si-card h3 { margin: 0 0 .25rem; font-size: .92rem; font-weight: 700; line-height: 1.3; color: var(--ink); }
 .si-card p { margin: 0; font-size: .78rem; line-height: 1.4; color: var(--muted); }
-
 .si-modal-bg {
   position: fixed; inset: 0; z-index: 1000;
   background: rgba(7, 22, 54, .55); backdrop-filter: blur(4px);
@@ -161,7 +171,6 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   background: var(--navy); color: #fff; font: inherit; font-weight: 700; font-size: .9rem; cursor: pointer;
 }
 .si-submit:hover { background: #123066; }
-
 @@media (max-width: 1100px) { .si-cards { grid-template-columns: repeat(3, 1fr); } }
 @@media (max-width: 800px) {
   .si-cards { grid-template-columns: 1fr 1fr; }
@@ -204,6 +213,16 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
             }
         </div>
     </section>
+
+    <div class="si-vid">
+        <div class="si-vid__frame">
+            <iframe src="@VideoEmbed" title="ISACA videos"
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                    allowfullscreen
+                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
+        </div>
+        <p class="si-vid__hint">Videos play automatically and loop nonstop. Starts muted — use the volume control to unmute.</p>
+    </div>
 
     <section class="si-insights">
         <h2>Stay ahead with ISACA insights and thought leadership</h2>
@@ -315,6 +334,16 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     private System.Threading.Timer? heroTimer;
 
     private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref);
+    private static readonly string[] VideoIds =
+    {
+        "Chw9iTTHyhk", "0Y9WFhfsQlk", "wi2be8nt6lw", "GWUrA8DpTOk",
+        "cJpY4wHTKxo", "KSEdwhUTxCk", "em8vqDlINqU", "nOPTmNSsYJg"
+    };
+    private string VideoEmbed =>
+        $"https://www.youtube-nocookie.com/embed/{VideoIds[0]}"
+        + "?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1"
+        + $"&playlist={string.Join(",", VideoIds)}&loop=1";
+
     private static readonly Hero[] heroes =
     {
         new("Home", "Empowering your chapter",
