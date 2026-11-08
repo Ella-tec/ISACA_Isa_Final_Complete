@@ -4,6 +4,7 @@ using IsaChatApp.Services.Onboarding;
 using IsaChatApp.Services.Orchestrator;
 using IsaChatApp.Services.Orchestrator.Stages;
 
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Components.Server;
 using Microsoft.AspNetCore.ResponseCompression;
