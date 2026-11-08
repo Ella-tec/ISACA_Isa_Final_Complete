@@ -11,20 +11,6 @@
   display:flex;flex-direction:column;gap:12px;padding:10px;box-sizing:border-box;
   width:100%;min-height:0;
 }
-.hm-strip{
-  display:grid;grid-template-columns:1fr 1fr;gap:10px;
-}
-.hm-card{
-  background:#fff;border:1px solid var(--line);border-radius:14px;padding:.85rem 1rem;
-  box-shadow:0 4px 14px rgba(15,23,42,.05);
-}
-.hm-card h3{margin:0 0 .35rem;font-size:.95rem}
-.hm-card p{margin:0;font-size:.82rem;color:var(--muted);line-height:1.4}
-.hm-card button,.hm-card a.btn{
-  margin-top:.55rem;display:inline-flex;border:0;cursor:pointer;border-radius:9px;
-  padding:.4rem .75rem;font-weight:600;font-size:.8rem;font-family:inherit;
-  background:var(--ink);color:#fff;text-decoration:none;
-}
 .hm-slides{
   position:relative;width:100%;height:min(42vh,420px);min-height:260px;
   border-radius:16px;overflow:hidden;background:#0a1f4d;
@@ -53,47 +39,16 @@
   transition:width .25s ease,border-radius .25s ease,background .25s ease;
 }
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:999px}
-.hm-slide__video{
-  position:absolute;top:12px;right:12px;z-index:3;
-  display:inline-flex;align-items:center;gap:.35rem;
-  padding:.4rem .7rem;border-radius:999px;font-size:.75rem;font-weight:700;
-  background:rgba(255,255,255,.92);color:var(--ink);text-decoration:none;
-}
-.hm-slide__video:hover{background:#fff;color:#07649d}
-/* Full-bleed premium video — no side bars */
-.hm-vid{
-  width:100%;
-  flex:0 0 auto;
-  margin:0;
-  padding:0;
-}
+.hm-vid{width:100%;flex:0 0 auto;margin:0;padding:0}
 .hm-vid__frame{
-  position:relative;
-  width:100%;
-  aspect-ratio:16 / 9;
-  border-radius:16px;
-  overflow:hidden;
-  background:#000;
-  box-shadow:0 8px 28px rgba(15,23,42,.12);
+  position:relative;width:100%;aspect-ratio:16 / 9;border-radius:16px;
+  overflow:hidden;background:#000;box-shadow:0 8px 28px rgba(15,23,42,.12);
 }
 .hm-vid__frame iframe{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  border:0;
-  display:block;
-  /* mild scale — keep volume/controls reachable */
-  transform:scale(1.02);
-  transform-origin:center center;
+  position:absolute;inset:0;width:100%;height:100%;border:0;display:block;
+  transform:scale(1.02);transform-origin:center center;
 }
-.hm-vid__hint{
-  margin:.45rem 0 0;
-  font-size:.78rem;
-  color:var(--muted);
-  text-align:center;
-}
-
+.hm-vid__hint{margin:.45rem 0 0;font-size:.78rem;color:var(--muted);text-align:center}
 .hm-wx-bg{position:fixed;inset:0;background:rgba(15,23,42,.4);backdrop-filter:blur(3px);z-index:2000;display:flex;align-items:center;justify-content:center;padding:1rem}
 .hm-wx-modal{background:#fff;border-radius:16px;padding:1.2rem 1.35rem;max-width:400px;width:100%;box-shadow:0 16px 40px rgba(0,0,0,.15);color:var(--ink)}
 .hm-wx-modal h3{margin:0 0 .7rem;font-size:1.1rem}
@@ -103,9 +58,7 @@
 .hm-wx-grid{display:grid;grid-template-columns:1fr 1fr;gap:.45rem;margin:.65rem 0 .45rem}
 .hm-wx-grid div{background:#f4f7fb;border-radius:10px;padding:.55rem .65rem;font-size:.84rem}
 .hm-wx-grid strong{display:block;font-size:.68rem;color:var(--muted);text-transform:uppercase;margin-bottom:.1rem}
-
 @@media(max-width:700px){
-  .hm-strip{grid-template-columns:1fr}
   .hm-slides{height:240px}
   .hm{padding:8px!important;gap:8px}
   .hm-slide__copy{right:1rem;bottom:3.2rem}
@@ -114,7 +67,6 @@
 </style>
 
 <div class="hm">
-    @* Layout: Hero Slider → Full-width Video *@
     <div class="hm-slides" aria-label="Featured">
         @for (var i = 0; i < slides.Length; i++)
         {
@@ -134,7 +86,6 @@
                 <button type="button" class="hm-slide__dot @(i==slideIndex?"is-on":null)" @onclick="() => slideIndex = di" aria-label="Slide @(i+1)"></button>
             }
         </div>
-        <a class="hm-slide__video" href="@CurrentSlideVideo" target="_blank" rel="noopener" title="Open certification resources">▶ Cert path</a>
     </div>
 
     <div class="hm-vid">
@@ -143,106 +94,49 @@
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                     allowfullscreen
                     referrerpolicy="strict-origin-when-cross-origin"></iframe>
-            <p class="hm-vid__hint">Video starts muted for autoplay — use the player volume control to unmute.</p>
         </div>
+        <p class="hm-vid__hint">Video starts muted for autoplay — use the player volume control to unmute.</p>
     </div>
 </div>
 
-@if (wxOpen)
-{
-    <div class="hm-wx-bg" @onclick="() => wxOpen = false">
-        <div class="hm-wx-modal" @onclick:stopPropagation="true">
-            <h3>Weather · @wxCity</h3>
-            <input @bind="wxSearch" placeholder="City" />
-            <button type="button" @onclick="ApplyWx">Update</button>
-            <button type="button" class="ghost" @onclick='() => Go("weather")'>Full page</button>
-            <button type="button" class="ghost" @onclick="() => wxOpen = false">Close</button>
-            <div class="hm-wx-grid">
-                <div><strong>Now</strong>@wxTemp · @wxDesc</div>
-                <div><strong>Humidity</strong>@wxHumidity%</div>
-                <div><strong>Wind</strong>@wxWind mph</div>
-                <div><strong>UV</strong>@wxUv</div>
-            </div>
-        </div>
-    </div>
-}
-@if (clockOpen)
-{
-    <div class="hm-wx-bg" @onclick="() => clockOpen = false">
-        <div class="hm-wx-modal" @onclick:stopPropagation="true">
-            <h3>World clocks</h3>
-            <div class="hm-wx-grid">
-                <div><strong>Local</strong>@timeText</div>
-                <div><strong>New York</strong>@NyTime</div>
-                <div><strong>London</strong>@LondonTime</div>
-                <div><strong>Singapore</strong>@SgTime</div>
-            </div>
-            <button type="button" class="ghost" @onclick="() => clockOpen = false">Close</button>
-        </div>
-    </div>
-}
-
 @code {
     [Inject] private NavigationManager Nav { get; set; } = default!;
-    private bool wxOpen, clockOpen;
-    private string timeText = "--:--", dateText = "";
-    private string wxCity = "Kansas City", wxTemp = "72°F", wxDesc = "Partly cloudy", wxSearch = "Kansas City";
-    private int wxHumidity = 48, wxWind = 9, wxUv = 4;
     private int slideIndex, videoIndex;
-    private System.Threading.Timer? clockTimer, slideTimer, videoTimer;
+    private System.Threading.Timer? slideTimer, videoTimer;
     private static readonly Random rng = new();
 
-    private record Slide(string Title, string Caption, string ImageUrl, string VideoUrl);
+    private record Slide(string Title, string Caption, string ImageUrl);
     private record YtVideo(string Id, string Title);
     private static readonly Slide[] slides =
     {
-        new("Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE — paths for audit, security, risk, and privacy.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
-        new("Digital trust leadership","Governance, risk, and cybersecurity for chapters and enterprises.","https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
-        new("Enterprise performance","Advance teams with credentials, CMMI, and ISACA enterprise resources.","https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/enterprise"),
-        new("State of cybersecurity","Trends, challenges, and priorities shaping digital trust.","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/resources"),
-        new("Chapter excellence","Playbooks, CPE events, and tools for officers and volunteers.","https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/"),
-        new("AI & emerging tech","Layer AI into audit, security, risk, and privacy practices.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80","https://www.isaca.org/credentialing"),
+        new("Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE — paths for audit, security, risk, and privacy.","https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1600&q=80"),
+        new("Digital trust leadership","Governance, risk, and cybersecurity for chapters and enterprises.","https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=80"),
+        new("Enterprise performance","Advance teams with credentials, CMMI, and ISACA enterprise resources.","https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1600&q=80"),
+        new("State of cybersecurity","Trends, challenges, and priorities shaping digital trust.","https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1600&q=80"),
+        new("Chapter excellence","Playbooks, CPE events, and tools for officers and volunteers.","https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1600&q=80"),
+        new("AI & emerging tech","Layer AI into audit, security, risk, and privacy practices.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"),
     };
     private static readonly YtVideo[] Videos =
     {
-        new("2xBJcXFpPm4","ISACA session"),
-        new("yxXQnKUUR4k","ISACA learning"),
-        new("Chw9iTTHyhk","Chapter guidance"),
-        new("wi2be8nt6lw","Digital trust"),
+        new("Chw9iTTHyhk", "ISACA session"),
+        new("0Y9WFhfsQlk", "ISACA learning"),
+        new("wi2be8nt6lw", "Digital trust"),
+        new("GWUrA8DpTOk", "ISACA overview"),
+        new("cJpY4wHTKxo", "Chapter guidance"),
+        new("KSEdwhUTxCk", "Credentials path"),
+        new("em8vqDlINqU", "Professional growth"),
+        new("nOPTmNSsYJg", "ISACA resources"),
     };
     private string CurrentEmbed =>
         $"https://www.youtube-nocookie.com/embed/{Videos[videoIndex].Id}?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1&enablejsapi=1";
     private string CurrentTitle => Videos[videoIndex].Title;
-    private string CurrentSlideVideo => slides[slideIndex].VideoUrl;
 
     protected override void OnInitialized()
     {
         videoIndex = rng.Next(0, Videos.Length);
-        Tick(null);
-        clockTimer = new System.Threading.Timer(Tick, null, 1000, 1000);
         slideTimer = new System.Threading.Timer(_ => { slideIndex = (slideIndex + 1) % slides.Length; _ = InvokeAsync(StateHasChanged); }, null, 6000, 6000);
         videoTimer = new System.Threading.Timer(_ => { videoIndex = (videoIndex + 1) % Videos.Length; _ = InvokeAsync(StateHasChanged); }, null, 180000, 180000);
     }
 
-    private void Tick(object? _)
-    {
-        var now = DateTime.Now;
-        timeText = now.ToString("h:mm tt");
-        dateText = now.ToString("ddd, MMM d");
-        _ = InvokeAsync(StateHasChanged);
-    }
-
-    private string NyTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "America/New_York").ToString("h:mm tt");
-    private string LondonTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Europe/London").ToString("h:mm tt");
-    private string SgTime => TimeZoneInfo.ConvertTimeBySystemTimeZoneId(DateTime.UtcNow, "Asia/Singapore").ToString("h:mm tt");
-
-    private void ApplyWx()
-    {
-        if (!string.IsNullOrWhiteSpace(wxSearch)) wxCity = wxSearch.Trim();
-        wxTemp = "70°F"; wxDesc = "Clear"; wxHumidity = 42; wxWind = 7; wxUv = 5;
-    }
-
-    private void Go(string path) => Nav.NavigateTo("/" + path.TrimStart('/'));
-
-    public void Dispose() { clockTimer?.Dispose(); slideTimer?.Dispose(); videoTimer?.Dispose(); }
+    public void Dispose() { slideTimer?.Dispose(); videoTimer?.Dispose(); }
 }

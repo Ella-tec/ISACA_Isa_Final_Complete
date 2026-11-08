@@ -1,4 +1,4 @@
-@* Chat widget — no TRU logo marks *@
+@* TRU Ask — restored TRU logo + spinning bubble *@
 @using IsaChatApp.Services
 @implements IDisposable
 @inject IJSRuntime JS
@@ -15,29 +15,16 @@
 .truask * { box-sizing: border-box; }
 .truask {
   font-family: "Segoe UI", "DM Sans", system-ui, sans-serif;
-  z-index: 2147483000;
-  position: relative;
-  --navy: #0b2a4a;
-  --blue: #0078d4;
-  --ink: #1b1b1b;
-  --muted: #605e5c;
-  --line: #edebe9;
-  --bg: #faf9f8;
+  z-index: 2147483000; position: relative;
+  --navy: #0b2a4a; --blue: #0078d4; --ink: #1b1b1b; --muted: #605e5c; --line: #edebe9;
 }
-.truask-backdrop {
-  position: fixed; inset: 0;
-  background: rgba(0,0,0,.28);
-  z-index: 2147483000;
-}
+.truask-backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.28); z-index: 2147483000; }
 .truask-bubble {
   position: fixed; right: 22px; bottom: 22px;
-  width: 56px; height: 56px;
-  border: none; border-radius: 50%;
-  background: linear-gradient(145deg, #07649d, #00a4e4);
-  color: #fff; cursor: pointer;
-  display: grid; place-items: center;
+  width: 56px; height: 56px; border: none; border-radius: 50%;
+  background: transparent; cursor: pointer; display: grid; place-items: center;
   padding: 0; z-index: 2147483001;
-  box-shadow: 0 8px 24px rgba(7,100,157,.35);
+  filter: drop-shadow(0 6px 16px rgba(0,120,212,.35));
 }
 .truask-panel {
   position: fixed; right: 14px; bottom: 14px;
@@ -47,33 +34,22 @@
   background: linear-gradient(165deg, #f7fbff 0%, #ffffff 42%, #f4faf8 100%);
   border-radius: 56px 56px 52px 52px / 48px 48px 56px 56px;
   border: 1px solid rgba(0,164,228,.18);
-  box-shadow:
-    0 18px 48px rgba(29,45,92,.18),
-    0 0 0 1px rgba(255,255,255,.65) inset;
-  overflow: hidden;
-  z-index: 2147483001;
+  box-shadow: 0 18px 48px rgba(29,45,92,.18), 0 0 0 1px rgba(255,255,255,.65) inset;
+  overflow: hidden; z-index: 2147483001;
 }
-.truask-hd {
-  flex: 0 0 auto;
-  background: transparent;
-  color: #1d2d5c;
-  padding: 22px 22px 10px;
-}
-.truask-hd-row {
-  display: flex; align-items: flex-start; justify-content: space-between; gap: 8px;
-}
+.truask-hd { flex: 0 0 auto; background: transparent; color: #1d2d5c; padding: 22px 22px 10px; }
+.truask-hd-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; }
 .truask-brand { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.truask-logo {
+  width: 32px; height: 32px; border-radius: 8px; flex-shrink: 0;
+  background: linear-gradient(145deg, #00bcf2, #00b294 50%, #ffb900);
+  display: grid; place-items: center;
+  font-size: 9px; font-weight: 800; color: #fff;
+}
 .truask-brand-txt { min-width: 0; }
-.truask-brand-txt strong {
-  display: block; font-size: 15px; font-weight: 700; line-height: 1.2; color: #1d2d5c;
-}
-.truask-brand-txt span {
-  display: block; font-size: 11px; font-weight: 600; color: #5f6b85;
-  white-space: nowrap; letter-spacing: .02em;
-}
-.truask-hd-actions {
-  display: flex; align-items: center; gap: 4px; flex-shrink: 0;
-}
+.truask-brand-txt strong { display: block; font-size: 15px; font-weight: 700; line-height: 1.2; color: #1d2d5c; }
+.truask-brand-txt span { display: block; font-size: 11px; font-weight: 600; color: #5f6b85; white-space: nowrap; }
+.truask-hd-actions { display: flex; align-items: center; gap: 4px; flex-shrink: 0; }
 .truask-icon-btn {
   width: 28px; height: 28px; border: none; border-radius: 50%;
   background: rgba(29,45,92,.06); color: #1d2d5c;
@@ -92,9 +68,7 @@
   margin: 10px 0 0; font-size: 17px; font-weight: 700; line-height: 1.35;
   min-height: 2.6em; color: #1d2d5c;
 }
-.truask-greet small {
-  display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: #5f6b85;
-}
+.truask-greet small { display: block; margin-top: 2px; font-size: 12px; font-weight: 400; color: #5f6b85; }
 .truask-body {
   flex: 1 1 auto; min-height: 0; overflow-y: auto;
   padding: 8px 22px 12px; background: transparent;
@@ -104,31 +78,25 @@
   display: flex; align-items: center; gap: 6px;
   background: #fff; border: 1px solid var(--line);
   border-radius: 8px; padding: 4px 6px 4px 10px;
-  box-shadow: 0 1px 2px rgba(0,0,0,.04);
 }
 .truask-bar input[type=text] {
   flex: 1; border: none; outline: none; background: transparent;
   font: inherit; font-size: 13px; color: var(--ink); min-width: 0; padding: 6px 0;
 }
-.truask-bar input::placeholder { color: #a19f9d; }
 .truask-attach {
-  position: relative; width: 28px; height: 28px;
-  border-radius: 4px; border: none; background: transparent;
-  color: var(--muted); cursor: pointer;
+  position: relative; width: 28px; height: 28px; border-radius: 4px; border: none;
+  background: transparent; color: var(--muted); cursor: pointer;
   display: grid; place-items: center; flex-shrink: 0; overflow: hidden;
 }
-.truask-attach:hover { background: #f3f2f1; color: var(--blue); }
 .truask-attach input[type=file] {
   position: absolute !important; width: 100% !important; height: 100% !important;
-  opacity: 0 !important; cursor: pointer !important; font-size: 0 !important;
-  top: 0; left: 0; margin: 0; padding: 0; border: 0;
+  opacity: 0 !important; cursor: pointer !important; top: 0; left: 0; margin: 0; padding: 0; border: 0;
 }
 .truask-send {
   width: 28px; height: 28px; border: none; border-radius: 4px;
   background: var(--blue); color: #fff; cursor: pointer;
   display: grid; place-items: center; flex-shrink: 0;
 }
-.truask-send:hover:not(:disabled) { background: #106ebe; }
 .truask-send:disabled { opacity: .4; cursor: not-allowed; }
 .truask-chips { display: flex; flex-wrap: wrap; gap: 6px; }
 .truask-chip {
@@ -136,10 +104,7 @@
   background: #fff; border: 1px solid var(--line); border-radius: 4px;
   padding: 3px 8px; font-size: 11px; font-weight: 600;
 }
-.truask-chip button {
-  border: none; background: none; cursor: pointer; color: var(--muted);
-  font-size: 14px; line-height: 1; padding: 0;
-}
+.truask-chip button { border: none; background: none; cursor: pointer; color: var(--muted); font-size: 14px; padding: 0; }
 .truask-spacer { flex: 1 1 auto; min-height: 12px; }
 .truask-topics {
   display: flex; flex-wrap: wrap; justify-content: center; gap: 6px;
@@ -149,55 +114,30 @@
   display: inline-flex; align-items: center; gap: 5px;
   background: rgba(255,255,255,.92); border: 1px solid #e3eaf3;
   border-radius: 999px; padding: 6px 11px;
-  text-align: center; cursor: pointer;
-  font: inherit; color: #1d2d5c;
-  box-shadow: 0 1px 3px rgba(29,45,92,.05);
-  white-space: nowrap;
+  cursor: pointer; font: inherit; color: #1d2d5c; white-space: nowrap;
 }
-.truask-topic:hover {
-  border-color: #b7d4f0; background: #fff;
-  box-shadow: 0 2px 8px rgba(0,120,212,.12);
-}
-.truask-topic-ico {
-  width: 16px; height: 16px; color: #07649d;
-  display: grid; place-items: center; flex-shrink: 0;
-}
+.truask-topic:hover { border-color: #b7d4f0; background: #fff; }
+.truask-topic-ico { width: 16px; height: 16px; color: #07649d; display: grid; place-items: center; }
 .truask-topic-ico svg { width: 14px; height: 14px; }
-.truask-topic strong {
-  font-size: 11px; font-weight: 600; line-height: 1.2; color: #1d2d5c;
-}
+.truask-topic strong { font-size: 11px; font-weight: 600; color: #1d2d5c; }
 .truask-msgs { display: flex; flex-direction: column; gap: 8px; }
 .truask-msg {
   max-width: 92%; padding: 8px 12px; border-radius: 8px;
   font-size: 13px; line-height: 1.45; white-space: pre-wrap;
 }
-.truask-msg--you {
-  align-self: flex-end; background: #deecf9; color: var(--ink);
-}
-.truask-msg--ai {
-  align-self: flex-start; background: #fff; border: 1px solid var(--line);
-}
-.truask-msg-who {
-  font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 2px;
-}
+.truask-msg--you { align-self: flex-end; background: #deecf9; color: var(--ink); }
+.truask-msg--ai { align-self: flex-start; background: #fff; border: 1px solid var(--line); }
+.truask-msg-who { font-size: 10px; font-weight: 700; color: var(--blue); margin-bottom: 2px; }
 .truask-ft {
-  flex: 0 0 auto;
-  display: flex; align-items: center; justify-content: space-between;
+  flex: 0 0 auto; display: flex; align-items: center; justify-content: space-between;
   gap: 8px; padding: 10px 26px 28px;
-  border-top: 1px solid rgba(226,232,240,.8); background: transparent;
-  font-size: 11px; color: #5f6b85;
+  border-top: 1px solid rgba(226,232,240,.8); font-size: 11px; color: #5f6b85;
 }
-.truask-ft a {
-  color: #07649d; font-weight: 600; text-decoration: none;
-}
-.truask-ft a:hover { text-decoration: underline; }
-
+.truask-ft a { color: #07649d; font-weight: 600; text-decoration: none; }
 @@media (max-width: 480px) {
   .truask-panel {
-    right: 8px; bottom: 8px;
-    width: calc(100vw - 16px);
-    height: min(80vh, calc(100vh - 16px));
-    border-radius: 36px 36px 32px 32px;
+    right: 8px; bottom: 8px; width: calc(100vw - 16px);
+    height: min(80vh, calc(100vh - 16px)); border-radius: 36px 36px 32px 32px;
   }
 }
 </style>
@@ -205,23 +145,22 @@
 <div class="truask">
 @if (!IsExpanded)
 {
-    <button type="button" class="truask-bubble" @onclick="Expand" aria-label="Open chat"
-            style="position:fixed;right:22px;bottom:22px;top:auto;left:auto;z-index:2147483001;width:56px;height:56px;border:none;border-radius:50%;background:linear-gradient(145deg,#07649d,#00a4e4);color:#fff;cursor:pointer;box-shadow:0 8px 24px rgba(7,100,157,.35);display:grid;place-items:center;">
-        <svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M21 15a4 4 0 01-4 4H8l-5 3V7a4 4 0 014-4h10a4 4 0 014 4z"/>
-        </svg>
+    <button type="button" class="truask-bubble" @onclick="Expand" aria-label="Open TRU Ask"
+            style="position:fixed;right:22px;bottom:22px;top:auto;left:auto;z-index:2147483001;">
+        <Throbber Spinning="false" SpinOnHover="true" />
     </button>
 }
 else
 {
     <div class="truask-backdrop" @onclick="Collapse"></div>
-    <div class="truask-panel" role="dialog" aria-label="Ask">
+    <div class="truask-panel" role="dialog" aria-label="TRU Ask">
         <div class="truask-hd">
             <div class="truask-hd-row">
                 <div class="truask-brand">
+                    <span class="truask-logo">TRU</span>
                     <div class="truask-brand-txt">
-                        <strong>Ask</strong>
-                        <span>Chapter guidance</span>
+                        <strong>TRU</strong>
+                        <span>Learn · Ask · Grow</span>
                     </div>
                 </div>
                 <div class="truask-hd-actions">
@@ -249,13 +188,8 @@ else
                         <path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/>
                     </svg>
                 </label>
-                <input type="text"
-                       placeholder="Ask anything about ISACA…"
-                       aria-label="Ask"
-                       value="@DraftText"
-                       @oninput="OnDraftInput"
-                       @onkeydown="HandleKeyDown"
-                       disabled="@IsSending" />
+                <input type="text" placeholder="Ask anything about ISACA…" aria-label="Ask TRU"
+                       value="@DraftText" @oninput="OnDraftInput" @onkeydown="HandleKeyDown" disabled="@IsSending" />
                 <button type="button" class="truask-send" @onclick="Send"
                         disabled="@(IsSending || (string.IsNullOrWhiteSpace(DraftText) && _pendingFiles.Count == 0))"
                         aria-label="Send">
@@ -290,36 +224,25 @@ else
                     }
                 </div>
             }
-            else
-            {
-                <div class="truask-spacer" aria-hidden="true"></div>
-            }
+            else { <div class="truask-spacer" aria-hidden="true"></div> }
 
             @if (Messages.Count == 0 && !IsSending)
             {
                 <div class="truask-topics">
                     <button type="button" class="truask-topic" @onclick='() => QuickAsk("ISACA guidance for chapter officers")'>
-                        <span class="truask-topic-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-                        </span>
+                        <span class="truask-topic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span>
                         <strong>ISACA Guidance</strong>
                     </button>
                     <button type="button" class="truask-topic" @onclick='() => QuickAsk("Knowledge base articles")'>
-                        <span class="truask-topic-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
-                        </span>
+                        <span class="truask-topic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
                         <strong>Knowledge Base</strong>
                     </button>
                     <button type="button" class="truask-topic" @onclick='() => QuickAsk("Chapter analytics overview")'>
-                        <span class="truask-topic-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
-                        </span>
+                        <span class="truask-topic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></span>
                         <strong>Chapter Analytics</strong>
                     </button>
                     <button type="button" class="truask-topic" @onclick='() => QuickAsk("How do I contact support?")'>
-                        <span class="truask-topic-ico">
-                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
-                        </span>
+                        <span class="truask-topic-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg></span>
                         <strong>Support Center</strong>
                     </button>
                 </div>
@@ -336,17 +259,14 @@ else
 
 @code {
     [Parameter] public Dictionary<string, string>? Hosts { get; set; }
-
-    private bool IsExpanded;
-    private bool IsSending;
+    private bool IsExpanded, IsSending;
     private string DraftText = "";
     private string SessionId = Guid.NewGuid().ToString("N");
     private readonly List<ChatEntry> Messages = new();
     private readonly List<ChatSession> SessionHistory = new();
-
     private static readonly string[] Prompts =
     {
-        "How can I help you today?",
+        "How can TRU help you today?",
         "Ask about chapter policies or forms.",
         "Need CPE events or calendar help?",
         "Search approved guidance anytime.",
@@ -356,21 +276,12 @@ else
     private int promptIndex;
     private string CurrentPrompt => Prompts[promptIndex % Prompts.Length];
     private System.Threading.Timer? promptTimer;
-
-    private sealed class PendingFile
-    {
-        public string Id { get; init; } = Guid.NewGuid().ToString("N");
-        public string Name { get; init; } = "";
-        public long Size { get; init; }
-        public byte[]? Bytes { get; init; }
-    }
+    private sealed class PendingFile { public string Id { get; init; } = Guid.NewGuid().ToString("N"); public string Name { get; init; } = ""; public long Size { get; init; } public byte[]? Bytes { get; init; } }
     private readonly List<PendingFile> _pendingFiles = new();
     private const long MaxAttachBytes = 8 * 1024 * 1024;
     private const int MaxAttachCount = 5;
     private const int MaxStoredSessions = 20;
-
     private void RemovePending(string id) => _pendingFiles.RemoveAll(f => f.Id == id);
-
     private async Task OnInputFiles(InputFileChangeEventArgs e)
     {
         foreach (var file in e.GetMultipleFiles(MaxAttachCount))
@@ -388,133 +299,64 @@ else
         }
         await InvokeAsync(StateHasChanged);
     }
-
-    private void Expand()
-    {
-        IsExpanded = true;
-        StartPromptRotation();
-    }
-
-    private void Collapse()
-    {
-        ArchiveCurrentSession();
-        ResetConversationState();
-        StopPromptRotation();
-        IsExpanded = false;
-    }
-
-    private void StartNewConversation()
-    {
-        ArchiveCurrentSession();
-        ResetConversationState();
-        promptIndex = 0;
-        StartPromptRotation();
-    }
-
+    private void Expand() { IsExpanded = true; StartPromptRotation(); }
+    private void Collapse() { ArchiveCurrentSession(); ResetConversationState(); StopPromptRotation(); IsExpanded = false; }
+    private void StartNewConversation() { ArchiveCurrentSession(); ResetConversationState(); promptIndex = 0; StartPromptRotation(); }
     private void ArchiveCurrentSession()
     {
         if (Messages.Count == 0) return;
         SessionHistory.Insert(0, new ChatSession(SessionId, DateTime.UtcNow, Messages.ToList()));
-        if (SessionHistory.Count > MaxStoredSessions)
-            SessionHistory.RemoveRange(MaxStoredSessions, SessionHistory.Count - MaxStoredSessions);
+        if (SessionHistory.Count > MaxStoredSessions) SessionHistory.RemoveRange(MaxStoredSessions, SessionHistory.Count - MaxStoredSessions);
     }
-
     private void ResetConversationState()
     {
-        SessionId = Guid.NewGuid().ToString("N");
-        Messages.Clear();
-        DraftText = string.Empty;
-        _pendingFiles.Clear();
-        IsSending = false;
+        SessionId = Guid.NewGuid().ToString("N"); Messages.Clear(); DraftText = string.Empty; _pendingFiles.Clear(); IsSending = false;
     }
-
     private void StartPromptRotation()
     {
         promptTimer?.Dispose();
-        promptTimer = new System.Threading.Timer(_ =>
-        {
-            promptIndex = (promptIndex + 1) % Prompts.Length;
-            _ = InvokeAsync(StateHasChanged);
-        }, null, 7000, 7000);
+        promptTimer = new System.Threading.Timer(_ => { promptIndex = (promptIndex + 1) % Prompts.Length; _ = InvokeAsync(StateHasChanged); }, null, 7000, 7000);
     }
-
-    private void StopPromptRotation()
-    {
-        promptTimer?.Dispose();
-        promptTimer = null;
-    }
-
+    private void StopPromptRotation() { promptTimer?.Dispose(); promptTimer = null; }
     private void OnDraftInput(ChangeEventArgs e) => DraftText = e.Value?.ToString() ?? "";
-
-    private async Task QuickAsk(string q)
-    {
-        DraftText = q;
-        await Send();
-    }
-
-    private async Task HandleKeyDown(KeyboardEventArgs e)
-    {
-        if (e.Key == "Enter" && !e.ShiftKey)
-            await Send();
-    }
-
+    private async Task QuickAsk(string q) { DraftText = q; await Send(); }
+    private async Task HandleKeyDown(KeyboardEventArgs e) { if (e.Key == "Enter" && !e.ShiftKey) await Send(); }
     private async Task Send()
     {
         var text = DraftText.Trim();
         if ((string.IsNullOrEmpty(text) && _pendingFiles.Count == 0) || IsSending) return;
-
         if (_pendingFiles.Count > 0)
         {
             var names = string.Join(", ", _pendingFiles.Select(f => f.Name));
-            text = string.IsNullOrEmpty(text)
-                ? ("[Attached: " + names + "]")
-                : text + "\n\n[Attached: " + names + "]";
+            text = string.IsNullOrEmpty(text) ? ("[Attached: " + names + "]") : text + "\n\n[Attached: " + names + "]";
             _pendingFiles.Clear();
         }
-
         DraftText = string.Empty;
         Messages.Add(new ChatEntry("you", "You", text));
         IsSending = true;
         await InvokeAsync(StateHasChanged);
-
         try
         {
             var local = IsacaSampleKnowledge.TryAnswer(text);
             if (!string.IsNullOrWhiteSpace(local))
-            {
-                Messages.Add(new ChatEntry("ai", "Assistant", local));
-            }
+                Messages.Add(new ChatEntry("ai", "TRU Ask", local));
             else
             {
                 try
                 {
-                    var ctx = new IsaChatApp.Services.Orchestrator.QueryContext
-                    {
-                        Question = text,
-                        TraceId = Guid.NewGuid().ToString("N")
-                    };
+                    var ctx = new IsaChatApp.Services.Orchestrator.QueryContext { Question = text, TraceId = Guid.NewGuid().ToString("N") };
                     var resp = await Pipeline.RunAsync(ctx);
-                    Messages.Add(new ChatEntry("ai", "Assistant", resp.Message ?? "No answer produced."));
+                    Messages.Add(new ChatEntry("ai", "TRU Ask", resp.Message ?? "No answer produced."));
                 }
                 catch
                 {
-                    Messages.Add(new ChatEntry("ai", "Assistant",
-                        "I can help with ISACA certifications, chapters, CPE, COBIT, and digital trust. Try asking about CISA, membership, or chapter guidance."));
+                    Messages.Add(new ChatEntry("ai", "TRU Ask", "I can help with ISACA certifications, chapters, CPE, COBIT, and digital trust. Try asking about CISA, membership, or how TRU can help."));
                 }
             }
         }
-        finally
-        {
-            IsSending = false;
-            await InvokeAsync(StateHasChanged);
-        }
+        finally { IsSending = false; await InvokeAsync(StateHasChanged); }
     }
-
-    public void Dispose()
-    {
-        StopPromptRotation();
-    }
-
+    public void Dispose() => StopPromptRotation();
     private sealed record ChatEntry(string Role, string DisplayName, string Text);
     private sealed record ChatSession(string Id, DateTime EndedAtUtc, List<ChatEntry> Messages);
 }
