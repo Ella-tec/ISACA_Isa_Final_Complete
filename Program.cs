@@ -146,6 +146,36 @@ app.UseAuthorization();
 app.UseAntiforgery();
 
 // ============================================================
+// ACCOUNT LOGIN (real HttpContext cookie sign-in)
+// ============================================================
+
+app.MapPost("/account/login", async (HttpContext http, KeycloakSignInService signIn, IFormCollection form) =>
+{
+    var email = form["email"].ToString();
+    var password = form["password"].ToString();
+    var returnUrl = form["returnUrl"].ToString();
+    if (string.IsNullOrWhiteSpace(returnUrl) || !returnUrl.StartsWith('/') || returnUrl.StartsWith("//"))
+        returnUrl = "/";
+
+    var result = await signIn.SignInAsync(email, password);
+    if (result.Outcome == SignInOutcome.Success && result.Principal is not null)
+    {
+        await http.SignInAsync(
+            CookieAuthenticationDefaults.AuthenticationScheme,
+            result.Principal);
+        return Results.Redirect(returnUrl);
+    }
+
+    var err = result.Outcome switch
+    {
+        SignInOutcome.WrongCredentials => "credentials",
+        SignInOutcome.NotConfigured => "config",
+        _ => "service"
+    };
+    return Results.Redirect($"/sign-in?error={err}");
+}).DisableAntiforgery();
+
+// ============================================================
 // RAZOR COMPONENTS
 // ============================================================
 
