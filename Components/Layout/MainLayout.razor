@@ -146,11 +146,8 @@ header.top-row,
 }
 </style>
 
-<ChatWidget @rendermode="InteractiveServer"
-            Hosts="@(new Dictionary<string,string> {
-                [\"remote\"] = \"http://100.89.6.69:11434\",
-                [\"local\"]  = \"http://localhost:11434\"
-            })" />
+@{ var ollamaHosts = new Dictionary<string, string> { ["remote"] = "http://100.89.6.69:11434", ["local"] = "http://localhost:11434" }; }
+<ChatWidget @rendermode="InteractiveServer" Hosts="@ollamaHosts" />
 
 <div class="page">
     <aside class="sidebar"><NavMenu /></aside>
