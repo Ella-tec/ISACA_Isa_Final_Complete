@@ -2,14 +2,13 @@
 @rendermode InteractiveServer
 @implements IDisposable
 
-<PageTitle>Home · TRU</PageTitle>
+<PageTitle>Home · ISACA Chapter Support</PageTitle>
 
 <style>
 .hm{
-  --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;
+  --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--muted:#5f6b85;--line:#e2e8f0;
   font-family:"Roboto",system-ui,sans-serif;color:var(--ink);
-  display:flex;flex-direction:column;gap:12px;padding:10px;box-sizing:border-box;
-  width:100%;min-height:0;
+  display:flex;flex-direction:column;gap:14px;padding:10px;box-sizing:border-box;width:100%;
 }
 .hm-slides{
   position:relative;width:100%;height:min(42vh,420px);min-height:260px;
@@ -39,24 +38,39 @@
   transition:width .25s ease,border-radius .25s ease,background .25s ease;
 }
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:999px}
-.hm-gallery{
-  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;
+.hm-insights{width:100%;padding:.25rem 0 .5rem}
+.hm-insights h2{
+  margin:0 0 .25rem;font-size:clamp(1.15rem,2vw,1.4rem);font-weight:700;text-align:center;color:var(--ink);
 }
-.hm-gallery__item{
-  position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/10;
-  background:#0a1f4d;box-shadow:0 4px 16px rgba(15,23,42,.08);
+.hm-insights > p{
+  margin:0 auto .95rem;max-width:40rem;font-size:.88rem;line-height:1.45;color:var(--muted);text-align:center;
 }
-.hm-gallery__item img{width:100%;height:100%;object-fit:cover;display:block}
-.hm-gallery__cap{
-  position:absolute;left:0;right:0;bottom:0;padding:.55rem .7rem;
-  background:linear-gradient(transparent,rgba(10,31,77,.88));color:#fff;
-  font-size:.78rem;font-weight:600;
+.hm-cards{
+  display:grid;grid-template-columns:repeat(4,1fr);gap:12px;width:100%;
 }
-@@media(max-width:700px){
-  .hm-slides{height:240px}
-  .hm{padding:8px!important;gap:8px}
-  .hm-gallery{grid-template-columns:1fr}
+.hm-card{
+  display:flex;flex-direction:column;background:#fff;border-radius:12px;overflow:hidden;
+  border:1px solid #eef1f6;text-decoration:none;color:inherit;
+  transition:transform .15s ease,box-shadow .15s ease,border-color .15s ease;
+  min-width:0;
 }
+.hm-card:hover{
+  transform:translateY(-2px);box-shadow:0 10px 24px rgba(10,31,77,.1);
+  border-color:#b7d4f0;
+}
+.hm-card__img{
+  width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:#d8e2ee;
+}
+.hm-card__body{padding:.7rem .85rem .85rem;display:flex;flex-direction:column;gap:.15rem;flex:1}
+.hm-card__type{font-size:.68rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.hm-card h3{margin:0;font-size:.92rem;font-weight:700;line-height:1.3;color:var(--ink)}
+.hm-card p{margin:0;font-size:.78rem;line-height:1.4;color:var(--muted)}
+.hm-card__go{
+  margin-top:auto;padding-top:.45rem;font-size:.72rem;font-weight:700;color:#07649d;
+}
+@@media(max-width:1100px){.hm-cards{grid-template-columns:repeat(3,1fr)}}
+@@media(max-width:800px){.hm-cards{grid-template-columns:1fr 1fr}.hm-slides{height:240px}}
+@@media(max-width:520px){.hm-cards{grid-template-columns:1fr}}
 </style>
 
 <div class="hm">
@@ -81,15 +95,24 @@
         </div>
     </div>
 
-    <div class="hm-gallery" aria-label="Featured images">
-        @foreach (var img in gallery)
-        {
-            <div class="hm-gallery__item">
-                <img src="@img.Url" alt="@img.Caption" loading="lazy" />
-                <div class="hm-gallery__cap">@img.Caption</div>
-            </div>
-        }
-    </div>
+    <section class="hm-insights" aria-label="ISACA insights">
+        <h2>Stay ahead with ISACA insights and thought leadership</h2>
+        <p>Explore digital trust assets, frameworks, white papers and resources — open the real ISACA page for each card.</p>
+        <div class="hm-cards">
+            @foreach (var c in cards)
+            {
+                <a class="hm-card" href="@c.Url" target="_blank" rel="noopener">
+                    <img class="hm-card__img" src="@c.Image" alt="" loading="lazy" />
+                    <div class="hm-card__body">
+                        <div class="hm-card__type">@c.Type</div>
+                        <h3>@c.Title</h3>
+                        <p>@c.Caption</p>
+                        <span class="hm-card__go">Open on ISACA →</span>
+                    </div>
+                </a>
+            }
+        </div>
+    </section>
 </div>
 
 @code {
@@ -97,7 +120,7 @@
     private System.Threading.Timer? slideTimer;
 
     private record Slide(string Title, string Caption, string ImageUrl);
-    private record GalleryImg(string Url, string Caption);
+    private record Insight(string Type, string Title, string Caption, string Image, string Url);
 
     private static readonly Slide[] slides =
     {
@@ -109,14 +132,32 @@
         new("AI & emerging tech","Layer AI into audit, security, risk, and privacy practices.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"),
     };
 
-    private static readonly GalleryImg[] gallery =
+    private static readonly Insight[] cards =
     {
-        new("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80", "Certification pathways"),
-        new("https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80", "Digital trust leadership"),
-        new("https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80", "Team performance"),
-        new("https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80", "Cybersecurity readiness"),
-        new("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", "Chapter excellence"),
-        new("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80", "AI & emerging tech"),
+        new("White Paper","Security Debt: The Unseen Risk","Where security debt comes from and its impact on resilience.",
+            "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/resources/white-papers/2026/security-debt-the-unseen-risk-undermining-cyber-resilience"),
+        new("ISACA Journal","Volume 6, 2026","Managing risk in emerging tech and more.",
+            "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/resources/isaca-journal/issues/2026/volume-6"),
+        new("Tool","AI Impact Assessment Tool","Ethical consequences of AI projects.",
+            "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/store2/product/WPAIAT"),
+        new("White Paper","COBIT for AI System Governance","Govern AI systems with the COBIT framework.",
+            "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/resources/white-papers/2025/leveraging-cobit-for-effective-ai-system-governance"),
+        new("Credential","CISA","Audit and assess information systems.",
+            "https://images.unsplash.com/photo-1507679799987-c73779587ccf?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/credentialing/cisa"),
+        new("Credential","CISM","Design enterprise security programs.",
+            "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/credentialing/cism"),
+        new("Credential","CRISC","Manage IT risk and implement controls.",
+            "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=640&q=80",
+            "https://www.isaca.org/credentialing/crisc"),
+        new("Guide","Top ISACA certifications","CISA, CISM, CRISC, CGEIT, CDPSE paths.",
+            "https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=640&q=80",
+            "https://trainotracksolutions.weebly.com/blog/top-isaca-certifications-for-professionals"),
     };
 
     protected override void OnInitialized()
