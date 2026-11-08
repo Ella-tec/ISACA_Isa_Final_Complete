@@ -9,7 +9,7 @@
 @inject NavigationManager Navigation
 @implements IDisposable
 
-<PageTitle>Chapter support</PageTitle>
+<PageTitle>TRU</PageTitle>
 
 <style>
 html, body { margin: 0 !important; padding: 0 !important; background: #fff !important; }
@@ -29,14 +29,15 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
   font-weight: 600; font-size: .95rem; color: #1d2d5c;
   letter-spacing: .01em;
 }
-/* One brand only — never show a second logo mark in the header */
 .si-top__brand .logo,
 .si-top__brand .tru-logo,
 .si-top__brand svg,
 .si-top__brand img {
   display: none !important;
 }
-.si-top__label { font-weight: 600; color: #1d2d5c; font-size: .95rem; }
+.si-top__label { display: none !important; }
+.si-top__brand:empty { display: none !important; }
+.si-foot:empty { display: none !important; }
 .si-search {
   flex: 1 1 160px; max-width: 280px; margin: 0 auto;
   display: flex; align-items: center; gap: .25rem;
@@ -199,9 +200,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
 
 <div class="si">
     <header class="si-top">
-        <a class="si-top__brand" href="/sign-in" aria-label="Chapter support">
-            <span class="si-top__label">Chapter support</span>
-        </a>
+        <a class="si-top__brand" href="/sign-in" aria-label="TRU home"></a>
         <form class="si-search" @onsubmit="HandleSearch" @onsubmit:preventDefault>
             <input type="search" @bind="searchQ" placeholder="Search" aria-label="Search" />
             <button type="submit" title="Search">⌕</button>
@@ -305,7 +304,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
         </div>
     </section>
 
-    <footer class="si-foot">Chapter support</footer>
+    <footer class="si-foot"></footer>
 </div>
 
 @if (showLogin)
@@ -351,7 +350,7 @@ html, body { margin: 0 !important; padding: 0 !important; background: #fff !impo
     private record Hero(string Crumb, string Title, string Caption, string Image, string PrimaryLabel, string PrimaryHref);
     private static readonly Hero[] heroes =
     {
-        new("Home · Chapter support", "Empowering your chapter",
+        new("Home", "Empowering your chapter",
             "Guides, knowledge, events, and tools for ISACA chapter officers and volunteers.",
             "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1600&q=85",
             "Open resource library", "/resource-library"),
