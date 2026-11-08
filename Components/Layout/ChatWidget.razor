@@ -346,7 +346,7 @@ else
 
     private static readonly string[] Prompts =
     {
-        "How can TRU help you today?",
+        "How can I help you today?",
         "Ask about chapter policies or forms.",
         "Need CPE events or calendar help?",
         "Search approved guidance anytime.",
@@ -466,7 +466,9 @@ else
         if (_pendingFiles.Count > 0)
         {
             var names = string.Join(", ", _pendingFiles.Select(f => f.Name));
-            text = string.IsNullOrEmpty(text) ? $("[Attached: {names}]") : text + $("\n\n[Attached: {names}]");
+            text = string.IsNullOrEmpty(text)
+                ? ("[Attached: " + names + "]")
+                : text + "\n\n[Attached: " + names + "]";
             _pendingFiles.Clear();
         }
 
