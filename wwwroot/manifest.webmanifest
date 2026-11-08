@@ -1,9 +1,9 @@
 {
-  "name": "TRU",
-  "short_name": "TRU",
-  "description": "TRU — chapter support assistant",
+  "name": "ISACA Chapter Support",
+  "short_name": "Chapter Support",
+  "description": "ISACA chapter support workspace",
   "start_url": "/",
-  "display": "standalone",
+  "display": "browser",
   "background_color": "#0a1628",
   "theme_color": "#1d2d5c",
   "icons": [
