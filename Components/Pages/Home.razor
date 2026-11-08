@@ -6,7 +6,7 @@
 
 <style>
 .hm{
-  --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;--soft:#f4f7fb;
+  --ink:#1d2d5c;--blue:#00a4e4;--mid:#07649d;--teal:#36ac91;--muted:#5f6b85;--line:#e2e8f0;
   font-family:"Roboto",system-ui,sans-serif;color:var(--ink);
   display:flex;flex-direction:column;gap:12px;padding:10px;box-sizing:border-box;
   width:100%;min-height:0;
@@ -39,21 +39,23 @@
   transition:width .25s ease,border-radius .25s ease,background .25s ease;
 }
 .hm-slide__dot.is-on{background:#fff;width:18px;border-radius:999px}
-.hm-vid{width:100%;flex:0 0 auto;margin:0;padding:0}
-.hm-vid__frame{
-  position:relative;width:100%;aspect-ratio:16 / 9;border-radius:16px;
-  overflow:hidden;background:#000;box-shadow:0 8px 28px rgba(15,23,42,.12);
+.hm-gallery{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:100%;
 }
-.hm-vid__frame iframe{
-  position:absolute;inset:0;width:100%;height:100%;border:0;display:block;
-  transform:scale(1.02);transform-origin:center center;
+.hm-gallery__item{
+  position:relative;border-radius:14px;overflow:hidden;aspect-ratio:16/10;
+  background:#0a1f4d;box-shadow:0 4px 16px rgba(15,23,42,.08);
 }
-.hm-vid__hint{margin:.45rem 0 0;font-size:.78rem;color:var(--muted);text-align:center}
+.hm-gallery__item img{width:100%;height:100%;object-fit:cover;display:block}
+.hm-gallery__cap{
+  position:absolute;left:0;right:0;bottom:0;padding:.55rem .7rem;
+  background:linear-gradient(transparent,rgba(10,31,77,.88));color:#fff;
+  font-size:.78rem;font-weight:600;
+}
 @@media(max-width:700px){
   .hm-slides{height:240px}
   .hm{padding:8px!important;gap:8px}
-  .hm-slide__copy{right:1rem;bottom:3.2rem}
-  .hm-vid__frame iframe{transform:scale(1.05)}
+  .hm-gallery{grid-template-columns:1fr}
 }
 </style>
 
@@ -79,14 +81,14 @@
         </div>
     </div>
 
-    <div class="hm-vid">
-        <div class="hm-vid__frame">
-            <iframe src="@CurrentEmbed" title="@CurrentTitle"
-                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                    allowfullscreen
-                    referrerpolicy="strict-origin-when-cross-origin"></iframe>
-        </div>
-        <p class="hm-vid__hint">Videos play automatically and loop nonstop. Starts muted — use the volume control to unmute.</p>
+    <div class="hm-gallery" aria-label="Featured images">
+        @foreach (var img in gallery)
+        {
+            <div class="hm-gallery__item">
+                <img src="@img.Url" alt="@img.Caption" loading="lazy" />
+                <div class="hm-gallery__cap">@img.Caption</div>
+            </div>
+        }
     </div>
 </div>
 
@@ -95,7 +97,7 @@
     private System.Threading.Timer? slideTimer;
 
     private record Slide(string Title, string Caption, string ImageUrl);
-    private record YtVideo(string Id, string Title);
+    private record GalleryImg(string Url, string Caption);
 
     private static readonly Slide[] slides =
     {
@@ -107,25 +109,15 @@
         new("AI & emerging tech","Layer AI into audit, security, risk, and privacy practices.","https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1600&q=80"),
     };
 
-    private static readonly YtVideo[] Videos =
+    private static readonly GalleryImg[] gallery =
     {
-        new("Chw9iTTHyhk", "ISACA session"),
-        new("0Y9WFhfsQlk", "ISACA learning"),
-        new("wi2be8nt6lw", "Digital trust"),
-        new("GWUrA8DpTOk", "ISACA overview"),
-        new("cJpY4wHTKxo", "Chapter guidance"),
-        new("KSEdwhUTxCk", "Credentials path"),
-        new("em8vqDlINqU", "Professional growth"),
-        new("nOPTmNSsYJg", "ISACA resources"),
+        new("https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?auto=format&fit=crop&w=1200&q=80", "Certification pathways"),
+        new("https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1200&q=80", "Digital trust leadership"),
+        new("https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&q=80", "Team performance"),
+        new("https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80", "Cybersecurity readiness"),
+        new("https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=1200&q=80", "Chapter excellence"),
+        new("https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80", "AI & emerging tech"),
     };
-
-    // Full playlist + loop = continuous nonstop autoplay (YouTube requires playlist for loop)
-    private string PlaylistIds => string.Join(",", System.Linq.Enumerable.Select(Videos, v => v.Id));
-    private string CurrentEmbed =>
-        $"https://www.youtube-nocookie.com/embed/{Videos[0].Id}"
-        + "?autoplay=1&mute=1&rel=0&modestbranding=1&playsinline=1&controls=1&fs=1"
-        + $"&playlist={PlaylistIds}&loop=1";
-    private string CurrentTitle => "ISACA videos";
 
     protected override void OnInitialized()
     {
